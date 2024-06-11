@@ -26,7 +26,7 @@ model Admin {
 
 model User {
   id        Int     @id @default(autoincrement())
-  ref_id    Int
+  ref_id    Int?
   role      String
   full_name String
   dni       String?
@@ -36,4 +36,18 @@ model User {
   username  String
   password  String
   enabled   String  @default("y")
+}
+
+model Platform {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String
+  Account     Account[]
+}
+
+model Account {
+  id          Int @id @default(autoincrement())
+  platform_id Int
+
+  Platform Platform @relation(fields: [platform_id], references: [id])
 }
