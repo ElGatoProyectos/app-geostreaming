@@ -39,8 +39,8 @@ const login = () => {
     }
   };
   return (
-    <div className="relative bg-white shadow-md shadow-blue-800 rounded-xl h-auto md:max-w-[50%] xl:max-w-[640px] w-full p-1 m-4 ">
-      <div className="w-full p-2 bg-blue-900 text-white text-center rounded-t-lg">
+    <div className="relative bg-white shadow-md shadow-[#277FF2] rounded-xl h-auto md:max-w-[50%] xl:max-w-[640px] w-full p-1 m-4 ">
+      <div className="w-full p-2 bg-[#277FF2] text-white text-center rounded-t-lg">
         Accede
       </div>
       <form
@@ -240,11 +240,11 @@ const login = () => {
         </div>
         <button
           type="submit"
-          className="px-6 py-2 bg-red-600 rounded text-white hover:bg-red-400 transition-all duration-300"
+          className="px-6 py-2 bg-[#F2308B] rounded text-white hover:bg-[#F06FAC] transition-all duration-300"
         >
           Login
         </button>
-        <Link href={"/users/register"} className="text-red-600 underline">
+        <Link href={"/users/register"} className="text-[#F2308B] underline">
           Crea una cuenta
         </Link>
         <small className="text-center">
