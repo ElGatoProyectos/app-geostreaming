@@ -10,8 +10,8 @@ const navigation = () => {
   };
 
   return (
-    <div className="fixed top-0 left-0 h-[73px] shadow w-full bg-white  ">
-      <div className="h-full w-full px-2 md:px-8 gap-2 py-2  flex justify-between items-center max-w-[1440px]">
+    <div className="fixed z-10 top-0 left-0 h-[60px] shadow w-screen bg-white  ">
+      <div className="h-full w-full px-4 md:px-8 gap- py-2  flex justify-between items-center max-w-[1440px] mx-auto">
         <Link href={"/"} className="h-full">
           <img
             className="h-full w-auto object-contain"
@@ -19,16 +19,16 @@ const navigation = () => {
             alt="Geostreaming"
           />
         </Link>
-        <div className="flex gap-2 md:gap-4">
+        <div className="flex gap-4 md:gap-4">
           <Link
             href={"../users/register"}
-            className="bg-red-500 rounded text-white text-sm md:text-base px-3 md:px-4 py-1 md:py-2"
+            className="bg-[#F2308B] rounded text-white text-sm md:text-base px-3 md:px-4 py-1 md:py-2"
           >
             Regístrate
           </Link>
           <Link
             href={"../users/login"}
-            className="bg-red-500 rounded text-white text-sm md:text-base px-3 md:px-4 py-1 md:py-2"
+            className="bg-[#F2308B] rounded text-white text-sm md:text-base px-3 md:px-4 py-1 md:py-2"
           >
             Ingresa
           </Link>
@@ -68,7 +68,7 @@ const navigation = () => {
 
       {/* submenues */}
       {menuOpen && (
-        <div className="fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-90 p-4 pt-14 ">
+        <div className="fixed top-0 left-0 w-screen  h-screen z-50 bg-black bg-opacity-90  pt-14 px-4 pb-4 overflow-hidden ">
           <button onClick={toggleMenu} className="absolute top-5 right-5 ">
             <svg
               width="14"
@@ -95,20 +95,20 @@ const navigation = () => {
             </svg>
           </button>
           <div className="w-full h-full flex flex-col gap-4 bg-white p-6">
-            <ul className=" flex flex-col gap-4 font-semibold">
-              <li className="text-red-500 hover:text-red-500 transition-all duration-300">
+            <ul className=" flex flex-col gap-4 font-primarySemibold">
+              <li className="text-[#F2308B] hover:text-[#F2308B] transition-all duration-300">
                 Inicio
               </li>
-              <li className=" hover:text-red-500 transition-all duration-300">
+              <li className=" hover:text-[#F2308B] transition-all duration-300">
                 Nosotros
               </li>
-              <li className=" hover:text-red-500 transition-all duration-300">
+              <li className=" hover:text-[#F2308B] transition-all duration-300">
                 Servicios
               </li>
-              <li className=" hover:text-red-500 transition-all duration-300">
+              <li className=" hover:text-[#F2308B] transition-all duration-300">
                 Productos
               </li>
-              <li className=" hover:text-red-500 transition-all duration-300">
+              <li className=" hover:text-[#F2308B] transition-all duration-300">
                 Contáctanos
               </li>
             </ul>

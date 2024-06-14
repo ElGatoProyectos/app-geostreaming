@@ -1,6 +1,9 @@
+@import "keep-react/css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
 
 :root {
   --foreground-rgb: 0, 0, 0;
@@ -16,13 +19,52 @@
   }
 }
 
-body {
-  color: #333;
-  
-}
+
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+}
+.slick-slide > div {
+  margin: 0 10px;
+}
+
+.section-bg::before{
+  content: '';
+  background: #1B1B1B;
+  position: absolute;
+  z-index: -1;
+  bottom: 60px;
+  top:60px;
+  left: 0;
+  right:0;
+  transform: skewY(-3deg);
+}
+.slick-dots li{
+  width: 10px !important;
+  height: 10px !important;
+  border: 1px solid #F2308B;
+  border-radius: 100%;
+}
+
+.slick-dots li button{
+  width: 10px !important;
+  height: 10px !important;
+  border-radius: 100%;
+  border: 1px solid #F2308B;
+}
+
+.slick-dots li button:before {
+  display: none;
+}
+.slick-dots li.slick-active button{
+  background: #F2308B;
+  
+}
+.MuiButtonBase-root.Mui-expanded{
+  color: #F2308B;
+}
+.shadow-box{
+  box-shadow: 0px 2px 35px rgba(0,0,0,0.06);
 }

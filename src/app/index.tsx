@@ -4,7 +4,7 @@ import Home from './home/page'
 
 const index = () => {
   return (
-    <div>
+    <div className='primaryRegular'>
       <Home></Home>
     </div>
   )
