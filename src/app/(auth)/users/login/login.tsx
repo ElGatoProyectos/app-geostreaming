@@ -3,6 +3,8 @@ import Link from "next/link";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { userLoginSchema } from "@/app/schemas/userLoginSchema";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 type Inputs = {
   user: string;
@@ -10,6 +12,7 @@ type Inputs = {
 };
 
 const login = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -19,10 +22,21 @@ const login = () => {
     resolver: zodResolver(userLoginSchema),
   });
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
     console.log(data);
     /* modal de confirmacion? */
-    reset();
+    const responseAuth = await signIn("credentials", {
+      username: data.user,
+      password: data.password,
+      role: "-",
+      redirect: false,
+    });
+    if (responseAuth?.ok) {
+      router.push("/..... la app");
+      reset();
+    } else {
+      //! error de autenticacion
+    }
   };
   return (
     <div className="relative bg-white shadow-md shadow-[#277FF2] rounded-xl h-auto md:max-w-[50%] xl:max-w-[640px] w-full p-1 m-4 ">
