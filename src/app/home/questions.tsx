@@ -34,7 +34,8 @@ const data = [
 
 const Questions = () => {
   return (
-    <div className="faq-container px-4 py-16">
+    <div className="faq-container px-4 md:px-10 py-16">
+      <div className="faq-container px-4 md:px-10 py-16 max-w-[1440px] mx-auto">
       <h2 className="text-3xl font-bold uppercase text-[#444444] flex flex-col gap-4 justify-center items-center text-center mb-8">
         preguntas frecuentes <span className="w-12 h-1 bg-[#F2308B]"></span>
       </h2>
@@ -58,6 +59,8 @@ const Questions = () => {
           </AccordionDetails>
         </Accordion>
       ))}
+      </div>
+      
     </div>
   );
 };
