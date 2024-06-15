@@ -31,7 +31,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
       title: null,
       links: [
         {
-          href: "/admin/home",
+          href: "/admin/inicio",
           label: "Inicio",
           icon: <IoMdHome className="text-xl" />,
         },
@@ -41,12 +41,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
       title: "Ventas",
       links: [
         {
-          href: "/admin/products",
+          href: "/admin/productos",
           label: "Productos",
           icon: <IoMdCart className="text-xl" />,
         },
         {
-          href: "/admin/salesReport",
+          href: "/admin/reportesdeventas",
           label: "Reporte ventas",
           icon: <MdMenuBook className="text-xl" />,
         },
@@ -56,12 +56,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
       title: "Saldo",
       links: [
         {
-          href: "/admin/balance",
+          href: "/admin/creditaciones",
           label: "Acreditar saldo",
           icon: <IoLogoUsd className="text-xl" />,
         },
         {
-          href: "/admin/depositReport",
+          href: "/admin/historialcreditaciones",
           label: "Reporte deposito",
           icon: <MdMenuBook className="text-xl" />,
         },
@@ -90,17 +90,17 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
   ];
   return (
     <div
-      className={`bg-red-500 w-[220px] py-4 max-h-[calc(100vh-100px)] h-full fixed top-[100px] z-50 text-white transition-transform duration-300 ${
+      className={`bg-[#F2308B] w-[220px] py-4 max-h-[calc(100vh-100px)] h-full fixed top-[100px] z-50 text-white transition-transform duration-300 ${
         isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
       }`}
     >
       <div className="flex flex-col gap-6">
         {sections.map((section, sectionIndex) => (
-          <div key={sectionIndex}>
+          <div key={sectionIndex} className="w-full">
             {section.title && (
-              <span className="uppercase text-xs ml-8 block w-full font-semibold border-b border-gray-100">
+              <div className="uppercase text-xs mx-8  font-semibold border-b border-[#F06FAC] pb-1">
                 {section.title}
-              </span>
+              </div>
             )}
             <ul className="mt-2">
               {section.links.map((link, linkIndex) => (

@@ -16,8 +16,8 @@ const Products = () => {
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          {DataProducts.map((product, indec) => (
-            <div className="flex justify-start items-start p-8 gap-4 bg-[#252525] rounded">
+          {DataProducts.map((product, index) => (
+            <div key={index} className="flex justify-start items-start p-8 gap-4 bg-[#252525] rounded">
               <div className=" flex items-start">
               <img src={product.url} alt={product.name} className="w-[100px] h-auto object-contain" />
               </div>

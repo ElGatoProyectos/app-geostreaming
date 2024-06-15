@@ -1,10 +1,10 @@
 import React from 'react'
 import MainLayout from '../layout/mainLayout'
-
+import Counts from './counts'
 const page = () => {
   return (
     <MainLayout>
-      acreditar saldo
+      <Counts/>
     </MainLayout>
   )
 }
