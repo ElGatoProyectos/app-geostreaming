@@ -41,10 +41,10 @@ const Header = () => {
           <img
             src="/user.jpg"
             alt="user"
-            className="h-full w-auto object-cover rounded-full"
+            className="h-full w-auto object-cover rounded-full hidden lg:block"
           />
           <button onClick={toggleMenu} className="lg:hidden">
-          <IoMenu />
+          <IoMenu className="text-5xl text-white"/>
           </button>
           
         </div>

@@ -4,7 +4,9 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { userLoginSchema } from "@/app/schemas/userLoginSchema";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
+import { useState } from "react";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 type Inputs = {
   user: string;
@@ -13,6 +15,9 @@ type Inputs = {
 
 const login = () => {
   const router = useRouter();
+
+  const [loading, setLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -23,9 +28,31 @@ const login = () => {
   });
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log(data);
+    setLoading(true);
+
+    try {
+      /* const responseAuth = await signIn("credentials", {
+        username: data.user,
+        password: data.password,
+        role: "-",
+        redirect: false,
+      }); */
+      setTimeout(() => {
+        router.push("/admin/inicio");
+      }, 3000);
+
+      /* if (responseAuth?.ok) {
+        router.push("/admin/home");
+      } else {
+        //! error de autenticacion
+      } */
+    } catch (error) {
+      console.error("Error durante la autenticación:", error);
+    } finally {
+      setLoading(false);
+    }
     /* modal de confirmacion? */
-    const responseAuth = await signIn("credentials", {
+    /* const responseAuth = await signIn("credentials", {
       username: data.user,
       password: data.password,
       role: "-",
@@ -36,7 +63,7 @@ const login = () => {
       reset();
     } else {
       //! error de autenticacion
-    }
+    } */
   };
   return (
     <div className="relative bg-white shadow-md shadow-[#277FF2] rounded-xl h-auto md:max-w-[50%] xl:max-w-[640px] w-full p-1 m-4 ">
@@ -240,9 +267,14 @@ const login = () => {
         </div>
         <button
           type="submit"
-          className="px-6 py-2 bg-[#F2308B] rounded text-white hover:bg-[#F06FAC] transition-all duration-300"
+          className={`px-6 py-2 bg-[#F2308B] rounded text-white hover:bg-[#F06FAC] transition-all duration-300 ${
+            loading
+              ? "opacity-50 pointer-events-none flex items-center justify-center"
+              : ""
+          }`}
+          disabled={loading}
         >
-          Login
+          {loading ? "cargando..." : "Ingresar"}
         </button>
         <Link href={"/users/register"} className="text-[#F2308B] underline">
           Crea una cuenta

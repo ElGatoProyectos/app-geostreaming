@@ -10,10 +10,10 @@ const MainLayout: FC<Props> = ({ children }) => {
   return (
     <>
       <Header />
-      <main className="lg:left-[220px] top-[100px]  relative w-[calc(100%-220px)] px-10 py-4 ">
+      <main className="lg:left-[220px] top-[100px]  relative lg:w-[calc(100%-220px)] px-10 py-6 w-full">
         {children}
       </main>
-      <Contact />
+      {/* <Contact /> */}
     </>
   );
 };
