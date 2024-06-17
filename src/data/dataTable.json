@@ -1,0 +1,222 @@
+[
+  {
+    "codigo": 1,
+    "producto": "Wine - Red, Pelee Island Merlot",
+    "cliente": "fmundwell0@blog.com",
+    "fecha": "24.06.2023",
+    "valor": "$76.66",
+    "estado": "New York",
+    "referencia": "53079 Spohn Court",
+    "observacion": "Displacement of int fix of bone of right lower leg, subs",
+    "total": "$779.91"
+  },
+  {
+    "codigo": 2,
+    "producto": "Soup - Campbells Asian Noodle",
+    "cliente": "pbare1@tripadvisor.com",
+    "fecha": "30.07.2024",
+    "valor": "$10.60",
+    "estado": "New York",
+    "referencia": "7191 Lunder Park",
+    "observacion": "Prolonged exposure in deep freeze unit or refrigerator",
+    "total": "$689.00"
+  },
+  {
+    "codigo": 3,
+    "producto": "Cheese - Woolwich Goat, Log",
+    "cliente": "esommerscales2@microsoft.com",
+    "fecha": "24.02.2024",
+    "valor": "$40.50",
+    "estado": "New York",
+    "referencia": "4896 Esker Street",
+    "observacion": "Other specified acquired deformities of left upper arm",
+    "total": "$165.29"
+  },
+  {
+    "codigo": 4,
+    "producto": "Chocolate - Dark Callets",
+    "cliente": "bgosney3@google.co.uk",
+    "fecha": "23.02.2024",
+    "valor": "$65.72",
+    "estado": "New York",
+    "referencia": "7849 Stoughton Hill",
+    "observacion": "Other injury of muscle, fascia and tendon of abdomen",
+    "total": "$642.09"
+  },
+  {
+    "codigo": 5,
+    "producto": "Chocolate - Feathers",
+    "cliente": "kwicher4@cdc.gov",
+    "fecha": "05.07.2023",
+    "valor": "$43.83",
+    "estado": "New York",
+    "referencia": "4 Mitchell Hill",
+    "observacion": "Salter-Harris Type III physeal fracture of r calcaneus, 7thB",
+    "total": "$606.76"
+  },
+  {
+    "codigo": 6,
+    "producto": "Cheese - Mozzarella, Buffalo",
+    "cliente": "mmorch5@theatlantic.com",
+    "fecha": "26.12.2023",
+    "valor": "$58.58",
+    "estado": "New York",
+    "referencia": "73 Waxwing Terrace",
+    "observacion": "Assault by gas, air or spring-operated guns",
+    "total": "$862.28"
+  },
+  {
+    "codigo": 7,
+    "producto": "Pork - Tenderloin, Frozen",
+    "cliente": "hkenright6@walmart.com",
+    "fecha": "05.10.2023",
+    "valor": "$65.15",
+    "estado": "New York",
+    "referencia": "8115 Hudson Plaza",
+    "observacion": "Superficial frostbite of left toe(s), subsequent encounter",
+    "total": "$773.41"
+  },
+  {
+    "codigo": 8,
+    "producto": "Fish - Scallops, Cold Smoked",
+    "cliente": "kmival7@friendfeed.com",
+    "fecha": "03.03.2024",
+    "valor": "$59.49",
+    "estado": "New York",
+    "referencia": "14202 Thierer Alley",
+    "observacion": "Posterior subluxation of unsp ulnohumeral joint, init encntr",
+    "total": "$955.14"
+  },
+  {
+    "codigo": 9,
+    "producto": "Bread - Kimel Stick Poly",
+    "cliente": "pstarking8@istockphoto.com",
+    "fecha": "28.01.2024",
+    "valor": "$78.65",
+    "estado": "New York",
+    "referencia": "9894 Atwood Point",
+    "observacion": "Unspecified subluxation of unspecified shoulder joint",
+    "total": "$764.78"
+  },
+  {
+    "codigo": 10,
+    "producto": "Oysters - Smoked",
+    "cliente": "isimonato9@pinterest.com",
+    "fecha": "30.11.2023",
+    "valor": "$7.10",
+    "estado": "New York",
+    "referencia": "2 Waywood Crossing",
+    "observacion": "Underdosing of mixed bacterial vaccines w/o a pertuss",
+    "total": "$501.77"
+  },
+  {
+    "codigo": 11,
+    "producto": "Pepper - Jalapeno",
+    "cliente": "fclewlowa@scribd.com",
+    "fecha": "13.05.2024",
+    "valor": "$99.49",
+    "estado": "New York",
+    "referencia": "80089 Dennis Street",
+    "observacion": "Nondisp fx of body of unsp calcaneus, 7thD",
+    "total": "$427.57"
+  },
+  {
+    "codigo": 12,
+    "producto": "Paste - Black Olive",
+    "cliente": "agrinaughb@comsenz.com",
+    "fecha": "29.10.2023",
+    "valor": "$66.28",
+    "estado": "New York",
+    "referencia": "70 Del Mar Drive",
+    "observacion": "Diffuse TBI w LOC >24 hr w/o ret consc w surv, init",
+    "total": "$666.04"
+  },
+  {
+    "codigo": 13,
+    "producto": "Mushroom - Lg - Cello",
+    "cliente": "nandreevc@soup.io",
+    "fecha": "29.04.2024",
+    "valor": "$63.04",
+    "estado": "New York",
+    "referencia": "39193 Independence Pass",
+    "observacion": "Toxic effect of glycols, assault, subsequent encounter",
+    "total": "$311.75"
+  },
+  {
+    "codigo": 14,
+    "producto": "Pork - Ham, Virginia",
+    "cliente": "pblindd@hao123.com",
+    "fecha": "16.05.2024",
+    "valor": "$81.68",
+    "estado": "New York",
+    "referencia": "18 Goodland Lane",
+    "observacion": "Unspecified injury of left forearm",
+    "total": "$339.59"
+  },
+  {
+    "codigo": 15,
+    "producto": "Tart - Butter Plain Squares",
+    "cliente": "snewlande@google.pl",
+    "fecha": "05.07.2024",
+    "valor": "$54.46",
+    "estado": "New York",
+    "referencia": "62 Orin Trail",
+    "observacion": "Disp fx of nk of 3rd MC bone, l hand, 7thD",
+    "total": "$840.91"
+  },
+  {
+    "codigo": 16,
+    "producto": "Eggplant Italian",
+    "cliente": "bquaifef@microsoft.com",
+    "fecha": "05.08.2023",
+    "valor": "$40.43",
+    "estado": "New York",
+    "referencia": "65070 Merrick Drive",
+    "observacion": "Oth fx upper end of left ulna, init for opn fx type I/2",
+    "total": "$719.46"
+  },
+  {
+    "codigo": 17,
+    "producto": "Wine - Alicanca Vinho Verde",
+    "cliente": "mfieldhouseg@latimes.com",
+    "fecha": "16.01.2024",
+    "valor": "$16.35",
+    "estado": "New York",
+    "referencia": "36311 Farmco Park",
+    "observacion": "Occup of pk-up/van inj in clsn w 2/3-whl mv in traf, init",
+    "total": "$688.66"
+  },
+  {
+    "codigo": 18,
+    "producto": "Stock - Veal, White",
+    "cliente": "hpideonh@hexun.com",
+    "fecha": "27.11.2023",
+    "valor": "$82.44",
+    "estado": "New York",
+    "referencia": "545 Claremont Avenue",
+    "observacion": "Disord of muscle in diseases classd elswhr, unsp upper arm",
+    "total": "$732.89"
+  },
+  {
+    "codigo": 19,
+    "producto": "Pork - Smoked Kassler",
+    "cliente": "clarticei@wisc.edu",
+    "fecha": "14.01.2024",
+    "valor": "$96.98",
+    "estado": "New York",
+    "referencia": "0 Manley Road",
+    "observacion": "Disp fx of neck of fourth MC bone, right hand, sequela",
+    "total": "$241.56"
+  },
+  {
+    "codigo": 20,
+    "producto": "Cup - 8oz Coffee Perforated",
+    "cliente": "hcolamj@lulu.com",
+    "fecha": "27.12.2023",
+    "valor": "$76.80",
+    "estado": "New York",
+    "referencia": "68 Bartillon Way",
+    "observacion": "Encounter for prophylactic surgery",
+    "total": "$794.98"
+  }
+]

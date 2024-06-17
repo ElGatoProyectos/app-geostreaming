@@ -23,7 +23,7 @@ const register = () => {
   } = useForm<Inputs>({
     resolver: zodResolver(userRegisterSchema),
   });
-  
+
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     console.log(data);
     /* modal de confirmacion? */
@@ -492,7 +492,7 @@ const register = () => {
           Accede a tu cuenta
         </Link>
         <small className="text-center">
-          SitioPremium Copyright ©2024. Todos los derechos reservados
+          Geostreaming Copyright ©2024. Todos los derechos reservados
         </small>
       </form>
     </div>

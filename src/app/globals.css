@@ -68,5 +68,13 @@
   color: #F2308B;
 }
 .shadow-box{
-  box-shadow: 0px 2px 35px rgba(0,0,0,0.06);
+  box-shadow: 0px 2px 35px rgba(0, 0, 0, 0.06);
+}
+.shadow-cardItem{
+  box-shadow: 1px 1px 15px 0px rgba(39,127,242,0.6);
+
+}
+.shadow-sidebar{
+  box-shadow: 9px 0px 15px 0px rgba(39,127,242,0.6);
+
 }

@@ -37,10 +37,10 @@ const login = () => {
         role: "-",
         redirect: false,
       }); */
-      setTimeout(() => {
-        router.push("/admin/inicio");
-      }, 3000);
 
+        router.push("/admin/inicio");
+
+      
       /* if (responseAuth?.ok) {
         router.push("/admin/home");
       } else {
@@ -48,9 +48,7 @@ const login = () => {
       } */
     } catch (error) {
       console.error("Error durante la autenticación:", error);
-    } finally {
-      setLoading(false);
-    }
+    } 
     /* modal de confirmacion? */
     /* const responseAuth = await signIn("credentials", {
       username: data.user,
@@ -274,13 +272,19 @@ const login = () => {
           }`}
           disabled={loading}
         >
-          {loading ? "cargando..." : "Ingresar"}
+          {loading ? (
+            <span>
+              <AiOutlineLoading3Quarters className=" animate-spin inline-block" /> Cargando
+            </span>
+          ) : (
+            "Ingresar"
+          )}
         </button>
         <Link href={"/users/register"} className="text-[#F2308B] underline">
           Crea una cuenta
         </Link>
         <small className="text-center">
-          SitioPremium Copyright ©2024. Todos los derechos reservados
+          Geostreaming Copyright ©2024. Todos los derechos reservados
         </small>
       </form>
     </div>

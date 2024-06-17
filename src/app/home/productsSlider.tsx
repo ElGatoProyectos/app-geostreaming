@@ -3,8 +3,15 @@ import { Dproducts } from "@/data/Dproducts";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
+import Aos from 'aos';
+import 'aos/dist/aos.css';
+import { useEffect } from "react";
+
 
 const ProductsSlider = () => {
+  useEffect(() => {
+    Aos.init();
+  }, []);
   const products = Dproducts;
   var settings = {
     dots: true,
@@ -52,7 +59,7 @@ const ProductsSlider = () => {
   };
 
   return (
-    <div className="">
+    <div className="" data-aos="zoom-in">
       <div className=" slider-container bg-white text-black py-16 w-full max-w-[1440px] mx-auto">
         <Slider {...settings}>
           {products.map((product, index) => (

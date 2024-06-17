@@ -1,8 +1,11 @@
-import React from "react";
+"use client";
+import React, { useEffect } from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import Aos from 'aos';
+import 'aos/dist/aos.css';
 
 const data = [
   {
@@ -33,10 +36,13 @@ const data = [
 ];
 
 const Questions = () => {
+  useEffect(() => {
+    Aos.init();
+  }, []);
   return (
-    <div className="faq-container px-4 md:px-10 py-16">
+    <div className="faq-container px-4 md:px-10 py-16" data-aos="fade-up">
       <div className="faq-container px-4 md:px-10 py-16 max-w-[1440px] mx-auto">
-      <h2 className="text-3xl font-bold uppercase text-[#444444] flex flex-col gap-4 justify-center items-center text-center mb-8">
+      <h2 className="text-3xl font-bold uppercase text-[#444444] flex flex-col gap-4 justify-center items-center text-center mb-8" data-aos="fade-up">
         preguntas frecuentes <span className="w-12 h-1 bg-[#F2308B]"></span>
       </h2>
       {data.map((faq, index) => (
@@ -45,6 +51,7 @@ const Questions = () => {
           className="shadow-none border-b border-gray-50 group"
         >
           <AccordionSummary
+          
             expandIcon={
               <ExpandMoreIcon className="text-[#444444] group-hover:text-[#F2308B] " />
             }

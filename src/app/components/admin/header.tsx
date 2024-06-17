@@ -13,27 +13,27 @@ const Header = () => {
   };
   return (
     <div className="fixed z-10 top-0 left-0 h-[100px] shadow w-full bg-[#277FF2] ">
-      <div className="flex w-full h-full justify-between px-10 ">
-        <Link href={"/"} className="h-full py-3">
+      <div className="flex w-full h-full justify-between px-4 lg:px-10  gap-2">
+        <Link href={"/"} className="h-full md:py-3 content-center ">
           <img
-            className="h-full w-auto object-contain"
+            className="h-[60px] md:h-full w-auto object-contain "
             src="/logo2.png"
             alt="Geostreaming"
           />
         </Link>
-        <div className="flex gap-12 py-6 items-center">
+        <div className="flex gap-4 lg:gap-12 py-6 items-center">
           <button className="border border-white rounded py-2 px-1 shadow-xl shadow-white hover:scale-75 transition-all duration-300">
-            <MdNotificationsActive className="text-white text-3xl" />
+            <MdNotificationsActive className="text-white text-xl md:text-3xl" />
           </button>
           <div>
-            <ul className="text-white text-sm">
+            <ul className="text-white text-sm ">
               <li>
-                Usuario: <span>Daniela</span>
+                Usuario: <span>admin</span>
               </li>
-              <li>
+              <li className="">
                 Rol: <span>Consumidor</span>
               </li>
-              <li className="text-xl">
+              <li className="text-sm lg:text-xl">
                 Saldo: $<span> 0.00</span>
               </li>
             </ul>
@@ -44,7 +44,7 @@ const Header = () => {
             className="h-full w-auto object-cover rounded-full hidden lg:block"
           />
           <button onClick={toggleMenu} className="lg:hidden">
-          <IoMenu className="text-5xl text-white"/>
+          <IoMenu className="text-3xl md:text-5xl text-white"/>
           </button>
           
         </div>

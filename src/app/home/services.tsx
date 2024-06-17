@@ -3,7 +3,9 @@ import { BsBuildings } from "react-icons/bs";
 import { BsEmojiLaughing } from "react-icons/bs";
 import { BsEmojiWink } from "react-icons/bs";
 import { RiCheckDoubleLine } from "react-icons/ri";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Aos from 'aos';
+import 'aos/dist/aos.css';
 
 interface Service {
   name: string;
@@ -14,6 +16,9 @@ interface Service {
 }
 
 const services = () => {
+  useEffect(() => {
+    Aos.init();
+  }, []);
   const dServices: Service[] = [
     {
       name: "Servicio para Consumidores Finales.",
@@ -60,10 +65,10 @@ const services = () => {
   };
 
   return (
-    <div id="services">
+    <div id="services" className="pt-8 pb-16" >
       <div className="flex flex-col gap-8 px-4 md:px-10 max-w-[1440px] mx-auto">
         <div>
-          <ul className="flex gap-8 w-4/5 mx-auto lg:w-[60%] text-[#444444]">
+          <ul className="flex gap-8 w-4/5 mx-auto lg:w-[60%] text-[#444444]" data-aos="fade-up">
             {dServices.map((service, index) => (
               <li
                 key={index}
@@ -134,39 +139,25 @@ const services = () => {
           </ul>
         </div>
         <div className=" flex flex-col lg:flex-row-reverse lg:gap-8">
-          {/* img */}
           <img
-            className="h-[500px] object-cover w-full"
+            className="lg:w-[500px] object-cover lg:object-contain lg:h-auto w-full"
+            data-aos="fade-up"
             src={selectedService.url}
             alt="consumidores finales"
           />
           <div className="flex flex-col gap-4 mt-4 text-[#444444]">
-            {/* title */}
-            <h3 className="text-[1.5rem] font-semibold ">
+            <h3 className="text-[1.5rem] font-semibold " data-aos="fade-up">
               {selectedService.name}
             </h3>
             <ul>
               {selectedService.items.map((item, index) => (
-               <li className="mb-4">
+               <li className="mb-4" key={index} data-aos="fade-up">
                 <RiCheckDoubleLine className="text-[#F2308B] text-xl inline-block" />
                 <span>{item}</span>
               </li> 
               ))}
-              
-             {/*  <li className="mb-4">
-                <RiCheckDoubleLine className="text-[#F2308B] text-xl inline-block" />
-                <span>Entrega inmediata dependiendo el stock.</span>
-              </li>
-              <li className="mb-4">
-                <RiCheckDoubleLine className="text-[#F2308B] text-xl inline-block" />
-                <span>
-                  Las credenciales de la cuenta que compres son personales y te
-                  llegan a tu correo o Whatsapp.
-                </span>
-              </li> */}
             </ul>
-            <p>
-              {/* description */}
+            <p data-aos="fade-up">
               {selectedService.description}
             </p>
           </div>

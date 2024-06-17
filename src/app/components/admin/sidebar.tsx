@@ -23,8 +23,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
     setCurrentPath(pathname);
     
   }, [pathname]);
-  
-  console.log(pathname);
 
   const sections = [
     {
@@ -90,8 +88,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
   ];
   return (
     <div
-      className={`bg-[#F2308B] w-[220px] py-4 max-h-[calc(100vh-100px)] h-full fixed top-[100px] z-50 text-white transition-transform duration-300 ${
-        isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+      className={`bg-[#F2308B] w-[220px] py-4 max-h-[calc(100vh-100px)] h-full fixed top-[100px] z-50 text-white transition-transform duration-300 overflow-y-auto ${
+        isOpen ? "translate-x-0 shadow-sidebar " : "-translate-x-full lg:translate-x-0 shadow-none "
       }`}
     >
       <div className="flex flex-col gap-6">
