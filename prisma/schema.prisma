@@ -27,7 +27,7 @@ model Admin {
 model User {
   id        Int     @id @default(autoincrement())
   ref_id    Int?
-  role      String
+  role      String  @default("USER")
   full_name String
   dni       String?
   phone     String
@@ -38,16 +38,55 @@ model User {
   enabled   String  @default("y")
 }
 
+model Product {
+  id                 Int              @id @default(autoincrement())
+  is_active          Boolean
+  platform_id        Int
+  numb_profiles      Int
+  numb_days_duration Int
+  prices_by_role     PriceByRole[]
+  createdAt          DateTime         @default(now())
+  accounts           ProductAccount[]
+}
+
+model ProductAccount {
+  productId Int
+  accountId Int
+  Product   Product @relation(fields: [productId], references: [id])
+  Account   Account @relation(fields: [accountId], references: [id])
+
+  @@id([productId, accountId])
+}
+
+model Account {
+  id          Int              @id @default(autoincrement())
+  platform_id Int
+  email       String
+  password    String
+  pin         String
+  Platform    Platform         @relation(fields: [platform_id], references: [id])
+  products    ProductAccount[]
+}
+
+model PriceByRole {
+  id         Int     @id @default(autoincrement())
+  product_id Int
+  role_id    Int
+  price      Decimal
+  Product    Product @relation(fields: [product_id], references: [id])
+  Role       Role    @relation(fields: [role_id], references: [id])
+}
+
+model Role {
+  id           Int           @id @default(autoincrement())
+  name         String
+  createdAt    DateTime      @default(now())
+  priceByRoles PriceByRole[]
+}
+
 model Platform {
   id          Int       @id @default(autoincrement())
   name        String
   description String
   Account     Account[]
-}
-
-model Account {
-  id          Int @id @default(autoincrement())
-  platform_id Int
-
-  Platform Platform @relation(fields: [platform_id], references: [id])
 }
