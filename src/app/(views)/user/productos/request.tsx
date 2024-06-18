@@ -1,5 +1,5 @@
 import React from 'react'
-import ContainerCard from '@/app/components/containerCard'
+import ContainerCard from '@/app/components/common/containerCard'
 import { DproductoInmediato } from '@/data/DproductoInmediato'
 import CardItem from "@/app/components/common/cardItem";
 const request = () => {

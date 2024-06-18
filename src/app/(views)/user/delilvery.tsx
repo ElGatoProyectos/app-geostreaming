@@ -1,6 +1,6 @@
 import React from 'react'
-import ContainerCard from '@/app/components/containerCard'
-import { DproductoPedido } from '@/data/DproductoPedido'
+import ContainerCard from '@/app/components/common/containerCard';
+import { DproductoPedido } from '@/data/DproductoPedido';
 import CardItem from "@/app/components/common/cardItem";
 
 

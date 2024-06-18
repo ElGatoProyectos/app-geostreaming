@@ -1,5 +1,5 @@
 import React from 'react'
-import MainLayout from '../components/layout/mainLayout'
+import MainLayout from '@/app/components/layout/mainLayout'
 import Delivery from './delilvery'
 import Request from './request'
 
