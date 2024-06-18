@@ -49,7 +49,7 @@ const navigation = () => {
         <Link href={"/"} className="h-full">
           <img
             className="h-full w-auto object-contain"
-            src="/logo2.png"
+            src="/logo.png"
             alt="Geostreaming"
           />
         </Link>
@@ -70,13 +70,13 @@ const navigation = () => {
             </ul>
           </div>
           <Link
-            href={"../users/register"}
+            href={"/registrarse"}
             className="bg-[#F2308B] rounded text-white text-sm md:text-base px-3 md:px-4 py-1 md:py-2"
           >
             Regístrate
           </Link>
           <Link
-            href={"../users/login"}
+            href={"ingresar"}
             className="bg-[#F2308B] rounded text-white text-sm md:text-base px-3 md:px-4 py-1 md:py-2"
           >
             Ingresa
