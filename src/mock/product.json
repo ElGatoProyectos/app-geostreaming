@@ -1,0 +1,140 @@
+[
+  {
+    "id": 551,
+    "platform": "Netflix",
+    "accounts": [
+      {
+        "is_active": true,
+        "email": "juanlopez@gmail.com",
+        "password": "netf6541",
+        "pin": "1556",
+        "numb_profiles": 4,
+        "numb_days_duration": 30,
+        "status": "Delivered"
+      },
+      {
+        "is_active": true,
+        "email": "ana.perez@gmail.com",
+        "password": "netf1234",
+        "pin": "1234",
+        "numb_profiles": 4,
+        "numb_days_duration": 30,
+        "status": "Available"
+      },
+      {
+        "is_active": true,
+        "email": "maria.gomez@gmail.com",
+        "password": "netf5678",
+        "pin": "5678",
+        "numb_profiles": 4,
+        "numb_days_duration": 30,
+        "status": "Pending"
+      },
+      {
+        "is_active": true,
+        "email": "pedro.martin@gmail.com",
+        "password": "netf9101",
+        "pin": "9101",
+        "numb_profiles": 4,
+        "numb_days_duration": 30,
+        "status": "Available"
+      }
+    ],
+    "price": {
+      "user": 51.55,
+      "distributor": 40.0
+    }
+  },
+  {
+    "id": 552,
+    "platform": "Disney+",
+    "accounts": [
+      {
+        "is_active": true,
+        "email": "luis.sanchez@gmail.com",
+        "password": "disney6541",
+        "pin": "1111",
+        "numb_profiles": 4,
+        "numb_days_duration": 30,
+        "status": "Available"
+      },
+      {
+        "is_active": true,
+        "email": "carla.fernandez@gmail.com",
+        "password": "disney1234",
+        "pin": "2222",
+        "numb_profiles": 4,
+        "numb_days_duration": 30,
+        "status": "Delivered"
+      },
+      {
+        "is_active": true,
+        "email": "felipe.rios@gmail.com",
+        "password": "disney5678",
+        "pin": "3333",
+        "numb_profiles": 4,
+        "numb_days_duration": 30,
+        "status": "Pending"
+      },
+      {
+        "is_active": true,
+        "email": "andrea.morales@gmail.com",
+        "password": "disney9101",
+        "pin": "4444",
+        "numb_profiles": 4,
+        "numb_days_duration": 30,
+        "status": "Available"
+      }
+    ],
+    "price": {
+      "user": 59.99,
+      "distributor": 45.0
+    }
+  },
+  {
+    "id": 553,
+    "platform": "Hulu",
+    "accounts": [
+      {
+        "is_active": false,
+        "email": "ricardo.lopez@gmail.com",
+        "password": "hulu6541",
+        "pin": "1234",
+        "numb_profiles": 4,
+        "numb_days_duration": 30,
+        "status": "Delivered"
+      },
+      {
+        "is_active": false,
+        "email": "sofia.garcia@gmail.com",
+        "password": "hulu5678",
+        "pin": "5678",
+        "numb_profiles": 4,
+        "numb_days_duration": 30,
+        "status": "Pending"
+      },
+      {
+        "is_active": false,
+        "email": "jose.mendoza@gmail.com",
+        "password": "hulu9101",
+        "pin": "9101",
+        "numb_profiles": 4,
+        "numb_days_duration": 30,
+        "status": "Available"
+      },
+      {
+        "is_active": false,
+        "email": "lucia.rodriguez@gmail.com",
+        "password": "hulu1122",
+        "pin": "1122",
+        "numb_profiles": 4,
+        "numb_days_duration": 30,
+        "status": "Pending"
+      }
+    ],
+    "price": {
+      "user": 45.5,
+      "distributor": 35.0
+    }
+  }
+]
