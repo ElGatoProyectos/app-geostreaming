@@ -1,4 +1,3 @@
-import { ModalOwnProps } from "@mui/material";
 import React from "react";
 import { RiCloseFill } from "react-icons/ri";
 
