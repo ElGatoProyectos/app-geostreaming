@@ -1,11 +1,11 @@
 import { ProductController } from "@/controllers/products";
 import { ProductModel } from "@/models/mysql/product-model";
 import { NextApiRequest } from "next";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 const productController = new ProductController({ productModel: ProductModel });
 
-export async function GET(req: NextApiRequest) {
+export async function GET(req: NextRequest, context: any) {
   const products = await productController.getAll(req);
   try {
     return NextResponse.json({ products });
@@ -17,15 +17,15 @@ export async function GET(req: NextApiRequest) {
   }
 }
 
-export async function POST(req: NextApiRequest) {
-  const newProduct = await productController.create(req);
+// export async function POST(req: NextApiRequest) {
+//   const newProduct = await productController.create(req);
 
-  try {
-    return NextResponse.json({ products: newProduct });
-  } catch (error: any) {
-    return NextResponse.json(
-      { error: "Error to Create Product" },
-      { status: 500 }
-    );
-  }
-}
+//   try {
+//     return NextResponse.json({ products: newProduct });
+//   } catch (error: any) {
+//     return NextResponse.json(
+//       { error: "Error to Create Product" },
+//       { status: 500 }
+//     );
+//   }
+// }

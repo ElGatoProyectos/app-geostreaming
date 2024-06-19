@@ -1,6 +1,7 @@
 import { validateProduct } from "@/lib/validations/product";
 import { ProductType } from "@/types/product";
 import { NextApiRequest, NextApiResponse } from "next";
+import { NextRequest } from "next/server";
 
 export interface ProductModelType {
   // getById: ({ id }: { id: number }) => Promise<any | null>;
@@ -34,11 +35,12 @@ export class ProductController {
   //   }
   // };
 
-  getAll = async (req: NextApiRequest) => {
+  getAll = async (req: NextRequest) => {
+    const query = req.body;
     try {
       let platformId;
-      if (req.query && req.query.platformId) {
-        platformId = Number(req.query.platformId);
+      if (query) {
+        platformId = Number(query);
       }
 
       const products = await this.productModel.getAll();
