@@ -1,8 +1,6 @@
 import { z } from "zod";
 
 const accountSchema = z.object({
-  product_id: z.number(),
-  platform_id: z.number(),
   is_active: z.boolean(),
   email: z.string().email(),
   password: z.string(),
@@ -13,17 +11,26 @@ const accountSchema = z.object({
 });
 
 const priceSchema = z.object({
-  user: z.number(),
-  distributor: z.number(),
+  role_id: z.number(),
+  price_role: z.number(),
+});
+
+const platformSchema = z.object({
+  name: z.string(),
+  description: z.string(),
 });
 
 const productSchema = z.object({
-  platform_id: z.number(),
+  platform: platformSchema,
   accounts: z.array(accountSchema),
-  price: priceSchema,
-  role_id: z.number(),
+  prices: z.array(priceSchema),
 });
 
-export function validateProduct(input: unknown) {
-  return productSchema.safeParse(input);
+export function validateProduct(productInfo: unknown) {
+  const parseResult = productSchema.safeParse(productInfo);
+  if (!parseResult.success) {
+    throw new Error("Invalid product info");
+  }
+
+  return { isValid: parseResult.success, productValidated: parseResult.data };
 }
