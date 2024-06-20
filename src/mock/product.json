@@ -20,30 +20,18 @@
         "numb_profiles": 4,
         "numb_days_duration": 30,
         "status": "Available"
-      },
-      {
-        "is_active": true,
-        "email": "maria.gomez@gmail.com",
-        "password": "netf5678",
-        "pin": "5678",
-        "numb_profiles": 4,
-        "numb_days_duration": 30,
-        "status": "Pending"
-      },
-      {
-        "is_active": true,
-        "email": "pedro.martin@gmail.com",
-        "password": "netf9101",
-        "pin": "9101",
-        "numb_profiles": 4,
-        "numb_days_duration": 30,
-        "status": "Available"
       }
     ],
-    "price": {
-      "user": 51.55,
-      "distributor": 40.0
-    }
+    "prices": [
+      {
+        "role": "user",
+        "price_role": 51.55
+      },
+      {
+        "role": "distributor",
+        "price_role": 40.44
+      }
+    ]
   },
   {
     "id": 552,
