@@ -15,7 +15,7 @@ CREATE TABLE `Admin` (
 CREATE TABLE `User` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `ref_id` INTEGER NULL,
-    `role` VARCHAR(191) NOT NULL DEFAULT 'USER',
+    `role_id` INTEGER NOT NULL,
     `full_name` VARCHAR(191) NOT NULL,
     `dni` VARCHAR(191) NULL,
     `phone` VARCHAR(191) NOT NULL,
@@ -56,7 +56,7 @@ CREATE TABLE `Account` (
 -- CreateTable
 CREATE TABLE `Price` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `price` DECIMAL(65, 30) NOT NULL,
+    `price_role` DECIMAL(65, 30) NOT NULL,
     `product_id` INTEGER NOT NULL,
     `role_id` INTEGER NOT NULL,
 
@@ -80,6 +80,18 @@ CREATE TABLE `Role` (
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+-- CreateTable
+CREATE TABLE `_ProductToUser` (
+    `A` INTEGER NOT NULL,
+    `B` INTEGER NOT NULL,
+
+    UNIQUE INDEX `_ProductToUser_AB_unique`(`A`, `B`),
+    INDEX `_ProductToUser_B_index`(`B`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- AddForeignKey
+ALTER TABLE `User` ADD CONSTRAINT `User_role_id_fkey` FOREIGN KEY (`role_id`) REFERENCES `Role`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
 -- AddForeignKey
 ALTER TABLE `Product` ADD CONSTRAINT `Product_platform_id_fkey` FOREIGN KEY (`platform_id`) REFERENCES `Platform`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
@@ -94,3 +106,9 @@ ALTER TABLE `Price` ADD CONSTRAINT `Price_product_id_fkey` FOREIGN KEY (`product
 
 -- AddForeignKey
 ALTER TABLE `Price` ADD CONSTRAINT `Price_role_id_fkey` FOREIGN KEY (`role_id`) REFERENCES `Role`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `_ProductToUser` ADD CONSTRAINT `_ProductToUser_A_fkey` FOREIGN KEY (`A`) REFERENCES `Product`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `_ProductToUser` ADD CONSTRAINT `_ProductToUser_B_fkey` FOREIGN KEY (`B`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
