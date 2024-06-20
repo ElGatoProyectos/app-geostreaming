@@ -1,6 +1,5 @@
 import prisma from "@/lib/prisma";
-import { ProductType } from "@/types/product";
-import { Product, Platform, Price, Account, Role } from "@prisma/client";
+import { ProductInType, ProductOutType } from "@/types/product";
 
 export class ProductModel {
   // static getById = async ({ id }: { id: number }) => {
@@ -19,37 +18,55 @@ export class ProductModel {
     });
   };
 
-  static create = async ({ productInfo }: { productInfo: ProductType }) => {
-    const { platform_id, accounts, price, role_id } = productInfo;
+  static create = async ({ platform, accounts, prices }: ProductInType) => {
+    const newPlatform = await prisma.platform.create({
+      data: platform,
+    });
 
-    // 1 = netflix
-    // 2 = haboo
-    // 3 = disney+
     const newProduct = await prisma.product.create({
-      data: { platform_id: platform_id },
+      data: { platform_id: newPlatform.id },
     });
 
-    const newPrice = await prisma.price.create({
-      data: { price: price.user, product_id: newProduct.id, role_id },
+    const pricesWithProductId = prices.map((price) => ({
+      ...price,
+      product_id: newProduct.id,
+    }));
+
+    const newPrices = await prisma.price.createMany({
+      data: pricesWithProductId,
     });
 
-    // const accounts = [
-    //   {
-    //     productId: 1,
-    //     platform_id: 1,
-    //     is_active: true,
-    //     email: "luis.sanchez@gmail.com",
-    //     password: "disney6541",
-    //     pin: "1111",
-    //     numb_profiles: 4,
-    //     numb_days_duration: 30,
-    //     status: "Available",
-    //   },
-    // ];
-    const newAccounts = await prisma.account.createMany({ data: accounts });
+    const productsCreated = await prisma.price.findMany({
+      where: {
+        product_id: newProduct.id,
+      },
+      include: { role: true },
+    });
+
+    let newAccounts = null;
+    if (accounts) {
+      const accountsWithProductAndPlatformId = accounts.map((account) => ({
+        ...account,
+        platform_id: newPlatform.id,
+        product_id: newProduct.id,
+      }));
+      newAccounts = await prisma.account.createMany({
+        data: accountsWithProductAndPlatformId,
+      });
+    }
+
+    console.log("productsCreated", productsCreated);
+
+    console.log("newPlatform", newPlatform);
     console.log("newProduct", newProduct);
-    console.log("newPrice", newPrice);
-    console.log("newProduct", newAccounts);
-    return;
+    console.log("newPrices", newPrices);
+    const newProductOut = {
+      id: newProduct.id,
+      platform: newPlatform.name,
+      accounts: newAccounts,
+      prices: newPrices,
+    };
+    console.log("newProductOut", newProductOut);
+    return newProductOut;
   };
 }
