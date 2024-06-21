@@ -4,9 +4,9 @@ import { NextRequest, NextResponse } from "next/server";
 
 const productController = new ProductController({ productModel: ProductModel });
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
-    const products = await productController.getAll(req);
+    const products = await productController.getAll();
     return NextResponse.json({ products });
   } catch (error: any) {
     return NextResponse.json(
