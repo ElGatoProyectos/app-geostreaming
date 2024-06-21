@@ -49,6 +49,7 @@ CREATE TABLE `Account` (
     `status` VARCHAR(191) NOT NULL,
     `platform_id` INTEGER NOT NULL,
     `product_id` INTEGER NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -56,7 +57,7 @@ CREATE TABLE `Account` (
 -- CreateTable
 CREATE TABLE `Price` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `price_role` DECIMAL(65, 30) NOT NULL,
+    `price` DECIMAL(65, 30) NOT NULL,
     `product_id` INTEGER NOT NULL,
     `role_id` INTEGER NOT NULL,
 
@@ -105,7 +106,7 @@ ALTER TABLE `Account` ADD CONSTRAINT `Account_product_id_fkey` FOREIGN KEY (`pro
 ALTER TABLE `Price` ADD CONSTRAINT `Price_product_id_fkey` FOREIGN KEY (`product_id`) REFERENCES `Product`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Price` ADD CONSTRAINT `Price_role_id_fkey` FOREIGN KEY (`role_id`) REFERENCES `Role`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Price` ADD CONSTRAINT `price_id_fkey` FOREIGN KEY (`role_id`) REFERENCES `Role`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `_ProductToUser` ADD CONSTRAINT `_ProductToUser_A_fkey` FOREIGN KEY (`A`) REFERENCES `Product`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

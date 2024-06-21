@@ -44,7 +44,7 @@ model Product {
   platform_id Int
   platform    Platform  @relation(fields: [platform_id], references: [id])
   accounts    Account[]
-  Price       Price[]
+  price       Price[]
   users       User[]
   createdAt   DateTime  @default(now())
 }
@@ -62,11 +62,12 @@ model Account {
   platform_id        Int
   product            Product  @relation(fields: [product_id], references: [id])
   product_id         Int
+  createdAt          DateTime @default(now())
 }
 
 model Price {
   id         Int     @id @default(autoincrement())
-  price_role Decimal
+  price      Decimal
   product    Product @relation(fields: [product_id], references: [id])
   product_id Int
   role       Role    @relation(fields: [role_id], references: [id])
