@@ -9,8 +9,8 @@ export async function GET(
   { params: { id } }: { params: { id: string } }
 ) {
   try {
-    const products = await productController.getById({ product_id: id });
-    return NextResponse.json(products);
+    const product = await productController.getById({ product_id: id });
+    return NextResponse.json(product);
   } catch (error: any) {
     return NextResponse.json(
       { error: "Error to get product" },
@@ -24,8 +24,8 @@ export async function PATCH(
   { params }: { params: { id: string } }
 ) {
   try {
-    const products = await productController.update({ req, params });
-    return NextResponse.json({ products });
+    const product = await productController.update({ req, params });
+    return NextResponse.json(product);
   } catch (error: any) {
     return NextResponse.json(
       { error: "Error to update products" },
@@ -35,7 +35,7 @@ export async function PATCH(
 }
 
 export async function DELETE(
-  req: NextRequest,
+  _: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
