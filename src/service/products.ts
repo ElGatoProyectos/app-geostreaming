@@ -10,7 +10,7 @@ import {
 
 import { NextRequest } from "next/server";
 
-export interface ProductModelType {
+interface ProductModelType {
   getById: ({ productId }: { productId: number }) => Promise<any | null>;
   getAll: () => Promise<any[]>;
   create: ({
@@ -70,7 +70,7 @@ export class ProductController {
       const newProduct = await this.productModel.create(productValidated);
       return newProduct;
     } catch (e) {
-      return console.error("Not product created", e);
+      return console.error("Product not created", e);
     }
   };
 
