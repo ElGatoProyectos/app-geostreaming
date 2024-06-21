@@ -190,8 +190,8 @@ const TableComponent: React.FC<TableProps> = ({
                       <Button className="rounded content-center text-white px-1 py-1 bg-[#5BC0DE] w-8 h-8 hover:bg-[#80DCF8]" onClick={() => onEdit && onEdit(row)}>
                         <BsPencilFill  className="text-white mx-auto " />
                       </Button>
-                      <Button className="rounded content-center text-white px-1 py-1 bg-[#F2308B] w-8 h-8 hover:bg-[#F06FAC]">
-                        <FaTrash className="text-white mx-auto "  onClick={() => onDelete && onDelete(row)}/>
+                      <Button className="rounded content-center text-white px-1 py-1 bg-[#F2308B] w-8 h-8 hover:bg-[#F06FAC]" onClick={() => onDelete && onDelete(row)}>
+                        <FaTrash className="text-white mx-auto "  />
                       </Button>
                     </div>
                   </Table.Cell>

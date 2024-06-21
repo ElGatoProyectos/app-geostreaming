@@ -7,15 +7,18 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 type Inputs = {
   id: string;
-  category: string;
+  name: string;
 };
 
-interface CategoryFormProps {
-    defaultValues?: Inputs;
-    onSubmit: SubmitHandler<Inputs>;
-  }
+interface AccountFormProps {
+  defaultValues?: Inputs;
+  onSubmit: SubmitHandler<Inputs>;
+}
 
-const categoryForm:React.FC<CategoryFormProps> = ({ defaultValues, onSubmit}) => {
+const AccountForm: React.FC<AccountFormProps> = ({
+  defaultValues,
+  onSubmit,
+}) => {
   const [loading, setLoading] = useState(false);
 
   const {
@@ -25,7 +28,7 @@ const categoryForm:React.FC<CategoryFormProps> = ({ defaultValues, onSubmit}) =>
     reset,
   } = useForm<Inputs>({
     resolver: zodResolver(categoryFormSchema),
-    defaultValues
+    defaultValues,
   });
 
   useEffect(() => {
@@ -38,35 +41,38 @@ const categoryForm:React.FC<CategoryFormProps> = ({ defaultValues, onSubmit}) =>
     try {
       await onSubmit(data);
     } catch (error) {
-      console.error("Error al registrar la categoría:", error);
+      console.error("Error al registrar la cuenta:", error);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit(handleFormSubmit)} className="flex w-full flex-col gap-4">
-        {/* (input id, solo lo puede ver no editar) */}
+    <form
+      onSubmit={handleSubmit(handleFormSubmit)}
+      className="flex w-full flex-col gap-4"
+    >
+      {/* (input id, solo lo puede ver no editar) */}
       <InputField
-          id="id"
-          label="ID"
-          register={register("id")}
-          error={errors.id}
-          isDisabled={true}
-        ></InputField>
-        <InputField
-          id="category"
-          label="Categoria"
-          register={register("category")}
-          error={errors.category}
-        ></InputField>
+        id="id"
+        label="ID"
+        register={register("id")}
+        error={errors.id}
+        isDisabled={true}
+      ></InputField>
+      <InputField
+        id="name"
+        label="Nombre"
+        register={register("name")}
+        error={errors.name}
+      ></InputField>
       <div className=" w-full flex flex-col gap-4">
         <button
           type="submit"
           className="bg-[#277FF2] text-white mt-4 px-4 py-1 rounded hover:bg-[#4E98F9] transition-all duration-300 mx-auto "
           disabled={loading}
         >
-            {loading ? (
+          {loading ? (
             <span>
               <AiOutlineLoading3Quarters className=" animate-spin inline-block" />{" "}
               Cargando
@@ -80,4 +86,4 @@ const categoryForm:React.FC<CategoryFormProps> = ({ defaultValues, onSubmit}) =>
   );
 };
 
-export default categoryForm;
+export default AccountForm;

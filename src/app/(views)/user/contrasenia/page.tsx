@@ -1,12 +1,23 @@
-import React from 'react'
-import MainLayout from '@/app/components/layout/mainLayout'
+import { lazy, Suspense } from "react";
+
+import { Metadata } from "next";
+import Loading from "@/app/loading";
+import ChangePassword from "./changepassword";
+
+const MainLayout = lazy(() => import("@/app/components/layout/mainLayout"));
+
+export const metadata: Metadata = {
+  title: "Perfil",
+};
 
 const page = () => {
   return (
-    <MainLayout>
-      contrasenia
-    </MainLayout>
-  )
-}
+    <Suspense fallback={<Loading />}>
+      <MainLayout>
+        <ChangePassword />
+      </MainLayout>
+    </Suspense>
+  );
+};
 
-export default page
+export default page;

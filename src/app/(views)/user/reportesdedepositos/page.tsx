@@ -1,14 +1,22 @@
-import React from 'react'
-import MainLayout from '@/app/components/layout/mainLayout'
-import NoRecords from '@/app/components/common/noRecords'
+import { lazy, Suspense } from "react";
+import { Metadata } from "next";
+import Loading from "@/app/loading";
+import Reports from "./reports";
 
+const MainLayout = lazy(() => import("@/app/components/layout/mainLayout"));
+
+const roleName = "role";
+export const metadata: Metadata = {
+  title: " Reportes de depósitos - " + roleName,
+};
 const page = () => {
   return (
-    <MainLayout>
-      {/* si esta vacio mostrar componente */}
-      <NoRecords title='ventas'></NoRecords>
-    </MainLayout>
-  )
-}
+    <Suspense fallback={<Loading />}>
+      <MainLayout>
+        <Reports />
+      </MainLayout>
+    </Suspense>
+  );
+};
 
-export default page
+export default page;

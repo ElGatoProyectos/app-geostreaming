@@ -1,19 +1,24 @@
 "use client";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+
 import { IoMdHome } from "react-icons/io";
 import { IoMdCart } from "react-icons/io";
-import { MdMenuBook } from "react-icons/md";
 import { IoLogoUsd } from "react-icons/io5";
-import { FaRegUser } from "react-icons/fa";
 import { IoMdLogOut } from "react-icons/io";
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import { MdOutlineCategory } from "react-icons/md";
-import { MdAccountBalance } from "react-icons/md";
 import { IoMdPersonAdd } from "react-icons/io";
+
+import {
+  MdMenuBook,
+  MdOutlineCategory,
+  MdAccountBalance,
+  MdLockReset,
+} from "react-icons/md";
+
+import { FaRegUser, FaUsers } from "react-icons/fa";
 import { GiProfit } from "react-icons/gi";
-
-
+import { RiUserSharedLine } from "react-icons/ri";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -41,12 +46,27 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
         ],
       },
       {
+        title: "Usuarios",
+        links: [
+          {
+            href: "/admin/distribuidores",
+            label: "Distribuidores",
+            icon: <RiUserSharedLine className="text-xl" />,
+          },
+          {
+            href: "/admin/consumidores",
+            label: "Condumidores",
+            icon: <FaUsers className="text-xl" />,
+          },
+        ],
+      },
+      {
         title: "Registrar",
         links: [
           {
             href: "/admin/categorias",
             label: "Categorias",
-            icon: <MdOutlineCategory  className="text-xl" />,
+            icon: <MdOutlineCategory className="text-xl" />,
           },
           {
             href: "/admin/productos",
@@ -64,15 +84,15 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
         title: "Herramientas",
         links: [
           {
-            href: "user/perfil",
+            href: "../user/perfil",
             label: "Mi Perfil",
             icon: <FaRegUser className="text-xl" />,
           },
-          /* {
-            href: "#",
+          {
+            href: "../user/contrasenia",
             label: "Cambiar contraseña",
             icon: <MdLockReset className="text-xl" />,
-          }, */
+          },
           {
             href: "/ingresar",
             label: "Cerrar sesión",
@@ -130,11 +150,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
             label: "Mi Perfil",
             icon: <FaRegUser className="text-xl" />,
           },
-          /* {
-            href: "#",
+          {
+            href: "../user/contrasenia",
             label: "Cambiar contraseña",
             icon: <MdLockReset className="text-xl" />,
-          }, */
+          },
           {
             href: "/ingresar",
             label: "Cerrar sesión",
@@ -207,11 +227,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
             label: "Mi Perfil",
             icon: <FaRegUser className="text-xl" />,
           },
-          /* {
-            href: "#",
+          {
+            href: "../user/contrasenia",
             label: "Cambiar contraseña",
             icon: <MdLockReset className="text-xl" />,
-          }, */
+          },
           {
             href: "/ingresar",
             label: "Cerrar sesión",
@@ -240,15 +260,15 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
             )}
             <ul className="mt-2">
               {section.links.map((link, linkIndex) => (
-                <li
-                  key={linkIndex}
-                  
-                >
-                  <Link href={link.href} className={`pl-8 py-3 mr-2 rounded-r-full mb-2 flex gap-4 items-center ${
-                    currentPath === link.href
-                      ? "bg-white text-[#277FF2] font-semibold"
-                      : "hover:bg-white hover:text-[#277FF2] transition-all duration-300 group"
-                  }`}>
+                <li key={linkIndex}>
+                  <Link
+                    href={link.href}
+                    className={`pl-8 py-3 mr-2 rounded-r-full mb-2 flex gap-4 items-center ${
+                      currentPath === link.href
+                        ? "bg-white text-[#277FF2] font-semibold"
+                        : "hover:bg-white hover:text-[#277FF2] transition-all duration-300 group"
+                    }`}
+                  >
                     {link.icon}
                     <span className="text-sm capitalize">{link.label}</span>
                   </Link>

@@ -1,13 +1,13 @@
-import React from 'react'
-import ContainerCard from '@/app/components/common/containerCard'
-import { DproductoInmediato } from '@/data/DproductoInmediato'
+import React from "react";
+import ContainerCard from "@/app/components/common/containerCard";
+import { DproductoInmediato } from "@/data/DproductoInmediato";
 import CardItem from "@/app/components/common/cardItem";
 const request = () => {
   return (
-    <div className='w-full'>
-      <ContainerCard title="Entrega inmediata" >
-      {DproductoInmediato.map((item, index) => (
-            <CardItem
+    <div className="w-full">
+      <ContainerCard title="Entrega inmediata">
+        {DproductoInmediato.map((item, index) => (
+          <CardItem
             key={index}
             title={item.title}
             url={item.url}
@@ -18,7 +18,7 @@ const request = () => {
         ))}
       </ContainerCard>
     </div>
-  )
-}
+  );
+};
 
-export default request
+export default request;

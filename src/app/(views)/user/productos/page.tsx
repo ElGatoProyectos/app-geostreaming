@@ -1,20 +1,22 @@
-import React from 'react'
-import ContainerCard from "@/app/components/common/containerCard";
-import Delivery from './delilvery'
-import Request from './request'
-import MainLayout from '@/app/components/layout/mainLayout'
+import { lazy, Suspense } from "react";
+import { Metadata } from "next";
+import Loading from "@/app/loading";
+import Products from "./products";
 
+const MainLayout = lazy(() => import("@/app/components/layout/mainLayout"));
 
+const roleName = "role";
+export const metadata: Metadata = {
+  title: " Productos - " + roleName,
+};
 const page = () => {
   return (
-    <MainLayout>
-      <div className='flex flex-col gap-8'>
-      
-      <Request/>
-      <Delivery/>
-      </div>
-    </MainLayout>
-  )
-}
+    <Suspense fallback={<Loading />}>
+      <MainLayout>
+        <Products />
+      </MainLayout>
+    </Suspense>
+  );
+};
 
-export default page
+export default page;

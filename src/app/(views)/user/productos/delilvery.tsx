@@ -1,15 +1,14 @@
-import React from 'react'
+import React from "react";
 import ContainerCard from "@/app/components/common/containerCard";
-import { DproductoPedido } from '@/data/DproductoPedido'
+import { DproductoPedido } from "@/data/DproductoPedido";
 import CardItem from "@/app/components/common/cardItem";
-
 
 const delilvery = () => {
   return (
-    <div className='w-full'>
+    <div className="w-full">
       <ContainerCard title="Bajo pedido (1 hora)">
         {DproductoPedido.map((item, index) => (
-            <CardItem
+          <CardItem
             key={index}
             title={item.title}
             url={item.url}
@@ -20,7 +19,7 @@ const delilvery = () => {
         ))}
       </ContainerCard>
     </div>
-  )
-}
+  );
+};
 
-export default delilvery
+export default delilvery;

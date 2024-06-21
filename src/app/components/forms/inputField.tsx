@@ -1,5 +1,4 @@
 import React from "react";
-import { FieldError } from "react-hook-form";
 import { CiCircleAlert } from "react-icons/ci";
 interface InputFieldProps {
   id: string;
@@ -8,7 +7,7 @@ interface InputFieldProps {
   placeholder?: string;
   isDisabled?: boolean;
   register?: any;
-  error?: FieldError | undefined;
+  error?: any;
 }
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -22,7 +21,7 @@ const InputField: React.FC<InputFieldProps> = ({
 }) => {
   return (
     <div className="w-full">
-      <div className="relative w-full">
+      <div className="relative w-full text-[#444]">
         <label htmlFor={id}>{label}:</label>
         <input
           type={type}
@@ -30,7 +29,7 @@ const InputField: React.FC<InputFieldProps> = ({
           placeholder={placeholder}
           disabled={isDisabled}
           spellCheck="true"
-          className={`w-full bg-gray-50 border rounded outline-none px-6 py-1 focus:bg-white focus:border-blue-400 ${
+          className={`w-full text-[#666] bg-gray-50 border rounded outline-none px-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
             error
               ? "border-red-500 focus:ring focus:ring-red-200 focus:border-red-500"
               : "border-gray-200 "
@@ -38,13 +37,13 @@ const InputField: React.FC<InputFieldProps> = ({
           {...register}
         />
         <CiCircleAlert
-          className={`absolute right-2 top-1/2 -translate-y-1/2 text-red-500 ${
+          className={`absolute text-xl right-2 top-1/2 font-bold text-red-500 ${
             error ? "block" : "hidden"
           } `}
         />
       </div>
       {error && (
-        <p className="text-red-500 text-sm font-semibold">{error.message}</p>
+        <p className="text-red-500 text-sm font-medium mt-1">{error.message}</p>
       )}
     </div>
   );

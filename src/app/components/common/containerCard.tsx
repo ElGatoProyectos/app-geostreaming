@@ -1,11 +1,3 @@
-interface Product {
-    isNew: boolean;
-    title: string;
-    url: string;
-    description: string;
-    consumer_price?: string;
-    distributors_price?: string;
-  }
 interface Props {
     children: React.ReactNode
     title: string;

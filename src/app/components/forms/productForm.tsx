@@ -3,6 +3,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { productFormSchema } from "@/app/schemas/productFormSchema";
 import { useEffect, useState } from "react";
 import InputField from "./inputField";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 type Inputs = {
   id: string;
@@ -82,7 +83,14 @@ const categoryForm:React.FC<CategoryFormProps> = ({ defaultValues, onSubmit}) =>
           className="bg-[#277FF2] text-white mt-4 px-4 py-1 rounded hover:bg-[#4E98F9] transition-all duration-300 mx-auto "
           disabled={loading}
         >
-            {loading ? "Guardando..." : "Registrar"}
+            {loading ? (
+            <span>
+              <AiOutlineLoading3Quarters className=" animate-spin inline-block" />{" "}
+              Cargando
+            </span>
+          ) : (
+            "Ingresar"
+          )}
         </button>
       </div>
     </form>

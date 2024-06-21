@@ -1,12 +1,22 @@
-import React from 'react'
-import MainLayout from '@/app/components/layout/mainLayout'
+import { lazy, Suspense } from "react";
+import { Metadata } from "next";
+import Loading from "@/app/loading";
+import Reports from "./earnings";
 
+const MainLayout = lazy(() => import("@/app/components/layout/mainLayout"));
+
+const roleName = "role";
+export const metadata: Metadata = {
+  title: " Reportes de depósitos - " + roleName,
+};
 const page = () => {
   return (
-    <MainLayout>
-      ganancias
-    </MainLayout>
-  )
-}
+    <Suspense fallback={<Loading />}>
+      <MainLayout>
+        <Reports />
+      </MainLayout>
+    </Suspense>
+  );
+};
 
-export default page
+export default page;
