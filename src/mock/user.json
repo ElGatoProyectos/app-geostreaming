@@ -1,0 +1,16 @@
+[
+  { "title": "Data In" },
+  {
+    "ref_id": null,
+    "role_id": 1,
+    "full_name": "Juan Pérez",
+    "dni": "12345678",
+    "phone": "123456789",
+    "email": "juan.perez@example.com",
+    "balance": 100.5,
+    "username": "juanp",
+    "password": "securepassword123",
+    "enabled": "y"
+  },
+  { "title": "data out" }
+]
