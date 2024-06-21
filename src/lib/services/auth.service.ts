@@ -1,12 +1,13 @@
 import { authDTO } from "../models/dto/auth.dto";
 import { EUserRole } from "../models/enums/user.enum";
 import { IAuth } from "../models/interfaces/auth.interface";
-import prisma from "../prisma";
+
 import { errorService } from "./error.service";
 import bcrypt from "bcrypt";
 import { userService } from "./user.service";
 import { httpResponse } from "./http.service";
 import { IHttpResponse } from "../models/interfaces/response.interface";
+import prisma from "../prisma";
 
 class AuthService {
   async login(data: IAuth, role: string): Promise<IHttpResponse> {
