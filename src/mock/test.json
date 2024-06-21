@@ -1,0 +1,106 @@
+[
+  {
+    "id": 6,
+    "platform_id": 6,
+    "createdAt": "2024-06-20T23:42:53.633Z",
+    "platform": {
+      "id": 6,
+      "name": "netflix40",
+      "description": "description netflix"
+    },
+    "accounts": [
+      {
+        "id": 7,
+        "is_active": true,
+        "email": "jasdsad@gmail.com",
+        "password": "netf6541",
+        "pin": "1556",
+        "numb_profiles": 4,
+        "numb_days_duration": 30,
+        "status": "Delivered",
+        "platform_id": 6,
+        "product_id": 6,
+        "createdAt": "2024-06-20T23:42:53.641Z"
+      },
+      {
+        "id": 8,
+        "is_active": true,
+        "email": "ana.perez@gmail.com",
+        "password": "netf1234",
+        "pin": "1234",
+        "numb_profiles": 4,
+        "numb_days_duration": 30,
+        "status": "Available",
+        "platform_id": 6,
+        "product_id": 6,
+        "createdAt": "2024-06-20T23:42:53.641Z"
+      }
+    ],
+    "price": [
+      {
+        "id": 11,
+        "price": "50.23",
+        "product_id": 6,
+        "role_id": 2
+      },
+      {
+        "id": 12,
+        "price": "51.34",
+        "product_id": 6,
+        "role_id": 1
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "platform_id": 6,
+    "createdAt": "2024-06-20T23:42:53.633Z",
+    "platform": {
+      "id": 6,
+      "name": "netflixFinal",
+      "description": "description final netflix"
+    },
+    "accounts": [
+      {
+        "id": 7,
+        "is_active": true,
+        "email": "final@gmail.com",
+        "password": "final",
+        "pin": "1556",
+        "numb_profiles": 4,
+        "numb_days_duration": 30,
+        "status": "Delivered",
+        "platform_id": 6,
+        "product_id": 6,
+        "createdAt": "2024-06-20T23:42:53.641Z"
+      },
+      {
+        "id": 8,
+        "is_active": true,
+        "email": "finalfinal@gmail.com",
+        "password": "finalfinal",
+        "pin": "1234",
+        "numb_profiles": 4,
+        "numb_days_duration": 30,
+        "status": "Available",
+        "platform_id": 6,
+        "product_id": 6,
+        "createdAt": "2024-06-20T23:42:53.641Z"
+      }
+    ],
+    "price": [
+      {
+        "id": 11,
+        "price": "100.23",
+        "product_id": 6,
+        "role_id": 2
+      },
+      {
+        "id": 12,
+        "price": "200.34",
+        "product_id": 6,
+        "role_id": 1
+      }
+    ]
+  }
+]

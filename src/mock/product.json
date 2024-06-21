@@ -1,11 +1,14 @@
 [
+  { "name": "Data in" },
   {
-    "id": 551,
-    "platform": "Netflix",
+    "platform": {
+      "name": "Netflix",
+      "description": "description netflix"
+    },
     "accounts": [
       {
         "is_active": true,
-        "email": "juanlopez@gmail.com",
+        "email": "jasdsad@gmail.com",
         "password": "netf6541",
         "pin": "1556",
         "numb_profiles": 4,
@@ -24,105 +27,66 @@
     ],
     "prices": [
       {
-        "role": "user",
-        "price_role": 51.55
+        "role_id": 2,
+        "price": 23.23
       },
       {
-        "role": "distributor",
-        "price_role": 40.44
+        "role_id": 1,
+        "price": 40.34
       }
     ]
   },
+  { "name": "Data Out" },
   {
-    "id": 552,
-    "platform": "Disney+",
+    "id": 4,
+    "platform_id": 4,
+    "createdAt": "2024-06-20T21:37:53.007Z",
+    "platform": {
+      "id": 4,
+      "name": "Netflix",
+      "description": "description netflix"
+    },
     "accounts": [
       {
+        "id": 7,
         "is_active": true,
-        "email": "luis.sanchez@gmail.com",
-        "password": "disney6541",
-        "pin": "1111",
+        "email": "jasdsad@gmail.com",
+        "password": "netf6541",
+        "pin": "1556",
         "numb_profiles": 4,
         "numb_days_duration": 30,
-        "status": "Available"
+        "status": "Delivered",
+        "platform_id": 4,
+        "product_id": 4,
+        "createdAt": "2024-06-20T21:37:53.014Z"
       },
       {
+        "id": 8,
         "is_active": true,
-        "email": "carla.fernandez@gmail.com",
-        "password": "disney1234",
-        "pin": "2222",
-        "numb_profiles": 4,
-        "numb_days_duration": 30,
-        "status": "Delivered"
-      },
-      {
-        "is_active": true,
-        "email": "felipe.rios@gmail.com",
-        "password": "disney5678",
-        "pin": "3333",
-        "numb_profiles": 4,
-        "numb_days_duration": 30,
-        "status": "Pending"
-      },
-      {
-        "is_active": true,
-        "email": "andrea.morales@gmail.com",
-        "password": "disney9101",
-        "pin": "4444",
-        "numb_profiles": 4,
-        "numb_days_duration": 30,
-        "status": "Available"
-      }
-    ],
-    "price": {
-      "user": 59.99,
-      "distributor": 45.0
-    }
-  },
-  {
-    "id": 553,
-    "platform": "Hulu",
-    "accounts": [
-      {
-        "is_active": false,
-        "email": "ricardo.lopez@gmail.com",
-        "password": "hulu6541",
+        "email": "ana.perez@gmail.com",
+        "password": "netf1234",
         "pin": "1234",
         "numb_profiles": 4,
         "numb_days_duration": 30,
-        "status": "Delivered"
-      },
-      {
-        "is_active": false,
-        "email": "sofia.garcia@gmail.com",
-        "password": "hulu5678",
-        "pin": "5678",
-        "numb_profiles": 4,
-        "numb_days_duration": 30,
-        "status": "Pending"
-      },
-      {
-        "is_active": false,
-        "email": "jose.mendoza@gmail.com",
-        "password": "hulu9101",
-        "pin": "9101",
-        "numb_profiles": 4,
-        "numb_days_duration": 30,
-        "status": "Available"
-      },
-      {
-        "is_active": false,
-        "email": "lucia.rodriguez@gmail.com",
-        "password": "hulu1122",
-        "pin": "1122",
-        "numb_profiles": 4,
-        "numb_days_duration": 30,
-        "status": "Pending"
+        "status": "Available",
+        "platform_id": 4,
+        "product_id": 4,
+        "createdAt": "2024-06-20T21:37:53.014Z"
       }
     ],
-    "price": {
-      "user": 45.5,
-      "distributor": 35.0
-    }
+    "price": [
+      {
+        "id": 7,
+        "price": "23.23",
+        "product_id": 4,
+        "role_id": 2
+      },
+      {
+        "id": 8,
+        "price": "40.34",
+        "product_id": 4,
+        "role_id": 1
+      }
+    ]
   }
 ]
