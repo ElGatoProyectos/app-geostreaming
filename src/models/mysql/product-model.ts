@@ -1,4 +1,3 @@
-import prisma from "@/lib/prisma";
 import {
   AccountOutType,
   PriceOutType,
@@ -9,19 +8,26 @@ import {
 import { compareArrays } from "@/utils/compare-arrays";
 import { createAccounts, deleteAccounts } from "@/utils/crudAccouts";
 import { createPrices, deletePrices } from "@/utils/crudPrices";
+import { PrismaClient } from "@prisma/client";
+
+const prismaClient = new PrismaClient();
 
 export class ProductModel {
   static getById = async ({ productId }: { productId: number }) => {
-    return await prisma.product.findUnique({
+    const productFound = await prismaClient.product.findUnique({
       where: { id: productId },
       include: { platform: true, accounts: true, price: true },
     });
+    await prismaClient.$disconnect();
+    return productFound;
   };
 
   static getAll = async () => {
-    return await prisma.product.findMany({
+    const products = await prismaClient.product.findMany({
       include: { accounts: true, platform: true, price: true },
     });
+    await prismaClient.$disconnect();
+    return products;
   };
 
   static create = async ({
@@ -29,11 +35,11 @@ export class ProductModel {
     accounts,
     prices,
   }: ProductInType): Promise<ProductOutType> => {
-    const newPlatform = await prisma.platform.create({
+    const newPlatform = await prismaClient.platform.create({
       data: platform,
     });
 
-    const newProduct = await prisma.product.create({
+    const newProduct = await prismaClient.product.create({
       data: { platform_id: newPlatform.id },
     });
 
@@ -42,11 +48,11 @@ export class ProductModel {
       product_id: newProduct.id,
     }));
 
-    await prisma.price.createMany({
+    await prismaClient.price.createMany({
       data: pricesWithProductId,
     });
 
-    const newPrices = await prisma.price.findMany({
+    const newPrices = await prismaClient.price.findMany({
       where: { product_id: newProduct.id },
     });
 
@@ -63,11 +69,11 @@ export class ProductModel {
         product_id: newProduct.id,
       }));
 
-      await prisma.account.createMany({
+      await prismaClient.account.createMany({
         data: accountsWithProductAndPlatformId,
       });
 
-      newAccounts = await prisma.account.findMany({
+      newAccounts = await prismaClient.account.findMany({
         where: { product_id: newProduct.id },
       });
     }
@@ -80,13 +86,13 @@ export class ProductModel {
       prices: formatDecimalPrices,
       createdAt: newProduct.createdAt,
     };
-
+    await prismaClient.$disconnect();
     return newProductOut;
   };
 
   static delete = async ({ product_id }: { product_id: number }) => {
     // delete product one by one
-    const product = await prisma.product.findUnique({
+    const product = await prismaClient.product.findUnique({
       where: {
         id: product_id,
       },
@@ -102,7 +108,7 @@ export class ProductModel {
 
     await Promise.all(
       product.accounts.map(async (account) => {
-        await prisma.account.delete({
+        await prismaClient.account.delete({
           where: {
             id: account.id,
           },
@@ -112,7 +118,7 @@ export class ProductModel {
 
     await Promise.all(
       product.price.map(async (price) => {
-        await prisma.price.delete({
+        await prismaClient.price.delete({
           where: {
             id: price.id,
           },
@@ -120,17 +126,19 @@ export class ProductModel {
       })
     );
 
-    await prisma.product.delete({
+    await prismaClient.product.delete({
       where: {
         id: product_id,
       },
     });
 
-    await prisma.platform.delete({
+    await prismaClient.platform.delete({
       where: {
         id: product_id,
       },
     });
+
+    await prismaClient.$disconnect();
 
     return { success: true };
   };
@@ -148,7 +156,7 @@ export class ProductModel {
       accounts: updateAccounts,
     } = product_info;
 
-    const pricesAndaccounts = await prisma.product.findMany({
+    const pricesAndaccounts = await prismaClient.product.findMany({
       where: { id: product_id },
       include: { price: true, accounts: true },
     });
@@ -194,7 +202,7 @@ export class ProductModel {
 
     /* --------  Update section -------- */
 
-    const allProductUpdate = await prisma.product.update({
+    const allProductUpdate = await prismaClient.product.update({
       where: { id: product_id },
       data: {
         platform: {
@@ -232,6 +240,8 @@ export class ProductModel {
       },
       include: { platform: true, accounts: true, price: true },
     });
+
+    await prismaClient.$disconnect();
 
     return allProductUpdate;
   };
