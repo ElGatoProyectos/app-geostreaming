@@ -1,4 +1,5 @@
-import prisma from "@/lib/prisma";
+import { PrismaClient } from "@prisma/client";
+const prismaClient = new PrismaClient();
 
 interface PriceCreateProps {
   role_id: number;
@@ -14,11 +15,11 @@ export async function createPrices(
   prices: PriceCreateProps[],
   product_id: number
 ) {
-  await prisma.price.createMany({
+  await prismaClient.price.createMany({
     data: prices,
   });
 
-  await prisma.price.findMany({
+  await prismaClient.price.findMany({
     where: { product_id },
   });
 }
@@ -26,7 +27,7 @@ export async function createPrices(
 export async function deletePrices(prices: PriceDeleteProps[]) {
   await Promise.all(
     prices.map(async (price) => {
-      await prisma.price.delete({
+      await prismaClient.price.delete({
         where: {
           id: price.id,
         },

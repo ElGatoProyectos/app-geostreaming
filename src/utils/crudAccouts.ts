@@ -1,4 +1,6 @@
-import prisma from "@/lib/prisma";
+import { PrismaClient } from "@prisma/client";
+
+const prismaClient = new PrismaClient();
 
 interface AccountCreateProps {
   product_id: number;
@@ -21,11 +23,11 @@ export async function createAccounts(
   accounts: AccountCreateProps[],
   product_id: number
 ) {
-  await prisma.account.createMany({
+  await prismaClient.account.createMany({
     data: accounts,
   });
 
-  await prisma.account.findMany({
+  await prismaClient.account.findMany({
     where: { product_id },
   });
 }
@@ -33,7 +35,7 @@ export async function createAccounts(
 export async function deleteAccounts(accounts: AccountDeleteProps[]) {
   await Promise.all(
     accounts.map(async (account) => {
-      await prisma.account.delete({
+      await prismaClient.account.delete({
         where: {
           id: account.id,
         },
