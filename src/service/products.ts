@@ -1,12 +1,31 @@
-import { validateProduct } from "@/lib/validations/product";
-import { ProductInType } from "@/types/product";
+import {
+  validateEditedProduct,
+  validateProduct,
+} from "@/lib/validations/product";
+import {
+  ProductInType,
+  ProductOutType,
+  ProductUpdateInType,
+} from "@/types/product";
 
 import { NextRequest } from "next/server";
 
 export interface ProductModelType {
-  // getById: ({ id }: { id: number }) => Promise<any | null>;
-  getAll: (platformId?: number) => Promise<any[]>;
-  create: ({ platform, accounts, prices }: ProductInType) => Promise<any>;
+  getById: ({ productId }: { productId: number }) => Promise<any | null>;
+  getAll: () => Promise<any[]>;
+  create: ({
+    platform,
+    accounts,
+    prices,
+  }: ProductInType) => Promise<ProductOutType>;
+  delete: ({ product_id }: { product_id: number }) => Promise<any | null>;
+  update: ({
+    product_id,
+    product_info,
+  }: {
+    product_id: number;
+    product_info: ProductUpdateInType;
+  }) => Promise<any>;
 }
 
 export class ProductController {
@@ -16,43 +35,30 @@ export class ProductController {
     this.productModel = productModel;
   }
 
-  // getById = async (req: NextRequest): Promise<NextApiResponse> => {
-  //   const { id } = req.query;
-  //   try {
-  //     const product = await this.productModel.getById({
-  //       id: parseInt(id as string, 10),
-  //     });
-  //     if (product) {
-  //       return NextResponse.json(product);
-  //     } else {
-  //       return NextResponse.json(
-  //         { message: "Product not found" },
-  //         { status: 404 }
-  //       );
-  //     }
-  //   } catch (error: any) {
-  //     return NextResponse.json({ error: error.message }, { status: 500 });
-  //   }
-  // };
-
-  getAll = async (req: NextRequest) => {
-    const query = req.body;
+  getById = async ({ product_id }: { product_id: string }) => {
     try {
-      let platformId;
-      if (query) {
-        platformId = Number(query);
-      }
+      const productId = Number(product_id);
+      const exactProduct = await this.productModel.getById({
+        productId,
+      });
 
-      const products = await this.productModel.getAll();
-
-      console.log("products", products);
-      return products;
-    } catch (error: any) {
-      return null;
+      return exactProduct;
+    } catch (e) {
+      return console.error("Product not found", e);
     }
   };
 
-  create = async (req: NextRequest): Promise<void> => {
+  getAll = async () => {
+    try {
+      const products = await this.productModel.getAll();
+
+      return products;
+    } catch (e) {
+      return console.error("Products not found", e);
+    }
+  };
+
+  create = async (req: NextRequest) => {
     const productInfo = await req.json();
     const { isValid, productValidated } = validateProduct(productInfo);
 
@@ -60,19 +66,46 @@ export class ProductController {
       throw new Error("Validation failed");
     }
 
-    const newProduct = await this.productModel.create(productValidated);
-    console.log("newProduct", newProduct);
-    // if (!result.success) {
-    //   throw new Error("Validation failed");
-    // }
-    // try {
-    //   const newProduct = await this.productModel.create({
-    //     productInfo: result.data,
-    //   });
+    try {
+      const newProduct = await this.productModel.create(productValidated);
+      return newProduct;
+    } catch (e) {
+      return console.error("Not product created", e);
+    }
+  };
 
-    //   return newProduct;
-    // } catch (error: any) {
-    //   return;
-    // }
+  delete = async ({ params }: { params: { id: string } }) => {
+    const { id } = params;
+    const result = await this.productModel.delete({
+      product_id: Number(id),
+    });
+
+    return result === false ? false : true;
+  };
+
+  update = async ({
+    req,
+    params,
+  }: {
+    params: { id: string };
+    req: NextRequest;
+  }) => {
+    const productInfo = await req.json();
+    const { id } = params;
+
+    const { isValid, productValidated } = validateEditedProduct(productInfo);
+
+    if (!isValid) throw new Error("Product not update");
+
+    try {
+      const productUpdated = await this.productModel.update({
+        product_id: Number(id),
+        product_info: productValidated,
+      });
+
+      return productUpdated;
+    } catch (e) {
+      throw new Error("Product not update");
+    }
   };
 }
