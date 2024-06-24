@@ -9,10 +9,7 @@ export async function GET() {
     const users = await userService.getAll();
     return NextResponse.json(users);
   } catch (error: any) {
-    return NextResponse.json(
-      { error: "Error to get Products" },
-      { status: 404 }
-    );
+    return NextResponse.json({ error: "Error to get Users" }, { status: 404 });
   }
 }
 
@@ -22,7 +19,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(newUser);
   } catch (error: any) {
     return NextResponse.json(
-      { error: "Error to Create Product" },
+      { error: "Error to Create user" },
       { status: 500 }
     );
   }
