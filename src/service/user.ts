@@ -1,6 +1,7 @@
 import { validateUpdateUser, validateUser } from "@/lib/validations/user";
 import { UserInType, UserOutType, UserUpdateInType } from "@/types/user";
 import { NextRequest } from "next/server";
+import bcrypt from "bcrypt";
 
 interface UserModelType {
   getById: ({ user_id }: { user_id: number }) => Promise<any>;
@@ -45,11 +46,16 @@ export class UserService {
 
   create = async ({ req }: { req: NextRequest }) => {
     const user_info = await req.json();
-    const userValidated = validateUser(user_info);
 
+    const hashedPassword = await bcrypt.hash(user_info.password, 10);
+    const userValidated = validateUser({
+      password: hashedPassword,
+      ...user_info,
+    });
     try {
       const newUser = await this.userModel.create({ user_info: userValidated });
-      return newUser;
+      const { password, ...user } = newUser;
+      return user;
     } catch (e) {
       throw new Error("User not created");
     }
