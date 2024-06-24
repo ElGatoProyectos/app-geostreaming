@@ -25,18 +25,17 @@ model Admin {
 
 model User {
   id        Int       @id @default(autoincrement())
+  email     String    @unique
   ref_id    Int?
   role      Role      @relation(fields: [role_id], references: [id])
   role_id   Int
   full_name String
   dni       String?
   phone     String
-  email     String?
   balance   Decimal   @default(0.0)
-  username  String
   password  String
   enabled   String    @default("y")
-  products  Product[]
+  accounts  Account[]
 }
 
 model Product {
@@ -45,7 +44,6 @@ model Product {
   platform    Platform  @relation(fields: [platform_id], references: [id])
   accounts    Account[]
   price       Price[]
-  users       User[]
   createdAt   DateTime  @default(now())
 }
 
@@ -63,6 +61,8 @@ model Account {
   product            Product  @relation(fields: [product_id], references: [id])
   product_id         Int
   createdAt          DateTime @default(now())
+  user               User?    @relation(fields: [user_id], references: [id])
+  user_id            Int?
 }
 
 model Price {
