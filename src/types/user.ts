@@ -6,9 +6,8 @@ export interface UserInType {
   full_name: string;
   dni?: string | null;
   phone: string;
-  email?: string | null;
+  email: string;
   balance: number;
-  username: string;
   password: string;
   enabled: string;
 }
