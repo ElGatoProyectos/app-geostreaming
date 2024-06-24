@@ -25,7 +25,7 @@ const Products = () => {
           {DataProducts.map((product, index) => (
             <div key={index} className="flex justify-start items-start p-8 gap-4 bg-[#252525] rounded" data-aos="fade-up">
 
-              <img src={product.url} alt={product.name} className="w-[60px] h-[60px]  object-contain" />
+              <img src={product.url} alt={product.name} className="w-[60px] h-[60px]  object-contain" loading="lazy"/>
 
               
               <div>

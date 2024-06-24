@@ -143,7 +143,8 @@ const services = () => {
             className="lg:w-[500px] object-cover lg:object-contain lg:h-auto w-full"
             data-aos="fade-up"
             src={selectedService.url}
-            alt="consumidores finales"
+            alt={selectedService.name}
+            loading="lazy"
           />
           <div className="flex flex-col gap-4 mt-4 text-[#444444]">
             <h3 className="text-[1.5rem] font-semibold " data-aos="fade-up">

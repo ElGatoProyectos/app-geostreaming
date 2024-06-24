@@ -105,7 +105,7 @@ const TableComponent: React.FC<TableProps> = ({
   };
 
   return (
-    <div className="px-8 py-8 shadow-box rounded-xl">
+    <div className="bg-white px-8 py-8 shadow-box rounded-xl">
       <div className=" flex flex-col ">
         <div className="flex items-center gap-5 mb-8">
           <h2 className="text-[#277FF2] capitalize text-xl font-semibold">

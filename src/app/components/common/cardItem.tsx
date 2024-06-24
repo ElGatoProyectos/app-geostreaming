@@ -10,9 +10,22 @@ interface Props {
   account_number?: string;
   account_holder?: string;
   btn: string;
+  onOpenModal: (title: string, info: CardInfo) => void;
+}
+interface CardInfo {
+  title: string;
+  account_number?: string;
 }
 
 const CardItem: React.FC<Props> = (props) => {
+  const openModal = () => {
+    const info: CardInfo = {
+      title: props.title,
+      account_number: props.account_number,
+    };
+    props.onOpenModal(props.title, info);
+  };
+
   return (
     <div className="flex flex-col justify-center items-center shadow-cardItem rounded-xl px-4 py-8 relative">
       {props.isNew && (
@@ -48,8 +61,8 @@ const CardItem: React.FC<Props> = (props) => {
             : `${props.account_holder?.toUpperCase()}`}
         </span>
       </div>
-      <button className="text-white bg-[#F2308B] rounded  px-4 py-1  hover:bg-[#F06FAC] transition-all duration-300 mt-4 capitalize">
-        {props.btn}
+      <button className="text-white bg-[#F2308B] rounded  px-4 py-1  hover:bg-[#F06FAC] transition-all duration-300 mt-4 capitalize" onClick={openModal}>
+        {props.btn} 
       </button>
     </div>
   );

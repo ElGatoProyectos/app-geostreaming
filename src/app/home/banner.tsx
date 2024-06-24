@@ -10,7 +10,7 @@ const banner = () => {
   }, []);
   return (
     <div className='h-[calc(100vh-60px)] relative' id='banner'>
-      <img src="/banner.jpg" alt="banner" className='h-full w-full object-cover' />
+      <img src="/banner.jpg" alt="banner" className='h-full w-full object-cover' loading="lazy"/>
       <div className='w-full h-full bg-black bg-opacity-60 absolute top-0 left-0 '>
         <div className='w-full h-full flex justify-center items-center md:justify-start max-w-[1440px] mx-auto px-4 md:px-8'>
         <div className='md:max-w-[50%] flex flex-col items-center md:items-start gap-4 text-center md:text-start w-[90%] ' data-aos="zoom-out">

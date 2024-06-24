@@ -1,6 +1,6 @@
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
-const loading = () => {
+const Loading = () => {
   return (
     <div className="flex items-center justify-center min-h-screen">
       <div className=" animate-spin ">
@@ -10,4 +10,4 @@ const loading = () => {
   );
 };
 
-export default loading;
+export default Loading;

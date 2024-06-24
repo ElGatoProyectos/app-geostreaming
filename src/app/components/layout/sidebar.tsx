@@ -81,15 +81,30 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
         ],
       },
       {
+        title: "Saldo",
+        links: [
+          {
+            href: "/creditaciones",
+            label: "Acreditar saldo",
+            icon: <IoLogoUsd className="text-xl" />,
+          },
+          {
+            href: "/reportesdedepositos",
+            label: "Reporte deposito",
+            icon: <MdMenuBook className="text-xl" />,
+          },
+        ],
+      },
+      {
         title: "Herramientas",
         links: [
           {
-            href: "../user/perfil",
+            href: "../perfil",
             label: "Mi Perfil",
             icon: <FaRegUser className="text-xl" />,
           },
           {
-            href: "../user/contrasenia",
+            href: "../contrasenia",
             label: "Cambiar contraseña",
             icon: <MdLockReset className="text-xl" />,
           },
@@ -116,12 +131,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
         title: "Ventas",
         links: [
           {
-            href: "/user/productos",
+            href: "/productos",
             label: "Productos",
             icon: <IoMdCart className="text-xl" />,
           },
           {
-            href: "/user/reportesdeventas",
+            href: "/reportesdeventas",
             label: "Reporte ventas",
             icon: <MdMenuBook className="text-xl" />,
           },
@@ -131,12 +146,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
         title: "Saldo",
         links: [
           {
-            href: "/user/creditaciones",
+            href: "/creditaciones",
             label: "Acreditar saldo",
             icon: <IoLogoUsd className="text-xl" />,
           },
           {
-            href: "/user/reportesdedepositos",
+            href: "/reportesdedepositos",
             label: "Reporte deposito",
             icon: <MdMenuBook className="text-xl" />,
           },
@@ -151,7 +166,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
             icon: <FaRegUser className="text-xl" />,
           },
           {
-            href: "../user/contrasenia",
+            href: "../contrasenia",
             label: "Cambiar contraseña",
             icon: <MdLockReset className="text-xl" />,
           },
@@ -178,12 +193,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
         title: "Ventas",
         links: [
           {
-            href: "/user/productos",
+            href: "/productos",
             label: "Productos",
             icon: <IoMdCart className="text-xl" />,
           },
           {
-            href: "/user/reportesdeventas",
+            href: "/reportesdeventas",
             label: "Reporte ventas",
             icon: <MdMenuBook className="text-xl" />,
           },
@@ -193,12 +208,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
         title: "Saldo",
         links: [
           {
-            href: "/user/creditaciones",
+            href: "/creditaciones",
             label: "Acreditar saldo",
             icon: <IoLogoUsd className="text-xl" />,
           },
           {
-            href: "/user/reportesdedepositos",
+            href: "/reportesdedepositos",
             label: "Reporte deposito",
             icon: <MdMenuBook className="text-xl" />,
           },
@@ -208,12 +223,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
         title: "Afiliados",
         links: [
           {
-            href: "/user/registrarafiliados",
+            href: "/registrarafiliados",
             label: "Registrar",
             icon: <IoMdPersonAdd className="text-xl" />,
           },
           {
-            href: "/user/ganancias",
+            href: "/ganancias",
             label: "Ganancias",
             icon: <GiProfit className="text-xl" />,
           },
@@ -228,7 +243,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
             icon: <FaRegUser className="text-xl" />,
           },
           {
-            href: "../user/contrasenia",
+            href: "../contrasenia",
             label: "Cambiar contraseña",
             icon: <MdLockReset className="text-xl" />,
           },
@@ -244,17 +259,17 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
 
   return (
     <div
-      className={`bg-[#F2308B] w-[220px] py-4 max-h-[calc(100vh-100px)] h-full fixed top-[100px] z-50 text-white transition-transform duration-300 overflow-y-auto ${
+      className={`scrollbarFit user-select-none bg-white text-[#888] w-[220px] py-4 max-h-[calc(100vh-70px)] h-full fixed top-[70px] border-r z-10 lg:z-0 transition-transform duration-300 overflow-y-auto shadow-[8px_0px_10px_-3px_rgba(0,0,0,0.1)] ${
         isOpen
-          ? "translate-x-0 shadow-sidebar "
-          : "-translate-x-full lg:translate-x-0 shadow-none "
+          ? "translate-x-0 "
+          : "-translate-x-full lg:translate-x-0 "
       }`}
     >
       <div className="flex flex-col gap-6">
         {sections[role].map((section, sectionIndex) => (
           <div key={sectionIndex} className="w-full">
             {section.title && (
-              <div className="uppercase text-xs mx-8 font-semibold border-b border-[#F06FAC] pb-1">
+              <div className="uppercase text-xs mx-8 font-semibold border-b border-gray-200 pb-1">
                 {section.title}
               </div>
             )}
@@ -265,8 +280,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
                     href={link.href}
                     className={`pl-8 py-3 mr-2 rounded-r-full mb-2 flex gap-4 items-center ${
                       currentPath === link.href
-                        ? "bg-white text-[#277FF2] font-semibold"
-                        : "hover:bg-white hover:text-[#277FF2] transition-all duration-300 group"
+                        ? "bg-[#F2308B] text-white font-semibold"
+                        : "hover:bg-[#F2308B] hover:text-white transition-all duration-300 group"
                     }`}
                   >
                     {link.icon}

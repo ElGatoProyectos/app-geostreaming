@@ -1,9 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { categoryFormSchema } from "@/app/schemas/categoryFormSchema";
 import { useEffect, useState } from "react";
 import InputField from "./inputField";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+
+import { categoryFormSchema } from "@/app/schemas/categoryFormSchema";
 
 type Inputs = {
   id: string;
