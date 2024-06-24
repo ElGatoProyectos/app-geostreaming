@@ -14,17 +14,17 @@ CREATE TABLE `Admin` (
 -- CreateTable
 CREATE TABLE `User` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `email` VARCHAR(191) NOT NULL,
     `ref_id` INTEGER NULL,
     `role_id` INTEGER NOT NULL,
     `full_name` VARCHAR(191) NOT NULL,
     `dni` VARCHAR(191) NULL,
     `phone` VARCHAR(191) NOT NULL,
-    `email` VARCHAR(191) NULL,
     `balance` DECIMAL(65, 30) NOT NULL DEFAULT 0.0,
-    `username` VARCHAR(191) NOT NULL,
     `password` VARCHAR(191) NOT NULL,
     `enabled` VARCHAR(191) NOT NULL DEFAULT 'y',
 
+    UNIQUE INDEX `User_email_key`(`email`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -50,6 +50,7 @@ CREATE TABLE `Account` (
     `platform_id` INTEGER NOT NULL,
     `product_id` INTEGER NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `user_id` INTEGER NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -81,15 +82,6 @@ CREATE TABLE `Role` (
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
--- CreateTable
-CREATE TABLE `_ProductToUser` (
-    `A` INTEGER NOT NULL,
-    `B` INTEGER NOT NULL,
-
-    UNIQUE INDEX `_ProductToUser_AB_unique`(`A`, `B`),
-    INDEX `_ProductToUser_B_index`(`B`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
 -- AddForeignKey
 ALTER TABLE `User` ADD CONSTRAINT `User_role_id_fkey` FOREIGN KEY (`role_id`) REFERENCES `Role`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
@@ -103,13 +95,10 @@ ALTER TABLE `Account` ADD CONSTRAINT `Account_platform_id_fkey` FOREIGN KEY (`pl
 ALTER TABLE `Account` ADD CONSTRAINT `Account_product_id_fkey` FOREIGN KEY (`product_id`) REFERENCES `Product`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE `Account` ADD CONSTRAINT `Account_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `User`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE `Price` ADD CONSTRAINT `Price_product_id_fkey` FOREIGN KEY (`product_id`) REFERENCES `Product`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Price` ADD CONSTRAINT `price_id_fkey` FOREIGN KEY (`role_id`) REFERENCES `Role`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `_ProductToUser` ADD CONSTRAINT `_ProductToUser_A_fkey` FOREIGN KEY (`A`) REFERENCES `Product`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `_ProductToUser` ADD CONSTRAINT `_ProductToUser_B_fkey` FOREIGN KEY (`B`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `Price` ADD CONSTRAINT `Price_role_id_fkey` FOREIGN KEY (`role_id`) REFERENCES `Role`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
