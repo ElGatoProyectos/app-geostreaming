@@ -5,9 +5,9 @@ import { httpResponse } from "./http.service";
 class UserService {
   async findUsers() {}
 
-  async findByUsername(username: string) {
+  async findByUsername(email: string) {
     try {
-      const user = await prisma.user.findFirst({ where: { username } });
+      const user = await prisma.user.findFirst({ where: { email } });
       if (!user) return httpResponse.http404("User not found");
       return httpResponse.http200("User found", user);
     } catch (error) {
