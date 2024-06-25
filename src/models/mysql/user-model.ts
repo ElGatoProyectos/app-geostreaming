@@ -20,7 +20,7 @@ export class UserModel {
   static getById = async ({ user_id }: { user_id: number }) => {
     const userFound = await prisma.user.findUnique({
       where: { id: user_id },
-      include: { accounts: true, role: true },
+      include: { accounts: true },
     });
 
     await prisma.$disconnect();
@@ -30,7 +30,7 @@ export class UserModel {
 
   static getAll = async () => {
     const users = await prisma.user.findMany({
-      include: { accounts: true, role: true },
+      include: { accounts: true },
     });
     await prisma.$disconnect();
     return users;
@@ -52,7 +52,7 @@ export class UserModel {
       data: user_info,
     });
 
-    const formatBalance = parseFloat(newUser.balance.toString());
+    const formatBalance = parseFloat(newUser.balance_in_cents.toString());
     const newUserFormatedBalance = { ...newUser, balance: formatBalance };
 
     await prisma.$disconnect();
@@ -85,7 +85,6 @@ export class UserModel {
     const userUpdated = await prisma.user.update({
       where: { id: user_id },
       data: rest,
-      include: { role: true },
     });
     await prisma.$disconnect();
 
