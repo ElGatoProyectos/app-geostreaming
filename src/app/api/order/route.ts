@@ -1,17 +1,32 @@
-import { getServerSession } from "next-auth";
+import prisma from "@/lib/prisma";
+import { validateOrder } from "@/lib/validations/order";
 import { NextRequest, NextResponse } from "next/server";
-import { authOptions } from "../auth-options";
-import { NextApiRequest, NextApiResponse } from "next";
-import { signIn } from "next-auth/react";
 
-export async function GET(req: NextRequest, params: { id: string }) {
+export async function GET() {
   try {
-    // const newUser = await userService.create({ req });
-    return NextResponse.json("data de la orden");
-  } catch (error: any) {
+    const orders = await prisma.order.findMany();
+    return NextResponse.json(orders);
+  } catch (e) {
+    return NextResponse.json({ error: "Error to get orders" }, { status: 500 });
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
+export async function POST(req: NextRequest) {
+  try {
+    const orderInfo = await req.json();
+    const validatedOrder = validateOrder(orderInfo);
+    const newOrder = await prisma.order.create({
+      data: validatedOrder,
+    });
+    return NextResponse.json(newOrder);
+  } catch (e) {
     return NextResponse.json(
-      { error: "Error to Create user" },
+      { error: "Error to create order" },
       { status: 500 }
     );
+  } finally {
+    await prisma.$disconnect();
   }
 }
