@@ -1,13 +1,11 @@
 import {
   AccountOutType,
-  PriceOutType,
   ProductInType,
   ProductOutType,
   ProductUpdateInType,
 } from "@/types/product";
 import { compareArrays } from "@/utils/compare-arrays";
 import { createAccounts, deleteAccounts } from "@/utils/crudAccouts";
-import { createPrices, deletePrices } from "@/utils/crudPrices";
 import { PrismaClient } from "@prisma/client";
 
 const prismaClient = new PrismaClient();
@@ -16,7 +14,7 @@ export class ProductModel {
   static getById = async ({ productId }: { productId: number }) => {
     const productFound = await prismaClient.product.findUnique({
       where: { id: productId },
-      include: { platform: true, accounts: true, price: true },
+      include: { platform: true, accounts: true },
     });
     await prismaClient.$disconnect();
     return productFound;
@@ -24,7 +22,7 @@ export class ProductModel {
 
   static getAll = async () => {
     const products = await prismaClient.product.findMany({
-      include: { accounts: true, platform: true, price: true },
+      include: { accounts: true, platform: true },
     });
     await prismaClient.$disconnect();
     return products;
@@ -33,33 +31,20 @@ export class ProductModel {
   static create = async ({
     platform,
     accounts,
-    prices,
+    price_distributor_in_cents,
+    price_in_cents,
   }: ProductInType): Promise<ProductOutType> => {
     const newPlatform = await prismaClient.platform.create({
       data: platform,
     });
 
     const newProduct = await prismaClient.product.create({
-      data: { platform_id: newPlatform.id },
+      data: {
+        platform_id: newPlatform.id,
+        price_in_cents,
+        price_distributor_in_cents,
+      },
     });
-
-    const pricesWithProductId = prices.map((price) => ({
-      ...price,
-      product_id: newProduct.id,
-    }));
-
-    await prismaClient.price.createMany({
-      data: pricesWithProductId,
-    });
-
-    const newPrices = await prismaClient.price.findMany({
-      where: { product_id: newProduct.id },
-    });
-
-    const formatDecimalPrices = newPrices.map((price) => ({
-      ...price,
-      price: parseFloat(price.price.toString()),
-    }));
 
     let newAccounts = null;
     if (accounts) {
@@ -79,12 +64,9 @@ export class ProductModel {
     }
 
     const newProductOut = {
-      id: newProduct.id,
-      platform_id: newPlatform.id,
+      ...newProduct,
       platform: newPlatform,
       accounts: newAccounts,
-      prices: formatDecimalPrices,
-      createdAt: newProduct.createdAt,
     };
     await prismaClient.$disconnect();
     return newProductOut;
@@ -98,7 +80,6 @@ export class ProductModel {
       },
       include: {
         accounts: true,
-        price: true,
       },
     });
 
@@ -111,16 +92,6 @@ export class ProductModel {
         await prismaClient.account.delete({
           where: {
             id: account.id,
-          },
-        });
-      })
-    );
-
-    await Promise.all(
-      product.price.map(async (price) => {
-        await prismaClient.price.delete({
-          where: {
-            id: price.id,
           },
         });
       })
@@ -152,39 +123,17 @@ export class ProductModel {
   }) => {
     const {
       platform,
-      price: updatePrices,
+      price_distributor_in_cents,
+      price_in_cents,
       accounts: updateAccounts,
     } = product_info;
 
-    const pricesAndaccounts = await prismaClient.product.findMany({
+    const Accounts = await prismaClient.product.findMany({
       where: { id: product_id },
-      include: { price: true, accounts: true },
+      include: { accounts: true },
     });
 
-    const { price: oldPrices, accounts: oldAccounts } = pricesAndaccounts[0];
-
-    /* --------  Prices section -------- */
-    const formatDecimalOldPrices = oldPrices.map((price) => ({
-      ...price,
-      price: parseFloat(price.price.toString()),
-    }));
-
-    const formatDecimalUpdatePrices = updatePrices.map((price) => ({
-      ...price,
-      price: parseFloat(price.price.toString()),
-    }));
-
-    const {
-      newItems: newPrices,
-      persistedItems: persistedPrices,
-      removedItems: removedPrices,
-    } = compareArrays({
-      oldArray: formatDecimalOldPrices,
-      newArray: formatDecimalUpdatePrices,
-    });
-
-    await createPrices(newPrices, product_id);
-    await deletePrices(removedPrices);
+    const { accounts: oldAccounts } = Accounts[0];
 
     /* --------  Accounts section -------- */
 
@@ -205,6 +154,8 @@ export class ProductModel {
     const allProductUpdate = await prismaClient.product.update({
       where: { id: product_id },
       data: {
+        price_distributor_in_cents,
+        price_in_cents,
         platform: {
           update: {
             where: { id: platform.id },
@@ -214,19 +165,6 @@ export class ProductModel {
             },
           },
         },
-        price: persistedPrices
-          ? {
-              update: persistedPrices.map(
-                ({ id, price, role_id }: PriceOutType) => ({
-                  where: { id: id },
-                  data: {
-                    price,
-                    role_id,
-                  },
-                })
-              ),
-            }
-          : undefined,
         accounts: persistedAccounts
           ? {
               update: persistedAccounts.map(
@@ -238,7 +176,7 @@ export class ProductModel {
             }
           : undefined,
       },
-      include: { platform: true, accounts: true, price: true },
+      include: { platform: true, accounts: true },
     });
 
     await prismaClient.$disconnect();
