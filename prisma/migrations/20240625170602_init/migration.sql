@@ -11,7 +11,7 @@ CREATE TABLE `Admin` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `AccountToDeposit` (
+CREATE TABLE `Bank` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `bank` VARCHAR(191) NOT NULL,
     `number` VARCHAR(191) NOT NULL,
@@ -22,7 +22,7 @@ CREATE TABLE `AccountToDeposit` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `DepositToAdmin` (
+CREATE TABLE `Voucher` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `voucher_number` VARCHAR(191) NOT NULL,
     `value` INTEGER NOT NULL,
@@ -107,7 +107,7 @@ CREATE TABLE `Order` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
-ALTER TABLE `DepositToAdmin` ADD CONSTRAINT `DepositToAdmin_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Voucher` ADD CONSTRAINT `Voucher_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Product` ADD CONSTRAINT `Product_platform_id_fkey` FOREIGN KEY (`platform_id`) REFERENCES `Platform`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
