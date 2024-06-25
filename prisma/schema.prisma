@@ -18,33 +18,65 @@ model Admin {
   full_name String
   phone     String
   email     String
-  username  String
   password  String
   logged    String @default("y")
 }
 
+model AccountToDeposit {
+  id     Int    @id @default(autoincrement())
+  bank   String
+  number String
+  name   String
+  type   String
+}
+
+model DepositToAdmin {
+  id             Int      @id @default(autoincrement())
+  voucher_number String
+  value          Int
+  date           DateTime
+  user           User     @relation(fields: [user_id], references: [id])
+  user_id        Int
+}
+
+enum Role {
+  USER
+  DISTRIBUTOR
+}
+
 model User {
-  id        Int       @id @default(autoincrement())
-  email     String    @unique
-  ref_id    Int?
-  role      Role      @relation(fields: [role_id], references: [id])
-  role_id   Int
-  full_name String
-  dni       String?
-  phone     String
-  balance   Decimal   @default(0.0)
-  password  String
-  enabled   String    @default("y")
-  accounts  Account[]
+  id               Int              @id @default(autoincrement())
+  email            String           @unique
+  ref_id           Int?             @unique
+  role             Role             @default(USER)
+  full_name        String
+  dni              String?
+  phone            String
+  balance_in_cents Int              @default(0)
+  password         String
+  enabled          String           @default("y")
+  accounts         Account[]
+  deposits         DepositToAdmin[]
+  orders           Order[]
+  created_at       DateTime         @default(now())
+  updated_at       DateTime         @updatedAt
 }
 
 model Product {
-  id          Int       @id @default(autoincrement())
-  platform_id Int
-  platform    Platform  @relation(fields: [platform_id], references: [id])
-  accounts    Account[]
-  price       Price[]
-  createdAt   DateTime  @default(now())
+  id                         Int       @id @default(autoincrement())
+  platform_id                Int
+  platform                   Platform  @relation(fields: [platform_id], references: [id])
+  accounts                   Account[]
+  price_in_cents             Int
+  price_distributor_in_cents Int
+  created_at                 DateTime  @default(now())
+  updated_at                 DateTime  @updatedAt
+}
+
+enum States {
+  AVAILABLE // disponible
+  DELIVERED // entregado
+  PENDING // pendiente
 }
 
 model Account {
@@ -55,23 +87,17 @@ model Account {
   pin                String
   numb_profiles      Int
   numb_days_duration Int
-  status             String
+  status             States   @default(AVAILABLE)
   platform           Platform @relation(fields: [platform_id], references: [id])
   platform_id        Int
   product            Product  @relation(fields: [product_id], references: [id])
   product_id         Int
-  createdAt          DateTime @default(now())
   user               User?    @relation(fields: [user_id], references: [id])
   user_id            Int?
-}
+  orders             Order[]
 
-model Price {
-  id         Int     @id @default(autoincrement())
-  price      Decimal
-  product    Product @relation(fields: [product_id], references: [id])
-  product_id Int
-  role       Role    @relation(fields: [role_id], references: [id])
-  role_id    Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model Platform {
@@ -82,9 +108,16 @@ model Platform {
   account     Account[]
 }
 
-model Role {
-  id     Int     @id @default(autoincrement())
-  name   String
-  prices Price[]
-  user   User[]
+model Order {
+  id       Int  @id @default(autoincrement())
+  ref_id   Int?
+  role     Role
+  quantity Int
+
+  user_id    Int
+  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  account_id Int
+  account    Account  @relation(fields: [account_id], references: [id], onDelete: Restrict)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }

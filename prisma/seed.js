@@ -3,31 +3,114 @@ const bcrypt = require("bcrypt");
 
 const prisma = new PrismaClient();
 
-const initialTest = [
+const initialProducts = [
   {
-    title: "Post 1",
-    slug: "post-1",
-    content: "Content of post 1",
-    author: {
-      connectOrCreate: {
-        where: {
-          email: "jhon@gmail.com",
-        },
-        create: {
-          email: "jhon@gmail.com",
-          hashedPassword: "56asd116s5a6d51sa156",
-        },
-      },
+    price_in_cents: 500,
+    price_distributor_in_cents: 200,
+    platform: {
+      name: "Netflix",
+      description:
+        "Streaming service with a wide variety of TV shows, movies, anime, documentaries, and more.",
     },
+    accounts: [
+      {
+        is_active: true,
+        email: "jasdsad@gmail.com",
+        password: "netf6541",
+        pin: "1556",
+        numb_profiles: 4,
+        numb_days_duration: 30,
+      },
+      {
+        is_active: false,
+        email: "ana.perez@gmail.com",
+        password: "netf1234",
+        pin: "1234",
+        numb_profiles: 4,
+        numb_days_duration: 30,
+      },
+    ],
   },
-];
-
-const roles = [
   {
-    name: "user",
+    price_in_cents: 1000,
+    price_distributor_in_cents: 500,
+    platform: {
+      name: "Hulu",
+      description:
+        "Streaming service offering live and on-demand TV and movies, with and without commercials.",
+    },
+    accounts: [
+      {
+        is_active: false,
+        email: "maria.hulu@gmail.com",
+        password: "hulu9987",
+        pin: "5678",
+        numb_profiles: 5,
+        numb_days_duration: 30,
+      },
+      {
+        is_active: true,
+        email: "john.hulu@gmail.com",
+        password: "hulu4321",
+        pin: "8765",
+        numb_profiles: 5,
+        numb_days_duration: 30,
+      },
+    ],
   },
   {
-    name: "distributor",
+    price_in_cents: 2000,
+    price_distributor_in_cents: 550,
+    platform: {
+      name: "Disney+",
+      description:
+        "Streaming service offering Disney, Pixar, Marvel, Star Wars, and National Geographic content.",
+    },
+    accounts: [
+      {
+        is_active: true,
+        email: "alice.disney@gmail.com",
+        password: "disney4321",
+        pin: "1111",
+        numb_profiles: 7,
+        numb_days_duration: 30,
+      },
+      {
+        is_active: true,
+        email: "bob.disney@gmail.com",
+        password: "disney5678",
+        pin: "2222",
+        numb_profiles: 7,
+        numb_days_duration: 30,
+      },
+    ],
+  },
+  {
+    price_in_cents: 3500,
+    price_distributor_in_cents: 750,
+    platform: {
+      name: "Amazon Prime Video",
+      description:
+        "Streaming service with a wide range of popular movies, TV shows, and original content.",
+    },
+    accounts: [
+      {
+        is_active: true,
+        email: "charles.amazon@gmail.com",
+        password: "prime9988",
+        pin: "3333",
+        numb_profiles: 6,
+        numb_days_duration: 30,
+      },
+      {
+        is_active: true,
+        email: "diana.amazon@gmail.com",
+        password: "prime1234",
+        pin: "4444",
+        numb_profiles: 6,
+        numb_days_duration: 30,
+      },
+    ],
   },
 ];
 
@@ -38,7 +121,6 @@ const users = [
     dni: "52668846",
     phone: "111222333",
     password: "123456",
-    role_id: 1,
   },
   {
     email: "test2@gmail.com",
@@ -46,15 +128,11 @@ const users = [
     dni: "97484661",
     phone: "77788899",
     password: "123456",
-    role_id: 2,
   },
 ];
 
 async function main() {
   console.log(`Start seeding...`);
-  // await prisma.role.createMany({
-  //   data: roles,
-  // });
 
   const usersEncryptedPass = await Promise.all(
     users.map(async (user) => {
@@ -67,12 +145,48 @@ async function main() {
     data: usersEncryptedPass,
   });
 
-  //   for (const post of initialTest) {
-  //     const newPost = await prisma.post.create({
-  //       data: post,
-  //     });
-  //     console.log(`Created post with id: ${newPost.id}`);
-  //   }
+  for (const product of initialProducts) {
+    const newPlatform = await prisma.platform.create({
+      data: product.platform,
+    });
+
+    const newProduct = await prisma.product.create({
+      data: {
+        platform_id: newPlatform.id,
+        price_distributor_in_cents: product.price_distributor_in_cents,
+        price_in_cents: product.price_in_cents,
+      },
+    });
+
+    let newAccounts = null;
+    if (product.accounts) {
+      const accountsWithProductAndPlatformId = product.accounts.map(
+        (account) => ({
+          ...account,
+          platform_id: newPlatform.id,
+          product_id: newProduct.id,
+        })
+      );
+
+      await prisma.account.createMany({
+        data: accountsWithProductAndPlatformId,
+      });
+
+      newAccounts = await prisma.account.findMany({
+        where: { product_id: newProduct.id },
+      });
+    }
+
+    const newProductOut = {
+      ...newProduct,
+      platform: newPlatform,
+      accounts: newAccounts,
+    };
+    await prisma.$disconnect();
+    console.log(`Created product with id: ${newProduct.id}`);
+    console.log(`Created product: ${newProductOut}`);
+  }
+
   console.log("Seeding finished.");
 }
 main()

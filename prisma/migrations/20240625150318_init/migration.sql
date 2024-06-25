@@ -4,9 +4,30 @@ CREATE TABLE `Admin` (
     `full_name` VARCHAR(191) NOT NULL,
     `phone` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
-    `username` VARCHAR(191) NOT NULL,
     `password` VARCHAR(191) NOT NULL,
     `logged` VARCHAR(191) NOT NULL DEFAULT 'y',
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `AccountToDeposit` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `bank` VARCHAR(191) NOT NULL,
+    `number` VARCHAR(191) NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
+    `type` VARCHAR(191) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `DepositToAdmin` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `voucher_number` VARCHAR(191) NOT NULL,
+    `value` INTEGER NOT NULL,
+    `date` DATETIME(3) NOT NULL,
+    `user_id` INTEGER NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -16,15 +37,18 @@ CREATE TABLE `User` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `email` VARCHAR(191) NOT NULL,
     `ref_id` INTEGER NULL,
-    `role_id` INTEGER NOT NULL,
+    `role` ENUM('USER', 'DISTRIBUTOR') NOT NULL DEFAULT 'USER',
     `full_name` VARCHAR(191) NOT NULL,
     `dni` VARCHAR(191) NULL,
     `phone` VARCHAR(191) NOT NULL,
-    `balance` DECIMAL(65, 30) NOT NULL DEFAULT 0.0,
+    `balance_in_cents` INTEGER NOT NULL DEFAULT 0,
     `password` VARCHAR(191) NOT NULL,
     `enabled` VARCHAR(191) NOT NULL DEFAULT 'y',
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NOT NULL,
 
     UNIQUE INDEX `User_email_key`(`email`),
+    UNIQUE INDEX `User_ref_id_key`(`ref_id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -32,7 +56,10 @@ CREATE TABLE `User` (
 CREATE TABLE `Product` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `platform_id` INTEGER NOT NULL,
-    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `price_in_cents` INTEGER NOT NULL,
+    `price_distributor_in_cents` INTEGER NOT NULL,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -46,21 +73,12 @@ CREATE TABLE `Account` (
     `pin` VARCHAR(191) NOT NULL,
     `numb_profiles` INTEGER NOT NULL,
     `numb_days_duration` INTEGER NOT NULL,
-    `status` VARCHAR(191) NOT NULL,
+    `status` ENUM('AVAILABLE', 'DELIVERED', 'PENDING') NOT NULL DEFAULT 'AVAILABLE',
     `platform_id` INTEGER NOT NULL,
     `product_id` INTEGER NOT NULL,
-    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `user_id` INTEGER NULL,
-
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `Price` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `price` DECIMAL(65, 30) NOT NULL,
-    `product_id` INTEGER NOT NULL,
-    `role_id` INTEGER NOT NULL,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -75,15 +93,21 @@ CREATE TABLE `Platform` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Role` (
+CREATE TABLE `Order` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(191) NOT NULL,
+    `ref_id` INTEGER NULL,
+    `role` ENUM('USER', 'DISTRIBUTOR') NOT NULL,
+    `quantity` INTEGER NOT NULL,
+    `user_id` INTEGER NOT NULL,
+    `account_id` INTEGER NOT NULL,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
-ALTER TABLE `User` ADD CONSTRAINT `User_role_id_fkey` FOREIGN KEY (`role_id`) REFERENCES `Role`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `DepositToAdmin` ADD CONSTRAINT `DepositToAdmin_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Product` ADD CONSTRAINT `Product_platform_id_fkey` FOREIGN KEY (`platform_id`) REFERENCES `Platform`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -98,7 +122,7 @@ ALTER TABLE `Account` ADD CONSTRAINT `Account_product_id_fkey` FOREIGN KEY (`pro
 ALTER TABLE `Account` ADD CONSTRAINT `Account_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `User`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Price` ADD CONSTRAINT `Price_product_id_fkey` FOREIGN KEY (`product_id`) REFERENCES `Product`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Order` ADD CONSTRAINT `Order_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Price` ADD CONSTRAINT `Price_role_id_fkey` FOREIGN KEY (`role_id`) REFERENCES `Role`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Order` ADD CONSTRAINT `Order_account_id_fkey` FOREIGN KEY (`account_id`) REFERENCES `Account`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
