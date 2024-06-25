@@ -12,8 +12,8 @@ interface AccountInfo {
   account_number?: string;
 }
 type Inputs = {
-  number: string;
-  valor: string;
+  voucher_number: string;
+  value: string;
   date: string;
 };
 const Account = () => {
@@ -48,6 +48,7 @@ const Account = () => {
             account_number={item.account_number}
             account_holder={item.account_holder}
             btn={item.btn}
+            type= {item.type}
             onOpenModal={handleOpenModal}
           />
         ))}

@@ -1,6 +1,6 @@
 
 import { Metadata } from "next";
-import Category from "./category";
+import Platform from "./patform";
 
 import MainLayout from "@/app/components/layout/mainLayout";
 
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 const page = () => {
   return (
       <MainLayout>
-        <Category />
+        <Platform />
       </MainLayout>
   );
 };

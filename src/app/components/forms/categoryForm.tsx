@@ -64,7 +64,7 @@ const categoryForm:React.FC<CategoryFormProps> = ({ defaultValues, onSubmit}) =>
       <div className=" w-full flex flex-col gap-4">
         <button
           type="submit"
-          className="bg-[#277FF2] text-white mt-4 px-4 py-1 rounded hover:bg-[#4E98F9] transition-all duration-300 mx-auto "
+          className="bg-[#F2308B] text-white mt-4 px-4 py-1 rounded hover:bg-[#F06FAC] transition-all duration-300 mx-auto "
           disabled={loading}
         >
             {loading ? (

@@ -51,7 +51,7 @@ export const PaginationComponent: React.FC<{
               active={pageNumber === currentPage}
               onClick={() => onPageChange(pageNumber)}
               className={
-                pageNumber === currentPage ? "bg-[#277FF2] font-bold" : ""
+                pageNumber === currentPage ? "bg-[#F2308B] font-bold text-sm" : "text-sm"
               }
             >
               {pageNumber}

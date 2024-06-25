@@ -1,22 +1,20 @@
 'use client';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import InputField from "@/app/components/forms/inputField";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 import { creditacionesFormSchema } from "@/app/schemas/creditacionesFormSchema";
 type Inputs = {
-  voucher_number: string;
-  value: string;
-  date: string;
+  email: string;
 };
 
 interface CreditacionesProps {
   info: {
     title: string;
-    numberAccount: string;
-    
+    numberAccount?: string;
+    url?: string;
   };
   onSubmit: SubmitHandler<Inputs>;
 }
@@ -50,29 +48,26 @@ const creditacionesForm: React.FC<CreditacionesProps> = ({ info, onSubmit }) => 
       onSubmit={handleSubmit(handleFormSubmit)}
       className="flex w-full flex-col gap-4"
     >
-      <h2 className="font-semibold">{info.title}</h2>
-      <p className=""><span className="font-semibold">Cuenta: </span>{info.numberAccount}</p>
-      {/* (input id, solo lo puede ver no editar) */}
+      {info.numberAccount == null ? (
+          <div className="flex flex-col items-center justify-center gap-4">
+            <img className="h-16 w-16 object-contain" src={info.url} alt={info.title} />
+            <h2 className="font-semibold">{info.title}</h2>
+          </div>
+      ): (
+        <div> <h2 className="font-semibold">{info.title}</h2>
+      <p className=""><span className="font-semibold">Cuenta: </span>{info.numberAccount}</p></div>
+      )}
+      
+      
       <InputField
-        id="voucher_number"
-        label="Numero de comprobante"
-        register={register("voucher_number")}
-        error={errors.voucher_number}
+        id="email"
+        label="Correo electrónico"
+        placeholder="Ingrese el correo electrónico de su cliente"
+        register={register("email")}
+        error={errors.email}
+        type="email"
       />
-      <InputField
-        id="value"
-        label="Valor"
-        register={register("value")}
-        error={errors.value}
-        placeholder="El valor mínimo es de $10"
-      />
-      <InputField
-        id="date"
-        label="Fecha del depósito"
-        register={register("date")}
-        error={errors.date}
-        type="date"
-      />
+     
 
       <div className=" w-full flex flex-col gap-4">
         <button

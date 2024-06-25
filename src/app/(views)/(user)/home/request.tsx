@@ -1,11 +1,12 @@
 'use client';
-import { DproductoPedido } from "@/data/DproductoPedido";
 import React, { useState } from "react";
 import ContainerCard from "@/app/components/common/containerCard";
+import { DproductoInmediato } from "@/data/DproductoInmediato";
 import CardItem from "@/app/components/common/cardItem";
 import Modal from "@/app/components/common/modal";
 import ProductForm from "./ProductForm";
 import { SubmitHandler } from "react-hook-form";
+
 
 interface ProductInfo {
   title: string;
@@ -15,7 +16,7 @@ type Inputs = {
   email: string;
 };
 
-const delilvery = () => {
+const request = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
   const [modalInfo, setModalInfo] = useState<ProductInfo | null>(null);
@@ -37,8 +38,9 @@ const delilvery = () => {
   };
   return (
     <div className="w-full">
-      <ContainerCard title="Bajo pedido (1 hora)">
-        {DproductoPedido.map((item, index) => (
+      <ContainerCard title="Entrega inmediata">
+        {DproductoInmediato.map((item, index) => (
+
           <CardItem
           key={index}
           title={item.title}
@@ -66,4 +68,4 @@ const delilvery = () => {
   );
 };
 
-export default delilvery;
+export default request;

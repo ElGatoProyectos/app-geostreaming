@@ -9,7 +9,7 @@ const ContainerCard: React.FC<Props> = (props) => {
 
   return (
     <div className="w-full rounded-xl shadow-box bg-white py-8 px-6 md:p-8">
-      <h2 className="text-[#277FF2] capitalize text-xl mb-8 font-semibold">
+      <h2 className="text-[#F2308B] capitalize text-xl mb-8 font-semibold">
         {title}
       </h2>
       <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 justify-center items-start gap-8 lg:gap-12 2xl:gap-16">

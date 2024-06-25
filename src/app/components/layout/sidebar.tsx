@@ -64,8 +64,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
         title: "Registrar",
         links: [
           {
-            href: "/admin/categorias",
-            label: "Categorias",
+            href: "/admin/plataformas",
+            label: "Plataformas",
             icon: <MdOutlineCategory className="text-xl" />,
           },
           {
@@ -81,30 +81,15 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
         ],
       },
       {
-        title: "Saldo",
-        links: [
-          {
-            href: "/creditaciones",
-            label: "Acreditar saldo",
-            icon: <IoLogoUsd className="text-xl" />,
-          },
-          {
-            href: "/reportesdedepositos",
-            label: "Reporte deposito",
-            icon: <MdMenuBook className="text-xl" />,
-          },
-        ],
-      },
-      {
         title: "Herramientas",
         links: [
           {
-            href: "../perfil",
+            href: "/perfil",
             label: "Mi Perfil",
             icon: <FaRegUser className="text-xl" />,
           },
           {
-            href: "../contrasenia",
+            href: "/contrasenia",
             label: "Cambiar contraseña",
             icon: <MdLockReset className="text-xl" />,
           },
@@ -121,7 +106,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
         title: null,
         links: [
           {
-            href: "/user",
+            href: "/home",
             label: "Inicio",
             icon: <IoMdHome className="text-xl" />,
           },
@@ -161,12 +146,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
         title: "Herramientas",
         links: [
           {
-            href: "user/perfil",
+            href: "/perfil",
             label: "Mi Perfil",
             icon: <FaRegUser className="text-xl" />,
           },
           {
-            href: "../contrasenia",
+            href: "/contrasenia",
             label: "Cambiar contraseña",
             icon: <MdLockReset className="text-xl" />,
           },
@@ -183,7 +168,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
         title: null,
         links: [
           {
-            href: "/user",
+            href: "/home",
             label: "Inicio",
             icon: <IoMdHome className="text-xl" />,
           },
@@ -238,12 +223,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
         title: "Herramientas",
         links: [
           {
-            href: "user/perfil",
+            href: "/perfil",
             label: "Mi Perfil",
             icon: <FaRegUser className="text-xl" />,
           },
           {
-            href: "../contrasenia",
+            href: "/contrasenia",
             label: "Cambiar contraseña",
             icon: <MdLockReset className="text-xl" />,
           },

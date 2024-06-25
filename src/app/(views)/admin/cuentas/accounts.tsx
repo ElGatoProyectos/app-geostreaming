@@ -1,15 +1,17 @@
-'use client';
+"use client";
 import { useState } from "react";
 import Table from "@/app/components/common/table";
 import Modal from "@/app/components/common/modal";
-import AccountForm from "@/app/components/forms/accountForm";
+import AccountForm from "./accountForm";
 import { SubmitHandler } from "react-hook-form";
+import NoRecords from "@/app/components/common/noRecords";
 
 type Inputs = {
-  id: string;
+  bank: string;
+  number: string;
   name: string;
+  type: string;
 };
-
 const Account = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
@@ -37,19 +39,13 @@ const Account = () => {
 
   const columns = [
     { Header: "ID", accessor: "id" },
-    { Header: "CUENTA", accessor: "name" },
+    { Header: "Banco", accessor: "bank" },
+    { Header: "Número", accessor: "number" },
+    { Header: "Nombre", accessor: "name" },
+    { Header: "Tipo", accessor: "type" },
   ];
 
-  const data = [
-    {
-      id: 1,
-      name: "prueba1",
-    },
-    {
-      id: 2,
-      name: "prueba2",
-    },
-  ];
+  const data: string[] = [];
 
   const handleEdit = (record: Inputs) => {
     setSelectedRecord(record);
@@ -74,39 +70,48 @@ const Account = () => {
   };
 
   return (
-      <div>
+    <div>
+      {data.length === 0 ? (
+        <NoRecords title="Historial de ventas" />
+      ) : (
         <Table
-          columns={columns}
-          data={data}
-          showActions={true}
-          addRecord={true}
-          title="Categorias"
-          onAdd={handleAdd}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
+        columns={columns}
+        data={data}
+        showActions={true}
+        addRecord={true}
+        title="Categorias"
+        onAdd={handleAdd}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+      />
+      )}
+      
+      <Modal isOpen={isModalOpen} onClose={closeModal} title={modalTitle}>
+        <AccountForm
+          defaultValues={
+            selectedRecord || { bank: "", number: "", name: "", type: "" }
+          }
+          onSubmit={handleSaveAccount}
         />
-        <Modal isOpen={isModalOpen} onClose={closeModal} title={modalTitle}>
-          <AccountForm
-            defaultValues={selectedRecord || { id: "", name: "" }}
-            onSubmit={handleSaveAccount}
-          />
-        </Modal>
-        <Modal
-          isOpen={isDeleteModalOpen}
-          onClose={() => setIsDeleteModalOpen(false)}
-          title="Confirmar eliminación"
-        >
-          <div>
-            <p>¿Está seguro(a) de que quiere eliminar esta cuenta?</p>
-            <button
-              onClick={handleDeleteConfirm}
-              className="bg-red-500 text-white mt-4 px-4 py-1 rounded"
-            >
-              Eliminar
-            </button>
-          </div>
-        </Modal>
+      </Modal>
+      <Modal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        title="Confirmar eliminación"
+      >
+        <div>
+          <p>¿Está seguro(a) de que quiere eliminar esta cuenta?</p>
+          <button
+            onClick={handleDeleteConfirm}
+            className="bg-red-500 text-white mt-4 px-4 py-1 rounded"
+          >
+            Eliminar
+          </button>
         </div>
+      </Modal>
+      {/* si no hay datos mostrar 
+    <NoRecords title="Historial de ventas"/>  */}
+    </div>
   );
 };
 

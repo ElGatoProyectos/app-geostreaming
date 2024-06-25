@@ -5,6 +5,7 @@ interface Props {
   title: string;
   url: string;
   description?: string;
+  type?: string;
   consumer_price?: string;
   distributors_price?: string;
   account_number?: string;
@@ -14,6 +15,7 @@ interface Props {
 }
 interface CardInfo {
   title: string;
+  url?: string;
   account_number?: string;
 }
 
@@ -22,6 +24,7 @@ const CardItem: React.FC<Props> = (props) => {
     const info: CardInfo = {
       title: props.title,
       account_number: props.account_number,
+      url: props.url,
     };
     props.onOpenModal(props.title, info);
   };
@@ -39,12 +42,12 @@ const CardItem: React.FC<Props> = (props) => {
         alt="logo producto"
         className=" w-24 h-24 object-contain mb-3"
       />
-      <div className="text-center ">
+      <div className="text-center flex flex-col">
         <h3 className="text-[#277FF2] font-semibold uppercase mb-2">
           {props.title}
         </h3>
         <p
-          className={`capitalize  text-gray-400 mb-4 ${
+          className={`capitalize  text-gray-600 mb-4 ${
             props.description ? "text-sm" : ""
           }`}
         >
@@ -60,6 +63,9 @@ const CardItem: React.FC<Props> = (props) => {
             ? `$ ${props.consumer_price}`
             : `${props.account_holder?.toUpperCase()}`}
         </span>
+        {props.type && (
+          <span className="text-[#888]">{props.type.toUpperCase()}</span>
+        )}
       </div>
       <button className="text-white bg-[#F2308B] rounded  px-4 py-1  hover:bg-[#F06FAC] transition-all duration-300 mt-4 capitalize" onClick={openModal}>
         {props.btn} 

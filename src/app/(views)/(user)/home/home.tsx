@@ -1,4 +1,4 @@
-import Delivery from "./delilvery";
+import Delivery from "./delivery";
 import Request from "./request";
 
 const Home = () => {

@@ -2,17 +2,18 @@
 import React, { useState } from "react";
 import Table from "@/app/components/common/table";
 import Modal from "@/app/components/common/modal";
-import ProductForm from "@/app/components/forms/productForm";
+import DistributorForm from "./distributorForm";
 import { SubmitHandler } from "react-hook-form";
+import NoRecords from "@/app/components/common/noRecords";
 
-
-/* FALTA CORREGIR :c*/
 type Inputs = {
-  id: string;
-  producto: string;
-  precio_consumidor: string;
-  precio_distribuidor: string;
-  descripcion: string;
+  username: string;
+  email: string;
+  ref_id?: number;
+  role: number;
+  full_name: string;
+  dni?: string;
+  phone: string;
 };
 
 const Distributors = () => {
@@ -29,7 +30,7 @@ const Distributors = () => {
     setIsModalOpen(false);
   };
 
-  const handleSaveCategory: SubmitHandler<Inputs> = async (data) => {
+  const handleSaveDistributor: SubmitHandler<Inputs> = async (data) => {
     if (selectedRecord) {
       // Lógica para editar
       console.log("Editar categoría:", data);
@@ -42,40 +43,37 @@ const Distributors = () => {
 
   const columns = [
     { Header: "ID", accessor: "id" },
-    { Header: "PRODUCTOS", accessor: "producto" },
-    { Header: "PRECIO CONSUMIDOR", accessor: "precio_consumidor" },
-    { Header: "PRECIO DISTRIBUIDOR", accessor: "precio_distribuidor" },
-    { Header: "DESCRIPCION", accessor: "descripcion" },
+    { Header: "Username", accessor: "username" },
+    { Header: "Email", accessor: "email" },
+    { Header: "Referido", accessor: "ref_id" },
+    { Header: "Nombre", accessor: "full_name" },
+    { Header: "Role", accessor: "role" },
+    { Header: "DNI", accessor: "dni" },
+    { Header: "Celular", accessor: "phone" },
+    { Header: "Activo", accessor: "enebled" },
   ];
+  /* const data: string[] = []; */
 
   const data = [
     {
-      id: 1,
-      producto: "producto 1",
-      precio_consumidor: "2.00",
-      precio_distribuidor: "1.89",
-      descripcion: "descripcion del produto 1",
+      username: "hola",
+      email: "hi",
+      ref_id: "",
+      role: "number",
+      full_name: "string",
+      dni: "string",
+      phone: "string",
+      enebled: "string",
     },
     {
-      id: 2,
-      producto: "producto 2",
-      precio_consumidor: "2.00",
-      precio_distribuidor: "1.89",
-      descripcion: "descripcion del produto 2",
-    },
-    {
-      id: 3,
-      producto: "producto 3",
-      precio_consumidor: "2.00",
-      precio_distribuidor: "1.89",
-      descripcion: "descripcion del produto 3",
-    },
-    {
-      id: 1,
-      producto: "producto 4",
-      precio_consumidor: "2.00",
-      precio_distribuidor: "1.89",
-      descripcion: "descripcion del produto 4",
+      username: "hola",
+      email: "hi",
+      ref_id: "",
+      role: "number",
+      full_name: "string",
+      dni: "string",
+      phone: "string",
+      enebled: "string",
     },
   ];
 
@@ -103,7 +101,10 @@ const Distributors = () => {
 
   return (
     <>
-      <Table
+    {data.length === 0 ? (
+        <NoRecords title="Historial de ventas" />
+      ) : (
+        <Table
         columns={columns}
         data={data}
         showActions={true}
@@ -113,18 +114,22 @@ const Distributors = () => {
         onEdit={handleEdit}
         onDelete={handleDelete}
       />
+      )}
+      
       <Modal isOpen={isModalOpen} onClose={closeModal} title={modalTitle}>
-        <ProductForm
+        <DistributorForm
           defaultValues={
             selectedRecord || {
-              id: "",
-              producto: "",
-              precio_consumidor: "",
-              precio_distribuidor: "",
-              descripcion: "",
+              username: "",
+              email: "",
+              ref_id: 0,
+              role: 0,
+              full_name: "",
+              dni: "",
+              phone: "",
             }
           }
-          onSubmit={handleSaveCategory}
+          onSubmit={handleSaveDistributor}
         />
       </Modal>
       <Modal
@@ -142,6 +147,8 @@ const Distributors = () => {
           </button>
         </div>
       </Modal>
+       {/* si no hay datos mostrar 
+    <NoRecords title="Historial de ventas"/>  */}
     </>
   );
 };

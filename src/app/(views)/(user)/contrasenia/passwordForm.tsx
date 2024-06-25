@@ -53,7 +53,7 @@ const ChangePassword = () => {
       className="flex w-full flex-col gap-4 "
     >
       <div className="w-full">
-        <div className="relative w-full text-[#444]">
+        <div className="relative w-full text-[#666]">
           <label htmlFor="password">Contraseña actual:</label>
           <div className="relative">
             <button
@@ -67,7 +67,7 @@ const ChangePassword = () => {
               type={states.password ? "text" : "password"}
               id="password"
               placeholder="Ingresa tu contraseña actual"
-              className={`w-full text-[#666] bg-gray-50 border rounded outline-none px-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
+              className={`w-full text-[#666] bg-gray-50 border round mt-2 ed outline-none px-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
                 errors.password
                   ? "border-red-500 focus:ring focus:ring-red-200 focus:border-red-500"
                   : "border-gray-200 "
@@ -88,7 +88,7 @@ const ChangePassword = () => {
         )}
       </div>
       <div className="w-full">
-        <div className="relative w-full text-[#444]">
+        <div className="relative w-full text-[#666]">
           <label htmlFor="newPassword">Nueva contraseña:</label>
           <div className="relative">
             <button
@@ -102,7 +102,7 @@ const ChangePassword = () => {
               type={states.newPassword ? "text" : "password"}
               id="newPassword"
               placeholder="Ingresa tu nueva contraseña"
-              className={`w-full text-[#666] bg-gray-50 border rounded outline-none px-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
+              className={`w-full text-[#666] bg-gray-50 border round mt-2 ed outline-none px-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
                 errors.newPassword
                   ? "border-red-500 focus:ring focus:ring-red-200 focus:border-red-500"
                   : "border-gray-200 "
@@ -123,7 +123,7 @@ const ChangePassword = () => {
         )}
       </div>
       <div className="w-full">
-        <div className="relative w-full text-[#444]">
+        <div className="relative w-full text-[#666]">
           <label htmlFor="confirmPassword">Confirmar contraseña:</label>
           <div className="relative">
             <button
@@ -137,7 +137,7 @@ const ChangePassword = () => {
               type={states.confirmPassword ? "text" : "password"}
               id="confirmPassword"
               placeholder="Confirmar contraseña"
-              className={`w-full text-[#666] bg-gray-50 border rounded outline-none px-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
+              className={` mt-2 w-full text-[#666] bg-gray-50 border rounded outline-none px-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
                 errors.confirmPassword
                   ? "border-red-500 focus:ring focus:ring-red-200 focus:border-red-500"
                   : "border-gray-200 "
@@ -161,7 +161,7 @@ const ChangePassword = () => {
       <div className=" w-full flex flex-col gap-4">
         <button
           type="submit"
-          className="bg-[#277FF2] text-white mt-4 px-4 py-1 rounded hover:bg-[#4E98F9] transition-all duration-300 mx-auto "
+          className="bg-[#F2308B] text-white mt-4 px-4 py-1 rounded hover:bg-[#F06FAC] transition-all duration-300 mx-auto "
           disabled={loading}
         >
           {loading ? (

@@ -1,16 +1,25 @@
-'use client';
+"use client";
 import { useState } from "react";
 import Table from "@/app/components/common/table";
 import Modal from "@/app/components/common/modal";
 import CategoryForm from "@/app/components/forms/categoryForm";
 import { SubmitHandler } from "react-hook-form";
+import NoRecords from "@/app/components/common/noRecords";
+
+import { Bounce, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type Inputs = {
   id: string;
   category: string;
 };
 
-const Category = () => {
+const Platform = () => {
+  /* toast.success(message);
+    toast.error(message);
+    toast.warning(message);
+    toast.info(message); */
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
   const [selectedRecord, setSelectedRecord] = useState<Inputs | null>(null);
@@ -40,16 +49,7 @@ const Category = () => {
     { Header: "CATEGORIA", accessor: "category" },
   ];
 
-  const data = [
-    {
-      id: 1,
-      category: "novedades",
-    },
-    {
-      id: 2,
-      category: "pedido",
-    },
-  ];
+  const data: string[] = [];
 
   const handleEdit = (record: Inputs) => {
     setSelectedRecord(record);
@@ -74,7 +74,10 @@ const Category = () => {
   };
 
   return (
-      <div>
+    <>
+      {data.length === 0 ? (
+        <NoRecords title="Historial de ventas" />
+      ) : (
         <Table
           columns={columns}
           data={data}
@@ -85,29 +88,31 @@ const Category = () => {
           onEdit={handleEdit}
           onDelete={handleDelete}
         />
-        <Modal isOpen={isModalOpen} onClose={closeModal} title={modalTitle}>
-          <CategoryForm
-            defaultValues={selectedRecord || { id: "", category: "" }}
-            onSubmit={handleSaveCategory}
-          />
-        </Modal>
-        <Modal
-          isOpen={isDeleteModalOpen}
-          onClose={() => setIsDeleteModalOpen(false)}
-          title="Confirmar eliminación"
-        >
-          <div>
-            <p>¿Está seguro(a) de que quiere eliminar esta categoría?</p>
-            <button
-              onClick={handleDeleteConfirm}
-              className="bg-red-500 text-white mt-4 px-4 py-1 rounded"
-            >
-              Eliminar
-            </button>
-          </div>
-        </Modal>
+      )}
+
+      <Modal isOpen={isModalOpen} onClose={closeModal} title={modalTitle}>
+        <CategoryForm
+          defaultValues={selectedRecord || { id: "", category: "" }}
+          onSubmit={handleSaveCategory}
+        />
+      </Modal>
+      <Modal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        title="Confirmar eliminación"
+      >
+        <div>
+          <p>¿Está seguro(a) de que quiere eliminar esta categoría?</p>
+          <button
+            onClick={handleDeleteConfirm}
+            className="bg-red-500 text-white mt-4 px-4 py-1 rounded"
+          >
+            Eliminar
+          </button>
         </div>
+      </Modal>
+    </>
   );
 };
 
-export default Category;
+export default Platform;
