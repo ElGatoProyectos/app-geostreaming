@@ -21,6 +21,4 @@ export interface UserOutType extends UserInType {
 export interface UserUpdateInType extends UserInType {
   id: number;
   products?: ProductUpdateInType[];
-  created_at: string;
-  updated_at: string;
 }
