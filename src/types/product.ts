@@ -59,8 +59,6 @@ interface AccountUpdateInType {
   pin: string;
   numb_profiles: number;
   numb_days_duration: number;
-  created_at: string;
-  updated_at: string;
 }
 
 export interface ProductUpdateInType {
@@ -70,6 +68,4 @@ export interface ProductUpdateInType {
   accounts?: AccountUpdateInType[] | null;
   price_in_cents: number;
   price_distributor_in_cents: number;
-  created_at: string;
-  updated_at: string;
 }
