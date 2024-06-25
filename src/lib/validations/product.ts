@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const accountSchema = z.object({
+export const accountSchema = z.object({
   is_active: z.boolean(),
   email: z.string().email(),
   password: z.string(),
@@ -34,8 +34,6 @@ export function validateProduct(productInfo: unknown) {
 const productEditSchema = productSchema.extend({
   id: z.number(),
   platform_id: z.number(),
-  created_at: z.string(),
-  updated_at: z.string(),
   platform: platformSchema.extend({
     id: z.number(),
   }),
@@ -45,8 +43,6 @@ const productEditSchema = productSchema.extend({
         id: z.number().optional(),
         platform_id: z.number().optional(),
         product_id: z.number().optional(),
-        created_at: z.string(),
-        updated_at: z.string(),
       })
     )
     .optional()
