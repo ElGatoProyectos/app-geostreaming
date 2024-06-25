@@ -14,8 +14,6 @@ const UserSchema = z.object({
 
 const UserUpdateSchema = UserSchema.extend({
   id: z.number().int().positive(),
-  created_at: z.string(),
-  updated_at: z.string(),
 });
 
 export function validateUser(userInfo: unknown) {
