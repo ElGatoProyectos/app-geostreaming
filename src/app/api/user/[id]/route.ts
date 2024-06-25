@@ -37,7 +37,7 @@ export async function DELETE(
 ) {
   try {
     await userService.delete({ params });
-    return NextResponse.json({ message: "Delete product" });
+    return NextResponse.json({ message: "deleted user" });
   } catch (error: any) {
     return NextResponse.json(
       { error: "Error to delete user" },
