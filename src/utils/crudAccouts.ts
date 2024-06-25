@@ -11,7 +11,7 @@ interface AccountCreateProps {
   pin: string;
   numb_profiles: number;
   numb_days_duration: number;
-  status: string;
+  status?: "AVAILABLE" | "DELIVERED" | "PENDING";
   createdAt: string;
 }
 
