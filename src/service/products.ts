@@ -13,11 +13,7 @@ import { NextRequest } from "next/server";
 interface ProductModelType {
   getById: ({ productId }: { productId: number }) => Promise<any | null>;
   getAll: () => Promise<any[]>;
-  create: ({
-    platform,
-    accounts,
-    prices,
-  }: ProductInType) => Promise<ProductOutType>;
+  create: ({ platform, accounts }: ProductInType) => Promise<ProductOutType>;
   delete: ({ product_id }: { product_id: number }) => Promise<any | null>;
   update: ({
     product_id,
