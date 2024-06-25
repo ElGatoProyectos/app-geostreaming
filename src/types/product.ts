@@ -1,16 +1,11 @@
-interface AccountInType {
+export interface AccountInType {
   is_active: boolean;
   email: string;
   password: string;
   pin: string;
   numb_profiles: number;
   numb_days_duration: number;
-  status: string;
-}
-
-interface PriceInType {
-  role_id: number;
-  price: number;
+  status?: "AVAILABLE" | "DELIVERED" | "PENDING";
 }
 
 interface PlatformInType {
@@ -21,34 +16,23 @@ interface PlatformInType {
 export interface ProductInType {
   platform: PlatformInType;
   accounts?: AccountInType[];
-  prices: PriceInType[];
+  price_in_cents: number;
+  price_distributor_in_cents: number;
+}
+
+/* outtype */
+
+interface PlatformOutType extends PlatformInType {
+  id: number;
 }
 
 export interface AccountOutType {
   id: number;
   product_id: number;
   platform_id: number;
-  is_active: boolean;
-  email: string;
-  password: string;
-  pin: string;
-  numb_profiles: number;
-  numb_days_duration: number;
-  status: string;
-  createdAt: Date;
-}
-
-export interface PriceOutType {
-  id: number;
-  role_id: number;
-  price: number;
-  product_id: number;
-}
-
-interface PlatformOutType {
-  id: number;
-  name: string;
-  description: string;
+  status?: "AVAILABLE" | "DELIVERED" | "PENDING";
+  created_at: Date;
+  updated_at: Date;
 }
 
 export interface ProductOutType {
@@ -56,29 +40,27 @@ export interface ProductOutType {
   platform_id: number;
   platform: PlatformOutType;
   accounts?: AccountOutType[] | null;
-  prices: PriceOutType[];
-  createdAt: Date;
+  price_in_cents: number;
+  price_distributor_in_cents: number;
+  created_at: Date;
+  updated_at: Date;
 }
+
+/* UpdateInType */
 
 interface AccountUpdateInType {
   id?: number;
   product_id?: number;
   platform_id?: number;
+  status?: "AVAILABLE" | "DELIVERED" | "PENDING";
   is_active: boolean;
   email: string;
   password: string;
   pin: string;
   numb_profiles: number;
   numb_days_duration: number;
-  status: string;
-  createdAt: string;
-}
-
-export interface PriceUpdateInType {
-  id?: number;
-  role_id: number;
-  price: string | number;
-  product_id?: number;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface ProductUpdateInType {
@@ -86,6 +68,8 @@ export interface ProductUpdateInType {
   platform_id: number;
   platform: PlatformOutType;
   accounts?: AccountUpdateInType[] | null;
-  price: PriceUpdateInType[];
-  createdAt: string;
+  price_in_cents: number;
+  price_distributor_in_cents: number;
+  created_at: string;
+  updated_at: string;
 }
