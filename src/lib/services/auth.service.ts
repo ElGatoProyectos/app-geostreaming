@@ -15,15 +15,7 @@ class AuthService {
       authDTO.parse(data);
 
       if (role === "admin") {
-        const admin = await prisma.admin.findFirst({
-          where: { username: data.username },
-        });
-        if (!admin) return httpResponse.http401("Error in authentication");
-        return httpResponse.http200("Auth success!", {
-          id: admin.id,
-          full_name: admin.full_name,
-          role: "admin",
-        });
+        return httpResponse.http200("Auth success!");
       } else {
         const responseUser = await userService.findByUsername(role);
         if (!responseUser.ok)
