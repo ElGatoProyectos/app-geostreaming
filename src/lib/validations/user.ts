@@ -2,19 +2,20 @@ import { z } from "zod";
 
 const UserSchema = z.object({
   email: z.string().email(),
-  password: z.string(),
   ref_id: z.number().int().positive().optional().nullable(),
-  role_id: z.number().int().positive(),
+  role: z.enum(["USER", "DISTRIBUTOR"]).optional(),
   full_name: z.string(),
   dni: z.string().optional().nullable(),
   phone: z.string(),
-  balance: z.number().default(0.0),
+  balance_in_cents: z.number().default(0),
+  password: z.string(),
   enabled: z.enum(["y", "n"]).default("y"),
 });
 
 const UserUpdateSchema = UserSchema.extend({
   id: z.number().int().positive(),
-  products: z.array(z.any()).optional(),
+  created_at: z.string(),
+  updated_at: z.string(),
 });
 
 export function validateUser(userInfo: unknown) {
