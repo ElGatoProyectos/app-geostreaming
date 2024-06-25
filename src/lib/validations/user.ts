@@ -7,7 +7,6 @@ const UserSchema = z.object({
   full_name: z.string(),
   dni: z.string().optional().nullable(),
   phone: z.string(),
-  balance_in_cents: z.number().default(0),
   password: z.string(),
   enabled: z.enum(["y", "n"]).default("y"),
 });

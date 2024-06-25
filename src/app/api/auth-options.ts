@@ -17,6 +17,25 @@ export const authOptions = {
       async authorize(credentials) {
         if (!credentials) throw new Error("No credentials");
 
+        const adminFound = await prisma.admin.findUnique({
+          where: { email: credentials.email },
+        });
+
+        if (adminFound) {
+          const matchPassword = await bcrypt.compare(
+            credentials.password,
+            adminFound.password
+          );
+
+          if (!matchPassword) throw new Error("Wrong password");
+          await prisma.$disconnect();
+          return {
+            id: adminFound.id.toString(),
+            name: adminFound.full_name,
+            email: adminFound.email,
+            role: "ADMIN",
+          };
+        }
         const userFound = await prisma.user.findUnique({
           where: { email: credentials.email },
         });
@@ -34,6 +53,7 @@ export const authOptions = {
           id: userFound.id.toString(),
           name: userFound.full_name,
           email: userFound.email,
+          role: userFound.role,
         };
       },
     }),

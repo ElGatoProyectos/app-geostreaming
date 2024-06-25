@@ -1,7 +1,9 @@
 import prisma from "@/lib/prisma";
 import { validateAccount } from "@/lib/validations/account";
 import { validateBank } from "@/lib/validations/bank";
+import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
+import { authOptions } from "../auth-options";
 
 export async function GET() {
   try {
@@ -19,6 +21,10 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
+    const session = await getServerSession(authOptions);
+    if (session.user.role !== "ADMIN") {
+      return NextResponse.json({ error: "forbidden" }, { status: 500 });
+    }
     const accountInfo = await req.json();
     const validatedAccount = validateAccount(accountInfo);
     const newAccount = await prisma.account.create({

@@ -25,7 +25,7 @@ export default function Page() {
 
   return (
     <div>
-      <span>this is the dashboard user</span>
+      <span>this is the dashboard admi</span>
       <div>
         <h1>Banks</h1>
         <Button onClick={fetchData}>get banks</Button>

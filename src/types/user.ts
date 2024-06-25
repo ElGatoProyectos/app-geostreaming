@@ -7,7 +7,6 @@ export interface UserInType {
   dni?: string | null;
   phone: string;
   email: string;
-  balance_in_cents: number;
   password: string;
   enabled: string;
 }

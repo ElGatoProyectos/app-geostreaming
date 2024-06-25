@@ -1,6 +1,8 @@
 import prisma from "@/lib/prisma";
 import { validateUpdateAdmin } from "@/lib/validations/admin";
+import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
+import { authOptions } from "../../auth-options";
 
 export async function GET(
   _: NextRequest,
@@ -24,6 +26,10 @@ export async function PATCH(
   { params }: { params: { id: string } }
 ) {
   try {
+    const session = await getServerSession(authOptions);
+    if (session.user.role !== "ADMIN") {
+      return NextResponse.json({ error: "forbidden" }, { status: 500 });
+    }
     const admin_id = Number(params.id);
     const adminInfo = await req.json();
     const validatedAdmin = validateUpdateAdmin(adminInfo);
@@ -48,6 +54,10 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
+    const session = await getServerSession(authOptions);
+    if (session.user.role !== "ADMIN") {
+      return NextResponse.json({ error: "forbidden" }, { status: 500 });
+    }
     const admin_id = Number(params.id);
     await prisma.admin.delete({
       where: { id: admin_id },
