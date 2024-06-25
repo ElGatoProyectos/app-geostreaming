@@ -131,8 +131,28 @@ const users = [
   },
 ];
 
+const admin = [
+  {
+    email: "admin@test.com",
+    password: "123456789",
+    full_name: "admin joel",
+    phone: "555666111",
+  },
+];
+
 async function main() {
   console.log(`Start seeding...`);
+
+  const adminEncryptedPass = await Promise.all(
+    admin.map(async (admin) => {
+      const newPass = await bcrypt.hash(admin.password, 10);
+      return { ...admin, password: newPass };
+    })
+  );
+
+  await prisma.admin.createMany({
+    data: adminEncryptedPass,
+  });
 
   const usersEncryptedPass = await Promise.all(
     users.map(async (user) => {
