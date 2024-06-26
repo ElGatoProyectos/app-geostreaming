@@ -13,11 +13,13 @@ export interface UserInType {
 
 export interface UserOutType extends UserInType {
   id: number;
+  role: "USER" | "DISTRIBUTOR";
   created_at: Date;
   updated_at: Date;
 }
 
 export interface UserUpdateInType extends UserInType {
   id: number;
+  role: "USER" | "DISTRIBUTOR";
   products?: ProductUpdateInType[];
 }
