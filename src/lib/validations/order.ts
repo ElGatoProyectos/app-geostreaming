@@ -1,11 +1,9 @@
 import { z } from "zod";
 
 const orderSchema = z.object({
-  ref_id: z.number().optional().nullable(),
-  role: z.enum(["USER", "DISTRIBUTOR"]),
   quantity: z.number().min(1),
-  user_id: z.number(),
-  account_id: z.number(),
+  user_id: z.number().positive(),
+  product_id: z.number().positive(),
 });
 
 export function validateOrder(orderInfo: unknown) {
