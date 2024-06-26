@@ -33,6 +33,7 @@ export class ProductModel {
     accounts,
     price_distributor_in_cents,
     price_in_cents,
+    status,
   }: ProductInType): Promise<ProductOutType> => {
     const newPlatform = await prismaClient.platform.create({
       data: platform,
@@ -43,6 +44,7 @@ export class ProductModel {
         platform_id: newPlatform.id,
         price_in_cents,
         price_distributor_in_cents,
+        status: status,
       },
     });
 
@@ -126,6 +128,7 @@ export class ProductModel {
       price_distributor_in_cents,
       price_in_cents,
       accounts: updateAccounts,
+      status,
     } = product_info;
 
     const Accounts = await prismaClient.product.findMany({
@@ -156,6 +159,7 @@ export class ProductModel {
       data: {
         price_distributor_in_cents,
         price_in_cents,
+        status,
         platform: {
           update: {
             where: { id: platform.id },
