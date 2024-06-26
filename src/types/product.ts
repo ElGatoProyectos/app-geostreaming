@@ -5,10 +5,10 @@ export interface AccountInType {
   pin: string;
   numb_profiles: number;
   numb_days_duration: number;
-  status?: "AVAILABLE" | "DELIVERED" | "PENDING";
 }
 
 interface PlatformInType {
+  img_url: string;
   name: string;
   description: string;
 }
@@ -16,6 +16,7 @@ interface PlatformInType {
 export interface ProductInType {
   platform: PlatformInType;
   accounts?: AccountInType[];
+  status?: "IMMEDIATE_DELIVERY" | "UPON_REQUEST";
   price_in_cents: number;
   price_distributor_in_cents: number;
 }
@@ -30,7 +31,6 @@ export interface AccountOutType {
   id: number;
   product_id: number;
   platform_id: number;
-  status?: "AVAILABLE" | "DELIVERED" | "PENDING";
   created_at: Date;
   updated_at: Date;
 }
@@ -42,6 +42,7 @@ export interface ProductOutType {
   accounts?: AccountOutType[] | null;
   price_in_cents: number;
   price_distributor_in_cents: number;
+  status: "IMMEDIATE_DELIVERY" | "UPON_REQUEST";
   created_at: Date;
   updated_at: Date;
 }
@@ -52,7 +53,6 @@ interface AccountUpdateInType {
   id?: number;
   product_id?: number;
   platform_id?: number;
-  status?: "AVAILABLE" | "DELIVERED" | "PENDING";
   is_active: boolean;
   email: string;
   password: string;
@@ -68,4 +68,5 @@ export interface ProductUpdateInType {
   accounts?: AccountUpdateInType[] | null;
   price_in_cents: number;
   price_distributor_in_cents: number;
+  status: "IMMEDIATE_DELIVERY" | "UPON_REQUEST";
 }
