@@ -48,8 +48,18 @@ export class UserModel {
       );
     }
 
+    const curatedUser = {
+      email: user_info.email,
+      ref_id: user_info.ref_id,
+      role: user_info.role,
+      full_name: user_info.full_name,
+      dni: user_info.dni,
+      phone: user_info.phone,
+      password: user_info.password,
+    };
+
     const newUser = await prisma.user.create({
-      data: user_info,
+      data: curatedUser,
     });
 
     const formatBalance = parseFloat(newUser.balance_in_cents.toString());
@@ -82,9 +92,28 @@ export class UserModel {
     user_info: UserUpdateInType;
   }) => {
     const { id, products, ...rest } = user_info;
+
+    const userFound = await prisma.user.findUnique({
+      where: { id },
+    });
+
+    if (!userFound) {
+      throw NextResponse.json({ message: "User not exist" }, { status: 400 });
+    }
+
+    const curatedUser = {
+      email: rest.email,
+      ref_id: rest.ref_id,
+      role: rest.role,
+      full_name: rest.full_name,
+      dni: rest.dni,
+      phone: rest.phone,
+      password: rest.password,
+    };
+
     const userUpdated = await prisma.user.update({
       where: { id: user_id },
-      data: rest,
+      data: curatedUser,
     });
     await prisma.$disconnect();
 
