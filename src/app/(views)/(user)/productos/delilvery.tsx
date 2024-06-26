@@ -1,11 +1,11 @@
 'use client';
-import { DproductoPedido } from "@/data/DproductoPedido";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ContainerCard from "@/app/components/common/containerCard";
 import CardItem from "@/app/components/common/cardItem";
 import Modal from "@/app/components/common/modal";
 import ProductForm from "./ProductForm";
 import { SubmitHandler } from "react-hook-form";
+import axios from  'axios';
 
 interface ProductInfo {
   title: string;
@@ -15,7 +15,22 @@ type Inputs = {
   email: string;
 };
 
-const delilvery = () => {
+type Product = {
+  id: number;
+  platform_id: number;
+  price_in_cents: number;
+  price_distributor_in_cents: number;
+  inOnDemand: boolean;
+  platform:{
+    img_url: string;
+    name:string;
+    description: string;
+  }
+}
+
+const Delivery = () => {
+
+  const [products, setProducts] = useState<Product[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
   const [modalInfo, setModalInfo] = useState<ProductInfo | null>(null);
@@ -30,6 +45,22 @@ const delilvery = () => {
     setIsModalOpen(false);
   };
 
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get("/api/product", {
+          params: {
+            status: 'UPON_REQUEST'
+          }
+        });
+        setProducts(response.data.products);
+      } catch (error) {
+        console.error('Error fetching products:', error)
+      }
+    }
+    fetchProducts();
+  }, []);
+
   const handleFormSubmit: SubmitHandler<Inputs> = async (data) => {
     // Lógica 
     console.log(data);
@@ -38,15 +69,15 @@ const delilvery = () => {
   return (
     <div className="w-full">
       <ContainerCard title="Bajo pedido (1 hora)">
-        {DproductoPedido.map((item, index) => (
+        {products.map((product, index) => (
           <CardItem
           key={index}
-          title={item.title}
-          url={item.url}
-          description={item.description}
-          consumer_price={item.consumer_price}
-          distributors_price={item.distributors_price}
-          btn={item.btn}
+          title={product.platform.name} /* name plataforma */
+          url={product.platform.img_url}
+          description={product.platform.description} /* description plataforma */
+          price_in_cents={product.price_in_cents}
+          price_distributor_in_cents={product.price_distributor_in_cents}
+          btn={"Comprar"}
           onOpenModal={handleOpenModal}
           />
         ))}
@@ -66,4 +97,4 @@ const delilvery = () => {
   );
 };
 
-export default delilvery;
+export default Delivery;

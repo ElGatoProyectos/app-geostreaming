@@ -71,6 +71,7 @@ const initialProducts = [
   {
     price_in_cents: 2000,
     price_distributor_in_cents: 550,
+    status: "IMMEDIATE_DELIVERY",
     platform: {
       img_url:
         "https://www.infobae.com/new-resizer/n1UXX1TKux_6oeaGxLLs7cnLnno=/1200x675/filters:format(webp):quality(85)/cloudfront-us-east-1.images.arcpublishing.com/infobae/5EGT4P4UKRGAZPDR52FKJJW4YU.png",
@@ -100,6 +101,7 @@ const initialProducts = [
   {
     price_in_cents: 3500,
     price_distributor_in_cents: 750,
+    status: "IMMEDIATE_DELIVERY",
     platform: {
       img_url:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Amazon_Prime_Video_blue_logo_2.svg/2560px-Amazon_Prime_Video_blue_logo_2.svg.png",

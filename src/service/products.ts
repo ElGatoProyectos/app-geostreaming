@@ -8,6 +8,7 @@ import {
   ProductUpdateInType,
 } from "@/types/product";
 
+
 import { NextRequest } from "next/server";
 
 interface ProductModelType {
@@ -22,6 +23,7 @@ interface ProductModelType {
     product_id: number;
     product_info: ProductUpdateInType;
   }) => Promise<any>;
+  getAllByStatus: (productStatus: "IMMEDIATE_DELIVERY" | "UPON_REQUEST") => Promise<any[]>;
 }
 
 export class ProductController {
@@ -53,6 +55,14 @@ export class ProductController {
       return console.error("Products not found", e);
     }
   };
+  getAllByStatus = async (productStatus: "IMMEDIATE_DELIVERY" | "UPON_REQUEST") => {
+    try {
+      const products = await this.productModel.getAllByStatus(productStatus);
+      return products;
+    } catch (e) {
+      throw new Error(`Products with status ${productStatus} not found}`);
+    }
+  }
 
   create = async (req: NextRequest) => {
     const productInfo = await req.json();
@@ -104,5 +114,7 @@ export class ProductController {
     } catch (e) {
       throw new Error("Product not update");
     }
+
+  
   };
 }
