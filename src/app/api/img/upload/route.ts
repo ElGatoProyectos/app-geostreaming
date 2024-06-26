@@ -6,6 +6,7 @@ export async function POST(request: NextRequest) {
   try {
     const datafile = await request.formData();
     const file = datafile.get("file") as File;
+    const routeFile = datafile.get("route") as File;
 
     if (!file) {
       return NextResponse.json(
@@ -17,7 +18,7 @@ export async function POST(request: NextRequest) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    const filePath = path.join(process.cwd(), "public/platforms", file.name);
+    const filePath = path.join(process.cwd(), `public/${routeFile}`, file.name);
     await writeFile(filePath, buffer);
 
     const filePathToSave = `/platforms/${file.name}`;
