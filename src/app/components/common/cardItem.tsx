@@ -6,8 +6,8 @@ interface Props {
   url: string;
   description?: string;
   type?: string;
-  consumer_price?: string;
-  distributors_price?: string;
+  price_in_cents?: number;
+  price_distributor_in_cents?: number;
   account_number?: string;
   account_holder?: string;
   btn: string;
@@ -56,11 +56,11 @@ const CardItem: React.FC<Props> = (props) => {
             : `Nº. ${props.account_number}`}
         </p>
         <span
-          className={`text-[#277FF2] ${props.consumer_price ? "text-xl" : ""} `}
+          className={`text-[#277FF2] ${props.price_in_cents ? "text-xl" : ""} `}
         >
           {/* validar rol de consumidor o distribuidor */}
-          {props.consumer_price
-            ? `$ ${props.consumer_price}`
+          {props.price_in_cents
+            ? `$ ${props.price_in_cents}`
             : `${props.account_holder?.toUpperCase()}`}
         </span>
         {props.type && (

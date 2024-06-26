@@ -10,6 +10,7 @@ import { Bounce, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 type Inputs = {
+  img_url: string;
   name: string;
   description: string;
 };
@@ -59,6 +60,8 @@ const Platform = () => {
   };
 
   const handleAdd = () => {
+    //logica para agregar plataforma
+
     setSelectedRecord(null);
     setModalTitle("Agregar plataforma");
     setIsModalOpen(true);
@@ -88,7 +91,7 @@ const Platform = () => {
       />
       <Modal isOpen={isModalOpen} onClose={closeModal} title={modalTitle}>
         <PlatformForm
-          defaultValues={selectedRecord || { name: "", description: "" }}
+          defaultValues={selectedRecord || { img_url: "", name: "", description: "" }}
           onSubmit={handleSavePlatform}
         />
       </Modal>

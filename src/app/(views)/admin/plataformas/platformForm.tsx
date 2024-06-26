@@ -7,6 +7,7 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { PlatformFormSchema } from "@/app/schemas/platformFormSchema";
 
 type Inputs = {
+  img_url: string
   name: string;
   description: string;
 };
@@ -54,8 +55,14 @@ const PlatformForm: React.FC<PlatformFormProps> = ({
       className="flex w-full flex-col gap-4"
     >
       <InputField
+        id="img_url"
+        label="Imagen (URL)"/* x ahora creo*/
+        register={register("img_url")}
+        error={errors.img_url}
+      ></InputField>
+      <InputField
         id="name"
-        label="ID"
+        label="Plataforma"
         register={register("name")}
         error={errors.name}
       ></InputField>
