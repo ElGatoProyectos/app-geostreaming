@@ -1,6 +1,13 @@
-import Index from "./index"
+import { Suspense, lazy } from "react";
+import Loading from "@/app/loading";
+const Index = lazy(() => import("./index"));
+
 export default function Home() {
-  return <div>
-    <Index></Index>
-  </div>;
+  return (
+    <Suspense fallback={<Loading />}>
+      <div>
+        <Index></Index>
+      </div>
+    </Suspense>
+  );
 }

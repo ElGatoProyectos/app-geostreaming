@@ -6,7 +6,7 @@ const Footer = () => {
     <div className="bg-[#111111] ">
       <div className="max-w-[1440px] mx-auto text-sm text-white p-8 md:px-10 flex flex-col md:flex-row  gap-4 justify-center items-center text-center md:justify-between ">
         <span>
-          © Copyright <strong>Geosteaming 2024.</strong> Todos los derechos
+          © Copyright <strong>Geostreaming 2024.</strong> Todos los derechos
           reservados
         </span>
         <div className="w-fit flex gap-2 ">

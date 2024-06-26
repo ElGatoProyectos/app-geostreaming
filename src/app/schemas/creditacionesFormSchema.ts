@@ -1,0 +1,13 @@
+import { z } from 'zod';
+
+
+export const creditacionesFormSchema = z.object({
+    voucher_number: z.string()
+        .min(1, { message: 'El campo número de comprobante es requerido' }),
+    value: z.string()
+        .min(1, { message: 'El campo valor es requerido' })
+        .refine(value => !isNaN(Number(value)), { message: 'El campo valor debe ser numérico' }),
+    date: z.string()
+        .min(1, { message: 'El campo fecha es requerido' })
+        .refine(date => !isNaN(Date.parse(date)), { message: 'El campo fecha debe ser una fecha válida' }),
+});
