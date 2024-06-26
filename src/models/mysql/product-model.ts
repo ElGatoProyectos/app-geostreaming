@@ -28,16 +28,18 @@ export class ProductModel {
     return products;
   };
 
-  static getAllByStatus = async ( productStatus: "IMMEDIATE_DELIVERY" | "UPON_REQUEST" ) => {
+  static getAllByStatus = async (
+    productStatus: "IMMEDIATE_DELIVERY" | "UPON_REQUEST"
+  ) => {
     const products = await prismaClient.product.findMany({
       where: {
-        status: productStatus
+        status: productStatus,
       },
-      include: { accounts: true, platform: true }
+      include: { accounts: true, platform: true },
     });
     await prismaClient.$disconnect();
     return products;
-  }
+  };
 
   static create = async ({
     platform,
@@ -182,13 +184,13 @@ export class ProductModel {
         },
         accounts: persistedAccounts
           ? {
-            update: persistedAccounts.map(
-              ({ id, platform_id, product_id, ...rest }: AccountOutType) => ({
-                where: { id },
-                data: rest,
-              })
-            ),
-          }
+              update: persistedAccounts.map(
+                ({ id, platform_id, product_id, ...rest }: AccountOutType) => ({
+                  where: { id },
+                  data: rest,
+                })
+              ),
+            }
           : undefined,
       },
       include: { platform: true, accounts: true },

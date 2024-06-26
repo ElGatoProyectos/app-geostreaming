@@ -1,4 +1,4 @@
-import { productFormSchema } from './../../schemas/productFormSchema';
+import { productFormSchema } from "./../../schemas/productFormSchema";
 import { ProductController } from "@/service/products";
 import { ProductModel } from "@/models/mysql/product-model";
 import { NextRequest, NextResponse } from "next/server";
@@ -9,31 +9,25 @@ const productController = new ProductController({ productModel: ProductModel });
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
-  const status = searchParams.get('status') as "IMMEDIATE_DELIVERY" | "UPON_REQUEST" | null;
+  const status = searchParams.get("status") as
+    | "IMMEDIATE_DELIVERY"
+    | "UPON_REQUEST"
+    | null;
 
-    try {
-      let products;
-      if (status) {
-        products = await productController.getAllByStatus(status);
-      } else {
-        products = await productController.getAll();
-      }
-      return NextResponse.json({ products });
-    } catch (error: any) {
-      return NextResponse.json(
-        { error: "Error fetching products" },
-        { status: 500 }
-      );
+  try {
+    let products;
+    if (status) {
+      products = await productController.getAllByStatus(status);
+    } else {
+      products = await productController.getAll();
     }
-    /*   try {
-    const products = await productController.getAll();
     return NextResponse.json({ products });
   } catch (error: any) {
     return NextResponse.json(
-      { error: "Error to get Products" },
+      { error: "Error fetching products" },
       { status: 500 }
     );
-  } */
+  }
 }
 
 export async function POST(req: NextRequest) {
