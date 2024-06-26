@@ -18,65 +18,138 @@ export async function POST(req: NextRequest) {
     const orderInfo = await req.json();
     const validatedOrder = validateOrder(orderInfo);
 
-    const account = await prisma.account.findUnique({
-      where: { id: validatedOrder.account_id },
-      select: {
-        is_active: true,
-        product: {
-          select: { price_distributor_in_cents: true, price_in_cents: true },
+    let product;
+    try {
+      product = await prisma.product.findUnique({
+        where: { id: validatedOrder.product_id },
+        select: {
+          accounts: true,
+          price_distributor_in_cents: true,
+          price_in_cents: true,
         },
-      },
-    });
+      });
 
-    const user = await prisma.user.findUnique({
-      where: { id: validatedOrder.user_id },
-      select: { balance_in_cents: true },
-    });
-
-    if (!account) {
+      if (!product) {
+        return NextResponse.json(
+          { error: "Error: product not exist" },
+          { status: 500 }
+        );
+      }
+    } catch (e) {
       return NextResponse.json(
-        { error: "Error to account not exist" },
+        { error: "Error fetching product" },
         { status: 500 }
       );
     }
 
-    if (!user) {
+    let user;
+    try {
+      user = await prisma.user.findUnique({
+        where: { id: validatedOrder.user_id },
+        select: { balance_in_cents: true, role: true, ref_id: true },
+      });
+
+      if (!user) {
+        return NextResponse.json(
+          { error: "Error: user not exist" },
+          { status: 500 }
+        );
+      }
+    } catch (e) {
       return NextResponse.json(
-        { error: "Error to user not exist" },
+        { error: "Error fetching user" },
         { status: 500 }
       );
     }
 
-    const { quantity, account_id, user_id, role } = validatedOrder;
+    const accountNotActive = product.accounts.find((user) => !user.is_active);
 
-    const {
-      product: { price_distributor_in_cents, price_in_cents },
-    } = account;
+    if (!accountNotActive) {
+      return NextResponse.json(
+        { error: "No accounts for sale" },
+        { status: 500 }
+      );
+    }
+
+    const { price_distributor_in_cents, price_in_cents } = product;
+    const { quantity, user_id, product_id } = validatedOrder;
 
     let newBalanceInCents;
-    if (role === "DISTRIBUTOR") {
+    if (user.role === "DISTRIBUTOR") {
+      if (price_distributor_in_cents * quantity > user.balance_in_cents) {
+        return NextResponse.json(
+          { error: "Insufficient balance" },
+          { status: 500 }
+        );
+      }
       newBalanceInCents =
         user.balance_in_cents - price_distributor_in_cents * quantity;
-    }
-    if (role === "USER") {
+    } else if (user.role === "USER") {
+      if (price_in_cents * quantity > user.balance_in_cents) {
+        return NextResponse.json(
+          { error: "Insufficient balance" },
+          { status: 500 }
+        );
+      }
       newBalanceInCents = user.balance_in_cents - price_in_cents * quantity;
     }
 
-    await prisma.account.update({
-      where: { id: account_id },
-      data: { is_active: true },
-    });
+    try {
+      await prisma.account.update({
+        where: { id: accountNotActive.id },
+        data: { is_active: true, user_id: user_id },
+      });
+    } catch (e) {
+      return NextResponse.json(
+        { error: "Error updating account" },
+        { status: 500 }
+      );
+    }
 
-    await prisma.user.update({
-      where: { id: user_id },
-      data: { balance_in_cents: newBalanceInCents },
-    });
+    try {
+      await prisma.user.update({
+        where: { id: user_id },
+        data: { balance_in_cents: newBalanceInCents },
+      });
+    } catch (e) {
+      return NextResponse.json(
+        { error: "Error updating user balance" },
+        { status: 500 }
+      );
+    }
 
-    const newOrder = await prisma.order.create({
-      data: validatedOrder,
-    });
+    const dataOrder = {
+      quantity,
+      user_id,
+      role: user.role,
+      ref_id: user.ref_id,
+      account_id: accountNotActive.id,
+      product_id,
+    };
 
-    return NextResponse.json(newOrder);
+    try {
+      const newOrder = await prisma.order.create({
+        data: dataOrder,
+        select: {
+          account: true,
+          id: true,
+          quantity: true,
+          role: true,
+          ref_id: true,
+        },
+      });
+
+      return NextResponse.json({
+        ...newOrder,
+        price_in_cents: product.price_in_cents,
+        price_distributor_in_cents: product.price_distributor_in_cents,
+      });
+    } catch (e) {
+      return NextResponse.json(
+        { error: "Error creating order" },
+        { status: 500 }
+      );
+    }
   } catch (e) {
     return NextResponse.json(
       { error: "Error to create order" },
