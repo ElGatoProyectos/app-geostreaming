@@ -30,7 +30,7 @@ const InputField: React.FC<InputFieldProps> = ({
             placeholder={placeholder}
             disabled={isDisabled}
             spellCheck="true"
-            className={`w-full text-[#666] bg-gray-50 border rounded outline-none px-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
+            className={`w-full text-[#666] bg-gray-10 border rounded outline-none px-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
               error
                 ? "border-red-500 focus:ring focus:ring-red-200 focus:border-red-500"
                 : "border-gray-200 "

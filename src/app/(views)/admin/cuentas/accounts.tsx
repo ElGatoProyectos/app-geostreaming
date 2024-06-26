@@ -71,10 +71,7 @@ const Account = () => {
 
   return (
     <div>
-      {data.length === 0 ? (
-        <NoRecords title="Historial de ventas" />
-      ) : (
-        <Table
+      <Table
         columns={columns}
         data={data}
         showActions={true}
@@ -84,8 +81,7 @@ const Account = () => {
         onEdit={handleEdit}
         onDelete={handleDelete}
       />
-      )}
-      
+
       <Modal isOpen={isModalOpen} onClose={closeModal} title={modalTitle}>
         <AccountForm
           defaultValues={
@@ -109,8 +105,6 @@ const Account = () => {
           </button>
         </div>
       </Modal>
-      {/* si no hay datos mostrar 
-    <NoRecords title="Historial de ventas"/>  */}
     </div>
   );
 };

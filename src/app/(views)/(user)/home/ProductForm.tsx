@@ -1,11 +1,11 @@
-'use client';
+"use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import InputField from "@/app/components/forms/inputField";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
-import { creditacionesFormSchema } from "@/app/schemas/creditacionesFormSchema";
+import { AccountFormSchema } from "@/app/schemas/accountFormSchema";
 type Inputs = {
   email: string;
 };
@@ -19,7 +19,10 @@ interface CreditacionesProps {
   onSubmit: SubmitHandler<Inputs>;
 }
 
-const creditacionesForm: React.FC<CreditacionesProps> = ({ info, onSubmit }) => {
+const creditacionesForm: React.FC<CreditacionesProps> = ({
+  info,
+  onSubmit,
+}) => {
   const [loading, setLoading] = useState(false);
 
   const {
@@ -28,7 +31,7 @@ const creditacionesForm: React.FC<CreditacionesProps> = ({ info, onSubmit }) => 
     formState: { errors },
     reset,
   } = useForm<Inputs>({
-    resolver: zodResolver(creditacionesFormSchema),
+    resolver: zodResolver(AccountFormSchema),
   });
 
   const handleFormSubmit: SubmitHandler<Inputs> = async (data) => {
@@ -36,9 +39,9 @@ const creditacionesForm: React.FC<CreditacionesProps> = ({ info, onSubmit }) => 
 
     try {
       await onSubmit(data);
-      reset(); 
+      reset();
     } catch (error) {
-      console.error("Error al registrar el depósito:", error);
+      console.error("Error al registrar:", error);
     } finally {
       setLoading(false);
     }
@@ -49,16 +52,25 @@ const creditacionesForm: React.FC<CreditacionesProps> = ({ info, onSubmit }) => 
       className="flex w-full flex-col gap-4"
     >
       {info.numberAccount == null ? (
-          <div className="flex flex-col items-center justify-center gap-4">
-            <img className="h-16 w-16 object-contain" src={info.url} alt={info.title} />
-            <h2 className="font-semibold">{info.title}</h2>
-          </div>
-      ): (
-        <div> <h2 className="font-semibold">{info.title}</h2>
-      <p className=""><span className="font-semibold">Cuenta: </span>{info.numberAccount}</p></div>
+        <div className="flex flex-col items-center justify-center gap-4">
+          <img
+            className="h-16 w-16 object-contain"
+            src={info.url}
+            alt={info.title}
+          />
+          <h2 className="font-semibold">{info.title}</h2>
+        </div>
+      ) : (
+        <div>
+          {" "}
+          <h2 className="font-semibold">{info.title}</h2>
+          <p className="">
+            <span className="font-semibold">Cuenta: </span>
+            {info.numberAccount}
+          </p>
+        </div>
       )}
-      
-      
+
       <InputField
         id="email"
         label="Correo electrónico"
@@ -67,7 +79,6 @@ const creditacionesForm: React.FC<CreditacionesProps> = ({ info, onSubmit }) => 
         error={errors.email}
         type="email"
       />
-     
 
       <div className=" w-full flex flex-col gap-4">
         <button

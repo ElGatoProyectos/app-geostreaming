@@ -7,7 +7,7 @@ import { SubmitHandler } from "react-hook-form";
 
 type InputsPersonal = {
   username: string;
-  name: string;
+  full_name: string;
   email: string;
   phone: string;
   acreditaciones: string;
@@ -16,26 +16,26 @@ type InputsPersonal = {
 type InputsBank = {
   bank: string;
   number: string;
-  owner: string;
+  name: string;
   type: string;
 };
 
 const profile = () => {
   const data = 
     {
-      username: "user 1",
-      name: "name",
+      username: "user1",
+      full_name: "name",
       email: "email@example.com",
       phone: "999999999",
       acreditaciones: "prueba",
-      avatar: "url",
+      avatar: "/user.jpg",
     };
   
   const dataBank = 
     {
       bank: "banco prueba",
       number: "",
-      owner: "",
+      name: "",
       type: "",
     };
 
@@ -52,13 +52,14 @@ const profile = () => {
         <UserForm
           defaultValues={ 
             {username: data.username,
-              name: data.name,
+              full_name: data.full_name,
               email: data.email,
               phone: data.phone,
               acreditaciones: data.acreditaciones,
-              avatar:data.avatar,
+              avatar: '',
             }
           }
+          avatar={data.avatar}
           onSubmit={handleSavePersonal}
         />
       </ContainerCard2>
@@ -68,7 +69,7 @@ const profile = () => {
           defaultValues={{
             bank: dataBank.bank,
             number: dataBank.number,
-            owner: dataBank.owner,
+            name: dataBank.name,
             type: dataBank.type,
           }}
           onSubmit={handleSaveBank}

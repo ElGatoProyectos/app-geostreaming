@@ -8,6 +8,7 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { creditacionesFormSchema } from "@/app/schemas/creditacionesFormSchema";
 type Inputs = {
   voucher_number: string;
+  voucher_image: string;
   value: string;
   date: string;
 };
@@ -73,6 +74,26 @@ const creditacionesForm: React.FC<CreditacionesProps> = ({ info, onSubmit }) => 
         error={errors.date}
         type="date"
       />
+       <div>
+        <label htmlFor="voucher_image" className="text-[#444]">
+          Foto del comprobante
+        </label>
+        <input
+          id="voucher_image"
+          type="file"
+          className={`w-full text-[#666] bg-gray-100 border rounded outline-none pr-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
+            errors.voucher_image
+              ? "border-red-500 focus:ring focus:ring-red-200 focus:border-red-500"
+              : "border-gray-200 "
+          }`}
+          {...register("voucher_image")}
+        />
+        {errors.voucher_image && (
+          <p className="text-red-500 text-sm font-medium mt-1">
+            {errors.voucher_image?.message}
+          </p>
+        )}
+      </div>
 
       <div className=" w-full flex flex-col gap-4">
         <button

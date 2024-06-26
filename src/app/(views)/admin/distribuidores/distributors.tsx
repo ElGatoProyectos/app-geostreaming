@@ -33,10 +33,10 @@ const Distributors = () => {
   const handleSaveDistributor: SubmitHandler<Inputs> = async (data) => {
     if (selectedRecord) {
       // Lógica para editar
-      console.log("Editar categoría:", data);
+      console.log("Editar distribuidor:", data);
     } else {
       // Lógica para agregar
-      console.log("Agregar categoría:", data);
+      console.log("Agregar distribuidor:", data);
     }
     closeModal();
   };
@@ -52,30 +52,8 @@ const Distributors = () => {
     { Header: "Celular", accessor: "phone" },
     { Header: "Activo", accessor: "enebled" },
   ];
-  /* const data: string[] = []; */
 
-  const data = [
-    {
-      username: "hola",
-      email: "hi",
-      ref_id: "",
-      role: "number",
-      full_name: "string",
-      dni: "string",
-      phone: "string",
-      enebled: "string",
-    },
-    {
-      username: "hola",
-      email: "hi",
-      ref_id: "",
-      role: "number",
-      full_name: "string",
-      dni: "string",
-      phone: "string",
-      enebled: "string",
-    },
-  ];
+  const data: string[] = [];
 
   const handleEdit = (record: Inputs) => {
     setSelectedRecord(record);
@@ -101,10 +79,7 @@ const Distributors = () => {
 
   return (
     <>
-    {data.length === 0 ? (
-        <NoRecords title="Historial de ventas" />
-      ) : (
-        <Table
+      <Table
         columns={columns}
         data={data}
         showActions={true}
@@ -114,8 +89,7 @@ const Distributors = () => {
         onEdit={handleEdit}
         onDelete={handleDelete}
       />
-      )}
-      
+
       <Modal isOpen={isModalOpen} onClose={closeModal} title={modalTitle}>
         <DistributorForm
           defaultValues={
@@ -138,7 +112,7 @@ const Distributors = () => {
         title="Confirmar eliminación"
       >
         <div>
-          <p>¿Está seguro(a) de que quiere eliminar este producto?</p>
+          <p>¿Está seguro(a) de que quiere eliminar este distribuidor?</p>
           <button
             onClick={handleDeleteConfirm}
             className="bg-red-500 text-white mt-4 px-4 py-1 rounded"
@@ -147,8 +121,6 @@ const Distributors = () => {
           </button>
         </div>
       </Modal>
-       {/* si no hay datos mostrar 
-    <NoRecords title="Historial de ventas"/>  */}
     </>
   );
 };

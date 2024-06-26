@@ -53,11 +53,11 @@ const home = () => {
 
   return (
     <>
-      <div className="grid grid-cols-2 2xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 gap-6">
         {infoCards.map((card, index) => (
           <div
             key={index}
-            className="w-full rounded-lg bg-white p-6 flex items-start justify-between text-[#888] gap-4 shadow-box hover:-translate-y-2 transition-all duration-500 "
+            className="w-full rounded-lg bg-white p-6 flex items-start justify-between text-[#888] gap-2 shadow-box hover:-translate-y-2 transition-all duration-500 "
           >
             <div className="">
               <h2 className="capitalize mb-4 text-xl">{card.title}</h2>
@@ -75,117 +75,128 @@ const home = () => {
         ))}
       </div>
       {/* tops */}
-      <div className="mt-6 grid md:grid-cols-2 gap-6">
+      <div className="mt-6 grid md:grid-cols-2 xl:grid-cols-2 lg:grid-cols-1 gap-6">
         {/* productos */}
         <div className="w-full rounded-lg bg-white p-6  shadow-box  transition-all duration-500">
           <h2 className=" text-xl capitalize mb-4 text-[#444] font-medium">
-            Top 5 de productos más vendidos
+            Top 5 productos más vendidos
           </h2>
-          <table className="table-auto w-full rounded-md">
-            <thead className="bg-[#F3F6F9] font-medium text-[#888] text-sm">
-              <tr>
-                <td className="p-2">N</td>
-                <td className="p-2">Producto</td>
-                <td className="p-2">Cantidad</td>
-              </tr>
-            </thead>
-            <tbody>
-              {topProducts.map((product, index) => (
-                <tr className="text  text-[#666]">
-                  <td className="p-2">{index + 1}</td>
-                  <td className="p-2">{product.name}</td>
-                  <td className="p-2">{product.cantidad}</td>
+          <div className="overflow-x-auto">
+            <table className="w-full table-auto">
+              <thead className="bg-[#F3F6F9] font-medium text-[#888] text-sm">
+                <tr>
+                  <th className="p-2">N</th>
+                  <th className="p-2">Producto</th>
+                  <th className="p-2 text-center">Cantidad</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {topProducts.map((product, index) => (
+                  <tr className="text  text-[#666]">
+                    <td className="p-2">{index + 1}</td>
+                    <td className="p-2">{product.name}</td>
+                    <td className="p-2 text-center">{product.cantidad}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
         {/* bancos */}
         <div className="w-full rounded-lg bg-white p-6  shadow-box  transition-all duration-500">
           <h2 className=" text-xl capitalize mb-4 text-[#444] font-medium">
-            Top 5 de Bancos más usados
+            Top 5 Bancos más usados
           </h2>
-          <table className="table-auto w-full rounded-md">
-            <thead className="bg-[#F3F6F9] font-medium text-[#888] text-sm">
-              <tr>
-                <td className="p-2">N</td>
-                <td className="p-2">Banco</td>
-                <td className="p-2">Transacciones</td>
-              </tr>
-            </thead>
-            <tbody>
-              {topAfiliados.map((afiliado, index) => (
-                <tr className="text  text-[#666]">
-                  <td className="p-2">{index + 1}</td>
-                  <td className="p-2 flex items-center gap-2">
-                    banco
-                  </td>
-                  <td className="p-2">100</td>
+          <div className="overflow-x-auto">
+            <table className="w-full table-auto">
+              <thead className="bg-[#F3F6F9] font-medium text-[#888] text-sm">
+                <tr>
+                  <th className="p-2">N</th>
+                  <th className="p-2 ">Banco</th>
+                  <th className="p-2 text-center">Transacciones</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {topAfiliados.map((afiliado, index) => (
+                  <tr className="text  text-[#666]">
+                    <td className="p-2">{index + 1}</td>
+                    <td className="p-2 flex flex-wrap items-center gap-2">banco</td>
+                    <td className="p-2 text-center">100</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
         {/* afiliados */}
         <div className="w-full rounded-lg bg-white p-6  shadow-box  transition-all duration-500">
           <h2 className=" text-xl capitalize mb-4 text-[#444] font-medium">
-            Top 5 de Afiliados
+            Top 5 Afiliados
           </h2>
-          <table className="table-auto w-full rounded-md">
-            <thead className="bg-[#F3F6F9] font-medium text-[#888] text-sm">
-              <tr>
-                <td className="p-2">N</td>
-                <td className="p-2">Afiliado</td>
-                <td className="p-2">Consumidores</td>
-                <td className="p-2">ventas</td>
-              </tr>
-            </thead>
-            <tbody>
-              {topAfiliados.map((afiliado, index) => (
-                <tr className="text  text-[#666]">
-                  <td className="p-2">{index + 1}</td>
-                  <td className="p-2 flex items-center gap-2">
-                    <img
-                      className="h-6 w-6 object-cover rounded-full inline-block"
-                      src={afiliado.avatar}
-                      alt={afiliado.name}
-                    />
-                    {afiliado.name}
-                  </td>
-                  <td className="p-2">{afiliado.consumidores}</td>
-                  <td className="p-2">{afiliado.ventas}</td>
+          <div className="overflow-x-auto">
+            <table className="w-full table-auto">
+              <thead className="bg-[#F3F6F9] font-medium text-[#888] text-sm">
+                <tr>
+                  <th className="p-2">N</th>
+                  <th className="p-2">Afiliado</th>
+                  <th className="p-2 text-center">Consumidores</th>
+                  <th className="p-2 text-center">ventas</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {topAfiliados.map((afiliado, index) => (
+                  <tr className="text  text-[#666]">
+                    <td className="p-2">{index + 1}</td>
+                    <td className="p-2 flex flex-wrap items-center gap-2">
+                      <img
+                        className="h-6 w-6 object-cover rounded-full inline-block"
+                        src={afiliado.avatar}
+                        alt={afiliado.name}
+                      />
+                      {afiliado.name}
+                    </td>
+                    <td className="p-2 text-center">{afiliado.consumidores}</td>
+                    <td className="p-2 text-center">{afiliado.ventas}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
-              {/* consumidores */}
+        {/* consumidores */}
         <div className="w-full rounded-lg bg-white p-6  shadow-box  transition-all duration-500">
           <h2 className=" text-xl capitalize mb-4 text-[#444] font-medium">
-            Top 5 de consumidores
+            Top 5 consumidores
           </h2>
-          <table className="table-auto w-full rounded-md">
-            <thead className="bg-[#F3F6F9] font-medium text-[#888] text-sm">
-              <tr>
-                <td className="p-2">N</td>
-                <td className="p-2">Consumidor</td>
-                <td className="p-2">Cuentas</td>
-                <td className="p-2">Créditos</td>
-              </tr>
-            </thead>
-            <tbody>
-              {topAfiliados.map((afiliado, index) => (
-                <tr className="text  text-[#666]">
-                  <td className="p-2">{index + 1}</td>
-                  <td className="p-2 flex items-center gap-2">
-                    consumidor
-                  </td>
-                  <td className="p-2">10</td>
-                  <td className="p-2">$ 50.00</td>
+          <div className="overflow-x-auto">
+            <table className="w-full table-auto">
+              <thead className="bg-[#F3F6F9] font-medium text-[#888] text-sm">
+                <tr>
+                  <th className="p-2">N</th>
+                  <th className="p-2">Consumidor</th>
+                  <th className="p-2 text-center">Cuentas</th>
+                  <th className="p-2 text-center">Créditos</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {topAfiliados.map((afiliado, index) => (
+                  <tr className="text  text-[#666]">
+                    <td className="p-2">{index + 1}</td>
+                    <td className="p-2 flex flex-wrap items-center gap-2">
+                      <img
+                        className="h-6 w-6 object-cover rounded-full inline-block"
+                        src={afiliado.avatar}
+                        alt={afiliado.name}
+                      />
+                      consumidor
+                    </td>
+                    <td className="p-2 text-center">10</td>
+                    <td className="p-2 text-center">$ 50.00</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </>

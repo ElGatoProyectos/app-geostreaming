@@ -75,10 +75,7 @@ const Products = () => {
 
   return (
     <>
-     {data.length === 0 ? (
-        <NoRecords title="Historial de ventas" />
-      ) : (
-        <Table
+      <Table
         columns={columns}
         data={data}
         showActions={true}
@@ -88,8 +85,7 @@ const Products = () => {
         onEdit={handleEdit}
         onDelete={handleDelete}
       />
-      )}
-      
+
       <Modal isOpen={isModalOpen} onClose={closeModal} title={modalTitle}>
         <ProductForm
           defaultValues={
