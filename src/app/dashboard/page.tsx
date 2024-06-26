@@ -50,6 +50,7 @@ export default function Page() {
 
             const datafile = new FormData();
             datafile.set("file", file);
+            datafile.set("route", "vouchers");
 
             try {
               const res = await fetch("/api/img/upload", {
