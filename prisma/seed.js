@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 const initialProducts = [
   {
-    price_in_cents: 500,
+    price_in_cents: 300,
     price_distributor_in_cents: 200,
     status: "UPON_REQUEST",
     platform: {
@@ -17,7 +17,7 @@ const initialProducts = [
     },
     accounts: [
       {
-        is_active: true,
+        is_active: false,
         email: "jasdsad@gmail.com",
         password: "netf6541",
         pin: "1556",
@@ -35,8 +35,8 @@ const initialProducts = [
     ],
   },
   {
-    price_in_cents: 1000,
-    price_distributor_in_cents: 500,
+    price_in_cents: 350,
+    price_distributor_in_cents: 310,
     status: "UPON_REQUEST",
     platform: {
       img_url:
@@ -57,7 +57,7 @@ const initialProducts = [
         numb_days_duration: 30,
       },
       {
-        is_active: true,
+        is_active: false,
         email: "john.hulu@gmail.com",
         password: "hulu4321",
         description:
@@ -69,8 +69,8 @@ const initialProducts = [
     ],
   },
   {
-    price_in_cents: 2000,
-    price_distributor_in_cents: 550,
+    price_in_cents: 120,
+    price_distributor_in_cents: 50,
     status: "IMMEDIATE_DELIVERY",
     platform: {
       img_url:
@@ -81,7 +81,7 @@ const initialProducts = [
     },
     accounts: [
       {
-        is_active: true,
+        is_active: false,
         email: "alice.disney@gmail.com",
         password: "disney4321",
         pin: "1111",
@@ -89,7 +89,7 @@ const initialProducts = [
         numb_days_duration: 30,
       },
       {
-        is_active: true,
+        is_active: false,
         email: "bob.disney@gmail.com",
         password: "disney5678",
         pin: "2222",
@@ -99,8 +99,8 @@ const initialProducts = [
     ],
   },
   {
-    price_in_cents: 3500,
-    price_distributor_in_cents: 750,
+    price_in_cents: 195,
+    price_distributor_in_cents: 30,
     status: "IMMEDIATE_DELIVERY",
     platform: {
       img_url:
@@ -111,7 +111,7 @@ const initialProducts = [
     },
     accounts: [
       {
-        is_active: true,
+        is_active: false,
         email: "charles.amazon@gmail.com",
         password: "prime9988",
         pin: "3333",
@@ -119,7 +119,7 @@ const initialProducts = [
         numb_days_duration: 30,
       },
       {
-        is_active: true,
+        is_active: false,
         email: "diana.amazon@gmail.com",
         password: "prime1234",
         pin: "4444",

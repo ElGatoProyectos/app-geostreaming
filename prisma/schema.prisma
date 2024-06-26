@@ -78,6 +78,7 @@ model Product {
   status                     ProductState @default(IMMEDIATE_DELIVERY)
   created_at                 DateTime     @default(now())
   updated_at                 DateTime     @updatedAt
+  Order                      Order[]
 }
 
 model Account {
@@ -114,6 +115,8 @@ model Order {
   ref_id     Int?
   role       Role
   quantity   Int
+  product_id Int
+  product    Product  @relation(fields: [product_id], references: [id])
   user_id    Int
   user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   account_id Int

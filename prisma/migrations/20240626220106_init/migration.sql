@@ -102,6 +102,7 @@ CREATE TABLE `Order` (
     `ref_id` INTEGER NULL,
     `role` ENUM('USER', 'DISTRIBUTOR') NOT NULL,
     `quantity` INTEGER NOT NULL,
+    `product_id` INTEGER NOT NULL,
     `user_id` INTEGER NOT NULL,
     `account_id` INTEGER NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -134,6 +135,9 @@ ALTER TABLE `Account` ADD CONSTRAINT `Account_product_id_fkey` FOREIGN KEY (`pro
 
 -- AddForeignKey
 ALTER TABLE `Account` ADD CONSTRAINT `Account_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `User`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Order` ADD CONSTRAINT `Order_product_id_fkey` FOREIGN KEY (`product_id`) REFERENCES `Product`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Order` ADD CONSTRAINT `Order_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
