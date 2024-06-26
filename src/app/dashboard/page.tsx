@@ -21,9 +21,61 @@ export default function Page() {
 
   const [file, setFile] = useState<File | null>(null);
 
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
+  const orderProduct = async () => {
+    const data = {
+      quantity: 1,
+      user_id: 1,
+      product_id: 1,
+    };
+    const jsonData = JSON.stringify(data);
+    try {
+      const res = await fetch("/api/order", {
+        method: "POST",
+        body: jsonData,
+      });
+
+      const text = await res.text();
+      if (!text) {
+        console.error("Respuesta vacía");
+        return;
+      }
+
+      const data = JSON.parse(text);
+      console.log("data", data);
+    } catch (error) {
+      console.error("Error al ordenar", error);
+    }
+  };
+
+  const putBalance = async () => {
+    const userid = 1;
+    const data = {
+      balance_in_cents: 1000,
+    };
+    const jsonData = JSON.stringify(data);
+    try {
+      const res = await fetch(`/api/balance/${userid}`, {
+        method: "PATCH",
+        body: jsonData,
+      });
+
+      if (!res.ok) {
+        console.error("Error en la respuesta:", res.statusText);
+        return;
+      }
+
+      const text = await res.text();
+      if (!text) {
+        console.error("Respuesta vacía");
+        return;
+      }
+
+      const data = JSON.parse(text);
+      console.log("data", data);
+    } catch (error) {
+      console.error("Error al enviar el archivo:", error);
+    }
+  };
 
   return (
     <div>
@@ -128,8 +180,18 @@ export default function Page() {
 
           <button className="bg-gray-400 p-5 rounded-xl">delete</button>
         </form>
-        {file && <img src={URL.createObjectURL(file)} />}
-        <img src="/platforms/avatar-full-acheron (1).webp" alt="img" />
+
+        <div>
+          <button onClick={orderProduct} className="bg-gray-400 rounded-xl p-5">
+            buy account
+          </button>
+        </div>
+
+        <div>
+          <button onClick={putBalance} className="bg-gray-400 rounded-xl p-5">
+            get balance to user_id 1
+          </button>
+        </div>
       </div>
     </div>
   );
