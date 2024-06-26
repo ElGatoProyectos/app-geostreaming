@@ -42,6 +42,7 @@ export async function POST(req: NextRequest) {
     if (session.user.role !== "ADMIN") {
       return NextResponse.json({ error: "forbidden" }, { status: 500 });
     }
+
     const newProduct = await productController.create(req);
     return NextResponse.json({ product: newProduct });
   } catch (error: any) {
