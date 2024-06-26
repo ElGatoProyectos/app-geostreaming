@@ -56,6 +56,7 @@ export class ProductController {
 
   create = async (req: NextRequest) => {
     const productInfo = await req.json();
+
     const { isValid, productValidated } = validateProduct(productInfo);
 
     if (!isValid) {
