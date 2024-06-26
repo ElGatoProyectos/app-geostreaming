@@ -4,16 +4,18 @@ import { useEffect, useState } from "react";
 import InputField from "@/app/components/forms/inputField";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
-import {UserSchema } from "@/app/schemas/userSchema";
-
+import { UserSchema } from "@/app/schemas/userSchema";
+type userEnabled = "y" | "n";
 type Inputs = {
-  username: string;
+  id: number;
   email: string;
-  ref_id?: number;
-  role: number;
+  ref_id: number;
+  role: string;
   full_name: string;
-  dni?: string;
+  dni: string;
   phone: string;
+  balance_in_cents: number;
+  enabled: userEnabled;
 };
 
 interface ConsumidorProps {
@@ -58,7 +60,7 @@ const ConsumidorForm: React.FC<ConsumidorProps> = ({
       onSubmit={handleSubmit(handleFormSubmit)}
       className="flex w-full flex-col gap-4"
     >
-       <label htmlFor="type" className="text-[#444]">
+      <label htmlFor="type" className="text-[#444]">
         Referido:
         <select
           id="ref_id"
@@ -79,36 +81,36 @@ const ConsumidorForm: React.FC<ConsumidorProps> = ({
           </p>
         )}
       </label>
-      <InputField
+      {/*  <InputField
         id="username"
         label="Nombre de usuario"
         register={register("username")}
         error={errors.username}
-      />
+      /> */}
       <InputField
         id="full_name"
         label="Nombre Completo"
         register={register("full_name")}
         error={errors.full_name}
       />
-       <label htmlFor="type" className="text-[#444]">
+      <label htmlFor="type" className="text-[#444]">
         Role:
         <select
-          id="ref_id"
+          id="role"
           className={`mt-2 w-full text-[#666] bg-gray-50 border rounded outline-none px-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
-            errors.ref_id
+            errors.role
               ? "border-red-500 focus:ring focus:ring-red-200 focus:border-red-500"
               : "border-gray-200 "
           }`}
-          {...register("ref_id")}
+          {...register("role")}
         >
           <option value="">Seleccione Rol</option>
-          <option value="1">Consumidor</option>
-          <option value="2">Afiliado</option>
+          <option value="USER">Consumidor</option>
+          <option value="DISTRIBUTOR">Afiliado</option>
         </select>
-        {errors.ref_id && (
+        {errors.role && (
           <p className="text-red-500 text-sm font-medium mt-1">
-            {errors.ref_id.message}
+            {errors.role.message}
           </p>
         )}
       </label>
@@ -119,7 +121,7 @@ const ConsumidorForm: React.FC<ConsumidorProps> = ({
         error={errors.email}
         type="email"
       />
-     
+
       <InputField
         id="phone"
         label="Celular"

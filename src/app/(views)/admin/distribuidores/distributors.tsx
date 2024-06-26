@@ -1,25 +1,38 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Table from "@/app/components/common/table";
 import Modal from "@/app/components/common/modal";
 import DistributorForm from "./distributorForm";
 import { SubmitHandler } from "react-hook-form";
-import NoRecords from "@/app/components/common/noRecords";
+import axios from "axios";
 
-type Inputs = {
-  username: string;
-  email: string;
-  ref_id?: number;
-  role: number;
-  full_name: string;
-  dni?: string;
-  phone: string;
+type userEnabled = "y" | "n";
+const enableMapping: Record<userEnabled, string> = {
+  y: "Activo",
+  n: "Inactivo",
 };
 
+const reverseEnabledMapping: Record<string, userEnabled> = {
+  Activo: "y",
+  Inactivo: "n",
+};
+
+type Users = {
+  id: number;
+  email: string;
+  ref_id: number;
+  role: string;
+  full_name: string;
+  dni: string;
+  phone: string;
+  balance_in_cents: number
+  enabled: userEnabled;
+}
 const Distributors = () => {
+  const [users, setUsers] = useState<Users[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
-  const [selectedRecord, setSelectedRecord] = useState<Inputs | null>(null);
+  const [selectedRecord, setSelectedRecord] = useState<Users | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const openModal = () => {
@@ -30,7 +43,27 @@ const Distributors = () => {
     setIsModalOpen(false);
   };
 
-  const handleSaveDistributor: SubmitHandler<Inputs> = async (data) => {
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get("/api/user", {
+          params: {role: "DISTRIBUTOR"}
+        });
+        const transformedUsers = response.data.users.map(
+          (user: Users) => ({
+            ...user,
+            enabled: enableMapping[user.enabled],
+          })
+        )
+        setUsers(transformedUsers); 
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      }
+    };
+    fetchUsers();
+  }, []);
+
+  const handleSaveDistributor: SubmitHandler<Users> = async (data) => {
     if (selectedRecord) {
       // Lógica para editar
       console.log("Editar distribuidor:", data);
@@ -43,31 +76,34 @@ const Distributors = () => {
 
   const columns = [
     { Header: "ID", accessor: "id" },
-    { Header: "Username", accessor: "username" },
     { Header: "Email", accessor: "email" },
     { Header: "Referido", accessor: "ref_id" },
     { Header: "Nombre", accessor: "full_name" },
     { Header: "Role", accessor: "role" },
     { Header: "DNI", accessor: "dni" },
     { Header: "Celular", accessor: "phone" },
-    { Header: "Activo", accessor: "enebled" },
+    { Header: "Créditos", accessor: "balance_in_cents" },
+    { Header: "Activo", accessor: "enabled" },
   ];
-
   const data: string[] = [];
 
-  const handleEdit = (record: Inputs) => {
-    setSelectedRecord(record);
-    setModalTitle("Editar producto");
+  const handleEdit = (record: Users) => {
+    const editedRecord = {
+      ...record,
+      status: reverseEnabledMapping[ record.enabled]
+    };
+    setSelectedRecord(editedRecord);
+    setModalTitle("Editar afiliado");
     setIsModalOpen(true);
   };
 
   const handleAdd = () => {
     setSelectedRecord(null);
-    setModalTitle("Agregar producto");
+    setModalTitle("Agregar afiliado");
     setIsModalOpen(true);
   };
 
-  const handleDelete = (record: Inputs) => {
+  const handleDelete = (record: Users) => {
     setSelectedRecord(record);
     setIsDeleteModalOpen(true);
   };
@@ -81,7 +117,7 @@ const Distributors = () => {
     <>
       <Table
         columns={columns}
-        data={data}
+        data={users}
         showActions={true}
         addRecord={true}
         title="Distribuidores"
@@ -94,13 +130,15 @@ const Distributors = () => {
         <DistributorForm
           defaultValues={
             selectedRecord || {
-              username: "",
+              id: 0,
               email: "",
               ref_id: 0,
-              role: 0,
+              role: "",
               full_name: "",
               dni: "",
               phone: "",
+              balance_in_cents: 0,
+              enabled: 'y',
             }
           }
           onSubmit={handleSaveDistributor}

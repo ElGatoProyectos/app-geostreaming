@@ -55,7 +55,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
           },
           {
             href: "/admin/consumidores",
-            label: "Condumidores",
+            label: "Consumidores",
             icon: <FaUsers className="text-xl" />,
           },
         ],

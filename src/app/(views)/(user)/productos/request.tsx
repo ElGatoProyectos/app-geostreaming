@@ -17,7 +17,6 @@ type Inputs = {
 
 type Product = {
   id: number;
-  platform_id: number;
   price_in_cents: number;
   price_distributor_in_cents: number;
   inOnDemand: boolean;

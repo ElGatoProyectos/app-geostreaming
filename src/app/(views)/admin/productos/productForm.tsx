@@ -1,17 +1,26 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { productFormSchema } from "@/app/schemas/productFormSchema";
 import { useEffect, useState } from "react";
 import InputField from "@/app/components/forms/inputField";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import axios from "axios";
+import { productSchema } from "@/lib/validations/product";
+
+type ProductStatus = "IMMEDIATE_DELIVERY" | "UPON_REQUEST";
+
+interface Platform {
+  id: number;
+  name: string;
+  description: string;
+  img_url: string;
+}
 
 type Inputs = {
   id: number;
-  platform_id: number;
-  name: string;
-  price_in_cents: string;
-  price_distributor_in_cents: string;
-  description: string;
+  price_in_cents: number;
+  price_distributor_in_cents: number;
+  platform: Platform;
+  status: ProductStatus;
 };
 
 interface ProductFormProps {
@@ -23,6 +32,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
   defaultValues,
   onSubmit,
 }) => {
+  const [platforms, setPlatforms] = useState<Platform[]>([]);
   const [loading, setLoading] = useState(false);
 
   const {
@@ -31,7 +41,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
     formState: { errors },
     reset,
   } = useForm<Inputs>({
-    resolver: zodResolver(productFormSchema),
+    resolver: zodResolver(productSchema),
     defaultValues,
   });
 
@@ -39,13 +49,29 @@ const ProductForm: React.FC<ProductFormProps> = ({
     reset(defaultValues);
   }, [defaultValues, reset]);
 
+  useEffect(() => {
+    const fetchPlatform = async () => {
+      try {
+        const response = await axios.get("/api/platform", {
+          params: {
+            status: "IMMEDIATE_DELIVERY",
+          },
+        });
+        setPlatforms(response.data.platform);
+      } catch (error) {
+        console.error("Error fetching platform:", error);
+      }
+    };
+    fetchPlatform();
+  }, []);
+
   const handleFormSubmit: SubmitHandler<Inputs> = async (data) => {
     setLoading(true);
 
     try {
       await onSubmit(data);
     } catch (error) {
-      console.error("Error al registrar el prodcuto:", error);
+      console.error("Error al registrar el producto:", error);
     } finally {
       setLoading(false);
     }
@@ -59,29 +85,50 @@ const ProductForm: React.FC<ProductFormProps> = ({
       <InputField
         id="name"
         label="Producto"
-        register={register("name")}
-        error={errors.name}
+        register={register("platform.name")}
+        error={errors.platform?.name}
       />
       <label htmlFor="platform_id" className="text-[#444]">
         Plataforma:
         <select
           id="platform_id"
           className={`mt-2 w-full text-[#666] bg-gray-50 border rounded outline-none px-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
-            errors.platform_id
+            errors.platform?.id
               ? "border-red-500 focus:ring focus:ring-red-200 focus:border-red-500"
               : "border-gray-200 "
           }`}
-          {...register("platform_id")}
+          {...register("platform.id")}
         >
-          <option value="">
-            Seleccione una plataforma
-          </option>
+          <option value="">Seleccione una plataforma</option>
           <option value="1">plataforma 1</option>
           <option value="2">plataforma 2</option>
         </select>
-        {errors.platform_id && (
-        <p className="text-red-500 text-sm font-medium mt-1">{errors.platform_id.message}</p>
-      )}
+        {errors.platform?.id && (
+          <p className="text-red-500 text-sm font-medium mt-1">
+            {errors.platform.id.message}
+          </p>
+        )}
+      </label>
+      <label htmlFor="status" className="text-[#444]">
+        Tipo:
+        <select
+          id="status"
+          className={`mt-2 w-full text-[#666] bg-gray-50 border rounded outline-none px-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
+            errors.platform?.id
+              ? "border-red-500 focus:ring focus:ring-red-200 focus:border-red-500"
+              : "border-gray-200 "
+          }`}
+          {...register("status")}
+        >
+          <option value="">Seleccione tipo de producto</option>
+          <option value="IMMEDIATE_DELIVERY">Entrega inmediata</option>
+          <option value="UPON_REQUEST">A pedido</option>
+        </select>
+        {errors.status && (
+          <p className="text-red-500 text-sm font-medium mt-1">
+            {errors.status.message}
+          </p>
+        )}
       </label>
       <InputField
         id="price_in_cents"
@@ -98,8 +145,8 @@ const ProductForm: React.FC<ProductFormProps> = ({
       <InputField
         id="description"
         label="Descripción"
-        register={register("description")}
-        error={errors.description}
+        register={register("platform.description")}
+        error={errors.platform?.description}
       />
 
       <div className=" w-full flex flex-col gap-4">

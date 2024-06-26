@@ -51,7 +51,7 @@ const Platform = () => {
     { Header: "Descripción", accessor: "description" },
   ];
 
-  const data: string[] = [];
+  const data: Inputs[] = [];
 
   const handleEdit = (record: Inputs) => {
     setSelectedRecord(record);
@@ -76,7 +76,7 @@ const Platform = () => {
     // Lógica para eliminar el registro
     setIsDeleteModalOpen(false);
   };
-
+ 
   return (
     <>
       <Table

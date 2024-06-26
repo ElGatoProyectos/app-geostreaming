@@ -36,6 +36,20 @@ export class UserModel {
     return users;
   };
 
+  static getAllByRole = async (
+    userRole: "USER" | "DISTRIBUTOR"
+  ) => {
+    const users = await prisma.user.findMany({
+      where: {
+        role: userRole,
+      },
+      include: { accounts: true },
+    });
+    await prisma.$disconnect();
+    return users;
+  };
+
+
   static create = async ({ user_info }: { user_info: UserInType }) => {
     const userFound = await prisma.user.findUnique({
       where: { email: user_info.email },

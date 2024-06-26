@@ -1,24 +1,45 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Table from "@/app/components/common/table";
 import Modal from "@/app/components/common/modal";
 import ProductForm from "./productForm";
 import { SubmitHandler } from "react-hook-form";
-import NoRecords from "@/app/components/common/noRecords";
+import axios from "axios";
+import { Bounce, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-type Inputs = {
+type ProductStatus = "IMMEDIATE_DELIVERY" | "UPON_REQUEST";
+
+const statusMapping: Record<ProductStatus, string> = {
+  IMMEDIATE_DELIVERY: "Entrega inmediata",
+  UPON_REQUEST: "A pedido",
+};
+
+const reverseStatusMapping: Record<string, ProductStatus> = {
+  "Entrega inmediata": "IMMEDIATE_DELIVERY",
+  "A pedido": "UPON_REQUEST",
+};
+
+interface Platform {
   id: number;
-  platform_id: number;
   name: string;
-  price_in_cents: string;
-  price_distributor_in_cents: string;
   description: string;
+  img_url: string;
+}
+
+type Product = {
+  id: number;
+  price_in_cents: number;
+  price_distributor_in_cents: number;
+  platform: Platform;
+  status: ProductStatus;
 };
 
 const Products = () => {
+  const [products, setProducts] = useState<Product[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
-  const [selectedRecord, setSelectedRecord] = useState<Inputs | null>(null);
+  const [selectedRecord, setSelectedRecord] = useState<Product | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const openModal = () => {
@@ -29,30 +50,56 @@ const Products = () => {
     setIsModalOpen(false);
   };
 
-  const handleSaveCategory: SubmitHandler<Inputs> = async (data) => {
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get("/api/product");
+        const transformedProducts = response.data.products.map(
+          (product: Product) => ({
+            ...product,
+            status: statusMapping[product.status],
+          })
+        );
+        setProducts(transformedProducts);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+    fetchProducts();
+  }, []);
+
+  const handleSaveProduct: SubmitHandler<Product> = async (data) => {
     if (selectedRecord) {
       // Lógica para editar
-      console.log("Editar categoría:", data);
+      console.log("Editar producto:", data);
     } else {
       // Lógica para agregar
-      console.log("Agregar categoría:", data);
+      console.log("Agregar producto:", data);
     }
     closeModal();
   };
 
   const columns = [
     { Header: "ID", accessor: "id" },
-    { Header: "PRODUCTO", accessor: "name" },
-    { Header: "PLATAFORMA", accessor: "platform_id" },
-    { Header: "PRECIO CONSUMIDOR", accessor: "price_in_cents" },
-    { Header: "PRECIO DISTRIBUIDOR", accessor: "price_distributor_in_cents" },
-    { Header: "DESCRIPCIÓN", accessor: "description" },
+    { Header: "producto", accessor: (row: Product) => row.platform.name },
+    { Header: "Tipo", accessor: "status" },
+    { Header: "PRECIO CONSUMIDOR ($)", accessor: "price_in_cents" },
+    {
+      Header: "PRECIO DISTRIBUIDOR ($)",
+      accessor: "price_distributor_in_cents",
+    },
+    {
+      Header: "DESCRIPCIÓN",
+      accessor: (row: Product) => row.platform.description,
+    },
   ];
 
-  const data: string[] = [];
-
-  const handleEdit = (record: Inputs) => {
-    setSelectedRecord(record);
+  const handleEdit = (record: Product) => {
+    const editedRecord = {
+      ...record,
+      status: reverseStatusMapping[record.status],
+    };
+    setSelectedRecord(editedRecord);
     setModalTitle("Editar producto");
     setIsModalOpen(true);
   };
@@ -63,21 +110,31 @@ const Products = () => {
     setIsModalOpen(true);
   };
 
-  const handleDelete = (record: Inputs) => {
+  const handleDelete = (record: Product) => {
     setSelectedRecord(record);
     setIsDeleteModalOpen(true);
   };
 
-  const handleDeleteConfirm = () => {
-    // Lógica para eliminar el registro
-    setIsDeleteModalOpen(false);
+  const handleDeleteConfirm = async () => {
+    if (!selectedRecord) return;
+
+    try {
+      await axios.delete(`/api/product/${selectedRecord.id}`);
+      const updatedProduct = products.filter((product) => product.id !== selectedRecord.id);
+      setProducts(updatedProduct);
+      setSelectedRecord(null);
+      setIsDeleteModalOpen(false);
+      toast.success("Se elimino correctamente");
+    } catch (e) {
+      toast.error("Error al eliminar registro");
+    }
   };
 
   return (
     <>
       <Table
         columns={columns}
-        data={data}
+        data={products}
         showActions={true}
         addRecord={true}
         title="Productos"
@@ -91,14 +148,18 @@ const Products = () => {
           defaultValues={
             selectedRecord || {
               id: 0,
-              name: "",
-              platform_id: 0,
-              price_in_cents: "",
-              price_distributor_in_cents: "",
-              description: "",
+              price_in_cents: 0,
+              price_distributor_in_cents: 0,
+              status: "IMMEDIATE_DELIVERY",
+              platform: {
+                id: 0,
+                name: "",
+                description: "",
+                img_url: "",
+              },
             }
           }
-          onSubmit={handleSaveCategory}
+          onSubmit={handleSaveProduct}
         />
       </Modal>
       <Modal
@@ -116,8 +177,6 @@ const Products = () => {
           </button>
         </div>
       </Modal>
-      {/* si no hay datos mostrar 
-    <NoRecords title="Historial de ventas"/>  */}
     </>
   );
 };

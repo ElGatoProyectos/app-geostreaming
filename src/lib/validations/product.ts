@@ -16,7 +16,7 @@ const platformSchema = z.object({
   description: z.string(),
 });
 
-const productSchema = z.object({
+export  const productSchema = z.object({
   platform: platformSchema,
   accounts: z.array(accountSchema).optional(),
   price_in_cents: z.number(),

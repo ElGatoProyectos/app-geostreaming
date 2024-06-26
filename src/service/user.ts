@@ -15,6 +15,9 @@ interface UserModelType {
     user_id: number;
     user_info: UserUpdateInType;
   }) => Promise<any>;
+  getAllByRole: (
+    userRole: "USER" | "DISTRIBUTOR"
+  ) => Promise<any[]>;
 }
 
 export class UserService {
@@ -41,6 +44,17 @@ export class UserService {
       return users;
     } catch (e) {
       throw new Error("Users not found");
+    }
+  };
+
+  getAllByRole = async (
+    userRole: "USER" | "DISTRIBUTOR"
+  ) => {
+    try {
+      const users = await this.userModel.getAllByRole(userRole);
+      return users;
+    } catch (e) {
+      throw new Error(`User with role ${userRole} not found}`);
     }
   };
 

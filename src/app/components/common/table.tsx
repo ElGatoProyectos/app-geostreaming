@@ -7,19 +7,20 @@ import ActionButton from "./ActionButton";
 import { BsPencilFill } from "react-icons/bs";
 import { FaTrash } from "react-icons/fa6";
 
-interface TableProps {
-  columns: Array<{ Header: string; accessor: string }>;
-  data: any[];
+type CustomAccessor<T> = string | ((row: T) => string);
+interface TableProps<T> {
+  columns: Array<{ Header: string; accessor: CustomAccessor<T> }>;
+  data: T[];
   showActions?: boolean;
   download?: boolean;
   addRecord?: boolean;
   title: string;
   onAdd?: () => void;
-  onEdit?: (row: any) => void;
-  onDelete?: (row: any) => void;
+  onEdit?: (row: T) => void;
+  onDelete?: (row: T) => void;
 }
 
-const TableComponent: React.FC<TableProps> = ({
+const TableComponent = <T extends Record<string, any>>({
   columns,
   data,
   showActions = false,
@@ -29,7 +30,7 @@ const TableComponent: React.FC<TableProps> = ({
   onAdd,
   onEdit,
   onDelete,
-}) => {
+}: TableProps<T>) => {
   const [filteredData, setFilteredData] = useState(data);
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -42,12 +43,14 @@ const TableComponent: React.FC<TableProps> = ({
 
   useEffect(() => {
     setFilteredData(
-      data.filter((item) =>
+      data?.filter((item) =>
         columns?.some((column) =>
-          item[column.accessor]
-            ?.toString()
-            .toLowerCase()
-            .includes(search.toLowerCase())
+          typeof column.accessor === "function"
+            ? column.accessor(item).toLowerCase().includes(search.toLowerCase())
+            : item[column.accessor]
+                ?.toString()
+                .toLowerCase()
+                .includes(search.toLowerCase())
         )
       )
     );
@@ -70,10 +73,10 @@ const TableComponent: React.FC<TableProps> = ({
 
   const paginatedData = useMemo(() => {
     const startIndex = (currentPage - 1) * rowsPerPage;
-    return sortedData.slice(startIndex, startIndex + rowsPerPage);
+    return sortedData?.slice(startIndex, startIndex + rowsPerPage);
   }, [sortedData, currentPage, rowsPerPage]);
 
-  const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+  const totalPages = Math.ceil(filteredData?.length / rowsPerPage);
 
   const requestSort = (key: string) => {
     let direction = "ascending";
@@ -108,7 +111,7 @@ const TableComponent: React.FC<TableProps> = ({
           <h2 className="text-[#F2308B] capitalize text-xl font-semibold">
             {title}
             <Badge className="text-[#888] text-xs px-4 py-2 ml-4 bg-purple-50 cursor-default user-select-none">
-              {data.length} Registros
+              {data?.length} Registros
             </Badge>
           </h2>
         </div>
@@ -151,32 +154,38 @@ const TableComponent: React.FC<TableProps> = ({
         <Table.Head className="w-full">
           {columns.map((column) => (
             <Table.HeadCell
-              key={column.accessor}
-              onClick={() => requestSort(column.accessor)}
+            key={typeof column.accessor === "string" ? column.accessor : "custom"}
+            onClick={() => requestSort(column.accessor as string)}
             >
               <div className="flex items-center cursor-pointer">
-                <p className="text-sm font-semibold text-metal-400 ">
-                  {column.Header}
+                <p className="text-sm font-semibold text-[#666] capitalize ">
+                  {column.Header.toLowerCase()}
                 </p>
-                {getClassNamesFor(column.accessor) === "ascending" && (
+                {getClassNamesFor(column.accessor as string) === "ascending" && (
                   <CaretUp size={15} />
                 )}
-                {getClassNamesFor(column.accessor) === "descending" && (
+                 {getClassNamesFor(column.accessor as string) === "descending" && (
                   <CaretDown size={15} />
                 )}
               </div>
             </Table.HeadCell>
           ))}
-          {showActions && <Table.HeadCell>Acciones</Table.HeadCell>}
+          {showActions && (
+            <Table.HeadCell className="text-sm font-semibold text-[#888] capitalize ">
+              Acciones
+            </Table.HeadCell>
+          )}
         </Table.Head>
         <Table.Body className="divide-gray-25 divide-y">
-          {paginatedData.length > 0 ? (
+          {paginatedData?.length > 0 ? (
             paginatedData.map((row, rowIndex) => (
               <Table.Row key={rowIndex} className="bg-white">
                 {columns.map((column) => (
-                  <Table.Cell key={column.accessor}>
-                    {row[column.accessor]}
-                  </Table.Cell>
+                   <Table.Cell key={typeof column.accessor === "string" ? column.accessor : "custom"}>
+                   {typeof column.accessor === "function"
+                     ? (column.accessor as (row: T) => string)(row)
+                     : row[column.accessor]}
+                 </Table.Cell>
                 ))}
                 {showActions && (
                   <Table.Cell>
@@ -207,7 +216,7 @@ const TableComponent: React.FC<TableProps> = ({
       </Table>
       <div className="flex flex-col gap-4 sm:flex-row items-center justify-between mt-4">
         <span className="text-sm text-[#888]">
-          Página{" "}
+          Página
           <strong>
             {currentPage} de {totalPages}
           </strong>
