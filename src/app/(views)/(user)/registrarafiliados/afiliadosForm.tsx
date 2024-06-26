@@ -9,11 +9,9 @@ import {UserSchema } from "@/app/schemas/userSchema";
 type Inputs = {
   username: string;
   email: string;
-  ref_id?: number;
-  role: number;
   full_name: string;
-  dni?: string;
   phone: string;
+  date: string;
 };
 
 interface AfiliadorProps {
@@ -58,7 +56,7 @@ const AfiliadosForm: React.FC<AfiliadorProps> = ({
       onSubmit={handleSubmit(handleFormSubmit)}
       className="flex w-full flex-col gap-4"
     >
-       <label htmlFor="type" className="text-[#444]">
+       {/* <label htmlFor="type" className="text-[#444]">
         Referido:
         <select
           id="ref_id"
@@ -78,7 +76,7 @@ const AfiliadosForm: React.FC<AfiliadorProps> = ({
             {errors.ref_id.message}
           </p>
         )}
-      </label>
+      </label> */}
       <InputField
         id="username"
         label="Nombre de usuario"
@@ -91,7 +89,7 @@ const AfiliadosForm: React.FC<AfiliadorProps> = ({
         register={register("full_name")}
         error={errors.full_name}
       />
-       <label htmlFor="type" className="text-[#444]">
+       {/* <label htmlFor="type" className="text-[#444]">
         Role:
         <select
           id="ref_id"
@@ -111,7 +109,7 @@ const AfiliadosForm: React.FC<AfiliadorProps> = ({
             {errors.ref_id.message}
           </p>
         )}
-      </label>
+      </label> */}
       <InputField
         id="email"
         label="Correo"
@@ -126,12 +124,12 @@ const AfiliadosForm: React.FC<AfiliadorProps> = ({
         register={register("phone")}
         error={errors.phone}
       />
-      <InputField
+      {/* <InputField
         id="dni"
         label="DNI"
         register={register("dni")}
         error={errors.dni}
-      />
+      /> */}
       <div className=" w-full flex flex-col gap-4">
         <button
           type="submit"

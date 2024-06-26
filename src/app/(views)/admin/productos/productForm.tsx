@@ -14,12 +14,12 @@ type Inputs = {
   description: string;
 };
 
-interface CategoryFormProps {
+interface ProductFormProps {
   defaultValues?: Inputs;
   onSubmit: SubmitHandler<Inputs>;
 }
 
-const categoryForm: React.FC<CategoryFormProps> = ({
+const ProductForm: React.FC<ProductFormProps> = ({
   defaultValues,
   onSubmit,
 }) => {
@@ -56,14 +56,6 @@ const categoryForm: React.FC<CategoryFormProps> = ({
       onSubmit={handleSubmit(handleFormSubmit)}
       className="flex w-full flex-col gap-4"
     >
-      {/* (input id, solo lo puede ver no editar) */}
-      <InputField
-        id="id"
-        label="ID"
-        register={register("id")}
-        error={errors.id}
-        isDisabled={true}
-      />
       <InputField
         id="name"
         label="Producto"
@@ -130,4 +122,4 @@ const categoryForm: React.FC<CategoryFormProps> = ({
   );
 };
 
-export default categoryForm;
+export default ProductForm;

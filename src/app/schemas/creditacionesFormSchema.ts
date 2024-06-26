@@ -4,6 +4,8 @@ import { z } from 'zod';
 export const creditacionesFormSchema = z.object({
     voucher_number: z.string()
         .min(1, { message: 'El campo número de comprobante es requerido' }),
+    voucher_image: z.string()
+        .min(1, { message: 'El campo foto del comprobante es requerido' }),
     value: z.string()
         .min(1, { message: 'El campo valor es requerido' })
         .refine(value => !isNaN(Number(value)), { message: 'El campo valor debe ser numérico' }),

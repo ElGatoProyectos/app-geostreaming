@@ -5,11 +5,11 @@ import InputField from "@/app/components/forms/inputField";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 /* CAMBIAR SCHEMA */
-import { categoryFormSchema } from "@/app/schemas/categoryFormSchema";
+import { UserSchema } from "@/app/schemas/userSchema";
 
 type Inputs = {
   username: string;
-  name: string;
+  full_name: string;
   email: string;
   phone: string;
   acreditaciones: string;
@@ -19,9 +19,14 @@ type Inputs = {
 interface UserFormProps {
   defaultValues?: Inputs;
   onSubmit: SubmitHandler<Inputs>;
+  avatar: string;
 }
 
-const UserForm: React.FC<UserFormProps> = ({ defaultValues, onSubmit }) => {
+const UserForm: React.FC<UserFormProps> = ({
+  defaultValues,
+  onSubmit,
+  avatar,
+}) => {
   const [loading, setLoading] = useState(false);
 
   const {
@@ -30,7 +35,7 @@ const UserForm: React.FC<UserFormProps> = ({ defaultValues, onSubmit }) => {
     formState: { errors },
     reset,
   } = useForm<Inputs>({
-    resolver: zodResolver(categoryFormSchema),
+    resolver: zodResolver(UserSchema),
     defaultValues,
   });
 
@@ -61,48 +66,76 @@ const UserForm: React.FC<UserFormProps> = ({ defaultValues, onSubmit }) => {
         register={register("username")}
         error={errors.username}
         isDisabled={true}
-      ></InputField>
+      />
       <InputField
-        id="name"
+        id="full_name"
         label="Nombre"
-        register={register("name")}
-        error={errors.name}
+        register={register("full_name")}
+        error={errors.full_name}
         isDisabled={true}
-      ></InputField>
-      {/* (input id, solo lo puede ver no editar) */}
+      />
       <InputField
         id="email"
         label="Correo"
         register={register("email")}
         error={errors.email}
         isDisabled={true}
-      ></InputField>
+      />
       <InputField
         id="phone"
         label="Celular"
         register={register("phone")}
         error={errors.phone}
-      ></InputField>
+      />
       <label htmlFor="acreditaciones">
-        Acreditacion de ganancias
+        Acreditación de ganancias
         <select
           id="acreditaciones"
-          defaultValue={"Seleccione un metodo de pago"}
-          className={`w-full text-[#666] bg-gray-50 border rounded outline-none px-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
+          defaultValue={"Seleccione un método de pago"}
+          className={`w-full text-[#666] bg-gray-100 border rounded outline-none px-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
             errors.acreditaciones
               ? "border-red-500 focus:ring focus:ring-red-200 focus:border-red-500"
               : "border-gray-200 "
           }`}
-          {...register}
+          {...register("acreditaciones")}
         >
-          <option value="">saldo a plataforma</option>
-          <option value="">saldo a cuenta bancaria</option>
+          <option value='' disabled >Seleccione un método de pago</option>
+          <option value="plataforma">saldo a plataforma</option>
+          <option value="cuenta_bancaria">saldo a cuenta bancaria</option>
         </select>
+        {errors.acreditaciones && (
+          <p className="text-red-500 text-sm font-medium mt-1">
+            {errors.acreditaciones?.message}
+          </p>
+        )}
       </label>
       <div>
-        <img className="h-12 w-12 object-cover rounded-full" src="./user.jpg " alt="user" />
-            {/* falta el input */}
+        <label htmlFor="file_input" className="text-[#444]">
+          Subir Avatar
+        </label>
+        <img
+          className="h-16 w-16 object-cover rounded-full my-2"
+          src={avatar}
+          alt="user"
+        />
+
+        <input
+          id="input_file"
+          type="file"
+          className={`w-full text-[#666] bg-gray-100 border rounded outline-none pr-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
+            errors.avatar
+              ? "border-red-500 focus:ring focus:ring-red-200 focus:border-red-500"
+              : "border-gray-200 "
+          }`}
+          {...register("avatar")}
+        />
+        {errors.avatar && (
+          <p className="text-red-500 text-sm font-medium mt-1">
+            {errors.avatar?.message}
+          </p>
+        )}
       </div>
+      <div className="flex items-center space-x-4"></div>
       <div className=" w-full flex flex-col gap-4">
         <button
           type="submit"
@@ -111,7 +144,7 @@ const UserForm: React.FC<UserFormProps> = ({ defaultValues, onSubmit }) => {
         >
           {loading ? (
             <span>
-              <AiOutlineLoading3Quarters className=" animate-spin inline-block" />{" "}
+              <AiOutlineLoading3Quarters className=" animate-spin inline-block" />
               Cargando
             </span>
           ) : (

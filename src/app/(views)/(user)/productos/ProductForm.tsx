@@ -5,8 +5,7 @@ import { useEffect, useState } from "react";
 import InputField from "@/app/components/forms/inputField";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
-import { creditacionesFormSchema } from "@/app/schemas/creditacionesFormSchema";
-type Inputs = {
+import { AccountFormSchema } from "@/app/schemas/accountFormSchema";type Inputs = {
   email: string;
 };
 
@@ -28,7 +27,7 @@ const creditacionesForm: React.FC<CreditacionesProps> = ({ info, onSubmit }) => 
     formState: { errors },
     reset,
   } = useForm<Inputs>({
-    resolver: zodResolver(creditacionesFormSchema),
+    resolver: zodResolver(AccountFormSchema),
   });
 
   const handleFormSubmit: SubmitHandler<Inputs> = async (data) => {
@@ -38,7 +37,7 @@ const creditacionesForm: React.FC<CreditacionesProps> = ({ info, onSubmit }) => 
       await onSubmit(data);
       reset(); 
     } catch (error) {
-      console.error("Error al registrar el depósito:", error);
+      console.error("Error al registrar:", error);
     } finally {
       setLoading(false);
     }

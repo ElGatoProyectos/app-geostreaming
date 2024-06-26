@@ -4,13 +4,12 @@ import { useEffect, useState } from "react";
 import InputField from "@/app/components/forms/inputField";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
-/* CAMBIAR SCHEMA */
-import { categoryFormSchema } from "@/app/schemas/categoryFormSchema";
+import { BankFormSchema } from "@/app/schemas/bankFormSchema";
 
 type Inputs = {
   bank: string;
   number: string;
-  owner: string;
+  name: string;
   type: string;
 };
 
@@ -28,7 +27,7 @@ const BankForm: React.FC<BankFormProps> = ({ defaultValues, onSubmit }) => {
     formState: { errors },
     reset,
   } = useForm<Inputs>({
-    resolver: zodResolver(categoryFormSchema),
+    resolver: zodResolver(BankFormSchema),
     defaultValues,
   });
 
@@ -66,40 +65,42 @@ const BankForm: React.FC<BankFormProps> = ({ defaultValues, onSubmit }) => {
           {...register}
         >
           {/* listar bancos */}
+          <option value='' disabled >Seleccione un banco</option>
           <option value="">banco 1</option>
           <option value="">banco2</option>
         </select>
       </label>
       <InputField
         id="number"
-        label="Numero"
+        label="Número"
         register={register("number")}
         error={errors.number}
       ></InputField>
-      {/* (input id, solo lo puede ver no editar) */}
       <InputField
-        id="owner"
-        label="Titular"
-        register={register("owner")}
-        error={errors.owner}
+        id="name"
+        label="Nombre (Titular)"
+        register={register("name")}
+        error={errors.name}
       ></InputField>
       <label htmlFor="type">
         Tipo
         <select
           id="type"
-          defaultValue={"Seleccione un tipo"}
+          defaultValue={"Seleccione un tipo de cuenta"}
           className={`w-full text-[#666] bg-gray-50 border rounded outline-none px-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
             errors.type
               ? "border-red-500 focus:ring focus:ring-red-200 focus:border-red-500"
               : "border-gray-200 "
           }`}
-          {...register}
+          {...register('type')}
         >
-          {/* listar bancos */}
+          <option value='' disabled >Seleccione tipo de cuenta</option>
           <option value="">Corriente</option>
           <option value="">Ahorros</option>
-          <option value="">ID de pago</option>
         </select>
+        {errors.type && (
+        <p className="text-red-500 text-sm font-medium mt-1">{errors.type?.message}</p>
+      )}
       </label>
       <div className=" w-full flex flex-col gap-4">
         <button

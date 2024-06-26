@@ -7,27 +7,23 @@ import NoRecords from "@/app/components/common/noRecords";
 const Reports = () => {
   const data: string[] = [];
   const columns = [
-    { Header: "Codigo", accessor: "codigo" },
-    { Header: "Producto", accessor: "producto" },
-    { Header: "Cliente", accessor: "cliente" },
-    { Header: "Fecha", accessor: "fecha" },
-    { Header: "Valor", accessor: "valor" },
-    { Header: "Total", accessor: "total" },
-    { Header: "Estado", accessor: "estado" },
-    { Header: "Referencia", accessor: "referencia" },
-    { Header: "Observacion", accessor: "observacion" },
+    { Header: "ID", accessor: "id" },
+    { Header: "Banco", accessor: "bank" },
+    { Header: "Numero de cuenta", accessor: "number" },
+    { Header: "Fecha", accessor: "date" },
+    { Header: "Monto", accessor: "value" },
   ];
 
   return (
     <>
       {data.length === 0 ? (
-        <NoRecords title="Historial de ventas" />
+        <NoRecords title="depósitos" />
       ) : (
         <Table
           columns={columns}
           data={dataTable}
           showActions={false}
-          title="Historial de depositos"
+          title="Historial de depósitos"
           download={true}
         />
       )}

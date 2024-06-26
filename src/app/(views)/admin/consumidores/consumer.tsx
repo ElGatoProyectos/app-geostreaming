@@ -32,10 +32,10 @@ const Consumers = () => {
   const handleSaveConsumer: SubmitHandler<Inputs> = async (data) => {
     if (selectedRecord) {
       // Lógica para editar
-      console.log("Editar categoría:", data);
+      console.log("Editar consumidor:", data);
     } else {
       // Lógica para agregar
-      console.log("Agregar categoría:", data);
+      console.log("Agregar consumidor:", data);
     }
     closeModal();
   };
@@ -79,10 +79,7 @@ const Consumers = () => {
 
   return (
     <>
-    { data.length === 0 ? (
-      <NoRecords title="Historial de ventas"/>
-    ) :
-    (
+
       <Table
         columns={columns}
         data={data}
@@ -93,8 +90,6 @@ const Consumers = () => {
         onEdit={handleEdit}
         onDelete={handleDelete}
       />
-    )}
-      
       <Modal isOpen={isModalOpen} onClose={closeModal} title={modalTitle}>
         <ConsumerForm
           defaultValues={
@@ -117,7 +112,7 @@ const Consumers = () => {
         title="Confirmar eliminación"
       >
         <div>
-          <p>¿Está seguro(a) de que quiere eliminar este producto?</p>
+          <p>¿Está seguro(a) de que quiere eliminar este consumidor?</p>
           <button
             onClick={handleDeleteConfirm}
             className="bg-red-500 text-white mt-4 px-4 py-1 rounded"

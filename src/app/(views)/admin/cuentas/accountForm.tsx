@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { AccountFormSchema } from "@/app/schemas/accountFormSchema";
+import { BankFormSchema } from "@/app/schemas/bankFormSchema";
 import { useEffect, useState } from "react";
 import InputField from "@/app/components/forms/inputField";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
@@ -30,7 +30,7 @@ const AccountForm: React.FC<AccountFormProps> = ({
     formState: { errors },
     reset,
   } = useForm<Inputs>({
-    resolver: zodResolver(AccountFormSchema),
+    resolver: zodResolver(BankFormSchema),
     defaultValues,
   });
 
