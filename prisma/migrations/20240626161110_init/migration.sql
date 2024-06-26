@@ -56,9 +56,11 @@ CREATE TABLE `User` (
 -- CreateTable
 CREATE TABLE `Product` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `enable_notifications` BOOLEAN NOT NULL DEFAULT false,
     `platform_id` INTEGER NOT NULL,
     `price_in_cents` INTEGER NOT NULL,
     `price_distributor_in_cents` INTEGER NOT NULL,
+    `status` ENUM('IMMEDIATE_DELIVERY', 'UPON_REQUEST') NOT NULL DEFAULT 'IMMEDIATE_DELIVERY',
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
 
@@ -71,10 +73,10 @@ CREATE TABLE `Account` (
     `is_active` BOOLEAN NOT NULL,
     `email` VARCHAR(191) NOT NULL,
     `password` VARCHAR(191) NOT NULL,
+    `description` VARCHAR(191) NULL,
     `pin` VARCHAR(191) NOT NULL,
     `numb_profiles` INTEGER NOT NULL,
     `numb_days_duration` INTEGER NOT NULL,
-    `status` ENUM('AVAILABLE', 'DELIVERED', 'PENDING') NOT NULL DEFAULT 'AVAILABLE',
     `platform_id` INTEGER NOT NULL,
     `product_id` INTEGER NOT NULL,
     `user_id` INTEGER NULL,
@@ -87,6 +89,7 @@ CREATE TABLE `Account` (
 -- CreateTable
 CREATE TABLE `Platform` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `img_url` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NOT NULL,
     `description` VARCHAR(191) NOT NULL,
 

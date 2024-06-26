@@ -7,7 +7,10 @@ const initialProducts = [
   {
     price_in_cents: 500,
     price_distributor_in_cents: 200,
+    status: "UPON_REQUEST",
     platform: {
+      img_url:
+        "https://images.ctfassets.net/y2ske730sjqp/5QQ9SVIdc1tmkqrtFnG9U1/de758bba0f65dcc1c6bc1f31f161003d/BrandAssets_Logos_02-NSymbol.jpg?w=940",
       name: "Netflix",
       description:
         "Streaming service with a wide variety of TV shows, movies, anime, documentaries, and more.",
@@ -34,7 +37,10 @@ const initialProducts = [
   {
     price_in_cents: 1000,
     price_distributor_in_cents: 500,
+    status: "UPON_REQUEST",
     platform: {
+      img_url:
+        "https://greenhouse.hulu.com/app/uploads/sites/12/2023/10/networkID-hulu.png",
       name: "Hulu",
       description:
         "Streaming service offering live and on-demand TV and movies, with and without commercials.",
@@ -45,6 +51,8 @@ const initialProducts = [
         email: "maria.hulu@gmail.com",
         password: "hulu9987",
         pin: "5678",
+        description:
+          "Links de descarga: https://www.google.com/ , https://www.google.com/ , https://www.google.com/ , https://www.google.com/ ",
         numb_profiles: 5,
         numb_days_duration: 30,
       },
@@ -52,6 +60,8 @@ const initialProducts = [
         is_active: true,
         email: "john.hulu@gmail.com",
         password: "hulu4321",
+        description:
+          "Links de descarga: https://www.google.com/ , https://www.google.com/ , https://www.google.com/ , https://www.google.com/ ",
         pin: "8765",
         numb_profiles: 5,
         numb_days_duration: 30,
@@ -62,6 +72,8 @@ const initialProducts = [
     price_in_cents: 2000,
     price_distributor_in_cents: 550,
     platform: {
+      img_url:
+        "https://www.infobae.com/new-resizer/n1UXX1TKux_6oeaGxLLs7cnLnno=/1200x675/filters:format(webp):quality(85)/cloudfront-us-east-1.images.arcpublishing.com/infobae/5EGT4P4UKRGAZPDR52FKJJW4YU.png",
       name: "Disney+",
       description:
         "Streaming service offering Disney, Pixar, Marvel, Star Wars, and National Geographic content.",
@@ -89,6 +101,8 @@ const initialProducts = [
     price_in_cents: 3500,
     price_distributor_in_cents: 750,
     platform: {
+      img_url:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Amazon_Prime_Video_blue_logo_2.svg/2560px-Amazon_Prime_Video_blue_logo_2.svg.png",
       name: "Amazon Prime Video",
       description:
         "Streaming service with a wide range of popular movies, TV shows, and original content.",
@@ -175,6 +189,7 @@ async function main() {
         platform_id: newPlatform.id,
         price_distributor_in_cents: product.price_distributor_in_cents,
         price_in_cents: product.price_in_cents,
+        status: product.status,
       },
     });
 

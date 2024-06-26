@@ -62,21 +62,22 @@ model User {
   updated_at       DateTime  @updatedAt
 }
 
+enum ProductState {
+  IMMEDIATE_DELIVERY // entrega inmediata
+  UPON_REQUEST // a pedido
+}
+
 model Product {
-  id                         Int       @id @default(autoincrement())
+  id                         Int          @id @default(autoincrement())
+  enable_notifications       Boolean      @default(false)
   platform_id                Int
-  platform                   Platform  @relation(fields: [platform_id], references: [id])
+  platform                   Platform     @relation(fields: [platform_id], references: [id])
   accounts                   Account[]
   price_in_cents             Int
   price_distributor_in_cents Int
-  created_at                 DateTime  @default(now())
-  updated_at                 DateTime  @updatedAt
-}
-
-enum States {
-  AVAILABLE // disponible
-  DELIVERED // entregado
-  PENDING // pendiente
+  status                     ProductState @default(IMMEDIATE_DELIVERY)
+  created_at                 DateTime     @default(now())
+  updated_at                 DateTime     @updatedAt
 }
 
 model Account {
@@ -84,10 +85,10 @@ model Account {
   is_active          Boolean
   email              String
   password           String
+  description        String?
   pin                String
   numb_profiles      Int
   numb_days_duration Int
-  status             States   @default(AVAILABLE)
   platform           Platform @relation(fields: [platform_id], references: [id])
   platform_id        Int
   product            Product  @relation(fields: [product_id], references: [id])
@@ -95,13 +96,13 @@ model Account {
   user               User?    @relation(fields: [user_id], references: [id])
   user_id            Int?
   orders             Order[]
-
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  created_at         DateTime @default(now())
+  updated_at         DateTime @updatedAt
 }
 
 model Platform {
   id          Int       @id @default(autoincrement())
+  img_url     String
   name        String
   description String
   products    Product[] @relation()
