@@ -42,7 +42,7 @@ const Header = () => {
     setPerfilOpen(false);
   };
 
-  const userRole = "consumidor";
+  const userRole = "admin";
   const username = "Nombre del admin";
   const userEmail = "admin@gmail.com";
   const userAvatar = "/user.jpg";
