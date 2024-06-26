@@ -2,15 +2,16 @@ import { z } from "zod";
 
 export const accountSchema = z.object({
   is_active: z.boolean(),
+  description: z.string().optional().nullable(),
   email: z.string().email(),
   password: z.string(),
   pin: z.string(),
   numb_profiles: z.number(),
   numb_days_duration: z.number(),
-  status: z.enum(["AVAILABLE", "DELIVERED", "PENDING"]).optional(),
 });
 
 const platformSchema = z.object({
+  img_url: z.string(),
   name: z.string(),
   description: z.string(),
 });
@@ -20,6 +21,7 @@ const productSchema = z.object({
   accounts: z.array(accountSchema).optional(),
   price_in_cents: z.number(),
   price_distributor_in_cents: z.number(),
+  status: z.enum(["IMMEDIATE_DELIVERY", "UPON_REQUEST"]).optional(),
 });
 
 export function validateProduct(productInfo: unknown) {
@@ -37,6 +39,7 @@ const productEditSchema = productSchema.extend({
   platform: platformSchema.extend({
     id: z.number(),
   }),
+  status: z.enum(["IMMEDIATE_DELIVERY", "UPON_REQUEST"]),
   accounts: z
     .array(
       accountSchema.extend({
