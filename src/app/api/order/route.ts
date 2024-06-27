@@ -192,8 +192,11 @@ export async function POST(req: NextRequest) {
       };
 
       const res = await fetch(url_wsp, options);
-
       const json = await res.json();
+
+      await prisma.notification.create({
+        data: { phone_client: userPhone, message: wspMessage },
+      });
 
       return NextResponse.json({
         ...newOrder,

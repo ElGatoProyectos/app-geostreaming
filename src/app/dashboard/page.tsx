@@ -25,7 +25,7 @@ export default function Page() {
     const data = {
       quantity: 1,
       user_id: 1,
-      product_id: 1,
+      product_id: 3,
     };
     const jsonData = JSON.stringify(data);
     try {

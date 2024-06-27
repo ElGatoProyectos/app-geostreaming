@@ -128,7 +128,7 @@ model Order {
 
 model Notification {
   id           Int      @id @default(autoincrement())
-  phone_client Int
+  phone_client String
   message      String
   created_at   DateTime @default(now())
 }

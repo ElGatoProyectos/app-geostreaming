@@ -115,7 +115,7 @@ CREATE TABLE `Order` (
 -- CreateTable
 CREATE TABLE `Notification` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `phone_client` INTEGER NOT NULL,
+    `phone_client` VARCHAR(191) NOT NULL,
     `message` VARCHAR(191) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
