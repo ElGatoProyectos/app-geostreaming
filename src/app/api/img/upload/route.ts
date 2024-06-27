@@ -21,10 +21,10 @@ export async function POST(request: NextRequest) {
     const filePath = path.join(process.cwd(), `public/${routeFile}`, file.name);
     await writeFile(filePath, buffer);
 
-    const filePathToSave = `/platforms/${file.name}`;
+    const filePathToSave = `public/${routeFile}/${file.name}`;
 
     return NextResponse.json({
-      message: "Uploaded file",
+      message: "File uploaded successfully",
       path: filePathToSave,
     });
   } catch (e: any) {
