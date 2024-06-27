@@ -6,26 +6,39 @@ export async function GET() {
   try {
     const banks = await prisma.bank.findMany();
     return NextResponse.json(banks);
-  } catch (e) {
-    return NextResponse.json({ error: "Error to get banks" }, { status: 500 });
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Error fetching banks" },
+      { status: 500 }
+    );
   } finally {
     await prisma.$disconnect();
   }
 }
 
 export async function POST(req: NextRequest) {
+  let bankinfo;
+  let bankvalidated;
+
   try {
-    const bankinfo = await req.json();
-    const bankvalidated = validateBank(bankinfo);
+    bankinfo = await req.json();
+  } catch (error) {
+    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+  }
+
+  try {
+    bankvalidated = validateBank(bankinfo);
+  } catch (error) {
+    return NextResponse.json({ error: "Validation error" }, { status: 400 });
+  }
+
+  try {
     const newBank = await prisma.bank.create({
       data: bankvalidated,
     });
     return NextResponse.json(newBank);
-  } catch (e) {
-    return NextResponse.json(
-      { error: "Error to create bank" },
-      { status: 500 }
-    );
+  } catch (error) {
+    return NextResponse.json({ error: "Error creating bank" }, { status: 500 });
   } finally {
     await prisma.$disconnect();
   }
