@@ -84,7 +84,7 @@ model Product {
 
 model Account {
   id                 Int      @id @default(autoincrement())
-  is_active          Boolean
+  is_active          Boolean  @default(false)
   email              String
   password           String
   description        String?

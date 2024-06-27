@@ -1,5 +1,5 @@
 export interface AccountInType {
-  is_active: boolean;
+  is_active?: boolean;
   email: string;
   password: string;
   pin: string;

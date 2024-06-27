@@ -71,7 +71,7 @@ CREATE TABLE `Product` (
 -- CreateTable
 CREATE TABLE `Account` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `is_active` BOOLEAN NOT NULL,
+    `is_active` BOOLEAN NOT NULL DEFAULT false,
     `email` VARCHAR(191) NOT NULL,
     `password` VARCHAR(191) NOT NULL,
     `description` VARCHAR(191) NULL,

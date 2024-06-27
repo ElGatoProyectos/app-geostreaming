@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const accountSchema = z.object({
-  is_active: z.boolean(),
+  is_active: z.boolean().optional(),
   description: z.string().optional().nullable(),
   email: z.string().email(),
   password: z.string(),
@@ -16,7 +16,7 @@ const platformSchema = z.object({
   description: z.string(),
 });
 
-export  const productSchema = z.object({
+export const productSchema = z.object({
   platform: platformSchema,
   accounts: z.array(accountSchema).optional(),
   price_in_cents: z.number(),

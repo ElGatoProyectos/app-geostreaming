@@ -5,7 +5,7 @@ const UserSchema = z.object({
   ref_id: z.number().int().positive().optional().nullable(),
   role: z.enum(["USER", "DISTRIBUTOR"]).optional(),
   full_name: z.string(),
-  dni: z.string().optional().nullable(),
+  dni: z.string(),
   phone: z.string(),
   password: z.string(),
   enabled: z.enum(["y", "n"]).default("y"),

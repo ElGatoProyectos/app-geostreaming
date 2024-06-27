@@ -178,7 +178,7 @@ export async function POST(req: NextRequest) {
         description ? `📝 Descripción: ${description}\n` : ""
       }🕒 Duración de la cuenta: ${numb_days_duration} días\n👤 Número de perfiles: ${numb_profiles}`;
 
-      const userPhone = user.phone; // falta cambiar
+      const userPhone = user.phone;
 
       const url_wsp = "http://localhost:4000/notifications";
       const options = {
@@ -188,7 +188,7 @@ export async function POST(req: NextRequest) {
           // Authorization: `Bearer ${token}`,
         },
 
-        body: JSON.stringify({ phone: "990882111", message: wspMessage }),
+        body: JSON.stringify({ phone: userPhone, message: wspMessage }),
       };
 
       const res = await fetch(url_wsp, options);

@@ -17,7 +17,6 @@ const initialProducts = [
     },
     accounts: [
       {
-        is_active: false,
         email: "jasdsad@gmail.com",
         password: "netf6541",
         pin: "1556",
@@ -25,7 +24,6 @@ const initialProducts = [
         numb_days_duration: 30,
       },
       {
-        is_active: false,
         email: "ana.perez@gmail.com",
         password: "netf1234",
         pin: "1234",
@@ -47,7 +45,6 @@ const initialProducts = [
     },
     accounts: [
       {
-        is_active: false,
         email: "maria.hulu@gmail.com",
         password: "hulu9987",
         pin: "5678",
@@ -57,7 +54,6 @@ const initialProducts = [
         numb_days_duration: 30,
       },
       {
-        is_active: false,
         email: "john.hulu@gmail.com",
         password: "hulu4321",
         description:
@@ -81,7 +77,6 @@ const initialProducts = [
     },
     accounts: [
       {
-        is_active: false,
         email: "alice.disney@gmail.com",
         password: "disney4321",
         pin: "1111",
@@ -89,7 +84,6 @@ const initialProducts = [
         numb_days_duration: 30,
       },
       {
-        is_active: false,
         email: "bob.disney@gmail.com",
         password: "disney5678",
         pin: "2222",
@@ -111,7 +105,6 @@ const initialProducts = [
     },
     accounts: [
       {
-        is_active: false,
         email: "charles.amazon@gmail.com",
         password: "prime9988",
         pin: "3333",
@@ -119,7 +112,6 @@ const initialProducts = [
         numb_days_duration: 30,
       },
       {
-        is_active: false,
         email: "diana.amazon@gmail.com",
         password: "prime1234",
         pin: "4444",

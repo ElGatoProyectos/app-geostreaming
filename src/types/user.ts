@@ -4,7 +4,7 @@ export interface UserInType {
   ref_id?: number | null;
   role?: "USER" | "DISTRIBUTOR";
   full_name: string;
-  dni?: string | null;
+  dni: string;
   phone: string;
   email: string;
   password: string;
