@@ -8,69 +8,159 @@ export async function GET(
   _: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  let account_id;
+  let foundAccount;
+
   try {
-    const account_id = Number(params.id);
-    const foundAccount = await prisma.account.findUnique({
+    account_id = Number(params.id);
+    if (isNaN(account_id)) {
+      return NextResponse.json(
+        { error: "Invalid account ID" },
+        { status: 400 }
+      );
+    }
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Error processing account ID" },
+      { status: 400 }
+    );
+  }
+
+  try {
+    foundAccount = await prisma.account.findUnique({
       where: { id: account_id },
     });
-    return NextResponse.json(foundAccount);
-  } catch (e) {
+    if (!foundAccount) {
+      return NextResponse.json({ error: "Account not found" }, { status: 404 });
+    }
+  } catch (error) {
     return NextResponse.json(
-      { error: "Error to get account" },
-      { status: 404 }
+      { error: "Error fetching account" },
+      { status: 500 }
     );
   } finally {
     await prisma.$disconnect();
   }
+
+  return NextResponse.json(foundAccount);
 }
 
 export async function PATCH(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  let session;
+
   try {
-    const session = await getServerSession(authOptions);
-    if (session.user.role !== "ADMIN") {
-      return NextResponse.json({ error: "forbidden" }, { status: 500 });
+    session = await getServerSession(authOptions);
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Error fetching session" },
+      { status: 500 }
+    );
+  }
+
+  if (session.user.role !== "ADMIN") {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
+  let account_id;
+
+  try {
+    account_id = Number(params.id);
+    if (isNaN(account_id)) {
+      return NextResponse.json(
+        { error: "Invalid account ID" },
+        { status: 400 }
+      );
     }
-    const account_id = Number(params.id);
-    const account_info = await req.json();
-    const validatedAccount = validateUpdateAccount(account_info);
-    const updatedAccount = await prisma.account.update({
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Error processing account ID" },
+      { status: 400 }
+    );
+  }
+
+  let account_info;
+
+  try {
+    account_info = await req.json();
+  } catch (error) {
+    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+  }
+
+  let validatedAccount;
+
+  try {
+    validatedAccount = validateUpdateAccount(account_info);
+  } catch (error) {
+    return NextResponse.json({ error: "Validation error" }, { status: 400 });
+  }
+
+  let updatedAccount;
+
+  try {
+    updatedAccount = await prisma.account.update({
       where: { id: account_id },
       data: validatedAccount,
     });
-
-    return NextResponse.json(updatedAccount);
-  } catch (error: any) {
+  } catch (error) {
     return NextResponse.json(
-      { error: "Error to update account" },
-      { status: 404 }
+      { error: "Error updating account" },
+      { status: 500 }
     );
   } finally {
     await prisma.$disconnect();
   }
+
+  return NextResponse.json(updatedAccount);
 }
 
 export async function DELETE(
   _: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  let session;
+
   try {
-    const session = await getServerSession(authOptions);
-    if (session.user.role !== "ADMIN") {
-      return NextResponse.json({ error: "forbidden" }, { status: 500 });
+    session = await getServerSession(authOptions);
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Error fetching session" },
+      { status: 500 }
+    );
+  }
+
+  if (session.user.role !== "ADMIN") {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
+  let account_id;
+
+  try {
+    account_id = Number(params.id);
+    if (isNaN(account_id)) {
+      return NextResponse.json(
+        { error: "Invalid account ID" },
+        { status: 400 }
+      );
     }
-    const account_id = Number(params.id);
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Error processing account ID" },
+      { status: 400 }
+    );
+  }
+
+  try {
     await prisma.account.delete({
       where: { id: account_id },
     });
-
-    return NextResponse.json({ message: "deleted account" });
-  } catch (e) {
+    return NextResponse.json({ message: "Deleted account" });
+  } catch (error) {
     return NextResponse.json(
-      { error: "Error to delete account" },
-      { status: 404 }
+      { error: "Error deleting account" },
+      { status: 500 }
     );
   } finally {
     await prisma.$disconnect();

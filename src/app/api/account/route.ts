@@ -1,42 +1,72 @@
 import prisma from "@/lib/prisma";
 import { validateAccount } from "@/lib/validations/account";
-import { validateBank } from "@/lib/validations/bank";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import { authOptions } from "../auth-options";
 
 export async function GET() {
+  let accounts;
+
   try {
-    const accounts = await prisma.account.findMany();
-    return NextResponse.json(accounts);
+    accounts = await prisma.account.findMany();
   } catch (e) {
     return NextResponse.json(
-      { error: "Error to get accounts" },
+      { error: "Error fetching accounts" },
       { status: 500 }
     );
   } finally {
     await prisma.$disconnect();
   }
+
+  return NextResponse.json(accounts);
 }
 
 export async function POST(req: NextRequest) {
+  let session;
+
   try {
-    const session = await getServerSession(authOptions);
-    if (session.user.role !== "ADMIN") {
-      return NextResponse.json({ error: "forbidden" }, { status: 500 });
-    }
-    const accountInfo = await req.json();
-    const validatedAccount = validateAccount(accountInfo);
-    const newAccount = await prisma.account.create({
+    session = await getServerSession(authOptions);
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Error fetching session" },
+      { status: 500 }
+    );
+  }
+
+  if (session.user.role !== "ADMIN") {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
+  let accountInfo;
+
+  try {
+    accountInfo = await req.json();
+  } catch (error) {
+    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+  }
+
+  let validatedAccount;
+
+  try {
+    validatedAccount = validateAccount(accountInfo);
+  } catch (error) {
+    return NextResponse.json({ error: "Validation error" }, { status: 400 });
+  }
+
+  let newAccount;
+
+  try {
+    newAccount = await prisma.account.create({
       data: validatedAccount,
     });
-    return NextResponse.json(newAccount);
-  } catch (e) {
+  } catch (error) {
     return NextResponse.json(
-      { error: "Error to create account" },
+      { error: "Error creating account" },
       { status: 500 }
     );
   } finally {
     await prisma.$disconnect();
   }
+
+  return NextResponse.json(newAccount);
 }

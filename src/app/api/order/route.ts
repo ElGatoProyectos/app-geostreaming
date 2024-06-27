@@ -26,6 +26,7 @@ export async function POST(req: NextRequest) {
           accounts: true,
           price_distributor_in_cents: true,
           price_in_cents: true,
+          platform: { select: { name: true } },
         },
       });
 
@@ -46,7 +47,13 @@ export async function POST(req: NextRequest) {
     try {
       user = await prisma.user.findUnique({
         where: { id: validatedOrder.user_id },
-        select: { balance_in_cents: true, role: true, ref_id: true },
+        select: {
+          balance_in_cents: true,
+          role: true,
+          ref_id: true,
+          phone: true,
+          full_name: true,
+        },
       });
 
       if (!user) {
@@ -84,6 +91,21 @@ export async function POST(req: NextRequest) {
       }
       newBalanceInCents =
         user.balance_in_cents - price_distributor_in_cents * quantity;
+
+      const refId = user.ref_id;
+      if (refId) {
+        try {
+          await prisma.user.update({
+            where: { id: refId },
+            data: { balance_in_cents: { increment: 100 } },
+          });
+        } catch (e) {
+          return NextResponse.json(
+            { error: "Error to inscrement user ref balance" },
+            { status: 500 }
+          );
+        }
+      }
     } else if (user.role === "USER") {
       if (price_in_cents * quantity > user.balance_in_cents) {
         return NextResponse.json(
@@ -139,10 +161,45 @@ export async function POST(req: NextRequest) {
         },
       });
 
+      const {
+        email,
+        password,
+        pin,
+        description,
+        numb_days_duration,
+        numb_profiles,
+      } = newOrder.account;
+
+      const wspMessage = `👋 Hola ${user.full_name}\n _Pedido #${
+        newOrder.id
+      } Completado_\n🖥️ Plataforma: ${
+        product.platform.name
+      }\n📧 Email: ${email}\n🔑 Password: ${password}\n🔢 Pin: ${pin}\n${
+        description ? `📝 Descripción: ${description}\n` : ""
+      }🕒 Duración de la cuenta: ${numb_days_duration} días\n👤 Número de perfiles: ${numb_profiles}`;
+
+      const userPhone = user.phone; // falta cambiar
+
+      const url_wsp = "http://localhost:4000/notifications";
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // Authorization: `Bearer ${token}`,
+        },
+
+        body: JSON.stringify({ phone: "990882111", message: wspMessage }),
+      };
+
+      const res = await fetch(url_wsp, options);
+
+      const json = await res.json();
+
       return NextResponse.json({
         ...newOrder,
         price_in_cents: product.price_in_cents,
         price_distributor_in_cents: product.price_distributor_in_cents,
+        json,
       });
     } catch (e) {
       return NextResponse.json(
