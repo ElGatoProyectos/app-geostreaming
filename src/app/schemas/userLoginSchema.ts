@@ -1,9 +1,11 @@
 import { z } from 'zod';
 
 export const userLoginSchema = z.object({
-    user: z
+    /* user: z 
         .string()
-        .min(1, { message: 'El nombre de usuario o número de cédula es requerido' }),
+        .min(1, { message: 'El nombre de usuario o número de cédula es requerido' }), */
     password: z.string()
-        .min(1, { message: 'El campo contraseña es requerida' })
+        .min(1, { message: 'El campo contraseña es requerida' }),
+    email: z.string()
+        .email({ message: 'Formato de email incorrecto | ejemplo@gmail.com' }),
 });

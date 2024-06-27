@@ -1,11 +1,11 @@
-'use client';
+"use client";
 import React, { useEffect, useState } from "react";
 import ContainerCard from "@/app/components/common/containerCard";
 import CardItem from "@/app/components/common/cardItem";
 import Modal from "@/app/components/common/modal";
 import ProductForm from "./ProductForm";
 import { SubmitHandler } from "react-hook-form";
-import axios from  'axios';
+import axios from "axios";
 
 interface ProductInfo {
   title: string;
@@ -21,15 +21,14 @@ type Product = {
   price_in_cents: number;
   price_distributor_in_cents: number;
   inOnDemand: boolean;
-  platform:{
+  platform: {
     img_url: string;
-    name:string;
+    name: string;
     description: string;
-  }
-}
+  };
+};
 
 const Delivery = () => {
-
   const [products, setProducts] = useState<Product[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
@@ -50,35 +49,37 @@ const Delivery = () => {
       try {
         const response = await axios.get("/api/product", {
           params: {
-            status: 'UPON_REQUEST'
-          }
+            status: "UPON_REQUEST",
+          },
         });
         setProducts(response.data.products);
       } catch (error) {
-        console.error('Error fetching products:', error)
+        console.error("Error fetching products:", error);
       }
-    }
+    };
     fetchProducts();
   }, []);
 
   const handleFormSubmit: SubmitHandler<Inputs> = async (data) => {
-    // Lógica 
+    // Lógica
     console.log(data);
-    closeModal(); 
+    closeModal();
   };
   return (
     <div className="w-full">
       <ContainerCard title="Bajo pedido (1 hora)">
         {products.map((product, index) => (
           <CardItem
-          key={index}
-          title={product.platform.name} /* name plataforma */
-          url={product.platform.img_url}
-          description={product.platform.description} /* description plataforma */
-          price_in_cents={product.price_in_cents}
-          price_distributor_in_cents={product.price_distributor_in_cents}
-          btn={"Comprar"}
-          onOpenModal={handleOpenModal}
+            key={index}
+            title={product.platform.name} /* name plataforma */
+            url={product.platform.img_url}
+            description={
+              product.platform.description
+            } /* description plataforma */
+            price_in_cents={product.price_in_cents}
+            price_distributor_in_cents={product.price_distributor_in_cents}
+            btn={"Comprar"}
+            onOpenModal={handleOpenModal}
           />
         ))}
       </ContainerCard>

@@ -3,19 +3,20 @@ import Link from "next/link";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { userLoginSchema } from "@/app/schemas/userLoginSchema";
-import { signIn } from "next-auth/react";
+import { getSession, signIn } from "next-auth/react";
 import { redirect, useRouter } from "next/navigation";
 import { useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { Bounce, toast, ToastContainer} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type Inputs = {
-  user: string;
+  email: string;
   password: string;
 };
 
 const login = () => {
   const router = useRouter();
-
   const [loading, setLoading] = useState(false);
 
   const {
@@ -30,38 +31,35 @@ const login = () => {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     setLoading(true);
 
-    try {
-      /* const responseAuth = await signIn("credentials", {
-        username: data.user,
-        password: data.password,
-        role: "-",
-        redirect: false,
-      }); */
+      try {
+        const responseAuth = await signIn("credentials", {
+          email: data.email,
+          password: data.password,
+          redirect: false,
+        });
+  
+        if (responseAuth?.ok) {
+          const session = await getSession();
+          const role = session?.user?.role;
+  
+          if (role === "ADMIN") {
+            router.push("/admin/home");
+          } else if (role === "USER") {
+            router.push("/home");
+          } else {
+            router.push("/");
+          }
+          reset();
+        } else {
+          toast.error("Error de autenticación");
+        }
+      } catch (error) {
+        toast.error("Error de autenticación");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-      router.push("/admin");
-
-      /* if (responseAuth?.ok) {
-        router.push("/admin/home");
-      } else {
-        //! error de autenticacion
-      } */
-    } catch (error) {
-      console.error("Error durante la autenticación:", error);
-    }
-    /* modal de confirmacion? */
-    /* const responseAuth = await signIn("credentials", {
-      username: data.user,
-      password: data.password,
-      role: "-",
-      redirect: false,
-    });
-    if (responseAuth?.ok) {
-      router.push("/..... la app");
-      reset();
-    } else {
-      //! error de autenticacion
-    } */
-  };
   return (
     <div className="relative bg-white shadow-md shadow-[#277FF2] rounded-xl h-auto md:max-w-[50%] xl:max-w-[640px] w-full p-1 m-4 ">
       <div className="w-full p-2 bg-[#277FF2] text-white text-center rounded-t-lg">
@@ -69,32 +67,31 @@ const login = () => {
       </div>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        action=""
         className="w-full px-8 pt-8 flex flex-col gap-6 items-center"
       >
         <div className="w-full">
           <label htmlFor="user" className="flex flex-col md:flex-row gap-2">
             <span className="md:w-1/3 xl:text-right flex items-center">
-              Nombre usuario:
+              Correo:
             </span>
             <div className="md:w-2/3">
               <div className="relative w-full">
                 <input
                   type="text"
-                  id="user"
+                  id="email"
                   spellCheck="true"
                   className={`w-full bg-gray-50 border rounded outline-none px-6 py-1 focus:bg-white focus:border-blue-400 ${
-                    errors.user
+                    errors.email
                       ? "border-red-500 focus:ring focus:ring-red-200 focus:border-red-500"
                       : "border-gray-200 "
                   }`}
-                  autoComplete="user"
-                  {...register("user")}
+                  autoComplete="email"
+                  {...register("email")}
                 />
 
                 <svg
                   className={` absolute right-2 top-1/2 -translate-y-1/2 ${
-                    errors.user ? "block" : "hidden"
+                    errors.email ? "block" : "hidden"
                   }`}
                   width="20"
                   height="20"
@@ -142,9 +139,9 @@ const login = () => {
                   </defs>
                 </svg>
               </div>
-              {errors.user?.message && (
+              {errors.email?.message && (
                 <p className="text-red-500 text-sm font-semibold">
-                  {errors.user?.message}
+                  {errors.email.message}
                 </p>
               )}
             </div>
@@ -227,7 +224,7 @@ const login = () => {
           </label>
         </div>
 
-        <div className="inline-flex items-center w-full lg:w-auto">
+        {/* <div className="inline-flex items-center w-full lg:w-auto">
           <label
             className="relative flex items-center rounded-full cursor-pointer"
             htmlFor="check"
@@ -255,13 +252,13 @@ const login = () => {
             </span>
           </label>
 
-          <label
+           <label
             className="mt-px font-light cursor-pointer select-none"
             htmlFor="check"
           >
             Recordar
           </label>
-        </div>
+        </div> */}
         <button
           type="submit"
           className={`px-6 py-2 bg-[#F2308B] rounded text-white hover:bg-[#F06FAC] transition-all duration-300 ${
@@ -287,6 +284,11 @@ const login = () => {
           Geostreaming Copyright ©2024. Todos los derechos reservados
         </small>
       </form>
+      <ToastContainer 
+       position= "top-right"
+       autoClose= {5000}
+       theme= "light"
+       />
     </div>
   );
 };
