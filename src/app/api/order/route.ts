@@ -14,78 +14,81 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
+  let orderInfo;
+  let orderValidated;
+
   try {
-    const orderInfo = await req.json();
-    const validatedOrder = validateOrder(orderInfo);
+    orderInfo = await req.json();
+  } catch (error) {
+    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+  }
 
-    let product;
-    try {
-      product = await prisma.product.findUnique({
-        where: { id: validatedOrder.product_id },
-        select: {
-          accounts: true,
-          price_distributor_in_cents: true,
-          price_in_cents: true,
-          platform: { select: { name: true } },
-        },
-      });
+  try {
+    orderValidated = validateOrder(orderInfo);
+  } catch (error) {
+    return NextResponse.json({ error: "Validation error" }, { status: 400 });
+  }
 
-      if (!product) {
-        return NextResponse.json(
-          { error: "Error: product not exist" },
-          { status: 500 }
-        );
-      }
-    } catch (e) {
+  let platform;
+  let user;
+
+  try {
+    platform = await prisma.platform.findUnique({
+      where: { id: orderValidated.platform_id },
+      select: {
+        Account: true,
+        price_distributor_in_cents: true,
+        price_in_cents: true,
+        name: true,
+        description: true,
+        status: true,
+        days_duration: true,
+      },
+    });
+
+    if (!platform) {
       return NextResponse.json(
-        { error: "Error fetching product" },
+        { error: "Error: platform not exist" },
         { status: 500 }
       );
     }
-
-    let user;
-    try {
-      user = await prisma.user.findUnique({
-        where: { id: validatedOrder.user_id },
-        select: {
-          balance_in_cents: true,
-          role: true,
-          ref_id: true,
-          phone: true,
-          full_name: true,
-        },
-      });
-
-      if (!user) {
-        return NextResponse.json(
-          { error: "Error: user not exist" },
-          { status: 500 }
-        );
-      }
-    } catch (e) {
-      return NextResponse.json(
-        { error: "Error fetching user" },
-        { status: 500 }
-      );
-    }
-
-    const filteredAccounts = product.accounts.find(
-      (cuenta) =>
-        !cuenta.is_active &&
-        cuenta.numb_profiles === validatedOrder.numb_profiles
+  } catch (e) {
+    return NextResponse.json(
+      { error: "Error fetching platform" },
+      { status: 500 }
     );
+  }
 
-    if (!filteredAccounts) {
+  try {
+    user = await prisma.user.findUnique({
+      where: { id: orderValidated.user_id },
+      select: {
+        balance_in_cents: true,
+        ref_id: true,
+        phone: true,
+        full_name: true,
+        role: true,
+      },
+    });
+
+    if (!user) {
       return NextResponse.json(
-        { error: "No accounts for sale" },
+        { error: "Error: user not exist" },
         { status: 500 }
       );
     }
+  } catch (e) {
+    return NextResponse.json({ error: "Error fetching user" }, { status: 500 });
+  }
 
-    const { price_distributor_in_cents, price_in_cents } = product;
-    const { quantity, user_id, product_id } = validatedOrder;
+  try {
+    const { price_distributor_in_cents, price_in_cents } = platform;
+    const { user_id, platform_id } = orderValidated;
 
     let newBalanceInCents;
+    let quantity = 1;
+    let refId = user.ref_id;
+
     if (user.role === "DISTRIBUTOR") {
       if (price_distributor_in_cents * quantity > user.balance_in_cents) {
         return NextResponse.json(
@@ -96,7 +99,6 @@ export async function POST(req: NextRequest) {
       newBalanceInCents =
         user.balance_in_cents - price_distributor_in_cents * quantity;
 
-      const refId = user.ref_id;
       if (refId) {
         try {
           await prisma.user.update({
@@ -118,12 +120,45 @@ export async function POST(req: NextRequest) {
         );
       }
       newBalanceInCents = user.balance_in_cents - price_in_cents * quantity;
+
+      if (refId) {
+        try {
+          await prisma.user.update({
+            where: { id: refId },
+            data: { balance_in_cents: { increment: 100 } },
+          });
+        } catch (e) {
+          return NextResponse.json(
+            { error: "Error to inscrement user ref balance" },
+            { status: 500 }
+          );
+        }
+      }
     }
+
+    const filteredAccounts = platform.Account.find(
+      (cuenta) => !cuenta.is_active
+    );
+
+    if (!filteredAccounts) {
+      return NextResponse.json(
+        { error: "No accounts for sale" },
+        { status: 500 }
+      );
+    }
+
+    const accountselected = filteredAccounts;
 
     try {
       await prisma.account.update({
-        where: { id: filteredAccounts.id },
-        data: { is_active: true, user_id: user_id },
+        where: { id: accountselected.id },
+        data: {
+          is_active: true,
+          user_id: user_id,
+          platform_id: platform_id,
+          purchase_date: new Date(),
+          status: "BOUGHT",
+        },
       });
     } catch (e) {
       return NextResponse.json(
@@ -145,68 +180,56 @@ export async function POST(req: NextRequest) {
     }
 
     const dataOrder = {
-      quantity,
-      user_id,
       role: user.role,
       ref_id: user.ref_id,
-      account_id: filteredAccounts.id,
-      product_id,
+      user_id,
+      platform_id,
     };
 
     try {
       const newOrder = await prisma.order.create({
         data: dataOrder,
         select: {
-          account: true,
           id: true,
-          quantity: true,
           role: true,
-          ref_id: true,
+          platform: { select: { name: true } },
         },
       });
 
-      const {
-        email,
-        password,
-        pin,
-        description,
-        numb_days_duration,
-        numb_profiles,
-      } = newOrder.account;
+      const responseOrder = { ...newOrder, account: accountselected };
+
+      const { email, password, pin, description } = accountselected;
 
       const wspMessage = `👋 Hola ${user.full_name}\n _Pedido #${
         newOrder.id
       } Completado_\n🖥️ Plataforma: ${
-        product.platform.name
+        platform.name
       }\n📧 Email: ${email}\n🔑 Password: ${password}\n🔢 Pin: ${pin}\n${
         description ? `📝 Descripción: ${description}\n` : ""
-      }🕒 Duración de la cuenta: ${numb_days_duration} días\n👤 Número de perfiles: ${numb_profiles}`;
+      }🕒 Duración de la cuenta: ${platform.days_duration} días}`;
 
-      const userPhone = user.phone;
+      // const userPhone = user.phone;
 
-      const url_wsp = "http://localhost:4000/notifications";
-      const options = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          // Authorization: `Bearer ${token}`,
-        },
+      // const url_wsp = "http://localhost:4000/notifications";
+      // const options = {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     // Authorization: `Bearer ${token}`,
+      //   },
 
-        body: JSON.stringify({ phone: userPhone, message: wspMessage }),
-      };
+      //   body: JSON.stringify({ phone: userPhone, message: wspMessage }),
+      // };
 
-      const res = await fetch(url_wsp, options);
-      const json = await res.json();
+      // const res = await fetch(url_wsp, options);
+      // const json = await res.json();
 
-      await prisma.notification.create({
-        data: { phone_client: userPhone, message: wspMessage },
-      });
+      // await prisma.notification.create({
+      //   data: { phone_client: userPhone, message: wspMessage },
+      // });
 
       return NextResponse.json({
-        ...newOrder,
-        price_in_cents: product.price_in_cents,
-        price_distributor_in_cents: product.price_distributor_in_cents,
-        json,
+        ...responseOrder,
       });
     } catch (e) {
       return NextResponse.json(
