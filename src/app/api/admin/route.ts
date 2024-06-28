@@ -38,16 +38,16 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "forbidden" }, { status: 403 });
   }
 
-  let bankinfo;
+  let adminInfo;
   try {
-    bankinfo = await req.json();
+    adminInfo = await req.json();
   } catch (error) {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
   let validatdeAdmin;
   try {
-    validatdeAdmin = validateAdmin(bankinfo);
+    validatdeAdmin = validateAdmin(adminInfo);
   } catch (error) {
     return NextResponse.json({ error: "Validation error" }, { status: 400 });
   }

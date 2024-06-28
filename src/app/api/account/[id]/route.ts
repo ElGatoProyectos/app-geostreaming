@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-import { validateUpdateAccount } from "@/lib/validations/account";
+import { validateAccount } from "@/lib/validations/account";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import { authOptions } from "../../auth-options";
@@ -92,7 +92,7 @@ export async function PATCH(
   let validatedAccount;
 
   try {
-    validatedAccount = validateUpdateAccount(account_info);
+    validatedAccount = validateAccount(account_info);
   } catch (error) {
     return NextResponse.json({ error: "Validation error" }, { status: 400 });
   }
