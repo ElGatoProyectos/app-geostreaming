@@ -25,7 +25,8 @@ export default function Page() {
     const data = {
       quantity: 1,
       user_id: 1,
-      product_id: 3,
+      product_id: 1,
+      numb_profiles: 3,
     };
     const jsonData = JSON.stringify(data);
     try {
@@ -104,6 +105,25 @@ export default function Page() {
       console.log("data", data);
     } catch (error) {
       console.error("Error al enviar el archivo:", error);
+    }
+  };
+
+  const getQR = async () => {
+    try {
+      const res = await fetch("/api/qr", {
+        method: "GET",
+      });
+
+      const text = await res.text();
+      if (!text) {
+        console.error("Respuesta vacía");
+        return;
+      }
+
+      const data = JSON.parse(text);
+      console.log("data", data);
+    } catch (error) {
+      console.error("Error al ordenar", error);
     }
   };
 
@@ -225,6 +245,12 @@ export default function Page() {
         <div>
           <button onClick={handleAdmin} className="bg-gray-400 rounded-xl p-5">
             Borrar admi
+          </button>
+        </div>
+
+        <div>
+          <button onClick={getQR} className="bg-gray-400 rounded-xl p-5">
+            obtener qr
           </button>
         </div>
       </div>
