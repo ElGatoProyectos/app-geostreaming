@@ -12,11 +12,12 @@ import Modal from "@/app/components/common/modal";
 
 import { BiSolidWallet } from "react-icons/bi";
 
-type UserRole = "admin" | "distribuidor" | "consumidor";
+type UserRole = "ADMIN" | "DISTRIBUTOR" | "USER";
 
 import Sidebar from "./sidebar";
 
-const Header:React.FC<{userRole: UserRole }> = ({userRole}) => {
+const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
+  console.log(userRole);
   const [menuOpen, setMenuOpen] = useState(false);
   const [perfilOpen, setPerfilOpen] = useState(false);
   const [notificationOpen, setNotificationOpen] = useState(false);
@@ -79,14 +80,13 @@ const Header:React.FC<{userRole: UserRole }> = ({userRole}) => {
               <BiSolidWallet className="text-xl lg:text-2xl text-yellow-800 inline-block" />
               <span className="text-[#888] text-sm md:text-lg">$ 21.87</span>
             </Link>
-          ): (
+          ) : (
             <button
-            className="md:hidden rounded-full p-2  hover:bg-gray-100 transition-all duration-300 relative"
-            onClick={showModal}
-          >
-            <FaWhatsapp className="text-[#888] text-2xl " />
-           
-          </button>
+              className="md:hidden rounded-full p-2  hover:bg-gray-100 transition-all duration-300 relative"
+              onClick={showModal}
+            >
+              <FaWhatsapp className="text-[#888] text-2xl " />
+            </button>
           )}
 
           <div
@@ -120,23 +120,22 @@ const Header:React.FC<{userRole: UserRole }> = ({userRole}) => {
                 </div>
                 <ul>
                   <li>
-                    <Link  href={"/perfil"}
+                    <Link
+                      href={"/perfil"}
                       className="w-full flex gap-4 border-b border-gray-200 px-6 py-2 text-[#888] whitespace-nowrap hover:bg-[#f3f3f9]"
                     >
                       <FaRegUser className="text-xl text-[#F2308B]" /> Mi Perfil
                     </Link>
                   </li>
                   {userRole === "admin" && (
-                    <li className=" cursor-pointer"  onClick={showModal}>
-                    <div
-                      className="w-full flex gap-4 border-b border-gray-200 px-6 py-2 text-[#888] whitespace-nowrap hover:bg-[#f3f3f9]"
-                    >
-                      <FaWhatsapp className="text-xl text-[#F2308B]" /> QR
-                      WhatsApp
-                    </div>
-                  </li>
+                    <li className=" cursor-pointer" onClick={showModal}>
+                      <div className="w-full flex gap-4 border-b border-gray-200 px-6 py-2 text-[#888] whitespace-nowrap hover:bg-[#f3f3f9]">
+                        <FaWhatsapp className="text-xl text-[#F2308B]" /> QR
+                        WhatsApp
+                      </div>
+                    </li>
                   )}
-                  
+
                   <li>
                     <Link
                       href={"/contrasenia"}
@@ -165,15 +164,19 @@ const Header:React.FC<{userRole: UserRole }> = ({userRole}) => {
         </div>
         {/* notifications */}
         {notificationOpen && (
-          <div className={`z-20 absolute top-[50px]  right-4 bg-white shadow-cardFloat w-[90%]   lg:w-[350px] overflow-y-auto ${userRole !== "admin" ? 'lg:right-[440px]' : 'lg:right-[280px]'}  py-8 rounded-md animate-keep-slide-down px-4 text-[#666] text-sm max-h-[90vh]`}>
+          <div
+            className={`z-20 absolute top-[50px]  right-4 bg-white shadow-cardFloat w-[90%]   lg:w-[350px] overflow-y-auto ${
+              userRole !== "admin" ? "lg:right-[440px]" : "lg:right-[280px]"
+            }  py-8 rounded-md animate-keep-slide-down px-4 text-[#666] text-sm max-h-[90vh]`}
+          >
             <div className="text-center">
-               <h2 className="font-semibold">Notificaciones</h2>
-            <span className="text-[#888] text-xs">
-              Tienes <span className="text-[#F2308B] ">2 notificaciones</span>{" "}
-              sin leer
-            </span>
+              <h2 className="font-semibold">Notificaciones</h2>
+              <span className="text-[#888] text-xs">
+                Tienes <span className="text-[#F2308B] ">2 notificaciones</span>{" "}
+                sin leer
+              </span>
             </div>
-           
+
             <div className="scrollbarFit max-h-[400px] overflow-y-auto pr-2 ">
               {/* sin leer */}
               <div className="mb-6">
@@ -198,7 +201,7 @@ const Header:React.FC<{userRole: UserRole }> = ({userRole}) => {
               <div>
                 <h3 className="text-left my-2 font-semibold">Leidas</h3>
                 <div className="flex flex-col gap-4">
-                <div className="text-left rounded-lg px-4 py-2 hover:bg-gray-100 transition-all duration-300 border-b border-gray-300">
+                  <div className="text-left rounded-lg px-4 py-2 hover:bg-gray-100 transition-all duration-300 border-b border-gray-300">
                     <span className="font-medium capitalize">
                       titulo de notificacion
                     </span>

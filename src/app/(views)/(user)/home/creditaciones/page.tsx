@@ -1,17 +1,12 @@
-import { Metadata } from "next";
-import Account from "./account";
-
+import React from "react";
 import MainLayout from "@/app/components/layout/mainLayout";
+import Counts from "./account";
 import { NextAuthProvider } from "@/context/sesion.context";
-
-export const metadata: Metadata = {
-  title: "Cuentas - Admin",
-};
 const page = () => {
   return (
     <NextAuthProvider>
       <MainLayout>
-        <Account />
+        <Counts />
       </MainLayout>
     </NextAuthProvider>
   );

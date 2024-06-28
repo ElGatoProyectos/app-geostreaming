@@ -61,8 +61,8 @@ const request = () => {
       try {
         const response = await axios.get("/api/product", {
           params: {
-            status: 'IMMEDIATE_DELIVERY'
-          }
+            status: "IMMEDIATE_DELIVERY",
+          },
         });
         setProducts(response.data.products);
       } catch (error) {
@@ -73,11 +73,12 @@ const request = () => {
   }, []);
 
   const handleFormSubmit: SubmitHandler<Inputs> = async (data) => {
-    // Lógica
-    console.log(data);
-    // verificar si el producto está disponible
-
-    closeModal();
+    try {
+      axios.post;
+    } catch (error) {
+      closeModal();
+      // mensaje de error
+    }
   };
   return (
     <div className="w-full">
@@ -86,7 +87,7 @@ const request = () => {
           <CardItem
             key={index}
             title={product.platform.name} /* name plataforma */
-            url={product.platform.img_url} 
+            url={product.platform.img_url}
             description={
               product.platform.description
             } /* description plataforma */

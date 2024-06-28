@@ -1,14 +1,13 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 import { IoMdHome } from "react-icons/io";
 import { IoMdCart } from "react-icons/io";
 import { IoLogoUsd } from "react-icons/io5";
 import { IoMdLogOut } from "react-icons/io";
 import { IoMdPersonAdd } from "react-icons/io";
-
 
 import {
   MdMenuBook,
@@ -20,12 +19,13 @@ import {
 import { FaRegUser, FaUsers } from "react-icons/fa";
 import { GiProfit } from "react-icons/gi";
 import { RiUserSharedLine } from "react-icons/ri";
+import { signOut } from "next-auth/react";
 
 interface SidebarProps {
   isOpen: boolean;
   role: "admin" | "distribuidor" | "consumidor";
 }
-const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
+const Sidebar: React.FC<any> = ({ isOpen, role }) => {
   const pathname = usePathname();
 
   const [currentPath, setCurrentPath] = useState("");
@@ -34,8 +34,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
     setCurrentPath(pathname);
   }, [pathname]);
 
-  const sections = {
-    admin: [
+  const sections: any = {
+    ADMIN: [
       {
         title: null,
         links: [
@@ -85,24 +85,19 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
         title: "Herramientas",
         links: [
           {
-            href: "/perfil",
+            href: "/admin/perfil",
             label: "Mi Perfil",
             icon: <FaRegUser className="text-xl" />,
           },
           {
-            href: "/contrasenia",
+            href: "/admin/contrasenia",
             label: "Cambiar contraseña",
             icon: <MdLockReset className="text-xl" />,
-          },
-          {
-            href: "/ingresar",
-            label: "Cerrar sesión",
-            icon: <IoMdLogOut className="text-xl" />,
           },
         ],
       },
     ],
-    consumidor: [
+    USER: [
       {
         title: null,
         links: [
@@ -117,12 +112,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
         title: "Ventas",
         links: [
           {
-            href: "/productos",
+            href: "/home/productos",
             label: "Productos",
             icon: <IoMdCart className="text-xl" />,
           },
           {
-            href: "/reportesdeventas",
+            href: "/home/reportesdeventas",
             label: "Reporte ventas",
             icon: <MdMenuBook className="text-xl" />,
           },
@@ -132,12 +127,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
         title: "Saldo",
         links: [
           {
-            href: "/creditaciones",
+            href: "/home/creditaciones",
             label: "Acreditar saldo",
             icon: <IoLogoUsd className="text-xl" />,
           },
           {
-            href: "/reportesdedepositos",
+            href: "/home/reportesdedepositos",
             label: "Reporte deposito",
             icon: <MdMenuBook className="text-xl" />,
           },
@@ -147,24 +142,19 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
         title: "Herramientas",
         links: [
           {
-            href: "/perfil",
+            href: "/home/perfil",
             label: "Mi Perfil",
             icon: <FaRegUser className="text-xl" />,
           },
           {
-            href: "/contrasenia",
+            href: "/home/contrasenia",
             label: "Cambiar contraseña",
             icon: <MdLockReset className="text-xl" />,
-          },
-          {
-            href: "/ingresar",
-            label: "Cerrar sesión",
-            icon: <IoMdLogOut className="text-xl" />,
           },
         ],
       },
     ],
-    distribuidor: [
+    DISTRIBUTOR: [
       {
         title: null,
         links: [
@@ -179,12 +169,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
         title: "Ventas",
         links: [
           {
-            href: "/productos",
+            href: "/home/productos",
             label: "Productos",
             icon: <IoMdCart className="text-xl" />,
           },
           {
-            href: "/reportesdeventas",
+            href: "/home/reportesdeventas",
             label: "Reporte ventas",
             icon: <MdMenuBook className="text-xl" />,
           },
@@ -194,12 +184,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
         title: "Saldo",
         links: [
           {
-            href: "/creditaciones",
+            href: "/home/creditaciones",
             label: "Acreditar saldo",
             icon: <IoLogoUsd className="text-xl" />,
           },
           {
-            href: "/reportesdedepositos",
+            href: "/home/reportesdedepositos",
             label: "Reporte deposito",
             icon: <MdMenuBook className="text-xl" />,
           },
@@ -209,12 +199,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
         title: "Afiliados",
         links: [
           {
-            href: "/registrarafiliados",
+            href: "/home/registrarafiliados",
             label: "Registrar",
             icon: <IoMdPersonAdd className="text-xl" />,
           },
           {
-            href: "/ganancias",
+            href: "/home/ganancias",
             label: "Ganancias",
             icon: <GiProfit className="text-xl" />,
           },
@@ -224,35 +214,34 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
         title: "Herramientas",
         links: [
           {
-            href: "/perfil",
+            href: "/home/perfil",
             label: "Mi Perfil",
             icon: <FaRegUser className="text-xl" />,
           },
           {
-            href: "/contrasenia",
+            href: "/home/contrasenia",
             label: "Cambiar contraseña",
             icon: <MdLockReset className="text-xl" />,
-          },
-          {
-            href: "/ingresar",
-            label: "Cerrar sesión",
-            icon: <IoMdLogOut className="text-xl" />,
           },
         ],
       },
     ],
   };
 
+  const router = useRouter();
+  function handleLogout() {
+    signOut();
+    // router.push("/ingresar");
+  }
+
   return (
     <div
       className={`scrollbarFit user-select-none bg-white text-[#888] w-[220px] py-4 max-h-[calc(100vh-70px)] h-full fixed top-[70px] border-r z-10 lg:z-0 transition-transform duration-300 overflow-y-auto shadow-[8px_0px_10px_-3px_rgba(0,0,0,0.1)] ${
-        isOpen
-          ? "translate-x-0 "
-          : "-translate-x-full lg:translate-x-0 "
+        isOpen ? "translate-x-0 " : "-translate-x-full lg:translate-x-0 "
       }`}
     >
       <div className="flex flex-col gap-6">
-        {sections[role].map((section, sectionIndex) => (
+        {sections[role].map((section: any, sectionIndex: number) => (
           <div key={sectionIndex} className="w-full">
             {section.title && (
               <div className="uppercase text-xs mx-8 font-semibold border-b border-gray-200 pb-1">
@@ -260,7 +249,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
               </div>
             )}
             <ul className="mt-2">
-              {section.links.map((link, linkIndex) => (
+              {section.links.map((link: any, linkIndex: any) => (
                 <li key={linkIndex}>
                   <Link
                     href={link.href}
@@ -278,6 +267,18 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
             </ul>
           </div>
         ))}
+        <li>
+          <span
+            role="button"
+            onClick={handleLogout}
+            className={`pl-8 py-3 mr-2 rounded-r-full mb-2 flex gap-4 items-center 
+                     
+                    `}
+          >
+            <IoMdLogOut className="text-xl" />
+            <span className="text-sm capitalize">Cerrar sesion</span>
+          </span>
+        </li>
       </div>
     </div>
   );
