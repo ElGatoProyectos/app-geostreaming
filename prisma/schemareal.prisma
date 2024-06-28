@@ -1,0 +1,146 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "mysql"
+    url      = env("DATABASE_URL")
+}
+
+model Admin {
+    id           Int    @id @default(autoincrement())
+    email        String @unique
+    password     String
+    full_name    String
+    phone        String
+    country_code String
+    logged       String @default("y")
+}
+
+enum Role {
+    USER
+    DISTRIBUTOR
+}
+
+model User {
+    id           Int    @id @default(autoincrement())
+    // data in
+    email        String @unique
+    password     String
+    ref_id       Int?
+    full_name    String
+    dni          String @unique
+    phone        String
+    country_code String
+
+    balance_in_cents Int       @default(0)
+    enabled          String    @default("y")
+    role             Role      @default(USER)
+    products         Product[]
+    vouchers         Voucher[]
+    orders           Order[]
+    created_at       DateTime  @default(now())
+    updated_at       DateTime  @updatedAt
+}
+
+model Bank {
+    id       Int    @id @default(autoincrement())
+    bank_url String
+    bank     String
+    number   String
+    name     String
+    type     String
+}
+
+model Voucher {
+    id           Int      @id @default(autoincrement())
+    voucher_url  String
+    number       String
+    country_code String
+    value        Int
+    user         User     @relation(fields: [user_id], references: [id])
+    user_id      Int
+    date         DateTime
+
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+}
+
+enum ProductState {
+    IMMEDIATE_DELIVERY // entrega inmediata
+    UPON_REQUEST // a pedido
+}
+
+model Product {
+    id Int @id @default(autoincrement())
+
+    // data in
+    enable_notifications       Boolean      @default(false)
+    platform_id                Int
+    platform                   Platform     @relation(fields: [platform_id], references: [id])
+    price_in_cents             Int
+    price_distributor_in_cents Int
+    numb_profiles              Int
+    expiration_date            DateTime
+    status                     ProductState @default(IMMEDIATE_DELIVERY)
+
+    created_at DateTime  @default(now())
+    updated_at DateTime  @updatedAt
+    accounts   Account[]
+    orders     Order[]
+
+    user    User? @relation(fields: [user_id], references: [id])
+    user_id Int?
+}
+
+model Account {
+    id          Int     @id @default(autoincrement())
+    is_active   Boolean @default(false)
+    // data in
+    email       String
+    password    String
+    description String?
+    pin         String
+
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+
+    product    Product @relation(fields: [product_id], references: [id])
+    product_id Int
+}
+
+model Platform {
+    id          Int       @id @default(autoincrement())
+    img_url     String
+    name        String
+    description String
+    products    Product[] @relation()
+}
+
+model Order {
+    id         Int     @id @default(autoincrement())
+    //data in
+    ref_id     Int?
+    role       Role
+    quantity   Int
+    product_id Int
+    product    Product @relation(fields: [product_id], references: [id])
+    user_id    Int
+    user       User    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+}
+
+model Notification {
+    id           Int      @id @default(autoincrement())
+    phone_client String
+    message      String
+    created_at   DateTime @default(now())
+}
