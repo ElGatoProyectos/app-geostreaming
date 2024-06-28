@@ -23,10 +23,8 @@ export default function Page() {
 
   const orderProduct = async () => {
     const data = {
-      quantity: 1,
       user_id: 1,
-      product_id: 1,
-      numb_profiles: 3,
+      platform_id: 4,
     };
     const jsonData = JSON.stringify(data);
     try {
@@ -125,6 +123,19 @@ export default function Page() {
     } catch (error) {
       console.error("Error al ordenar", error);
     }
+  };
+
+  const handlesubmitt = async (e: any) => {
+    e.preventDefault();
+    const selectedDate = e.target.date.value;
+    const fechaDeExpiracionObjeto = new Date(selectedDate);
+
+    const datesch2 = {
+      date: fechaDeExpiracionObjeto,
+    };
+
+    console.log("Fecha seleccionada:", selectedDate);
+    console.log("fechaDeExpiracionObjeto", fechaDeExpiracionObjeto);
   };
 
   return (
@@ -253,6 +264,13 @@ export default function Page() {
             obtener qr
           </button>
         </div>
+
+        <form onSubmit={handlesubmitt}>
+          <label htmlFor="date">Selecciona una fecha: </label>
+          <input type="datetime-local" id="date" name="date" />
+
+          <button type="submit">Enviar</button>
+        </form>
       </div>
     </div>
   );
