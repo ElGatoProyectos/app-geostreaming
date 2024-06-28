@@ -32,7 +32,6 @@ const ProductForm: React.FC<ProductFormProps> = ({
   defaultValues,
   onSubmit,
 }) => {
-  const [platforms, setPlatforms] = useState<Platform[]>([]);
   const [loading, setLoading] = useState(false);
 
   const {
@@ -49,21 +48,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
     reset(defaultValues);
   }, [defaultValues, reset]);
 
-  useEffect(() => {
-    const fetchPlatform = async () => {
-      try {
-        const response = await axios.get("/api/platform", {
-          params: {
-            status: "IMMEDIATE_DELIVERY",
-          },
-        });
-        setPlatforms(response.data.platform);
-      } catch (error) {
-        console.error("Error fetching platform:", error);
-      }
-    };
-    fetchPlatform();
-  }, []);
+
 
   const handleFormSubmit: SubmitHandler<Inputs> = async (data) => {
     setLoading(true);
@@ -82,6 +67,26 @@ const ProductForm: React.FC<ProductFormProps> = ({
       onSubmit={handleSubmit(handleFormSubmit)}
       className="flex w-full flex-col gap-4"
     >
+      <div>
+        <label htmlFor="img_url" className="text-[#444]">
+          Subir imagen
+        </label>
+        <input
+          id="img_url"
+          type="file"
+          className={`w-full text-[#666] bg-gray-100 border rounded outline-none pr-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
+            errors.platform?.img_url
+              ? "border-red-500 focus:ring focus:ring-red-200 focus:border-red-500"
+              : "border-gray-200 "
+          }`}
+          {...register("platform.img_url")}
+        />
+        {errors.platform?.img_url && (
+          <p className="text-red-500 text-sm font-medium mt-1">
+            {errors.platform.img_url.message}
+          </p>
+        )}
+      </div>
       <InputField
         id="name"
         label="Producto"

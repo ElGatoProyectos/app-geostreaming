@@ -9,11 +9,12 @@ import { IoLogoUsd } from "react-icons/io5";
 import { IoMdLogOut } from "react-icons/io";
 import { IoMdPersonAdd } from "react-icons/io";
 
+
 import {
   MdMenuBook,
-  MdOutlineCategory,
   MdAccountBalance,
   MdLockReset,
+  MdOutlineSwitchAccount,
 } from "react-icons/md";
 
 import { FaRegUser, FaUsers } from "react-icons/fa";
@@ -64,9 +65,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
         title: "Registrar",
         links: [
           {
-            href: "/admin/plataformas",
-            label: "Plataformas",
-            icon: <MdOutlineCategory className="text-xl" />,
+            href: "/admin/cuentas",
+            label: "Cuentas",
+            icon: <MdOutlineSwitchAccount className="text-xl" />,
           },
           {
             href: "/admin/productos",
@@ -74,8 +75,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
             icon: <IoMdCart className="text-xl" />,
           },
           {
-            href: "/admin/cuentas",
-            label: "Cuentas",
+            href: "/admin/bancos",
+            label: "Bancos",
             icon: <MdAccountBalance className="text-xl" />,
           },
         ],

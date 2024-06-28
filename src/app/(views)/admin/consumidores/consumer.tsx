@@ -5,36 +5,29 @@ import Modal from "@/app/components/common/modal";
 import ConsumerForm from "./consumerForm";
 import { SubmitHandler } from "react-hook-form";
 import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type userEnabled = "y" | "n";
-const enableMapping: Record<userEnabled, string> = {
-  y: "Activo",
-  n: "Inactivo",
-};
-
-const reverseEnabledMapping: Record<string, userEnabled> = {
-  Activo: "y",
-  Inactivo: "n",
-};
-
 
 type Users = {
-  id: number;
+  id?: number;
   email: string;
   ref_id: number;
   role: string;
   full_name: string;
   dni: string;
   phone: string;
-  balance_in_cents: number
+  balance_in_cents: number;
   enabled: userEnabled;
-}
+};
 const Consumers = () => {
   const [users, setUsers] = useState<Users[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
   const [selectedRecord, setSelectedRecord] = useState<Users | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -43,36 +36,60 @@ const Consumers = () => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get("/api/user", {
+        params: { role: "USER" },
+      });
+      setUsers(response.data.users);
+    } catch (error) {
+      console.error("Error fetching user:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get("/api/user", {
-          params: {role: "USER"}
-        });
-        const transformedUsers = response.data.users.map(
-          (user: Users) => ({
-            ...user,
-            enabled: enableMapping[user.enabled],
-          })
-        )
-        setUsers(transformedUsers); 
-      } catch (error) {
-        console.error("Error fetching user:", error);
-      }
-    };
     fetchUsers();
   }, []);
 
   const handleSaveConsumer: SubmitHandler<Users> = async (data) => {
-    if (selectedRecord) {
-      // Lógica para editar
-      console.log("Editar consumidor:", data);
-    } else {
-      // Lógica para agregar
-      console.log("Agregar consumidor:", data);
+    setLoading(true);
+    console.log(data);
+    try {
+      if (data.id) {
+        await axios.put(`/api/user/${data.id}`, {
+          email: data.email,
+          ref_id: data.ref_id,
+          role: data.role,
+          full_name: data.full_name,
+          dni: data.dni,
+          phone: data.phone,
+          enabled: data.enabled,
+        });
+        toast.success("Se actualizo correctamente");
+      } else {
+        await axios.post("/api/user", {
+          email: data.email,
+          ref_id: data.ref_id,
+          role: data.role,
+          full_name: data.full_name,
+          dni: data.dni,
+          phone: data.phone,
+          enabled: data.enabled,
+        });
+        toast.success("Se guardo correctamente");
+      }
+
+      useEffect(() => {
+        fetchUsers();
+      }, []);
+
+      closeModal();
+    } catch (error) {
+      console.error("Error al guardar la cuenta:", error);
+      toast.error("Hubo un error al guardar la cuenta");
+    } finally {
+      setLoading(false);
     }
-    closeModal();
   };
   const columns = [
     { Header: "ID", accessor: "id" },
@@ -83,47 +100,56 @@ const Consumers = () => {
     { Header: "DNI", accessor: "dni" },
     { Header: "Celular", accessor: "phone" },
     { Header: "Créditos", accessor: "balance_in_cents" },
-    { Header: "Activo", accessor: "enabled" },
+    {
+      Header: "Activo",
+      accessor: (row: Users) => (row.enabled === "y" ? "activo" : "inactivo"),
+    },
   ];
 
-
-
-  const handleEdit = (record: Users) => {
-    const editedRecord = {
-      ...record,
-      status: reverseEnabledMapping[ record.enabled]
-    };
-    setSelectedRecord(editedRecord);
-    setModalTitle("Editar consumidor");
-    setIsModalOpen(true);
+  const handleEdit = async (record: Users) => {
+    try {
+      const response = await axios.get(`/api/user/${record.id}`);
+      setSelectedRecord(response.data);
+      setModalTitle("Editar consumidor");
+      setIsModalOpen(true);
+    } catch (error) {
+      console.log(error);
+      toast.error("Error al obtener los datos");
+    }
   };
 
-  const handleAdd = () => {
+  /*   const handleAdd = () => {
     setSelectedRecord(null);
     setModalTitle("Agregar consumidor");
     setIsModalOpen(true);
   };
-
+ */
   const handleDelete = (record: Users) => {
     setSelectedRecord(record);
     setIsDeleteModalOpen(true);
   };
 
-  const handleDeleteConfirm = () => {
-    // Lógica para eliminar el registro
+  const handleDeleteConfirm = async () => {
+    try {
+      await axios.delete(`/api/account/${selectedRecord?.id}`);
+      toast.success("Registro eliminado correctamente");
+      fetchUsers();
+      setIsDeleteModalOpen(false);
+    } catch (error) {
+      console.error("Error al eliminar el registro:", error);
+      toast.error("Hubo un error al eliminar el registro");
+    }
     setIsDeleteModalOpen(false);
   };
 
   return (
     <>
-
       <Table
         columns={columns}
         data={users}
         showActions={true}
-        addRecord={true}
+        download={true}
         title="Consumidores"
-        onAdd={handleAdd}
         onEdit={handleEdit}
         onDelete={handleDelete}
       />
@@ -131,7 +157,6 @@ const Consumers = () => {
         <ConsumerForm
           defaultValues={
             selectedRecord || {
-              id: 0,
               email: "",
               ref_id: 0,
               role: "",
@@ -139,7 +164,7 @@ const Consumers = () => {
               dni: "",
               phone: "",
               balance_in_cents: 0,
-              enabled: 'y',
+              enabled: "y",
             }
           }
           onSubmit={handleSaveConsumer}

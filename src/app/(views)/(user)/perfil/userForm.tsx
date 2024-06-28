@@ -87,7 +87,7 @@ const UserForm: React.FC<UserFormProps> = ({
         register={register("phone")}
         error={errors.phone}
       />
-      <label htmlFor="acreditaciones">
+      {/* <label htmlFor="acreditaciones">
         Acreditación de ganancias
         <select
           id="acreditaciones"
@@ -108,7 +108,7 @@ const UserForm: React.FC<UserFormProps> = ({
             {errors.acreditaciones?.message}
           </p>
         )}
-      </label>
+      </label> */}
       <div>
         <label htmlFor="file_input" className="text-[#444]">
           Subir Avatar

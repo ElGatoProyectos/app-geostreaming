@@ -4,7 +4,7 @@ import dataTable from "@/data/dataTable.json";
 import NoRecords from "@/app/components/common/noRecords";
 
 const Reports = () => {
-  const data: string[] = [];
+  const data: any[] = [];
   const columns = [
     /* { Header: "ID", accessor: "id" },
     { Header: "Correo", accessor: "email" },

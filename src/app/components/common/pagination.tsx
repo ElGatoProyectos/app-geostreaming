@@ -31,7 +31,7 @@ export const PaginationComponent: React.FC<{
   };
 
   return (
-    <Pagination shape="rounded" className="w-fit mx-0">
+    <Pagination shape="rounded" className="w-fit mx-0 flex flex-wrap">
       <Pagination.Navigator
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}

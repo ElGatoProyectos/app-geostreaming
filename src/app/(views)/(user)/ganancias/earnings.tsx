@@ -3,7 +3,7 @@ import Table from "@/app/components/common/table";
 import NoRecords from "@/app/components/common/noRecords";
 
 const Reports = () => {
-  const data: string[] = [];
+  const data: any[] = [];
   const columns = [
     { Header: "Código", accessor: "id" },
     { Header: "Mes-Año", accessor: "date" },

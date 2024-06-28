@@ -43,8 +43,8 @@ const login = () => {
           const role = session?.user?.role;
   
           if (role === "ADMIN") {
-            router.push("/admin/home");
-          } else if (role === "USER") {
+            router.push("/admin");
+          } else if (role === "USER" || role === "DISTRIBUTOR") {
             router.push("/home");
           } else {
             router.push("/");

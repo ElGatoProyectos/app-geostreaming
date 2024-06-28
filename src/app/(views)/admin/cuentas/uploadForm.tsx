@@ -1,29 +1,23 @@
-'use client';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import InputField from "@/app/components/forms/inputField";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { UploadFormSchema } from "@/app/schemas/uploadFormSchema";
+import axios from "axios";
+import Link from "next/link";
 
-import { creditacionesFormSchema } from "@/app/schemas/creditacionesFormSchema";
 type Inputs = {
-  id: number;
-  voucher_number: string;
-  voucher_image: string;
-  value: string;
-  date: string;
+  file: string,
 };
 
-interface CreditacionesProps {
-  info: {
-    title: string;
-    numberAccount: string;
-    
-  };
+interface UploadFormProps {
   onSubmit: SubmitHandler<Inputs>;
 }
 
-const creditacionesForm: React.FC<CreditacionesProps> = ({ info, onSubmit }) => {
+const UploadForm: React.FC<UploadFormProps> = ({
+  onSubmit,
+}) => {
   const [loading, setLoading] = useState(false);
 
   const {
@@ -32,70 +26,53 @@ const creditacionesForm: React.FC<CreditacionesProps> = ({ info, onSubmit }) => 
     formState: { errors },
     reset,
   } = useForm<Inputs>({
-    resolver: zodResolver(creditacionesFormSchema),
+    resolver: zodResolver(UploadFormSchema),
   });
+
+  useEffect(() => {
+    reset();
+  }, []);
+
 
   const handleFormSubmit: SubmitHandler<Inputs> = async (data) => {
     setLoading(true);
 
     try {
-      await onSubmit(data);
-      reset(); 
+      await onSubmit({
+        ...data,
+      });
     } catch (error) {
-      console.error("Error al registrar el depósito:", error);
+      console.error("Error al registrar la cuenta:", error);
     } finally {
       setLoading(false);
     }
   };
+
   return (
     <form
       onSubmit={handleSubmit(handleFormSubmit)}
       className="flex w-full flex-col gap-4"
     >
-      <h2 className="font-semibold">{info.title}</h2>
-      <p className=""><span className="font-semibold">Cuenta: </span>{info.numberAccount}</p>
-      {/* (input id, solo lo puede ver no editar) */}
-      <InputField
-        id="voucher_number"
-        label="Numero de comprobante"
-        register={register("voucher_number")}
-        error={errors.voucher_number}
-      />
-      <InputField
-        id="value"
-        label="Valor"
-        register={register("value")}
-        error={errors.value}
-        placeholder="El valor mínimo es de $10"
-      />
-      <InputField
-        id="date"
-        label="Fecha del depósito"
-        register={register("date")}
-        error={errors.date}
-        type="date"
-      />
-       <div>
-        <label htmlFor="voucher_image" className="text-[#444]">
-          Foto del comprobante
+      <div>
+        <label htmlFor="file_input" className="text-[#444]">
+          Subir Archivo
         </label>
         <input
-          id="voucher_image"
+          id="input_file"
           type="file"
           className={`w-full text-[#666] bg-gray-100 border rounded outline-none pr-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
-            errors.voucher_image
+            errors.file
               ? "border-red-500 focus:ring focus:ring-red-200 focus:border-red-500"
               : "border-gray-200 "
           }`}
-          {...register("voucher_image")}
+          {...register("file")}
         />
-        {errors.voucher_image && (
+        {errors.file && (
           <p className="text-red-500 text-sm font-medium mt-1">
-            {errors.voucher_image?.message}
+            {errors.file?.message}
           </p>
         )}
       </div>
-
       <div className=" w-full flex flex-col gap-4">
         <button
           type="submit"
@@ -108,12 +85,13 @@ const creditacionesForm: React.FC<CreditacionesProps> = ({ info, onSubmit }) => 
               Cargando
             </span>
           ) : (
-            "Guardar"
+            "Subir"
           )}
         </button>
+        <Link href={'#'} className="mx-auto hover:text-[#F2308B]">Descargar</Link>
       </div>
     </form>
   );
 };
 
-export default creditacionesForm;
+export default UploadForm;

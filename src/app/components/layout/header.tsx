@@ -119,7 +119,7 @@ const Header:React.FC<{userRole: UserRole }> = ({userRole}) => {
                   <p className="text-center text-xs text-[#888]">{userEmail}</p>
                 </div>
                 <ul>
-                  <li className=" cursor-pointer"  onClick={showModal}>
+                  <li>
                     <Link  href={"/perfil"}
                       className="w-full flex gap-4 border-b border-gray-200 px-6 py-2 text-[#888] whitespace-nowrap hover:bg-[#f3f3f9]"
                     >
