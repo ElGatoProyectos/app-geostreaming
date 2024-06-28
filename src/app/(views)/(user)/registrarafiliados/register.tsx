@@ -48,7 +48,7 @@ const register = () => {
     { Header: "Fecha de ingreso", accessor: "date" },
   ];
 
-  const data: string[] = [];
+  const data: any[] = [];
 
   const handleEdit = (record: Inputs) => {
     setSelectedRecord(record);

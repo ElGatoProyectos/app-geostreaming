@@ -6,6 +6,8 @@ import Modal from "@/app/components/common/modal";
 import ProductForm from "./ProductForm";
 import { SubmitHandler } from "react-hook-form";
 import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface ProductInfo {
   title: string;
@@ -33,6 +35,7 @@ const Delivery = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
   const [modalInfo, setModalInfo] = useState<ProductInfo | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const handleOpenModal = (title: string, info: ProductInfo) => {
     setModalTitle(title);
@@ -43,27 +46,45 @@ const Delivery = () => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get("/api/product", {
+        params: {
+          status: "UPON_REQUEST",
+        },
+      });
+      setProducts(response.data.products);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await axios.get("/api/product", {
-          params: {
-            status: "UPON_REQUEST",
-          },
-        });
-        setProducts(response.data.products);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
     fetchProducts();
   }, []);
 
   const handleFormSubmit: SubmitHandler<Inputs> = async (data) => {
-    // Lógica
+    setLoading(true);
     console.log(data);
-    closeModal();
+    try {
+      // revisar si el producto esta disponible = UPON_REQUEST, si esta se le asigan una cuenta
+      // si 
+      await axios.put(`/api/order/`, {
+
+
+      });
+      toast.success("Se registro correctamente");
+      useEffect(() => {
+        fetchProducts();
+      }, []);
+
+      closeModal();
+    } catch (error) {
+      console.error("Error al registrar su compra:", error);
+      toast.error("Hubo un error al registrar su compra");
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <div className="w-full">
@@ -71,11 +92,11 @@ const Delivery = () => {
         {products.map((product, index) => (
           <CardItem
             key={index}
-            title={product.platform.name} /* name plataforma */
+            title={product.platform.name} 
             url={product.platform.img_url}
             description={
               product.platform.description
-            } /* description plataforma */
+            } 
             price_in_cents={product.price_in_cents}
             price_distributor_in_cents={product.price_distributor_in_cents}
             btn={"Comprar"}

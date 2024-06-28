@@ -64,7 +64,7 @@ const profile = () => {
         />
       </ContainerCard2>
 
-      <ContainerCard2 title="Tu Información Bancaria">
+     {/*  <ContainerCard2 title="Tu Información Bancaria">
         <BankForm
           defaultValues={{
             bank: dataBank.bank,
@@ -74,7 +74,7 @@ const profile = () => {
           }}
           onSubmit={handleSaveBank}
         />
-      </ContainerCard2>
+      </ContainerCard2> */}
     </div>
   );
 };

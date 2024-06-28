@@ -13,11 +13,14 @@ interface TableProps<T> {
   data: T[];
   showActions?: boolean;
   download?: boolean;
+  downloadAction?: () => void;
   addRecord?: boolean;
+  uploadFile?: boolean;
   title: string;
   onAdd?: () => void;
   onEdit?: (row: T) => void;
   onDelete?: (row: T) => void;
+  onUpload?: () => void;
 }
 
 const TableComponent = <T extends Record<string, any>>({
@@ -26,10 +29,13 @@ const TableComponent = <T extends Record<string, any>>({
   showActions = false,
   download = false,
   addRecord = false,
+  uploadFile = false,
   title,
   onAdd,
   onEdit,
   onDelete,
+  downloadAction,
+  onUpload,
 }: TableProps<T>) => {
   const [filteredData, setFilteredData] = useState(data);
   const [currentPage, setCurrentPage] = useState(1);
@@ -97,10 +103,15 @@ const TableComponent = <T extends Record<string, any>>({
     return sortConfig.key === key ? sortConfig.direction : undefined;
   };
 
-  /* modal */
+  /* modals */
   const openModal = () => {
     if (onAdd) {
       onAdd();
+    }
+  };
+  const openUploadModal = () => {
+    if (onUpload) {
+      onUpload();
     }
   };
 
@@ -127,19 +138,23 @@ const TableComponent = <T extends Record<string, any>>({
               </option>
             ))}
           </select>
-          <div className="flex gap-4">
+          <div className="w-full sm:w-fit flex flex-col sm:flex-row gap-4">
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Buscar ..."
               className="block w-full px-4 py-2 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-purple-300 focus:border-purple-500 max-w-[400px]"
             />
-            {download ? (
-              <button className="text-sm bg-[#F2308B] text-white capitalize whitespace-nowrap hover:bg-[#F06FAC]">
-                Descargar reporte
-              </button>
-            ) : (
+            {download && (
+              <ActionButton onClick={() => downloadAction}>
+                Descargar
+              </ActionButton>
+            )}
+            {addRecord && (
               <ActionButton onClick={openModal}>Agregar</ActionButton>
+            )}
+            {uploadFile && (
+              <ActionButton onClick={openUploadModal}>Subir Archivo</ActionButton>
             )}
           </div>
         </div>
@@ -154,19 +169,19 @@ const TableComponent = <T extends Record<string, any>>({
         <Table.Head className="w-full">
           {columns.map((column) => (
             <Table.HeadCell
-            key={typeof column.accessor === "string" ? column.accessor : "custom"}
-            onClick={() => requestSort(column.accessor as string)}
+              key={
+                typeof column.accessor === "string" ? column.accessor : "custom"
+              }
+              onClick={() => requestSort(column.accessor as string)}
             >
               <div className="flex items-center cursor-pointer">
                 <p className="text-sm font-semibold text-[#666] capitalize ">
                   {column.Header.toLowerCase()}
                 </p>
-                {getClassNamesFor(column.accessor as string) === "ascending" && (
-                  <CaretUp size={15} />
-                )}
-                 {getClassNamesFor(column.accessor as string) === "descending" && (
-                  <CaretDown size={15} />
-                )}
+                {getClassNamesFor(column.accessor as string) ===
+                  "ascending" && <CaretUp size={15} />}
+                {getClassNamesFor(column.accessor as string) ===
+                  "descending" && <CaretDown size={15} />}
               </div>
             </Table.HeadCell>
           ))}
@@ -181,11 +196,17 @@ const TableComponent = <T extends Record<string, any>>({
             paginatedData.map((row, rowIndex) => (
               <Table.Row key={rowIndex} className="bg-white">
                 {columns.map((column) => (
-                   <Table.Cell key={typeof column.accessor === "string" ? column.accessor : "custom"}>
-                   {typeof column.accessor === "function"
-                     ? (column.accessor as (row: T) => string)(row)
-                     : row[column.accessor]}
-                 </Table.Cell>
+                  <Table.Cell
+                    key={
+                      typeof column.accessor === "string"
+                        ? column.accessor
+                        : "custom"
+                    }
+                  >
+                    {typeof column.accessor === "function"
+                      ? (column.accessor as (row: T) => string)(row)
+                      : row[column.accessor]}
+                  </Table.Cell>
                 ))}
                 {showActions && (
                   <Table.Cell>
@@ -216,7 +237,7 @@ const TableComponent = <T extends Record<string, any>>({
       </Table>
       <div className="flex flex-col gap-4 sm:flex-row items-center justify-between mt-4">
         <span className="text-sm text-[#888]">
-          Página
+          Página{" "}
           <strong>
             {currentPage} de {totalPages}
           </strong>

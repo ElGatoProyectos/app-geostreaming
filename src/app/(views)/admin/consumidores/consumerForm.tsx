@@ -7,7 +7,7 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { UserSchema } from "@/app/schemas/userSchema";
 type userEnabled = "y" | "n";
 type Inputs = {
-  id: number;
+  id?: number;
   email: string;
   ref_id: number;
   role: string;

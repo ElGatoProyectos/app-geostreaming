@@ -64,7 +64,6 @@ const BankForm: React.FC<BankFormProps> = ({ defaultValues, onSubmit }) => {
           }`}
           {...register}
         >
-          {/* listar bancos */}
           <option value='' disabled >Seleccione un banco</option>
           <option value="">banco 1</option>
           <option value="">banco2</option>

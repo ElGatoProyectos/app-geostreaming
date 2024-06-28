@@ -5,20 +5,10 @@ import Modal from "@/app/components/common/modal";
 import ProductForm from "./productForm";
 import { SubmitHandler } from "react-hook-form";
 import axios from "axios";
-import { Bounce, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 type ProductStatus = "IMMEDIATE_DELIVERY" | "UPON_REQUEST";
-
-const statusMapping: Record<ProductStatus, string> = {
-  IMMEDIATE_DELIVERY: "Entrega inmediata",
-  UPON_REQUEST: "A pedido",
-};
-
-const reverseStatusMapping: Record<string, ProductStatus> = {
-  "Entrega inmediata": "IMMEDIATE_DELIVERY",
-  "A pedido": "UPON_REQUEST",
-};
 
 interface Platform {
   id: number;
@@ -41,6 +31,7 @@ const Products = () => {
   const [modalTitle, setModalTitle] = useState("");
   const [selectedRecord, setSelectedRecord] = useState<Product | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -49,40 +40,57 @@ const Products = () => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get("/api/product");
+      setProducts(response.data.products);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await axios.get("/api/product");
-        const transformedProducts = response.data.products.map(
-          (product: Product) => ({
-            ...product,
-            status: statusMapping[product.status],
-          })
-        );
-        setProducts(transformedProducts);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
     fetchProducts();
   }, []);
 
   const handleSaveProduct: SubmitHandler<Product> = async (data) => {
-    if (selectedRecord) {
-      // Lógica para editar
-      console.log("Editar producto:", data);
-    } else {
-      // Lógica para agregar
-      console.log("Agregar producto:", data);
+    setLoading(true);
+    console.log(data);
+    try {
+      if (data.id) {
+        await axios.put(`/api/product/${data.id}`,
+          {
+            
+          } );
+        toast.success("Se actualizo correctamente");
+      } else {
+        await axios.post("/api/product", {
+          
+        });
+        toast.success("Se guardo correctamente");
+      }
+
+      useEffect(() => {
+        fetchProducts();
+      }, []);
+
+      closeModal();
+    } catch (error) {
+      console.error("Error al guardar la cuenta:", error);
+      toast.error("Hubo un error al guardar la cuenta");
+    } finally {
+      setLoading(false);
     }
-    closeModal();
   };
 
   const columns = [
     { Header: "ID", accessor: "id" },
     { Header: "producto", accessor: (row: Product) => row.platform.name },
-    { Header: "Tipo", accessor: "status" },
+    {
+      Header: "Tipo",
+      accessor: (row: Product) =>
+        row.status === "IMMEDIATE_DELIVERY" ? "Entrega inmediata" : "A pedido",
+    },
     { Header: "PRECIO CONSUMIDOR ($)", accessor: "price_in_cents" },
     {
       Header: "PRECIO DISTRIBUIDOR ($)",
@@ -94,14 +102,16 @@ const Products = () => {
     },
   ];
 
-  const handleEdit = (record: Product) => {
-    const editedRecord = {
-      ...record,
-      status: reverseStatusMapping[record.status],
-    };
-    setSelectedRecord(editedRecord);
-    setModalTitle("Editar producto");
-    setIsModalOpen(true);
+  const handleEdit = async (record: Product) => {
+    try {
+      const response = await axios.get(`/api/product/${record.id}`);
+      setSelectedRecord(response.data);
+      setModalTitle("Editar producto");
+      setIsModalOpen(true);
+    } catch (error) {
+      console.log(error);
+      toast.error("Error al obtener los datos");
+    }
   };
 
   const handleAdd = () => {
@@ -120,7 +130,9 @@ const Products = () => {
 
     try {
       await axios.delete(`/api/product/${selectedRecord.id}`);
-      const updatedProduct = products.filter((product) => product.id !== selectedRecord.id);
+      const updatedProduct = products.filter(
+        (product) => product.id !== selectedRecord.id
+      );
       setProducts(updatedProduct);
       setSelectedRecord(null);
       setIsDeleteModalOpen(false);
