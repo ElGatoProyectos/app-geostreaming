@@ -7,7 +7,7 @@ import { getSession, signIn } from "next-auth/react";
 import { redirect, useRouter } from "next/navigation";
 import { useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { Bounce, toast, ToastContainer} from "react-toastify";
+import { Bounce, toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 type Inputs = {
@@ -31,34 +31,37 @@ const login = () => {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     setLoading(true);
 
-      try {
-        const responseAuth = await signIn("credentials", {
-          email: data.email,
-          password: data.password,
-          redirect: false,
-        });
-  
-        if (responseAuth?.ok) {
-          const session = await getSession();
-          const role = session?.user?.role;
-  
-          if (role === "ADMIN") {
-            router.push("/admin");
-          } else if (role === "USER" || role === "DISTRIBUTOR") {
-            router.push("/home");
-          } else {
-            router.push("/");
-          }
-          reset();
+    try {
+      const responseAuth = await signIn("credentials", {
+        email: data.email,
+        password: data.password,
+        redirect: false,
+      });
+
+      console.log(responseAuth);
+
+      if (responseAuth?.ok) {
+        const session = await getSession();
+        const role = session?.user?.role;
+
+        if (role === "ADMIN") {
+          console.log("run to admin");
+          router.push("/admin");
+        } else if (role === "USER" || role === "DISTRIBUTOR") {
+          router.push("/home");
         } else {
-          toast.error("Error de autenticación");
+          router.push("/");
         }
-      } catch (error) {
+        reset();
+      } else {
         toast.error("Error de autenticación");
-      } finally {
-        setLoading(false);
       }
-    };
+    } catch (error) {
+      toast.error("Error de autenticación");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="relative bg-white shadow-md shadow-[#277FF2] rounded-xl h-auto md:max-w-[50%] xl:max-w-[640px] w-full p-1 m-4 ">
@@ -99,7 +102,7 @@ const login = () => {
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                 >
-                  <g clip-path="url(#clip0_1_2)">
+                  <g clipPath="url(#clip0_1_2)">
                     <mask
                       id="mask0_1_2"
                       fontStyle={"mask-type:luminance"}
@@ -113,20 +116,20 @@ const login = () => {
                     </mask>
                     <g mask="url(#mask0_1_2)">
                       <path
-                        fill-rule="evenodd"
-                        clip-rule="evenodd"
+                        fillRule="evenodd"
+                        clipRule="evenodd"
                         d="M7 1C3.68629 1 1 3.68629 1 7C1 10.3137 3.68629 13 7 13C10.3137 13 13 10.3137 13 7C13 3.68629 10.3137 1 7 1ZM0 7C0 3.13401 3.13401 0 7 0C10.866 0 14 3.13401 14 7C14 10.866 10.866 14 7 14C3.13401 14 0 10.866 0 7Z"
                         fill="#FE0101"
                       />
                       <path
-                        fill-rule="evenodd"
-                        clip-rule="evenodd"
+                        fillRule="evenodd"
+                        clipRule="evenodd"
                         d="M7 3C7.27614 3 7.5 3.22386 7.5 3.5V6.5C7.5 6.77614 7.27614 7 7 7C6.72386 7 6.5 6.77614 6.5 6.5V3.5C6.5 3.22386 6.72386 3 7 3Z"
                         fill="#FE0101"
                       />
                       <path
-                        fill-rule="evenodd"
-                        clip-rule="evenodd"
+                        fillRule="evenodd"
+                        clipRule="evenodd"
                         d="M6 9.5C6 8.94772 6.44772 8.5 7 8.5C7.55228 8.5 8 8.94772 8 9.5C8 10.0523 7.55228 10.5 7 10.5C6.44772 10.5 6 10.0523 6 9.5Z"
                         fill="#FE0101"
                       />
@@ -175,7 +178,7 @@ const login = () => {
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                 >
-                  <g clip-path="url(#clip0_1_2)">
+                  <g clipPath="url(#clip0_1_2)">
                     <mask
                       id="mask0_1_2"
                       fontStyle={"mask-type:luminance"}
@@ -189,20 +192,20 @@ const login = () => {
                     </mask>
                     <g mask="url(#mask0_1_2)">
                       <path
-                        fill-rule="evenodd"
-                        clip-rule="evenodd"
+                        fillRule="evenodd"
+                        clipRule="evenodd"
                         d="M7 1C3.68629 1 1 3.68629 1 7C1 10.3137 3.68629 13 7 13C10.3137 13 13 10.3137 13 7C13 3.68629 10.3137 1 7 1ZM0 7C0 3.13401 3.13401 0 7 0C10.866 0 14 3.13401 14 7C14 10.866 10.866 14 7 14C3.13401 14 0 10.866 0 7Z"
                         fill="#FE0101"
                       />
                       <path
-                        fill-rule="evenodd"
-                        clip-rule="evenodd"
+                        fillRule="evenodd"
+                        clipRule="evenodd"
                         d="M7 3C7.27614 3 7.5 3.22386 7.5 3.5V6.5C7.5 6.77614 7.27614 7 7 7C6.72386 7 6.5 6.77614 6.5 6.5V3.5C6.5 3.22386 6.72386 3 7 3Z"
                         fill="#FE0101"
                       />
                       <path
-                        fill-rule="evenodd"
-                        clip-rule="evenodd"
+                        fillRule="evenodd"
+                        clipRule="evenodd"
                         d="M6 9.5C6 8.94772 6.44772 8.5 7 8.5C7.55228 8.5 8 8.94772 8 9.5C8 10.0523 7.55228 10.5 7 10.5C6.44772 10.5 6 10.0523 6 9.5Z"
                         fill="#FE0101"
                       />
@@ -244,9 +247,9 @@ const login = () => {
                 stroke-width="1"
               >
                 <path
-                  fill-rule="evenodd"
+                  fillRule="evenodd"
                   d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                  clip-rule="evenodd"
+                  clipRule="evenodd"
                 ></path>
               </svg>
             </span>
@@ -284,11 +287,7 @@ const login = () => {
           Geostreaming Copyright ©2024. Todos los derechos reservados
         </small>
       </form>
-      <ToastContainer 
-       position= "top-right"
-       autoClose= {5000}
-       theme= "light"
-       />
+      <ToastContainer position="top-right" autoClose={5000} theme="light" />
     </div>
   );
 };

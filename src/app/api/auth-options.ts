@@ -1,6 +1,7 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 import prisma from "@/lib/prisma";
+// import { signOut } from "next-auth/react";
 
 export const authOptions = {
   providers: [
@@ -68,6 +69,7 @@ export const authOptions = {
     },
   },
   // pages: {
-  //   signIn: "/users/login",
+  //   signIn: "/ingresar",
+  //   signOut: "/ingresar",
   // },
 };

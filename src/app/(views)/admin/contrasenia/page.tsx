@@ -3,6 +3,7 @@ import { lazy, Suspense } from "react";
 import { Metadata } from "next";
 import Loading from "@/app/loading";
 import ChangePassword from "./changepassword";
+import { NextAuthProvider } from "@/context/sesion.context";
 
 const MainLayout = lazy(() => import("@/app/components/layout/mainLayout"));
 
@@ -12,11 +13,13 @@ export const metadata: Metadata = {
 
 const page = () => {
   return (
-    <Suspense fallback={<Loading />}>
-      <MainLayout>
-        <ChangePassword />
-      </MainLayout>
-    </Suspense>
+    <NextAuthProvider>
+      <Suspense fallback={<Loading />}>
+        <MainLayout>
+          <ChangePassword />
+        </MainLayout>
+      </Suspense>
+    </NextAuthProvider>
   );
 };
 
