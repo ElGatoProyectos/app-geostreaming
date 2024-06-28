@@ -6,10 +6,10 @@ import InputField from "@/app/components/forms/inputField";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 type Inputs = {
-  bank: string;
-  number: string;
-  name: string;
-  type: string;
+  bank?: string;
+  number?: string;
+  name?: string;
+  type?: string;
   img_url?: string;
 };
 

@@ -1,8 +1,10 @@
 import { Metadata } from "next";
 import Account from "./account";
-
-import MainLayout from "@/app/components/layout/mainLayout";
 import { NextAuthProvider } from "@/context/sesion.context";
+import { lazy, Suspense } from "react";
+import Loading from "@/app/loading";
+
+const MainLayout = lazy(() => import("@/app/components/layout/mainLayout"));
 
 export const metadata: Metadata = {
   title: "Cuentas - Admin",
@@ -10,9 +12,11 @@ export const metadata: Metadata = {
 const page = () => {
   return (
     <NextAuthProvider>
-      <MainLayout>
-        <Account />
-      </MainLayout>
+      <Suspense fallback={<Loading />}>
+        <MainLayout>
+          <Account />
+        </MainLayout>
+      </Suspense>
     </NextAuthProvider>
   );
 };

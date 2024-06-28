@@ -72,7 +72,7 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
             </div>
           </button>
           {/* monedero */}
-          {userRole !== "admin" ? (
+          {userRole !== "ADMIN" ? (
             <Link
               href={"/creditaciones"}
               className=" rounded-full w-fit h-fit p-1 md:px-4 md:py-2 hover:bg-gray-100 flex items-center gap-2 transition-all duration-300"
@@ -121,13 +121,13 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
                 <ul>
                   <li>
                     <Link
-                      href={"/perfil"}
+                       href={`${userRole === "ADMIN"? '/admin/perfil' : '/home/perfil'}`}
                       className="w-full flex gap-4 border-b border-gray-200 px-6 py-2 text-[#888] whitespace-nowrap hover:bg-[#f3f3f9]"
                     >
                       <FaRegUser className="text-xl text-[#F2308B]" /> Mi Perfil
                     </Link>
                   </li>
-                  {userRole === "admin" && (
+                  {userRole === "ADMIN" && (
                     <li className=" cursor-pointer" onClick={showModal}>
                       <div className="w-full flex gap-4 border-b border-gray-200 px-6 py-2 text-[#888] whitespace-nowrap hover:bg-[#f3f3f9]">
                         <FaWhatsapp className="text-xl text-[#F2308B]" /> QR
@@ -138,7 +138,7 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
 
                   <li>
                     <Link
-                      href={"/contrasenia"}
+                      href={`${userRole === "ADMIN"? '/admin/contrasenia' : '/home/contrasenia'}`}
                       className="w-full flex gap-4 border-b border-gray-200 px-6 py-2 text-[#888] whitespace-nowrap hover:bg-[#f3f3f9]"
                     >
                       <MdLockReset className="text-xl text-[#F2308B]" /> Cambiar
@@ -166,7 +166,7 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
         {notificationOpen && (
           <div
             className={`z-20 absolute top-[50px]  right-4 bg-white shadow-cardFloat w-[90%]   lg:w-[350px] overflow-y-auto ${
-              userRole !== "admin" ? "lg:right-[440px]" : "lg:right-[280px]"
+              userRole !== "ADMIN" ? "lg:right-[440px]" : "lg:right-[280px]"
             }  py-8 rounded-md animate-keep-slide-down px-4 text-[#666] text-sm max-h-[90vh]`}
           >
             <div className="text-center">

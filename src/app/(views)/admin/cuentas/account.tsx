@@ -8,7 +8,7 @@ import { SubmitHandler } from "react-hook-form";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-import UploadForm from "./uploadForm";
+
 
 type Inputs = {
   id?: number;
@@ -33,16 +33,6 @@ const Account = () => {
   const [selectedRecord, setSelectedRecord] = useState<Inputs | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
-
-  const openUploadModal = () => {
-    setIsUploadModalOpen(true);
-  };
-
-  const closeUploadModal = () => {
-    setIsUploadModalOpen(false);
-  };
-
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -139,28 +129,27 @@ const Account = () => {
       toast.error("Hubo un error al eliminar la cuenta");
     }
   };
-  const handleUpload = async () =>{
+  const handleUpload = async () => {
     //
-  }
+  };
 
   const handleSaveAccount: SubmitHandler<Inputs> = async (data) => {
     setLoading(true);
     console.log(data);
     try {
       if (data.id) {
-        await axios.put(`/api/account/${data.id}`,
-          {
-            is_active: data.is_active ? true : false,
-            email: data.email,
-            password: data.password,
-            description: data.description,
-            pin: data.pin,
-            numb_profiles: data.numb_profiles,
-            numb_days_duration: data.numb_days_duration,
-            platform_id: data.platform_id,
-            product_id: data.product_id,
-            user_id: data.user_id,
-          } );
+        await axios.put(`/api/account/${data.id}`, {
+          is_active: data.is_active ? true : false,
+          email: data.email,
+          password: data.password,
+          description: data.description,
+          pin: data.pin,
+          numb_profiles: data.numb_profiles,
+          numb_days_duration: data.numb_days_duration,
+          platform_id: data.platform_id,
+          product_id: data.product_id,
+          user_id: data.user_id,
+        });
         toast.success("Se actualizo correctamente");
       } else {
         await axios.post("/api/account", {
@@ -198,12 +187,10 @@ const Account = () => {
         data={accounts}
         showActions={true}
         addRecord={true}
-        uploadFile={true}
         title="Cuentas"
         onAdd={handleAdd}
         onEdit={handleEdit}
         onDelete={handleDelete}
-        onUpload={openUploadModal} 
       />
       <Modal isOpen={isModalOpen} onClose={closeModal} title={modalTitle}>
         <AccountForm
@@ -238,13 +225,6 @@ const Account = () => {
             Eliminar
           </button>
         </div>
-      </Modal>
-      <Modal
-        isOpen={isUploadModalOpen}
-        onClose={() => setIsUploadModalOpen(false)}
-        title="Carga masiva"
-      >
-        <UploadForm onSubmit={handleUpload}/>
       </Modal>
     </>
   );

@@ -8,6 +8,7 @@ import { IoMdCart } from "react-icons/io";
 import { IoLogoUsd } from "react-icons/io5";
 import { IoMdLogOut } from "react-icons/io";
 import { IoMdPersonAdd } from "react-icons/io";
+import { IoDocumentTextOutline } from "react-icons/io5";
 
 import {
   MdMenuBook,
@@ -15,7 +16,7 @@ import {
   MdLockReset,
   MdOutlineSwitchAccount,
 } from "react-icons/md";
-
+import { FaListCheck } from "react-icons/fa6";
 import { FaRegUser, FaUsers } from "react-icons/fa";
 import { GiProfit } from "react-icons/gi";
 import { RiUserSharedLine } from "react-icons/ri";
@@ -23,9 +24,9 @@ import { signOut } from "next-auth/react";
 
 interface SidebarProps {
   isOpen: boolean;
-  role: "admin" | "distribuidor" | "consumidor";
+  role: "ADMIN" | "DISTRIBUTOR" | "USER";
 }
-const Sidebar: React.FC<any> = ({ isOpen, role }) => {
+const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
   const pathname = usePathname();
 
   const [currentPath, setCurrentPath] = useState("");
@@ -62,6 +63,16 @@ const Sidebar: React.FC<any> = ({ isOpen, role }) => {
         ],
       },
       {
+        title: "Gestión",
+        links: [
+          {
+            href: "/admin/pedidos",
+            label: "Pedidos",
+            icon: <FaListCheck className="text-xl" />,
+          },
+        ],
+      },
+      {
         title: "Registrar",
         links: [
           {
@@ -70,8 +81,8 @@ const Sidebar: React.FC<any> = ({ isOpen, role }) => {
             icon: <MdOutlineSwitchAccount className="text-xl" />,
           },
           {
-            href: "/admin/productos",
-            label: "Productos",
+            href: "/admin/plataformas",
+            label: "Plataformas",
             icon: <IoMdCart className="text-xl" />,
           },
           {
@@ -240,9 +251,9 @@ const Sidebar: React.FC<any> = ({ isOpen, role }) => {
         isOpen ? "translate-x-0 " : "-translate-x-full lg:translate-x-0 "
       }`}
     >
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col">
         {sections[role].map((section: any, sectionIndex: number) => (
-          <div key={sectionIndex} className="w-full">
+          <div key={sectionIndex} className="w-full mt-6">
             {section.title && (
               <div className="uppercase text-xs mx-8 font-semibold border-b border-gray-200 pb-1">
                 {section.title}
@@ -267,18 +278,26 @@ const Sidebar: React.FC<any> = ({ isOpen, role }) => {
             </ul>
           </div>
         ))}
-        <li>
+        <div>
+          <span
+            role="button"
+            className={`pl-8 py-3 mr-2 rounded-r-full mb-2 flex gap-4 items-center hover:bg-[#F2308B] hover:text-white transition-all duration-300`}
+          >
+            <IoDocumentTextOutline className="text-xl" />
+            <span className="text-sm capitalize">Documentación</span>
+          </span>
+        </div>
+        <div>
           <span
             role="button"
             onClick={handleLogout}
-            className={`pl-8 py-3 mr-2 rounded-r-full mb-2 flex gap-4 items-center 
-                     
-                    `}
+            className={`pl-8 py-3 mr-2 rounded-r-full mb-2 flex gap-4 items-center hover:bg-[#F2308B] hover:text-white transition-all duration-300`}
           >
             <IoMdLogOut className="text-xl" />
             <span className="text-sm capitalize">Cerrar sesion</span>
           </span>
-        </li>
+        </div>
+        
       </div>
     </div>
   );

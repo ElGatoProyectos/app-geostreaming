@@ -10,10 +10,10 @@ import "react-toastify/dist/ReactToastify.css";
 
 type Inputs = {
   id?: number;
-  bank: string;
-  number: string;
-  name: string;
-  type: string;
+  bank?: string;
+  number?: string;
+  name?: string;
+  type?: string;
   img_url?: string;
 };
 const Bank = () => {
@@ -140,7 +140,7 @@ const Bank = () => {
       <Modal isOpen={isModalOpen} onClose={closeModal} title={modalTitle}>
         <BankForm
           defaultValues={
-            selectedRecord || { bank: "", number: "", name: "", type: "" }
+            selectedRecord || { }
           }
           onSubmit={handleSaveBank}
         />

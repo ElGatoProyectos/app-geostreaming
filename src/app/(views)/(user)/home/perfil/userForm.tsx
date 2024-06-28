@@ -6,14 +6,16 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 /* CAMBIAR SCHEMA */
 import { UserSchema } from "@/app/schemas/userSchema";
+import CountrySelect from "@/app/components/forms/countrySelect";
 
 type Inputs = {
   username: string;
   full_name: string;
   email: string;
   phone: string;
-  acreditaciones: string;
-  avatar: string;
+  acreditaciones?: string;
+  avatar?: string;
+  code_country?: string;
 };
 
 interface UserFormProps {
@@ -81,12 +83,19 @@ const UserForm: React.FC<UserFormProps> = ({
         error={errors.email}
         isDisabled={true}
       />
-      <InputField
+      <div className="flex flex-col md:flex-row gap-4">
+        <CountrySelect
+          id="code_country"
+          register={register("code_country")}
+          
+        />
+         <InputField
         id="phone"
         label="Celular"
         register={register("phone")}
         error={errors.phone}
       />
+      </div>
       {/* <label htmlFor="acreditaciones">
         Acreditación de ganancias
         <select

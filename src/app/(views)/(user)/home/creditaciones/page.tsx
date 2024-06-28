@@ -1,13 +1,24 @@
 import React from "react";
-import MainLayout from "@/app/components/layout/mainLayout";
 import Counts from "./account";
 import { NextAuthProvider } from "@/context/sesion.context";
+import { lazy, Suspense } from "react";
+
+import { Metadata } from "next";
+import Loading from "@/app/loading";
+
+const MainLayout = lazy(() => import("@/app/components/layout/mainLayout"));
+
+export const metadata: Metadata = {
+  title: "Creditaciones",
+};
 const page = () => {
   return (
     <NextAuthProvider>
-      <MainLayout>
-        <Counts />
-      </MainLayout>
+      <Suspense fallback={<Loading />}>
+        <MainLayout>
+          <Counts />
+        </MainLayout>
+      </Suspense>
     </NextAuthProvider>
   );
 };

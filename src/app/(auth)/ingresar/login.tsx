@@ -9,6 +9,7 @@ import { useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { Bounce, toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { CiCircleAlert } from "react-icons/ci";
 
 type Inputs = {
   email: string;
@@ -64,7 +65,7 @@ const login = () => {
   };
 
   return (
-    <div className="relative bg-white shadow-md shadow-[#277FF2] rounded-xl h-auto md:max-w-[50%] xl:max-w-[640px] w-full p-1 m-4 ">
+    <div className="relative bg-white shadow-md shadow-[#277FF2] rounded-xl h-auto md:max-w-[50%] xl:max-w-[640px] w-full m-4 pb-2 ">
       <div className="w-full p-2 bg-[#277FF2] text-white text-center rounded-t-lg">
         Accede
       </div>
@@ -91,56 +92,11 @@ const login = () => {
                   autoComplete="email"
                   {...register("email")}
                 />
-
-                <svg
-                  className={` absolute right-2 top-1/2 -translate-y-1/2 ${
+                <CiCircleAlert
+                  className={`absolute text-xl right-2 top-1/2 -translate-y-1/2 font-bold text-red-500 ${
                     errors.email ? "block" : "hidden"
-                  }`}
-                  width="20"
-                  height="20"
-                  viewBox="0 0 14 14"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <g clipPath="url(#clip0_1_2)">
-                    <mask
-                      id="mask0_1_2"
-                      fontStyle={"mask-type:luminance"}
-                      maskUnits="userSpaceOnUse"
-                      x="0"
-                      y="0"
-                      width="14"
-                      height="14"
-                    >
-                      <path d="M0 0H14V14H0V0Z" fill="white" />
-                    </mask>
-                    <g mask="url(#mask0_1_2)">
-                      <path
-                        fillRule="evenodd"
-                        clipRule="evenodd"
-                        d="M7 1C3.68629 1 1 3.68629 1 7C1 10.3137 3.68629 13 7 13C10.3137 13 13 10.3137 13 7C13 3.68629 10.3137 1 7 1ZM0 7C0 3.13401 3.13401 0 7 0C10.866 0 14 3.13401 14 7C14 10.866 10.866 14 7 14C3.13401 14 0 10.866 0 7Z"
-                        fill="#FE0101"
-                      />
-                      <path
-                        fillRule="evenodd"
-                        clipRule="evenodd"
-                        d="M7 3C7.27614 3 7.5 3.22386 7.5 3.5V6.5C7.5 6.77614 7.27614 7 7 7C6.72386 7 6.5 6.77614 6.5 6.5V3.5C6.5 3.22386 6.72386 3 7 3Z"
-                        fill="#FE0101"
-                      />
-                      <path
-                        fillRule="evenodd"
-                        clipRule="evenodd"
-                        d="M6 9.5C6 8.94772 6.44772 8.5 7 8.5C7.55228 8.5 8 8.94772 8 9.5C8 10.0523 7.55228 10.5 7 10.5C6.44772 10.5 6 10.0523 6 9.5Z"
-                        fill="#FE0101"
-                      />
-                    </g>
-                  </g>
-                  <defs>
-                    <clipPath id="clip0_1_2">
-                      <rect width="14" height="14" fill="white" />
-                    </clipPath>
-                  </defs>
-                </svg>
+                  } `}
+                />
               </div>
               {errors.email?.message && (
                 <p className="text-red-500 text-sm font-semibold">
@@ -168,55 +124,11 @@ const login = () => {
                   }`}
                   {...register("password")}
                 />
-                <svg
-                  className={` absolute right-2 top-1/2 -translate-y-1/2 ${
+                <CiCircleAlert
+                  className={`absolute text-xl right-2 top-1/2 -translate-y-1/2 font-bold text-red-500 ${
                     errors.password ? "block" : "hidden"
-                  }`}
-                  width="20"
-                  height="20"
-                  viewBox="0 0 14 14"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <g clipPath="url(#clip0_1_2)">
-                    <mask
-                      id="mask0_1_2"
-                      fontStyle={"mask-type:luminance"}
-                      maskUnits="userSpaceOnUse"
-                      x="0"
-                      y="0"
-                      width="14"
-                      height="14"
-                    >
-                      <path d="M0 0H14V14H0V0Z" fill="white" />
-                    </mask>
-                    <g mask="url(#mask0_1_2)">
-                      <path
-                        fillRule="evenodd"
-                        clipRule="evenodd"
-                        d="M7 1C3.68629 1 1 3.68629 1 7C1 10.3137 3.68629 13 7 13C10.3137 13 13 10.3137 13 7C13 3.68629 10.3137 1 7 1ZM0 7C0 3.13401 3.13401 0 7 0C10.866 0 14 3.13401 14 7C14 10.866 10.866 14 7 14C3.13401 14 0 10.866 0 7Z"
-                        fill="#FE0101"
-                      />
-                      <path
-                        fillRule="evenodd"
-                        clipRule="evenodd"
-                        d="M7 3C7.27614 3 7.5 3.22386 7.5 3.5V6.5C7.5 6.77614 7.27614 7 7 7C6.72386 7 6.5 6.77614 6.5 6.5V3.5C6.5 3.22386 6.72386 3 7 3Z"
-                        fill="#FE0101"
-                      />
-                      <path
-                        fillRule="evenodd"
-                        clipRule="evenodd"
-                        d="M6 9.5C6 8.94772 6.44772 8.5 7 8.5C7.55228 8.5 8 8.94772 8 9.5C8 10.0523 7.55228 10.5 7 10.5C6.44772 10.5 6 10.0523 6 9.5Z"
-                        fill="#FE0101"
-                      />
-                    </g>
-                  </g>
-                  <defs>
-                    <clipPath id="clip0_1_2">
-                      <rect width="14" height="14" fill="white" />
-                    </clipPath>
-                  </defs>
-                </svg>
+                  } `}
+                />
               </div>
               {errors.password?.message && (
                 <p className="text-red-500 text-sm font-semibold">

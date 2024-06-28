@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, ReactNode } from "react";
 import { Badge, Button, Table } from "keep-react";
 import { CaretUp, CaretDown } from "phosphor-react";
 import { PaginationComponent } from "@/app/components/common/pagination";
@@ -21,6 +21,7 @@ interface TableProps<T> {
   onEdit?: (row: T) => void;
   onDelete?: (row: T) => void;
   onUpload?: () => void;
+  code?: ReactNode;
 }
 
 const TableComponent = <T extends Record<string, any>>({
@@ -36,6 +37,7 @@ const TableComponent = <T extends Record<string, any>>({
   onDelete,
   downloadAction,
   onUpload,
+  code,
 }: TableProps<T>) => {
   const [filteredData, setFilteredData] = useState(data);
   const [currentPage, setCurrentPage] = useState(1);
@@ -154,7 +156,9 @@ const TableComponent = <T extends Record<string, any>>({
               <ActionButton onClick={openModal}>Agregar</ActionButton>
             )}
             {uploadFile && (
-              <ActionButton onClick={openUploadModal}>Subir Archivo</ActionButton>
+              <ActionButton onClick={openUploadModal}>
+                Subir Archivo
+              </ActionButton>
             )}
           </div>
         </div>
@@ -210,28 +214,36 @@ const TableComponent = <T extends Record<string, any>>({
                 ))}
                 {showActions && (
                   <Table.Cell>
-                    <div className="flex items-center gap-2">
-                      <Button
-                        className="rounded content-center text-white px-1 py-1 bg-[#5BC0DE] w-8 h-8 hover:bg-[#80DCF8]"
-                        onClick={() => onEdit && onEdit(row)}
-                      >
-                        <BsPencilFill className="text-white mx-auto " />
-                      </Button>
-                      <Button
-                        className="rounded content-center text-white px-1 py-1 bg-red-500 w-8 h-8 hover:bg-red-300"
-                        onClick={() => onDelete && onDelete(row)}
-                      >
-                        <FaTrash className="text-white mx-auto " />
-                      </Button>
+                    <div className="flex justify-center items-center gap-2">
+                      {onEdit && (
+                        <Button
+                          className="rounded content-center text-white px-1 py-1 bg-[#5BC0DE] w-8 h-8 hover:bg-[#80DCF8]"
+                          onClick={() => onEdit && onEdit(row)}
+                        >
+                          <BsPencilFill className="text-white mx-auto " />
+                        </Button>
+                      )}
+                      {onDelete && (
+                        <Button
+                          className="rounded content-center text-white px-1 py-1 bg-red-500 w-8 h-8 hover:bg-red-300"
+                          onClick={() => onDelete && onDelete(row)}
+                        >
+                          <FaTrash className="text-white mx-auto " />
+                        </Button>
+                      )}
+
+                      {code}
                     </div>
                   </Table.Cell>
                 )}
               </Table.Row>
             ))
           ) : (
-            <Table.Cell colSpan={columns.length + (showActions ? 2 : 1)}>
-              No se encontraron coincidencias
-            </Table.Cell>
+            <Table.Row>
+              <Table.Cell colSpan={columns.length + (showActions ? 1 : 0)}>
+                No se encontraron coincidencias
+              </Table.Cell>
+            </Table.Row>
           )}
         </Table.Body>
       </Table>

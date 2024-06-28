@@ -28,9 +28,9 @@ const CardItem: React.FC<Props> = (props) => {
     };
     props.onOpenModal(props.title, info);
   };
-
+  /* consultar */
   return (
-    <div className="flex flex-col justify-center items-center shadow-cardItem rounded-xl px-4 py-8 relative">
+    <div className="flex flex-col justify-center items-center shadow-cardItem rounded-full w-full md:w-[40%] xl:w-[25%] aspect-square px-4 py-8 relative overflow-y-auto">
       {props.isNew && (
         <span className="absolute top-0 left-0 -translate-y-1/2 bg-green-600 px-4 py-1 rounded-r-xl rounded-tl-xl font-semibold text-white">
           Nuevo
@@ -40,7 +40,7 @@ const CardItem: React.FC<Props> = (props) => {
       <img
         src={props.url}
         alt="logo producto"
-        className=" w-24 h-24 object-contain mb-3"
+        className=" rounded-full w-24 h-24 object-cover mb-3"
       />
       <div className="text-center flex flex-col">
         <h3 className="text-[#277FF2] font-semibold uppercase mb-2">
@@ -67,7 +67,7 @@ const CardItem: React.FC<Props> = (props) => {
           <span className="text-[#888]">{props.type.toUpperCase()}</span>
         )}
       </div>
-      <button className="text-white bg-[#F2308B] rounded  px-4 py-1  hover:bg-[#F06FAC] transition-all duration-300 mt-4 capitalize" onClick={openModal}>
+      <button className="text-white bg-[#F2308B] rounded-full  px-4 py-1  hover:bg-[#F06FAC] transition-all duration-300 mt-4 capitalize" onClick={openModal}>
         {props.btn} 
       </button>
     </div>

@@ -12,6 +12,7 @@ type Inputs = {
   voucher_image: string;
   value: string;
   date: string;
+  time: string;
 };
 
 interface CreditacionesProps {
@@ -74,6 +75,13 @@ const creditacionesForm: React.FC<CreditacionesProps> = ({ info, onSubmit }) => 
         register={register("date")}
         error={errors.date}
         type="date"
+      />
+      <InputField
+        id="time"
+        label="Hora del depósito"
+        register={register("time")}
+        error={errors.time}
+        type="time"
       />
        <div>
         <label htmlFor="voucher_image" className="text-[#444]">
