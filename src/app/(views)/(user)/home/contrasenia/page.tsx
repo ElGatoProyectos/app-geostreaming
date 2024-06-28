@@ -8,7 +8,7 @@ import { NextAuthProvider } from "@/context/sesion.context";
 const MainLayout = lazy(() => import("@/app/components/layout/mainLayout"));
 
 export const metadata: Metadata = {
-  title: "Perfil",
+  title: "Cambiar Contraseña",
 };
 
 const page = () => {

@@ -58,6 +58,7 @@ const navigation = () => {
             <ul className=" flex gap-8 text-[#111111]">
               {sections.map((section) => (
                 <li
+                key={section.id}
                   className={`transition-all duration-300 ${
                     activeSection === section.id
                       ? "text-[#F2308B]"

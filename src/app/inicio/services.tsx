@@ -23,7 +23,7 @@ const services = () => {
     {
       name: "Servicio para Consumidores Finales.",
       nameService: "Consumidor Final",
-      url: "https://www.sitiospremium.com/imagenes/interfazexterna/tabs-2.jpg",
+      url: "/consumidores-finales.jpg",
       items: [
         "Compra al precio más bajo del mercado.",
         "Entrega inmediata dependiendo el stock.",

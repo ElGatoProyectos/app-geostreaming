@@ -10,8 +10,9 @@ type InputsPersonal = {
   full_name: string;
   email: string;
   phone: string;
-  acreditaciones: string;
-  avatar: string;
+  acreditaciones?: string;
+  avatar?: string;
+  code_country?: string;
 };
 type InputsBank = {
   bank: string;
@@ -56,10 +57,9 @@ const profile = () => {
               email: data.email,
               phone: data.phone,
               acreditaciones: data.acreditaciones,
-              avatar: '',
             }
           }
-          avatar={data.avatar}
+          avatar={data.avatar} //pasar avatar
           onSubmit={handleSavePersonal}
         />
       </ContainerCard2>

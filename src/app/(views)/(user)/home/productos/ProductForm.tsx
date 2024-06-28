@@ -70,7 +70,7 @@ const creditacionesForm: React.FC<CreditacionesProps> = ({
           </p>
         </div>
       )}
-
+      {/* 
       <InputField
         id="email"
         label="Correo electrónico"
@@ -78,33 +78,41 @@ const creditacionesForm: React.FC<CreditacionesProps> = ({
         register={register("email")}
         error={errors.email}
         type="email"
-      />
+      /> */}
       <div>
         <p>¿Deseas enviarte los datos de la cuenta?</p>
-        <input
-          id="option_no"
-          type="radio"
-          value="n"
-          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-        />
-        <label
-          htmlFor="option_no"
-          className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-        >
-          No
-        </label>
-        <input
-          id="option_si"
-          type="radio"
-          value="y"
-          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-        />
-        <label
-          htmlFor="option_si"
-          className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-        >
-          si
-        </label>
+        <div className="flex gap-8 w-fit mx-auto mt-2">
+          <div className="flex items-center">
+            <input
+              id="option_no"
+              type="radio"
+              value="n"
+              name="send-radio"
+              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+            />
+            <label
+              htmlFor="option_no"
+              className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+            >
+              No
+            </label>
+          </div>
+          <div className="flex items-center">
+            <input
+              id="option_si"
+              type="radio"
+              value="y"
+              name="send-radio"
+              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 full dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+            />
+            <label
+              htmlFor="option_si"
+              className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+            >
+              si
+            </label>
+          </div>
+        </div>
       </div>
 
       <div className=" w-full flex flex-col gap-4">

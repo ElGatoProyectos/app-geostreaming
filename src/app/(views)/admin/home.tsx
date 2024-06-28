@@ -92,7 +92,7 @@ const home = () => {
               </thead>
               <tbody>
                 {topProducts.map((product, index) => (
-                  <tr className="text  text-[#666]">
+                  <tr key={index} className="text  text-[#666]">
                     <td className="p-2">{index + 1}</td>
                     <td className="p-2">{product.name}</td>
                     <td className="p-2 text-center">{product.cantidad}</td>
@@ -118,7 +118,7 @@ const home = () => {
               </thead>
               <tbody>
                 {topAfiliados.map((afiliado, index) => (
-                  <tr className="text  text-[#666]">
+                  <tr key={index} className="text  text-[#666]">
                     <td className="p-2">{index + 1}</td>
                     <td className="p-2 flex flex-wrap items-center gap-2">banco</td>
                     <td className="p-2 text-center">100</td>
@@ -145,7 +145,7 @@ const home = () => {
               </thead>
               <tbody>
                 {topAfiliados.map((afiliado, index) => (
-                  <tr className="text  text-[#666]">
+                  <tr key={index} className="text  text-[#666]">
                     <td className="p-2">{index + 1}</td>
                     <td className="p-2 flex flex-wrap items-center gap-2">
                       <img
@@ -180,7 +180,7 @@ const home = () => {
               </thead>
               <tbody>
                 {topAfiliados.map((afiliado, index) => (
-                  <tr className="text  text-[#666]">
+                  <tr key={index} className="text  text-[#666]">
                     <td className="p-2">{index + 1}</td>
                     <td className="p-2 flex flex-wrap items-center gap-2">
                       <img

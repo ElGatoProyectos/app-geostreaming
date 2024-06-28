@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import ContainerCard from "@/app/components/common/containerCard";
-import { Dcuentas } from "@/data/Dcuentas";
 import CardItem from "@/app/components/common/cardItem";
 import Modal from "@/app/components/common/modal";
 import CreditacionesForm from "./creditacionesForm";

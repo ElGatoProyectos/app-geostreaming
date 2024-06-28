@@ -1,7 +1,7 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import InputField from "@/app/components/forms/inputField";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
@@ -79,6 +79,33 @@ const creditacionesForm: React.FC<CreditacionesProps> = ({
         error={errors.email}
         type="email"
       />
+      <div>
+        <p>¿Deseas enviarte los datos de la cuenta?</p>
+        <input
+          id="option_no"
+          type="radio"
+          value="n"
+          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+        />
+        <label
+          htmlFor="option_no"
+          className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+        >
+          No
+        </label>
+        <input
+          id="option_si"
+          type="radio"
+          value="y"
+          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+        />
+        <label
+          htmlFor="option_si"
+          className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+        >
+          si
+        </label>
+      </div>
 
       <div className=" w-full flex flex-col gap-4">
         <button

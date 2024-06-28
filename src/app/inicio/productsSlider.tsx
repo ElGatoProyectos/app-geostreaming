@@ -67,7 +67,7 @@ const ProductsSlider = () => {
               <img
                 src={product.url}
                 alt={product.name}
-                className="h-20 mx-auto object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
+                className="h-20 max-w-[90%] mx-auto object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
                 loading="lazy"
               />
             </div>
