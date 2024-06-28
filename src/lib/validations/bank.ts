@@ -5,6 +5,7 @@ const BankSchema = z.object({
   number: z.string().min(1),
   name: z.string().min(1),
   type: z.string().min(1),
+  bank_url: z.string(),
 });
 
 export function validateBank(bankInfo: unknown) {
