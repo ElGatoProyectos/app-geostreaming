@@ -4,6 +4,7 @@ const orderSchema = z.object({
   quantity: z.number().min(1),
   user_id: z.number().positive(),
   product_id: z.number().positive(),
+  numb_profiles: z.number().positive(),
 });
 
 export function validateOrder(orderInfo: unknown) {

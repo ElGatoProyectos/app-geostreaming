@@ -23,11 +23,12 @@ model Admin {
 }
 
 model Bank {
-  id     Int    @id @default(autoincrement())
-  bank   String
-  number String
-  name   String
-  type   String
+  id       Int    @id @default(autoincrement())
+  bank_url String
+  bank     String
+  number   String
+  name     String
+  type     String
 }
 
 model Voucher {
@@ -98,6 +99,7 @@ model Account {
   user               User?    @relation(fields: [user_id], references: [id])
   user_id            Int?
   orders             Order[]
+  renovation_date    DateTime
   created_at         DateTime @default(now())
   updated_at         DateTime @updatedAt
 }

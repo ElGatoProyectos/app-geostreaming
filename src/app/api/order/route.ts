@@ -69,9 +69,13 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const accountNotActive = product.accounts.find((user) => !user.is_active);
+    const filteredAccounts = product.accounts.find(
+      (cuenta) =>
+        !cuenta.is_active &&
+        cuenta.numb_profiles === validatedOrder.numb_profiles
+    );
 
-    if (!accountNotActive) {
+    if (!filteredAccounts) {
       return NextResponse.json(
         { error: "No accounts for sale" },
         { status: 500 }
@@ -118,7 +122,7 @@ export async function POST(req: NextRequest) {
 
     try {
       await prisma.account.update({
-        where: { id: accountNotActive.id },
+        where: { id: filteredAccounts.id },
         data: { is_active: true, user_id: user_id },
       });
     } catch (e) {
@@ -145,7 +149,7 @@ export async function POST(req: NextRequest) {
       user_id,
       role: user.role,
       ref_id: user.ref_id,
-      account_id: accountNotActive.id,
+      account_id: filteredAccounts.id,
       product_id,
     };
 
