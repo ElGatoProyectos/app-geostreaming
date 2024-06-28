@@ -6,8 +6,6 @@ export const accountSchema = z.object({
   email: z.string().email(),
   password: z.string(),
   pin: z.string(),
-  numb_profiles: z.number(),
-  numb_days_duration: z.number(),
 });
 
 const platformSchema = z.object({
@@ -17,11 +15,15 @@ const platformSchema = z.object({
 });
 
 export const productSchema = z.object({
-  platform: platformSchema,
+  enable_notifications: z.boolean(),
   accounts: z.array(accountSchema).optional(),
   price_in_cents: z.number(),
   price_distributor_in_cents: z.number(),
+  numb_profiles: z.number(),
+  expiration_date: z.date(),
+
   status: z.enum(["IMMEDIATE_DELIVERY", "UPON_REQUEST"]).optional(),
+  user_id: z.number().optional(),
 });
 
 export function validateProduct(productInfo: unknown) {
@@ -30,7 +32,7 @@ export function validateProduct(productInfo: unknown) {
     throw new Error("Invalid product info");
   }
 
-  return { isValid: parseResult.success, productValidated: parseResult.data };
+  return parseResult.data;
 }
 
 const productEditSchema = productSchema.extend({
@@ -44,8 +46,7 @@ const productEditSchema = productSchema.extend({
     .array(
       accountSchema.extend({
         id: z.number().optional(),
-        platform_id: z.number().optional(),
-        product_id: z.number().optional(),
+        product_id: z.number(),
       })
     )
     .optional()
