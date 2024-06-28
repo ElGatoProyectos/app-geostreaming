@@ -2,25 +2,10 @@ import prisma from "@/lib/prisma";
 import { UserInType, UserUpdateInType } from "@/types/user";
 import { NextResponse } from "next/server";
 
-// const prismaClient = new PrismaClient();
-
-// async function connect() {
-//   try {
-//     await prismaClient.$connect();
-//     const database = prismaClient.user;
-//     return database;
-//   } catch (e) {
-//     console.error("Error connecting to db");
-//     console.error(e);
-//     await prismaClient.$disconnect();
-//   }
-// }
-
 export class UserModel {
   static getById = async ({ user_id }: { user_id: number }) => {
     const userFound = await prisma.user.findUnique({
       where: { id: user_id },
-      include: { accounts: true },
     });
 
     await prisma.$disconnect();
@@ -29,26 +14,20 @@ export class UserModel {
   };
 
   static getAll = async () => {
-    const users = await prisma.user.findMany({
-      include: { accounts: true },
-    });
+    const users = await prisma.user.findMany();
     await prisma.$disconnect();
     return users;
   };
 
-  static getAllByRole = async (
-    userRole: "USER" | "DISTRIBUTOR"
-  ) => {
+  static getAllByRole = async (userRole: "USER" | "DISTRIBUTOR") => {
     const users = await prisma.user.findMany({
       where: {
         role: userRole,
       },
-      include: { accounts: true },
     });
     await prisma.$disconnect();
     return users;
   };
-
 
   static create = async ({ user_info }: { user_info: UserInType }) => {
     const userFound = await prisma.user.findUnique({
@@ -70,6 +49,7 @@ export class UserModel {
       dni: user_info.dni,
       phone: user_info.phone,
       password: user_info.password,
+      country_code: user_info.country_code,
     };
 
     const newUser = await prisma.user.create({
@@ -105,7 +85,7 @@ export class UserModel {
     user_id: number;
     user_info: UserUpdateInType;
   }) => {
-    const { id, products, ...rest } = user_info;
+    const { id, ...rest } = user_info;
 
     const userFound = await prisma.user.findUnique({
       where: { id },
@@ -123,6 +103,7 @@ export class UserModel {
       dni: rest.dni,
       phone: rest.phone,
       password: rest.password,
+      country_code: rest.country_code,
     };
 
     const userUpdated = await prisma.user.update({

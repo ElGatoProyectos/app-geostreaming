@@ -15,9 +15,7 @@ interface UserModelType {
     user_id: number;
     user_info: UserUpdateInType;
   }) => Promise<any>;
-  getAllByRole: (
-    userRole: "USER" | "DISTRIBUTOR"
-  ) => Promise<any[]>;
+  getAllByRole: (userRole: "USER" | "DISTRIBUTOR") => Promise<any[]>;
 }
 
 export class UserService {
@@ -29,9 +27,11 @@ export class UserService {
   getById = async ({ params }: { params: { id: string } }) => {
     try {
       const user_id = Number(params.id);
+
       const exactUser = await this.userModel.getById({
         user_id,
       });
+
       return exactUser;
     } catch (e) {
       throw new Error("User not found");
@@ -47,9 +47,7 @@ export class UserService {
     }
   };
 
-  getAllByRole = async (
-    userRole: "USER" | "DISTRIBUTOR"
-  ) => {
+  getAllByRole = async (userRole: "USER" | "DISTRIBUTOR") => {
     try {
       const users = await this.userModel.getAllByRole(userRole);
       return users;

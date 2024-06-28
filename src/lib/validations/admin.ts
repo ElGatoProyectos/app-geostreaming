@@ -1,11 +1,11 @@
 import { z } from "zod";
 
 const adminSchema = z.object({
-  full_name: z.string(),
-  phone: z.string(),
   email: z.string().email(),
   password: z.string(),
-  logged: z.enum(["y", "n"]).default("y"),
+  full_name: z.string(),
+  phone: z.string(),
+  country_code: z.string(),
 });
 
 export function validateAdmin(adminInfo: unknown) {

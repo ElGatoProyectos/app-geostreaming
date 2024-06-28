@@ -71,11 +71,7 @@ export class ProductController {
   create = async (req: NextRequest) => {
     const productInfo = await req.json();
 
-    const { isValid, productValidated } = validateProduct(productInfo);
-
-    if (!isValid) {
-      throw new Error("Validation failed");
-    }
+    const productValidated = validateProduct(productInfo);
 
     try {
       const newProduct = await this.productModel.create(productValidated);

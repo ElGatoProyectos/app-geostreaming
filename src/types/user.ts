@@ -9,6 +9,7 @@ export interface UserInType {
   email: string;
   password: string;
   enabled: string;
+  country_code: string;
 }
 
 export interface UserOutType extends UserInType {
@@ -21,5 +22,4 @@ export interface UserOutType extends UserInType {
 export interface UserUpdateInType extends UserInType {
   id: number;
   role: "USER" | "DISTRIBUTOR";
-  products?: ProductUpdateInType[];
 }
