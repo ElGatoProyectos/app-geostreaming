@@ -1,13 +1,18 @@
 import { z } from "zod";
-import { accountSchema } from "./product";
 
-const createAccount = accountSchema.extend({
-  product_id: z.number().int().nonnegative(),
-  platform_id: z.number().int().nonnegative(),
+const accountSchema = z.object({
+  status: z.enum(["NOT_BOUGHT", "BOUGHT"]).optional(),
+  is_active: z.boolean().optional(),
+  email: z.string().email(),
+  password: z.string(),
+  description: z.string().optional().nullable(),
+  pin: z.string(),
+  // new
+  platform_id: z.number(),
 });
 
 export function validateAccount(accountInfo: unknown) {
-  const parseResut = createAccount.safeParse(accountInfo);
+  const parseResut = accountSchema.safeParse(accountInfo);
   if (!parseResut.success) {
     throw new Error("Invalid Account info");
   }
@@ -16,26 +21,13 @@ export function validateAccount(accountInfo: unknown) {
 
 const updateAccount = accountSchema.extend({
   id: z.number().int().nonnegative(),
-  renovation_date: z.string().datetime(),
-  product_id: z.number().int().nonnegative(),
-  platform_id: z.number().int().nonnegative(),
+  status: z.enum(["NOT_BOUGHT", "BOUGHT"]),
+  purchase_date: z.date(),
+  renewal_date: z.date(),
 });
 
 export function validateUpdateAccount(accountInfo: unknown) {
   const parseResut = updateAccount.safeParse(accountInfo);
-  if (!parseResut.success) {
-    throw new Error("Invalid Account info");
-  }
-  return parseResut.data;
-}
-
-export const accountRenovateSchema = z.object({
-  numb_days_duration: z.number(),
-  renovation_date: z.string(),
-});
-
-export function validateRenovateUpdateAccount(accountInfo: unknown) {
-  const parseResut = accountRenovateSchema.safeParse(accountInfo);
   if (!parseResut.success) {
     throw new Error("Invalid Account info");
   }
