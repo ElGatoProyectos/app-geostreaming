@@ -179,6 +179,7 @@ const users = [
     phone: "111222333",
     country_code: "+42",
     password: "123456",
+    balance_in_cents: 10000,
   },
   {
     email: "test2@gmail.com",
@@ -187,6 +188,7 @@ const users = [
     phone: "77788899",
     country_code: "+85",
     password: "123456",
+    balance_in_cents: 20000,
   },
 ];
 
