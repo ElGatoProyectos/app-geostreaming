@@ -48,15 +48,6 @@ const Bank = () => {
     console.log(data);
     try {
       if (data.id) {
-<<<<<<< HEAD
-        await axios.put(`/api/bank/${data.id}`,
-          /* {
-            bank: data.bank,
-            number: data.number,
-            name: data.name,
-            tye: data.type,
-          } */ );
-=======
         console.log("hehe");
         await axios.put(`/api/bank/${data.id}`, {
           bank: data.bank,
@@ -64,7 +55,6 @@ const Bank = () => {
           name: data.name,
           type: data.type,
         });
->>>>>>> 66de55457ccb8413f76901533797d6d1849ad80e
         toast.success("Se actualizo correctamente");
       } else {
         console.log("hehe");
@@ -92,13 +82,8 @@ const Bank = () => {
           bank: data.bank,
           number: data.number,
           name: data.name,
-<<<<<<< HEAD
-          tye: data.type,
-          img_url: data.img_url,
-=======
           type: data.type,
           bank_url: "sadsadsa",
->>>>>>> 66de55457ccb8413f76901533797d6d1849ad80e
         });
         toast.success("Se guardo correctamente");
       }
