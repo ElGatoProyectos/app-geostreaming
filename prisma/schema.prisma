@@ -126,15 +126,21 @@ model Platform {
   Account    Account[]
 }
 
+enum StatusOrder {
+  PENDING
+  ATTENDED
+}
+
 model Order {
-  id          Int      @id @default(autoincrement())
+  id          Int         @id @default(autoincrement())
   //data in
   ref_id      Int?
   role        Role
-  platform    Platform @relation(fields: [platform_id], references: [id])
+  platform    Platform    @relation(fields: [platform_id], references: [id])
   platform_id Int
-  user        User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user        User        @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id     Int
+  status      StatusOrder @default(ATTENDED)
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt

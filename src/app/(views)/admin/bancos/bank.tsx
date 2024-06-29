@@ -48,6 +48,7 @@ const Bank = () => {
     console.log(data);
     try {
       if (data.id) {
+<<<<<<< HEAD
         await axios.put(`/api/bank/${data.id}`,
           /* {
             bank: data.bank,
@@ -55,14 +56,49 @@ const Bank = () => {
             name: data.name,
             tye: data.type,
           } */ );
+=======
+        console.log("hehe");
+        await axios.put(`/api/bank/${data.id}`, {
+          bank: data.bank,
+          number: data.number,
+          name: data.name,
+          type: data.type,
+        });
+>>>>>>> 66de55457ccb8413f76901533797d6d1849ad80e
         toast.success("Se actualizo correctamente");
       } else {
+        console.log("hehe");
+
+        // const res = await fetch("/api/img/upload", {
+        //   method: "POST",
+        //   body: data.img_url,
+        // });
+
+        // if (!res.ok) {
+        //   console.error("Error en la respuesta:", res.statusText);
+        //   return;
+        // }
+
+        // const text = await res.text();
+        // if (!text) {
+        //   console.error("Respuesta vacía");
+        //   return;
+        // }
+
+        // const dataimg = JSON.parse(text);
+        // console.log("data", dataimg);
+
         await axios.post("/api/bank", {
           bank: data.bank,
           number: data.number,
           name: data.name,
+<<<<<<< HEAD
           tye: data.type,
           img_url: data.img_url,
+=======
+          type: data.type,
+          bank_url: "sadsadsa",
+>>>>>>> 66de55457ccb8413f76901533797d6d1849ad80e
         });
         toast.success("Se guardo correctamente");
       }
@@ -93,13 +129,11 @@ const Bank = () => {
       const response = await axios.get(`/api/bank/${record.id}`);
       setSelectedRecord(response.data);
       setModalTitle("Editar banco");
-    setIsModalOpen(true);
+      setIsModalOpen(true);
     } catch (error) {
       console.log(error);
       toast.error("Error al obtener los datos");
     }
-
-    
   };
 
   const handleAdd = () => {
@@ -113,7 +147,7 @@ const Bank = () => {
     setIsDeleteModalOpen(true);
   };
 
-  const handleDeleteConfirm = async() => {
+  const handleDeleteConfirm = async () => {
     try {
       await axios.delete(`/api/bank/${selectedRecord?.id}`);
       toast.success("Registro eliminado correctamente");
@@ -140,9 +174,7 @@ const Bank = () => {
 
       <Modal isOpen={isModalOpen} onClose={closeModal} title={modalTitle}>
         <BankForm
-          defaultValues={
-            selectedRecord || { }
-          }
+          defaultValues={selectedRecord || {}}
           onSubmit={handleSaveBank}
         />
       </Modal>
