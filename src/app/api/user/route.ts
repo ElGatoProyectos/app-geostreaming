@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
     } else {
       users = await userService.getAll();
     }
-    return NextResponse.json({ users });
+    return NextResponse.json(users);
   } catch (error: any) {
     return NextResponse.json(
       { error: "Error fetching users" },
