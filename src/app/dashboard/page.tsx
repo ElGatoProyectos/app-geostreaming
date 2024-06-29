@@ -138,6 +138,8 @@ export default function Page() {
     console.log("fechaDeExpiracionObjeto", fechaDeExpiracionObjeto);
   };
 
+  const [excelFile, setExcelFile] = useState<File | null>(null);
+
   return (
     <div>
       <span>this is the dashboard user</span>
@@ -155,6 +157,56 @@ export default function Page() {
         )}
       </div>
       <div className="flex flex-col gap-8">
+        <div>
+          <h1>Upload excel</h1>
+          <form
+            onSubmit={async (e) => {
+              e.preventDefault();
+              if (!excelFile) return;
+
+              console.log("datafile", excelFile);
+              const datafile = new FormData();
+              datafile.set("file", excelFile);
+              console.log("datafile", datafile);
+
+              try {
+                const res = await fetch("/api/accounts", {
+                  method: "POST",
+                  body: datafile,
+                });
+
+                if (!res.ok) {
+                  console.error("Error en la respuesta:", res.statusText);
+                  return;
+                }
+
+                const text = await res.text();
+                if (!text) {
+                  console.error("Respuesta vacía");
+                  return;
+                }
+
+                const data = JSON.parse(text);
+                console.log("data", data);
+              } catch (error) {
+                console.error("Error al enviar el archivo:", error);
+              }
+            }}
+          >
+            <label>upload excel</label>
+            <input
+              type="file"
+              accept=".xls, .xlsx, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+              onChange={(e) => {
+                if (e.currentTarget.files) {
+                  console.log(e.currentTarget.files[0]);
+                  setExcelFile(e.currentTarget.files[0]);
+                }
+              }}
+            />
+            <button className="bg-gray-400 p-5 rounded-xl">subir excel</button>
+          </form>
+        </div>
         <h1>Upload</h1>
         <form
           onSubmit={async (e) => {
