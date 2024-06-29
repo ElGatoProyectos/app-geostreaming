@@ -1,7 +1,9 @@
 "use client";
 
+import { convertNumber } from "@/utils/convertToFloat";
 import { Button } from "@mui/material";
 import { useState } from "react";
+import * as xlsx from "xlsx";
 
 export default function Page() {
   const [banks, setBanks] = useState([]);
@@ -24,7 +26,8 @@ export default function Page() {
   const orderProduct = async () => {
     const data = {
       user_id: 1,
-      platform_id: 4,
+      platform_id: 1,
+      status: "ATTENDED",
     };
     const jsonData = JSON.stringify(data);
     try {
@@ -125,14 +128,59 @@ export default function Page() {
     }
   };
 
+  const exportExcel = async () => {
+    try {
+      const res = await fetch("/api/user", {
+        method: "GET",
+      });
+
+      const text = await res.text();
+      if (!text) {
+        console.error("Respuesta vacía");
+        return;
+      }
+
+      const data = JSON.parse(text);
+      console.log("data", data);
+
+      const formatUsers = data.map((item: any) => ({
+        role: item.role,
+        email: item.email,
+        full_name: item.full_name,
+        dni: item.dni,
+        country_code: item.country_code,
+        phone: item.phone,
+        balance_in_cents: convertNumber(item.balance_in_cents),
+      }));
+      const heading = [
+        [
+          "Rol",
+          "Email",
+          "Nombre completo",
+          "N° de Documento",
+          "Codigo de pais",
+          "Celular",
+          "Balance",
+        ],
+      ];
+
+      // const worksheet = xlsx.utils.json_to_sheet(data);
+      // console.log("worksheet", worksheet);
+      const workbook = xlsx.utils.book_new();
+      const worksheet = xlsx.utils.json_to_sheet(formatUsers);
+      xlsx.utils.sheet_add_aoa(worksheet, heading);
+      xlsx.utils.book_append_sheet(workbook, worksheet, "Users");
+
+      return xlsx.writeFile(workbook, "reporte-users.xlsx");
+    } catch (error) {
+      console.error("Error al ordenar", error);
+    }
+  };
+
   const handlesubmitt = async (e: any) => {
     e.preventDefault();
     const selectedDate = e.target.date.value;
     const fechaDeExpiracionObjeto = new Date(selectedDate);
-
-    const datesch2 = {
-      date: fechaDeExpiracionObjeto,
-    };
 
     console.log("Fecha seleccionada:", selectedDate);
     console.log("fechaDeExpiracionObjeto", fechaDeExpiracionObjeto);
@@ -323,6 +371,17 @@ export default function Page() {
 
           <button type="submit">Enviar</button>
         </form>
+      </div>
+      <div>
+        <div>
+          <button
+            onClick={exportExcel}
+            type="button"
+            className="bg-gray-400 rounded-xl p-5"
+          >
+            exportar en excel orders
+          </button>
+        </div>
       </div>
     </div>
   );
