@@ -85,10 +85,8 @@ export class UserModel {
     user_id: number;
     user_info: UserUpdateInType;
   }) => {
-    const { id, ...rest } = user_info;
-
     const userFound = await prisma.user.findUnique({
-      where: { id },
+      where: { id: user_id },
     });
 
     if (!userFound) {
@@ -96,14 +94,14 @@ export class UserModel {
     }
 
     const curatedUser = {
-      email: rest.email,
-      ref_id: rest.ref_id,
-      role: rest.role,
-      full_name: rest.full_name,
-      dni: rest.dni,
-      phone: rest.phone,
-      password: rest.password,
-      country_code: rest.country_code,
+      email: user_info.email,
+      ref_id: user_info.ref_id,
+      role: user_info.role,
+      full_name: user_info.full_name,
+      dni: user_info.dni,
+      phone: user_info.phone,
+      password: user_info.password,
+      country_code: user_info.country_code,
     };
 
     const userUpdated = await prisma.user.update({

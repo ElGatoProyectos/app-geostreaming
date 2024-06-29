@@ -16,15 +16,3 @@ export function validateVoucher(voucherInfo: unknown) {
   }
   return parseResut.data;
 }
-
-const updateVoucher = voucherSchema.extend({
-  id: z.number().int().nonnegative(),
-});
-
-export function validateUpdateVoucher(voucherInfo: unknown) {
-  const parseResut = updateVoucher.safeParse(voucherInfo);
-  if (!parseResut.success) {
-    throw new Error("Invalid Voucher info");
-  }
-  return parseResut.data;
-}

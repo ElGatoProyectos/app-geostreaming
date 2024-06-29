@@ -20,6 +20,5 @@ export interface UserOutType extends UserInType {
 }
 
 export interface UserUpdateInType extends UserInType {
-  id: number;
   role: "USER" | "DISTRIBUTOR";
 }

@@ -1,6 +1,5 @@
 import prisma from "@/lib/prisma";
-import { validateUpdateVoucher } from "@/lib/validations/voucher";
-
+import { validateVoucher } from "@/lib/validations/voucher";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
@@ -30,7 +29,7 @@ export async function PATCH(
   try {
     const voucher_id = Number(params.id);
     const voucherInfo = await req.json();
-    const validatedVoucher = validateUpdateVoucher(voucherInfo);
+    const validatedVoucher = validateVoucher(voucherInfo);
     const updatedVoucher = await prisma.voucher.update({
       where: { id: voucher_id },
       data: validatedVoucher,
