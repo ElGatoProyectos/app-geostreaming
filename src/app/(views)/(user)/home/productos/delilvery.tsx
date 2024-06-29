@@ -23,15 +23,13 @@ type Product = {
   price_in_cents: number;
   price_distributor_in_cents: number;
   inOnDemand: boolean;
-  platform: {
-    img_url: string;
-    name: string;
-    description: string;
-  };
+  name: string;
+  img_url: string;
+  description: string;
 };
 
 const Delivery = () => {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [platforms, setPlatforms] = useState<Product[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
   const [modalInfo, setModalInfo] = useState<ProductInfo | null>(null);
@@ -46,36 +44,33 @@ const Delivery = () => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
-  const fetchProducts = async () => {
+  const fetchPlatform = async () => {
     try {
-      const response = await axios.get("/api/product", {
-        params: {
-          status: "UPON_REQUEST",
-        },
+      const response = await axios.get("/api/platform");
+      const filteredPlatforms = response.data.filter((platform: any) => {
+        return platform.status === "UPON_REQUEST";
       });
-      setProducts(response.data.products);
+      setPlatforms(filteredPlatforms);
     } catch (error) {
       console.error("Error fetching products:", error);
     }
   };
 
   useEffect(() => {
-    fetchProducts();
+    fetchPlatform();
   }, []);
 
   const handleFormSubmit: SubmitHandler<Inputs> = async (data) => {
     setLoading(true);
     console.log(data);
     try {
-      // revisar si el producto esta disponible = UPON_REQUEST, si esta se le asigan una cuenta
-      // si 
+
       await axios.put(`/api/order/`, {
-
-
+        
       });
       toast.success("Se registro correctamente");
       useEffect(() => {
-        fetchProducts();
+        fetchPlatform();
       }, []);
 
       closeModal();
@@ -89,16 +84,16 @@ const Delivery = () => {
   return (
     <div className="w-full">
       <ContainerCard title="Bajo pedido (1 hora)">
-        {products.map((product, index) => (
+        {platforms.map((platform, index) => (
           <CardItem
             key={index}
-            title={product.platform.name} 
-            url={product.platform.img_url}
+            title={platform.name} 
+            url={platform.img_url}
             description={
-              product.platform.description
+              platform.description
             } 
-            price_in_cents={product.price_in_cents}
-            price_distributor_in_cents={product.price_distributor_in_cents}
+            price_in_cents={platform.price_in_cents}
+            price_distributor_in_cents={platform.price_distributor_in_cents}
             btn={"Comprar"}
             onOpenModal={handleOpenModal}
           />

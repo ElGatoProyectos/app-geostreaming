@@ -14,7 +14,7 @@ type Inputs = {
   number?: string;
   name?: string;
   type?: string;
-  img_url?: string;
+  img_url?: File;
 };
 const Bank = () => {
   const [banks, setBanks] = useState<Inputs[]>([]);
@@ -49,12 +49,12 @@ const Bank = () => {
     try {
       if (data.id) {
         await axios.put(`/api/bank/${data.id}`,
-          {
+          /* {
             bank: data.bank,
             number: data.number,
             name: data.name,
             tye: data.type,
-          } );
+          } */ );
         toast.success("Se actualizo correctamente");
       } else {
         await axios.post("/api/bank", {
@@ -62,6 +62,7 @@ const Bank = () => {
           number: data.number,
           name: data.name,
           tye: data.type,
+          img_url: data.img_url,
         });
         toast.success("Se guardo correctamente");
       }

@@ -3,9 +3,10 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useEffect, useState } from "react";
 import InputField from "@/app/components/forms/inputField";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-
+import { Autocomplete, AutocompleteItem } from "@nextui-org/react";
 import { AssignAccountFormSchema } from "@/app/schemas/assignAccountFormSchema";
-type userEnabled = "y" | "n";
+import axios from "axios";
+
 type Inputs = {
   id?: number;
   account: string;
@@ -20,6 +21,8 @@ const AssignAccountForm: React.FC<AssignAccountProps> = ({
   defaultValues,
   onSubmit,
 }) => {
+  const [accounts, setAccounts] = useState<any[]>([]);
+  const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const {
@@ -36,6 +39,23 @@ const AssignAccountForm: React.FC<AssignAccountProps> = ({
     reset(defaultValues);
   }, [defaultValues, reset]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("/api/account", {
+          params: { status: "NOT_BOUGHT" },
+        });
+        console.log(response.data);
+        setAccounts(response.data);
+        setError(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setError(true);
+      }
+    };
+    fetchData();
+  }, []);
+
   const handleFormSubmit: SubmitHandler<Inputs> = async (data) => {
     setLoading(true);
 
@@ -51,9 +71,23 @@ const AssignAccountForm: React.FC<AssignAccountProps> = ({
   return (
     <form
       onSubmit={handleSubmit(handleFormSubmit)}
-      className="flex w-full flex-col gap-4"
+      className="relative flex w-full flex-col gap-4"
     >
-      <label htmlFor="type" className="text-[#444]">
+      <div className="overflow-auto">
+        <Autocomplete
+          defaultItems={accounts}
+          placeholder="Seleccione una cuenta"
+          className="bg-gray-100 placeholder:text-[#444]"
+        >
+          {(account: any) => (
+            <AutocompleteItem key={account.id}>
+              {account.email}
+            </AutocompleteItem>
+          )}
+        </Autocomplete>
+      </div>
+
+      {/* <label htmlFor="type" className="text-[#444]">
         Seleccionar Cuenta:
         <select
           id="account"
@@ -73,7 +107,7 @@ const AssignAccountForm: React.FC<AssignAccountProps> = ({
             {errors.account.message}
           </p>
         )}
-      </label>
+      </label> */}
       <div className=" w-full flex flex-col gap-4">
         <button
           type="submit"

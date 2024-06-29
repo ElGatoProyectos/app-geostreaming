@@ -17,14 +17,13 @@ type Inputs = {
 
 type Product = {
   id: number;
+  platform_id: number;
   price_in_cents: number;
   price_distributor_in_cents: number;
   inOnDemand: boolean;
-  platform: {
-    img_url: string;
-    name: string;
-    description: string;
-  };
+  name: string;
+  img_url: string;
+  description: string;
 };
 
 const request = () => {
@@ -59,12 +58,12 @@ const request = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("/api/product", {
-          params: {
-            status: "IMMEDIATE_DELIVERY",
-          },
+        const response = await axios.get("/api/platform");
+        console.log(response.data);
+        const filteredPlatforms = response.data.filter((platform: any) => {
+          return platform.status === "IMMEDIATE_DELIVERY";
         });
-        setProducts(response.data.products);
+        setProducts(filteredPlatforms);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -86,10 +85,10 @@ const request = () => {
         {products.map((product, index) => (
           <CardItem
             key={index}
-            title={product.platform.name} /* name plataforma */
-            url={product.platform.img_url}
+            title={product.name} /* name plataforma */
+            url={product.img_url}
             description={
-              product.platform.description
+              product.description
             } /* description plataforma */
             price_in_cents={product.price_in_cents}
             price_distributor_in_cents={product.price_distributor_in_cents}

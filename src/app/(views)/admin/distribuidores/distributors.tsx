@@ -151,7 +151,6 @@ const Distributors = () => {
         data={users}
         showActions={true}
         download={true}
-        addRecord={true}
         title="Distribuidores"
         onAdd={handleAdd}
         onEdit={handleEdit}

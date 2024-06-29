@@ -80,16 +80,17 @@ const Order = () => {
   };
   const columns = [
     { Header: "ID", accessor: "id" },
+    { Header: "Plataforma", accessor: "product_id" },
     { Header: "Usuario", accessor: "name" },
-    { Header: "Producto", accessor: "product_id" },
+    { Header: "Rol", accessor: "name" },
     { Header: "Estado", accessor: "status" },
     { Header: "Referido", accessor: "ref_id" },
-    { Header: "Cédula", accessor: "dni" },
+    { Header: "N. de documento", accessor: "dni" },
     { Header: "Celular", accessor: "phone" },
-    {
+/*     {
       Header: "Activo",
       accessor: (row: Users) => (row.enabled === "y" ? "activo" : "inactivo"),
-    },
+    }, */
   ];
 
   const handleEdit = async (record: Users) => {

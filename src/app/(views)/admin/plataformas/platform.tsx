@@ -11,19 +11,17 @@ import UploadForm from "./uploadForm";
 
 type ProductStatus = "IMMEDIATE_DELIVERY" | "UPON_REQUEST";
 
-interface Platform {
-  id: number;
-  name: string;
-  description: string;
-  img_url: string;
-}
 
 type Product = {
-  id: number;
-  price_in_cents: number;
-  price_distributor_in_cents: number;
-  platform: Platform;
-  status: ProductStatus;
+  id?: number;
+  name?: string;
+  description?: string;
+  img_url?: string;
+  price_in_cents?: number;
+  price_distributor_in_cents?: number;
+  status?: ProductStatus;
+  days_duration?: number;
+  account?: number;
 };
 
 const Platform = () => {
@@ -52,7 +50,7 @@ const Platform = () => {
   const closeUploadModal = () => {
     setIsUploadModalOpen(false);
   };
-  
+
   const fetchProducts = async () => {
     try {
       const response = await axios.get("/api/product");
@@ -71,15 +69,10 @@ const Platform = () => {
     console.log(data);
     try {
       if (data.id) {
-        await axios.put(`/api/product/${data.id}`,
-          {
-            
-          } );
+        await axios.put(`/api/product/${data.id}`, {});
         toast.success("Se actualizo correctamente");
       } else {
-        await axios.post("/api/product", {
-          
-        });
+        await axios.post("/api/product", {});
         toast.success("Se guardo correctamente");
       }
 
@@ -98,7 +91,7 @@ const Platform = () => {
 
   const columns = [
     { Header: "ID", accessor: "id" },
-    { Header: "plataforma", accessor: (row: Product) => row.platform.name },
+    { Header: "plataforma", accessor: "name" },
     {
       Header: "Tipo",
       accessor: (row: Product) =>
@@ -111,8 +104,15 @@ const Platform = () => {
     },
     {
       Header: "DESCRIPCIÓN",
-      accessor: (row: Product) => row.platform.description,
+      accessor: "description",
     },
+    {
+      Header: "Días de duración",  accessor: "days_duration",
+    },
+    {
+      Header: "Cuenta",  accessor: "account",
+    },
+
   ];
 
   const handleEdit = async (record: Product) => {
@@ -155,9 +155,9 @@ const Platform = () => {
     }
   };
   /* carga masiva */
-  const handleUpload = async () =>{
+  const handleUpload = async () => {
     //
-  }
+  };
 
   return (
     <>
@@ -166,29 +166,18 @@ const Platform = () => {
         data={products}
         showActions={true}
         addRecord={true}
-        title="Productos"
+        title="Plataformas"
         onAdd={handleAdd}
         onEdit={handleEdit}
         onDelete={handleDelete}
         uploadFile={true}
-        onUpload={openUploadModal} 
+        onUpload={openUploadModal}
       />
 
       <Modal isOpen={isModalOpen} onClose={closeModal} title={modalTitle}>
         <ProductForm
           defaultValues={
-            selectedRecord || {
-              id: 0,
-              price_in_cents: 0,
-              price_distributor_in_cents: 0,
-              status: "IMMEDIATE_DELIVERY",
-              platform: {
-                id: 0,
-                name: "",
-                description: "",
-                img_url: "",
-              },
-            }
+            selectedRecord || {}
           }
           onSubmit={handleSaveProduct}
         />
@@ -214,7 +203,7 @@ const Platform = () => {
         onClose={() => setIsUploadModalOpen(false)}
         title="Carga masiva"
       >
-        <UploadForm onSubmit={handleUpload}/>
+        <UploadForm onSubmit={handleUpload} />
       </Modal>
     </>
   );

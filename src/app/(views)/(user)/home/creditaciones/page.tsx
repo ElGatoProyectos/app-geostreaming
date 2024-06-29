@@ -1,5 +1,5 @@
 import React from "react";
-import Counts from "./account";
+import Counts from "./creditaciones";
 import { NextAuthProvider } from "@/context/sesion.context";
 import { lazy, Suspense } from "react";
 

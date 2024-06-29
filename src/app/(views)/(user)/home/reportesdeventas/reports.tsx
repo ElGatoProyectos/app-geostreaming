@@ -1,41 +1,51 @@
 "use client";
-import React, { use, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Table from "@/app/components/common/table";
 import NoRecords from "@/app/components/common/noRecords";
 import { GrUpdate } from "react-icons/gr";
 import Modal from "@/app/components/common/modal";
 import ActionButton from "@/app/components/common/ActionButton";
+import { useSession } from "next-auth/react";
+import axios from "axios";
 
 const Reports = () => {
+  const [orders, setOrders] = useState<any[]>([]);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const data: any[] = [{ id: 1, email: "oline@gmail.com" }];
+  const [user, setUser] = useState("");
+  const session = useSession();
+  if (session.status === "authenticated") {
+    setUser(session.data?.user.id);
+  }
 
+  const fetchOrder = async () => {
+    try {
+      const response = await axios.get("/api/order");
+      console.log(response.data);
+      const filteredOrders = response.data.filter((order: any) => {
+        return order.user === user;
+      });
+      /* setOrders(filteredOrders); */
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchOrder();
+  }, []);
   const columns = [
-    /* { Header: "ID", accessor: "id" },
-    { Header: "Correo", accessor: "email" },
-    { Header: "Contraseña", accessor: "password" },
-    { Header: "Pin", accessor: "pin" },
-    { Header: "numb_profiles", accessor: "numb_profiles" },
-    { Header: "Duración (días)", accessor: "numb_days_duration" },
-    { Header: "status", accessor: "status" },
-    { Header: "Plataforma", accessor: "platform_id" },
-    { Header: "Producto", accessor: "product_id" },
-    { Header: "Usuario", accessor: "user_id" }, */
-
-    /* segun vista en sitospremium */
     { Header: "Código", accessor: "id" },
-    { Header: "Producto", accessor: "email" },
-    { Header: "Cliente", accessor: "password" },
-    { Header: "Fecha", accessor: "pin" },
-    { Header: "Actual", accessor: "numb_profiles" },
-    { Header: "Valor", accessor: "numb_days_duration" },
-    { Header: "Total", accessor: "status" },
-    { Header: "Estado", accessor: "platform_id" },
     {
       Header: "Referencia",
       accessor: "product_id",
-    } /* email y contrasenia pin (info de la cuenta en si)*/,
-    { Header: "Observación", accessor: "user_id" },
+    },
+    { Header: "Correo", accessor: "email" },
+    { Header: "Contraseña", accessor: "password" },
+    { Header: "Pin", accessor: "pin" },
+    { Header: "Costo", accessor: "numb_profiles" },
+    { Header: "Fecha de compra", accessor: "status" },
+    { Header: "Fecha de vencimiento", accessor: "platform_id" },
   ];
 
   const handleModal = () => {
@@ -43,7 +53,7 @@ const Reports = () => {
   };
   const Renovate = () => {
     console.log("cuenta renovada");
-  }
+  };
 
   const customCode = (
     <>
@@ -78,11 +88,12 @@ const Reports = () => {
         title="Confirmar renovación"
         onClose={() => setIsOpenModal(false)}
       >
-        <h2 className="text-xl text-center">Esta seguro de Renovar la cuenta?</h2>
+        <h2 className="text-xl text-center">
+          Esta seguro de Renovar la cuenta?
+        </h2>
         <div className="text-center mt-4">
-        <ActionButton onClick={Renovate}>Renovar</ActionButton>
+          <ActionButton onClick={Renovate}>Renovar</ActionButton>
         </div>
-        
       </Modal>
     </>
   );

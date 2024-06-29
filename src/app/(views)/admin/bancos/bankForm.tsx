@@ -10,7 +10,7 @@ type Inputs = {
   number?: string;
   name?: string;
   type?: string;
-  img_url?: string;
+  img_url?:  File;
 };
 
 interface BankFormProps {
@@ -20,16 +20,36 @@ interface BankFormProps {
 
 const BankForm: React.FC<BankFormProps> = ({ defaultValues, onSubmit }) => {
   const [loading, setLoading] = useState(false);
+  const [data, setData] = useState<any>({
+    file:""
+})
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
+    /* setValue, */
   } = useForm<Inputs>({
     resolver: zodResolver(BankFormSchema),
     defaultValues,
   });
+
+  useEffect(() => {
+    reset(defaultValues);
+  }, [defaultValues, reset]);
+
+  /* const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setValue("img_url", file); 
+    }
+  }; */
+
+  function handleFileChange(e:any)  {
+    const file = e.currentTarget.files && e.currentTarget.files[0];
+    setData({ ...data, file });
+  };
 
   useEffect(() => {
     reset(defaultValues);
@@ -59,12 +79,14 @@ const BankForm: React.FC<BankFormProps> = ({ defaultValues, onSubmit }) => {
         <input
           id="img_url"
           type="file"
+          accept="image/*"
           className={`w-full text-[#666] bg-gray-100 border rounded outline-none pr-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
             errors.img_url
               ? "border-red-500 focus:ring focus:ring-red-200 focus:border-red-500"
               : "border-gray-200 "
           }`}
-          {...register("img_url")}
+          onChange={handleFileChange}
+          /* {...register("img_url")} */
         />
         {errors.img_url && (
           <p className="text-red-500 text-sm font-medium mt-1">

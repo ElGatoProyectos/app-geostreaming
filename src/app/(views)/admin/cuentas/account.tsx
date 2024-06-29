@@ -67,6 +67,14 @@ const Account = () => {
 
   const columns = [
     { Header: "ID", accessor: "id" },
+    {
+      Header: "Plataforma",
+      accessor: (row: Inputs) => {
+        if (!products || products.length === 0) return "No disponible";
+        const product = products.find((p) => p.id === row.product_id);
+        return product ? product.platform.name : "No disponible";
+      },
+    },
     { Header: "Correo", accessor: "email" },
     { Header: "Contraseña", accessor: "password" },
     { Header: "Pin", accessor: "pin" },
@@ -74,17 +82,9 @@ const Account = () => {
       Header: "Estado",
       accessor: (row: Inputs) => (row.is_active ? "activo" : "inactivo"),
     },
-    { Header: "Perfiles", accessor: "numb_profiles" },
-    { Header: "Duración", accessor: "numb_days_duration" },
-    { Header: "Descripción", accessor: "description" },
-    {
-      Header: "Productos",
-      accessor: (row: Inputs) => {
-        if (!products || products.length === 0) return "No disponible";
-        const product = products.find((p) => p.id === row.product_id);
-        return product ? product.platform.name : "No disponible";
-      },
-    },
+    { Header: "Fecha de compra", accessor: "numb_days_duration" },
+    { Header: "Fecha de renovación", accessor: "numb_days_duration" },
+    
     {
       Header: "Usuario",
       accessor: (row: Inputs) => {
