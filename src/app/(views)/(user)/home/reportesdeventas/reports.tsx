@@ -19,7 +19,7 @@ const Reports = () => {
 
   const fetchOrder = async () => {
     try {
-      const response = await axios.get("/api/account");
+      const response = await axios.get("/api/account"); /* user-sales */
       const filteredOrders = response.data.filter((order: any) => {
         return order.user_id === Number(session.data?.user.id);
       });
