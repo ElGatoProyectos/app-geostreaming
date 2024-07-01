@@ -11,6 +11,7 @@ const initialAccounts = [
     pin: "1556",
     status: "NOT_BOUGHT",
     platform_id: 1, // harcodeado
+    number_profiles: 2,
   },
   {
     email: "ana.perez@gmail.com",
@@ -19,6 +20,7 @@ const initialAccounts = [
     pin: "1234",
     status: "NOT_BOUGHT",
     platform_id: 1, // harcodeado
+    number_profiles: 2,
   },
   {
     email: "maria.hulu@gmail.com",
@@ -27,6 +29,7 @@ const initialAccounts = [
     pin: "7563",
     status: "NOT_BOUGHT",
     platform_id: 1, // harcodeado
+    number_profiles: 2,
   },
   {
     email: "joh432u@gmail.com",
@@ -35,6 +38,7 @@ const initialAccounts = [
     pin: "9181",
     status: "NOT_BOUGHT",
     platform_id: 2, // harcodeado
+    number_profiles: 3,
   },
   {
     email: "joh432u@gmail.com",
@@ -43,6 +47,7 @@ const initialAccounts = [
     pin: "9181",
     status: "NOT_BOUGHT",
     platform_id: 2, // harcodeado
+    number_profiles: 3,
   },
   {
     email: "joh432u@gmail.com",
@@ -51,6 +56,7 @@ const initialAccounts = [
     pin: "9181",
     status: "NOT_BOUGHT",
     platform_id: 2, // harcodeado
+    number_profiles: 3,
   },
   {
     email: "joh432u@gmail.com",
@@ -59,6 +65,7 @@ const initialAccounts = [
     pin: "9181",
     status: "NOT_BOUGHT",
     platform_id: 2, // harcodeado
+    number_profiles: 3,
   },
   {
     email: "joh432u@gmail.com",
@@ -67,6 +74,7 @@ const initialAccounts = [
     pin: "9181",
     status: "NOT_BOUGHT",
     platform_id: 2, // harcodeado
+    number_profiles: 3,
   },
   {
     email: "jsffdslu@gmail.com",
@@ -75,6 +83,7 @@ const initialAccounts = [
     pin: "9181",
     status: "NOT_BOUGHT",
     platform_id: 4, // harcodeado
+    number_profiles: 4,
   },
   {
     email: "heheheu@gmail.com",
@@ -83,6 +92,7 @@ const initialAccounts = [
     pin: "9181",
     status: "NOT_BOUGHT",
     platform_id: 3, // harcodeado
+    number_profiles: 1,
   },
   {
     email: "heheheu@gmail.com",
@@ -91,6 +101,7 @@ const initialAccounts = [
     pin: "9181",
     status: "NOT_BOUGHT",
     platform_id: 3, // harcodeado
+    number_profiles: 1,
   },
   {
     email: "heheheu@gmail.com",
@@ -99,6 +110,7 @@ const initialAccounts = [
     pin: "9181",
     status: "NOT_BOUGHT",
     platform_id: 3, // harcodeado
+    number_profiles: 1,
   },
   {
     email: "heheheu@gmail.com",
@@ -107,6 +119,7 @@ const initialAccounts = [
     pin: "9181",
     status: "NOT_BOUGHT",
     platform_id: 3, // harcodeado
+    number_profiles: 1,
   },
   {
     email: "heheheu@gmail.com",
@@ -115,6 +128,7 @@ const initialAccounts = [
     pin: "9181",
     status: "NOT_BOUGHT",
     platform_id: 3, // harcodeado
+    number_profiles: 1,
   },
 ];
 
