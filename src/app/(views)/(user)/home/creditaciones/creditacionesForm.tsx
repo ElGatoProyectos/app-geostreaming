@@ -54,7 +54,6 @@ const creditacionesForm: React.FC<CreditacionesProps> = ({ info, onSubmit }) => 
     >
       <h2 className="font-semibold">{info.title}</h2>
       <p className=""><span className="font-semibold">Cuenta: </span>{info.numberAccount}</p>
-      {/* (input id, solo lo puede ver no editar) */}
       <InputField
         id="voucher_number"
         label="Numero de comprobante"
@@ -73,7 +72,7 @@ const creditacionesForm: React.FC<CreditacionesProps> = ({ info, onSubmit }) => 
         label="Fecha del depósito"
         register={register("date")}
         error={errors.date}
-        type="datetime"
+        type="datetime-local"
       />
 
        <div>

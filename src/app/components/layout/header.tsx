@@ -15,9 +15,9 @@ import { BiSolidWallet } from "react-icons/bi";
 type UserRole = "ADMIN" | "DISTRIBUTOR" | "USER";
 
 import Sidebar from "./sidebar";
+import { useSession } from "next-auth/react";
 
 const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
-  console.log(userRole);
   const [menuOpen, setMenuOpen] = useState(false);
   const [perfilOpen, setPerfilOpen] = useState(false);
   const [notificationOpen, setNotificationOpen] = useState(false);
@@ -26,7 +26,6 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
 
   const showModal = () => {
     setIsModalOpen(true);
-    console.log("show modal");
   };
 
   const closeModal = () => {
@@ -45,9 +44,14 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
     setPerfilOpen(false);
   };
 
-  const username = "Nombre del admin";
-  const userEmail = "admin@gmail.com";
+
+  const [user, setUser] = useState<any[]>([]);
+  const session = useSession();
+
+  const username = session.data?.user.name;
+  const userEmail = session.data?.user.email;
   const userAvatar = "/user.jpg";
+ 
 
   return (
     <div className=" user-select-none fixed z-20 top-0 left-0 h-[70px] shadow w-full bg-white text-[#444}">
@@ -62,7 +66,7 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
         </Link>
 
         <div className="flex gap-4 lg:gap-8 items-center">
-          <button
+         {/*  <button
             className="rounded-full p-2  hover:bg-gray-100 transition-all duration-300 relative"
             onClick={toggleNotifications}
           >
@@ -70,7 +74,7 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
             <div className="bg-red-500 absolute rounded-full text-white px-[6px] py-0.5 top-0 left-1/2 text-[10px]">
               3
             </div>
-          </button>
+          </button> */}
           {/* monedero */}
           {userRole !== "ADMIN" ? (
             <Link
@@ -163,7 +167,7 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
           </button>
         </div>
         {/* notifications */}
-        {notificationOpen && (
+        {/* {notificationOpen && (
           <div
             className={`z-20 absolute top-[50px]  right-4 bg-white shadow-cardFloat w-[90%]   lg:w-[350px] overflow-y-auto ${
               userRole !== "ADMIN" ? "lg:right-[440px]" : "lg:right-[280px]"
@@ -178,7 +182,6 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
             </div>
 
             <div className="scrollbarFit max-h-[400px] overflow-y-auto pr-2 ">
-              {/* sin leer */}
               <div className="mb-6">
                 <h3 className="text-left my-2 font-semibold">Sin leer</h3>
                 <div className="flex flex-col gap-4">
@@ -197,7 +200,6 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
                   </div>
                 </div>
               </div>
-              {/* leidas */}
               <div>
                 <h3 className="text-left my-2 font-semibold">Leidas</h3>
                 <div className="flex flex-col gap-4">
@@ -218,7 +220,7 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
               </div>
             </div>
           </div>
-        )}
+        )} */}
       </div>
       <Sidebar isOpen={menuOpen} role={userRole} />
       {/* modal */}

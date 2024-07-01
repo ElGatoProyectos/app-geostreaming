@@ -7,6 +7,9 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 import { changePasswordSchema } from "@/app/schemas/changePasswordSchema";
+import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type Inputs = {
   password: string;
@@ -34,9 +37,18 @@ const ChangePassword = () => {
     resolver: zodResolver(changePasswordSchema),
   });
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
-    /* modal de confirmacion? */
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    try {
+      await axios.post("/api/user", {
+        /*  */
+      });
+      toast.success("Se guardo correctamente");
+    } catch (error) {
+      console.error("Error al guardar el registro:", error);
+      toast.error("Hubo un error al guardar el registro");
+    } finally {
+      setLoading(false);
+    }
     reset();
   };
 

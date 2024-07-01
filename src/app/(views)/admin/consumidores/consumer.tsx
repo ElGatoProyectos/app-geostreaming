@@ -38,10 +38,11 @@ const Consumers = () => {
   };
   const fetchUsers = async () => {
     try {
-      const response = await axios.get("/api/user", {
-        params: { role: "USER" },
+      const response = await axios.get("/api/user");
+      const filteredUser = response.data.filter((user: any) => {
+        return user.role === "USER";
       });
-      setUsers(response.data.users);
+      setUsers(filteredUser);
     } catch (error) {
       console.error("Error fetching user:", error);
     }

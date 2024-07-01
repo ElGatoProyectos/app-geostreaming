@@ -7,15 +7,17 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 /* CAMBIAR SCHEMA */
 import { UserSchema } from "@/app/schemas/userSchema";
 import CountrySelect from "@/app/components/forms/countrySelect";
+import axios from "axios";
 
 type Inputs = {
+  id: number;
   username: string;
   full_name: string;
   email: string;
   phone: string;
   acreditaciones?: string;
   avatar?: string;
-  code_country?: string;
+  country_code?: string;
 };
 
 interface UserFormProps {
@@ -49,7 +51,10 @@ const UserForm: React.FC<UserFormProps> = ({
     setLoading(true);
 
     try {
-      await onSubmit(data);
+      const response = await axios.put(`/api/user/${data.id}`, {
+        phone: data.phone,
+        avatar: data.avatar,
+      })
     } catch (error) {
       console.error("Error al registrar la cuenta:", error);
     } finally {
@@ -85,9 +90,8 @@ const UserForm: React.FC<UserFormProps> = ({
       />
       <div className="flex flex-col md:flex-row gap-4">
         <CountrySelect
-          id="code_country"
-          register={register("code_country")}
-          
+          id="country_code"
+          register={register("country_code")}
         />
          <InputField
         id="phone"

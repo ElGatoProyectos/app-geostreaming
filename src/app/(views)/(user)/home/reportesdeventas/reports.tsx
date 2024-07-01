@@ -7,25 +7,23 @@ import Modal from "@/app/components/common/modal";
 import ActionButton from "@/app/components/common/ActionButton";
 import { useSession } from "next-auth/react";
 import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Reports = () => {
+  const session = useSession();
+
   const [orders, setOrders] = useState<any[]>([]);
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const data: any[] = [{ id: 1, email: "oline@gmail.com" }];
-  const [user, setUser] = useState("");
-  const session = useSession();
-  if (session.status === "authenticated") {
-    setUser(session.data?.user.id);
-  }
+  const [selectedRecord, setSelectedRecord] = useState<any | null>(null);
 
   const fetchOrder = async () => {
     try {
-      const response = await axios.get("/api/order");
-      console.log(response.data);
+      const response = await axios.get("/api/account");
       const filteredOrders = response.data.filter((order: any) => {
-        return order.user === user;
+        return order.user_id === Number(session.data?.user.id);
       });
-      /* setOrders(filteredOrders); */
+      setOrders(filteredOrders);
     } catch (error) {
       console.error("Error fetching products:", error);
     }
@@ -34,31 +32,39 @@ const Reports = () => {
   useEffect(() => {
     fetchOrder();
   }, []);
+
   const columns = [
     { Header: "Código", accessor: "id" },
-    {
-      Header: "Referencia",
-      accessor: "product_id",
-    },
-    { Header: "Correo", accessor: "email" },
-    { Header: "Contraseña", accessor: "password" },
-    { Header: "Pin", accessor: "pin" },
-    { Header: "Costo", accessor: "numb_profiles" },
+    /* { Header: "Estado", accessor: "status" }, */
     { Header: "Fecha de compra", accessor: "status" },
     { Header: "Fecha de vencimiento", accessor: "platform_id" },
   ];
 
-  const handleModal = () => {
+  const handleModal = (record: any) => {
+    setSelectedRecord(record);
     setIsOpenModal(true);
+    
   };
-  const Renovate = () => {
-    console.log("cuenta renovada");
+  const onRenovate = async () => {
+    try {
+      await axios.post("/api/renovate", {
+        account_id: selectedRecord.id,
+        platform_id: selectedRecord.platform_id,
+        user_id: Number(session.data?.user.id),
+      });
+      setIsOpenModal(false);
+      toast.success("Registro eliminado correctamente");
+    } catch (error) {
+      console.error("Error", error);
+      setIsOpenModal(false);
+      toast.error("Hubo un error al eliminar el registro");
+    }
   };
 
-  const customCode = (
+  /* const customCode = (
     <>
       <button
-        onClick={handleModal}
+        onClick={()=> handleModal()}
         className="relative rounded content-center text-white px-1 py-1 bg-[#5A62F3] w-8 h-8 hover:bg-[#868BF1] group"
       >
         <GrUpdate className=" mx-auto" />
@@ -67,20 +73,20 @@ const Reports = () => {
         </span>
       </button>
     </>
-  );
+  ); */
 
   return (
     <>
-      {data.length === 0 ? (
+      {orders.length === 0 ? (
         <NoRecords title="ventas" />
       ) : (
         <Table
           columns={columns}
-          data={data}
+          data={orders}
           showActions={true}
           title="Historial de ventas"
           download={true}
-          code={customCode}
+          onRenovate={handleModal}
         />
       )}
       <Modal
@@ -89,10 +95,11 @@ const Reports = () => {
         onClose={() => setIsOpenModal(false)}
       >
         <h2 className="text-xl text-center">
-          Esta seguro de Renovar la cuenta?
+          ¿Esta seguro de Renovar la cuenta?
         </h2>
         <div className="text-center mt-4">
-          <ActionButton onClick={Renovate}>Renovar</ActionButton>
+          {/* <button>renovar</button> */}
+          <ActionButton onClick={onRenovate} >Renovar</ActionButton>
         </div>
       </Modal>
     </>

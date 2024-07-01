@@ -12,6 +12,7 @@ type Inputs = {
   full_name: string;
   phone: string;
   date: string;
+  password: string;
 };
 
 interface AfiliadorProps {
@@ -116,6 +117,13 @@ const AfiliadosForm: React.FC<AfiliadorProps> = ({
         register={register("email")}
         error={errors.email}
         type="email"
+      />
+      <InputField
+        id="password"
+        label="Contraseña"
+        register={register("password")}
+        error={errors.password}
+        /* type="password" */
       />
      
       <InputField

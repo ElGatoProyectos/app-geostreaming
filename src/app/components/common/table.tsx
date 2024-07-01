@@ -6,8 +6,9 @@ import { PaginationComponent } from "@/app/components/common/pagination";
 import ActionButton from "./ActionButton";
 import { BsPencilFill } from "react-icons/bs";
 import { FaTrash } from "react-icons/fa6";
+import { GrUpdate } from "react-icons/gr";
 
-type CustomAccessor<T> = string | ((row: T) => string);
+type CustomAccessor<T> = string | ((row: T) => string | JSX.Element);
 interface TableProps<T> {
   columns: Array<{ Header: string; accessor: CustomAccessor<T> }>;
   data: T[];
@@ -21,6 +22,7 @@ interface TableProps<T> {
   onEdit?: (row: T) => void;
   onDelete?: (row: T) => void;
   onUpload?: () => void;
+  onRenovate?: (row: T) => void;
   code?: ReactNode;
 }
 
@@ -37,6 +39,7 @@ const TableComponent = <T extends Record<string, any>>({
   onDelete,
   downloadAction,
   onUpload,
+  onRenovate,
   code,
 }: TableProps<T>) => {
   const [filteredData, setFilteredData] = useState(data);
@@ -52,14 +55,21 @@ const TableComponent = <T extends Record<string, any>>({
   useEffect(() => {
     setFilteredData(
       data?.filter((item) =>
-        columns?.some((column) =>
-          typeof column.accessor === "function"
-            ? column.accessor(item).toLowerCase().includes(search.toLowerCase())
-            : item[column.accessor]
-                ?.toString()
-                .toLowerCase()
-                .includes(search.toLowerCase())
-        )
+        columns?.some((column) => {
+          const accessorValue =
+            typeof column.accessor === "function"
+              ? column.accessor(item)
+              : item[column.accessor];
+
+          const valueAsString =
+            typeof accessorValue === "string"
+              ? accessorValue.toLowerCase()
+              : typeof accessorValue === "number"
+              ? accessorValue.toString().toLowerCase()
+              : "";
+
+          return valueAsString.includes(search.toLowerCase());
+        })
       )
     );
   }, [data, search, columns]);
@@ -171,10 +181,10 @@ const TableComponent = <T extends Record<string, any>>({
         hoverable={true}
       >
         <Table.Head className="w-full">
-          {columns.map((column) => (
+          {columns.map((column, index) => (
             <Table.HeadCell
               key={
-                typeof column.accessor === "string" ? column.accessor : "custom"
+                typeof column.accessor === "string" ? column.accessor : index
               }
               onClick={() => requestSort(column.accessor as string)}
             >
@@ -199,12 +209,12 @@ const TableComponent = <T extends Record<string, any>>({
           {paginatedData?.length > 0 ? (
             paginatedData.map((row, rowIndex) => (
               <Table.Row key={rowIndex} className="bg-white">
-                {columns.map((column) => (
+                {columns.map((column, index) => (
                   <Table.Cell
                     key={
                       typeof column.accessor === "string"
                         ? column.accessor
-                        : "custom"
+                        : index
                     }
                   >
                     {typeof column.accessor === "function"
@@ -231,7 +241,17 @@ const TableComponent = <T extends Record<string, any>>({
                           <FaTrash className="text-white mx-auto " />
                         </Button>
                       )}
-
+                      {onRenovate && (
+                        <button
+                          onClick={() => onRenovate && onRenovate(row)}
+                          className="relative rounded content-center text-white px-1 py-1 bg-[#5A62F3] w-8 h-8 hover:bg-[#868BF1] group"
+                        >
+                          <GrUpdate className=" mx-auto" />
+                          <span className="px-2 py-0.6 absolute -top-2 z-10 bg-white rounded-full left-1/2 -translate-x-1/2 -translate-y-full text-[#444] shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-500">
+                            Renovar
+                          </span>
+                        </button>
+                      )}
                       {code}
                     </div>
                   </Table.Cell>

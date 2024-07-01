@@ -9,16 +9,16 @@ import axios from "axios";
 
 type Inputs = {
   id?: number;
-  is_active: boolean;
-  email: string;
-  password: string;
-  pin: string;
-  numb_profiles: number;
-  numb_days_duration: number;
-  product_id: number;
-  platform_id: number;
-  user_id: number;
-  description: string;
+  is_active?: string;
+  email?: string;
+  password?: string;
+  pin?: string;
+  purchase_date?: string;
+  renewal_date?: string;
+  user_id?: number;
+  description?: string;
+  platform_id?: number;
+  status?: string;
 };
 
 interface AccountFormProps {
@@ -30,8 +30,8 @@ const AccountForm: React.FC<AccountFormProps> = ({
   defaultValues,
   onSubmit,
 }) => {
-  const [products, setProducts] = useState<any[]>([]);
-  const [users, setUsers] = useState<any[]>([]);
+  const [platforms, setPlatforms] = useState<any[]>([]);
+  /* const [users, setUsers] = useState<any[]>([]); */
   const [loading, setLoading] = useState(false);
 
   const {
@@ -51,13 +51,13 @@ const AccountForm: React.FC<AccountFormProps> = ({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [productResponse, userResponse] = await Promise.all([
-          axios.get("/api/product"),
-          axios.get("/api/user"),
+        const [platformResponse/* , userResponse */] = await Promise.all([
+          axios.get("/api/platform"),
+        /*   axios.get("/api/user"), */
         ]);
 
-        setProducts(productResponse.data.products);
-        setUsers(userResponse.data.users);
+        setPlatforms(platformResponse.data);
+       /*  setUsers(userResponse.data); */
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -70,14 +70,10 @@ const AccountForm: React.FC<AccountFormProps> = ({
     setLoading(true);
 
     try {
-      await onSubmit({
+      await onSubmit( data/* {
         ...data,
-        is_active: data.is_active ? true : false,
-        numb_profiles: Number(data.numb_profiles),
-        numb_days_duration: Number(data.numb_days_duration),
-        product_id: Number(data.product_id),
-        user_id: Number(data.user_id),
-      });
+        is_active: data.is_active === "1" ? true: false,
+      } */);
     } catch (error) {
       console.error("Error al registrar la cuenta:", error);
     } finally {
@@ -93,39 +89,27 @@ const AccountForm: React.FC<AccountFormProps> = ({
       {defaultValues?.id && (
         <input type="hidden" {...register("id")} value={defaultValues.id} />
       )}
-      <label htmlFor="product_id">
-        Producto
+      <label htmlFor="platform_id">
+        Plataforma
         <select
-          id="product_id"
-          defaultValue={""}
+          id="platform_id"
+          defaultValue={defaultValues?.platform_id ?? ''}
           className={`w-full text-[#666] bg-gray-50 border rounded outline-none px-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
-            errors.product_id
+            errors.platform_id
               ? "border-red-500 focus:ring focus:ring-red-200 focus:border-red-500"
               : "border-gray-200 "
           }`}
-          {...register("product_id", { valueAsNumber: true })}
+          {...register("platform_id", { valueAsNumber: true })}
         >
-          <option value="" disabled>
-            Seleccione un producto
+          <option value="">
+            Seleccione un plataforma
           </option>
-          {products.map((product) => (
-            <option key={product.id} value={product.id}>
-              {product.platform.name}{" "}
-              <input
-                type="number"
-                value={product.platform.id}
-                id="platform_id"
-                className="hidden"
-                {...register("platform_id", { valueAsNumber: true })}
-              />
+          {platforms.map((platform) => (
+            <option key={platform.id} value={platform.id}>
+              {platform.name}
             </option>
           ))}
         </select>
-        {errors?.product_id && (
-          <p className="text-red-500 text-sm font-medium mt-1">
-            {errors.product_id.message}
-          </p>
-        )}
         {errors?.platform_id && (
           <p className="text-red-500 text-sm font-medium mt-1">
             {errors.platform_id.message}
@@ -151,37 +135,37 @@ const AccountForm: React.FC<AccountFormProps> = ({
         register={register("pin")}
         error={errors.pin}
       />
-      <InputField
-        id="numb_days_duration"
-        label="Tiempo de duración (días)"
-        type="number"
-        register={register("numb_days_duration", { valueAsNumber: true })}
-        error={errors.numb_days_duration}
+      {/*<InputField
+        id="purchase_date"
+        label="Fecha de compra"
+        type="datetime-local"
+        register={register("purchase_date", { valueAsDate: true })}
+        error={errors.purchase_date}
       />
-      <InputField
-        id="numb_profiles"
-        label="Número de perfiles"
-        type="number"
-        register={register("numb_profiles", { valueAsNumber: true })}
-        error={errors.numb_profiles}
-      />
+       <InputField
+        id="renewal_date"
+        label="fecha de renovación"
+        type="datetime-local"
+        register={register("renewal_date", { valueAsDate: true })}
+        error={errors.renewal_date}
+      /> */}
       <label htmlFor="is_active">
-        Estado
+        Estado de la cuenta
         <select
           id="is_active"
-          defaultValue={""}
+          defaultValue={defaultValues?.is_active && '1' }
           className={`w-full text-[#666] bg-gray-50 border rounded outline-none px-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
             errors.is_active
               ? "border-red-500 focus:ring focus:ring-red-200 focus:border-red-500"
               : "border-gray-200 "
           }`}
-          {...register("is_active", { valueAsNumber: false })}
+          {...register("is_active")}
         >
-          <option value="" disabled>
+          <option value="">
             Seleccione el estado de la cuenta
           </option>
-          <option value="true">Activo</option>
-          <option value="false">Inactivo</option>
+          <option value="1">Activo</option>
+          <option value="0">Inactivo</option>
         </select>
         {errors?.is_active && (
           <p className="text-red-500 text-sm font-medium mt-1">
@@ -189,20 +173,44 @@ const AccountForm: React.FC<AccountFormProps> = ({
           </p>
         )}
       </label>
+      <label htmlFor="status">
+        Disponibilidad de la cuenta
+        <select
+          id="status"
+          defaultValue={defaultValues?.status?? "NOT_BOUGHT"}
+          className={`w-full text-[#666] bg-gray-50 border rounded outline-none px-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
+            errors.status
+              ? "border-red-500 focus:ring focus:ring-red-200 focus:border-red-500"
+              : "border-gray-200 "
+          }`}
+          {...register("status")}
+        >
+          <option value="">
+            Seleccione el estado de la cuenta
+          </option>
+          <option  value="BOUGHT">Comprado</option>
+          <option  value="NOT_BOUGHT">No comprado</option>
+        </select>
+        {errors?.status && (
+          <p className="text-red-500 text-sm font-medium mt-1">
+            {errors.status.message}
+          </p>
+        )}
+      </label>
 
-      <label htmlFor="user_id">
+      {/* <label htmlFor="user_id">
         Usuario
         <select
           id="user_id"
-          defaultValue={"Seleccione un banco"}
+          defaultValue={defaultValues?.user_id ?? ""}
           className={`w-full text-[#666] bg-gray-50 border rounded outline-none px-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
             errors.user_id
               ? "border-red-500 focus:ring focus:ring-red-200 focus:border-red-500"
               : "border-gray-200 "
           }`}
-          {...register("user_id")}
+          {...register("user_id", { valueAsNumber: true })}
         >
-          <option value="" disabled>
+          <option value="">
             Seleccione un usuario
           </option>
           {users.map((user) => (
@@ -216,7 +224,7 @@ const AccountForm: React.FC<AccountFormProps> = ({
             {errors.user_id.message}
           </p>
         )}
-      </label>
+      </label> */}
       <div className="w-full text-[#444]">
         <label htmlFor="description">Descripción</label>
         <textarea

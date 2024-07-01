@@ -3,10 +3,9 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useEffect, useState } from "react";
 import InputField from "@/app/components/forms/inputField";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import axios from "axios";
 import { PlatformFormSchema } from "@/app/schemas/plataformFormSchema";
 
-type ProductStatus = "IMMEDIATE_DELIVERY" | "UPON_REQUEST";
+type PlatformStatus = "IMMEDIATE_DELIVERY" | "UPON_REQUEST";
 
 
 type Inputs = {
@@ -16,18 +15,16 @@ type Inputs = {
   img_url?: string;
   price_in_cents?: number;
   price_distributor_in_cents?: number;
-  status?: ProductStatus;
+  status?: PlatformStatus;
   days_duration?: number;
-  account?: number;
-  
 };
 
-interface ProductFormProps {
+interface PlatformFormProps {
   defaultValues?: Inputs;
   onSubmit: SubmitHandler<Inputs>;
 }
 
-const ProductForm: React.FC<ProductFormProps> = ({
+const PlatformForm: React.FC<PlatformFormProps> = ({
   defaultValues,
   onSubmit,
 }) => {
@@ -48,10 +45,6 @@ const ProductForm: React.FC<ProductFormProps> = ({
     reset(defaultValues);
   }, [defaultValues, reset]);
 
-  
-
-  
-
   const handleFormSubmit: SubmitHandler<Inputs> = async (data) => {
     setLoading(true);
 
@@ -69,26 +62,15 @@ const ProductForm: React.FC<ProductFormProps> = ({
       onSubmit={handleSubmit(handleFormSubmit)}
       className="flex w-full flex-col gap-4"
     >
-      <div>
-        <label htmlFor="img_url" className="text-[#444]">
-          Subir imagen
-        </label>
-        <input
-          id="img_url"
-          type="file"
-          className={`w-full text-[#666] bg-gray-100 border rounded outline-none pr-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
-            errors.img_url
-              ? "border-red-500 focus:ring focus:ring-red-200 focus:border-red-500"
-              : "border-gray-200 "
-          }`}
-          {...register("img_url")}
-        />
-        {errors.img_url && (
-          <p className="text-red-500 text-sm font-medium mt-1">
-            {errors.img_url.message}
-          </p>
-        )}
-      </div>
+      {defaultValues?.id && (
+        <input type="hidden" {...register("id")} value={defaultValues.id} />
+      )}
+      <InputField
+        id="img_url"
+        label="Imagen del logo (url)"
+        register={register("img_url")}
+        error={errors.img_url}
+      />
       <InputField
         id="name"
         label="Plataforma"
@@ -106,6 +88,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
         Tipo:
         <select
           id="status"
+          defaultValue={defaultValues?.status?? ""}
           className={`mt-2 w-full text-[#666] bg-gray-50 border rounded outline-none px-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
             errors.status
               ? "border-red-500 focus:ring focus:ring-red-200 focus:border-red-500"
@@ -114,7 +97,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
           {...register("status")}
         >
           <option value="">Seleccione tipo de producto</option>
-          <option value="IMMEDIATE_DELIVERY">Entrega inmediata</option>
+          <option  value="IMMEDIATE_DELIVERY">Entrega inmediata</option>
           <option value="UPON_REQUEST">A pedido</option>
         </select>
         {errors.status && (
@@ -125,15 +108,27 @@ const ProductForm: React.FC<ProductFormProps> = ({
       </label>
       <InputField
         id="price_in_cents"
-        label="Precio Consumidor"
-        register={register("price_in_cents")}
+        label="Precio Consumidor (centavos)"
+        placeholder="$ 1000"
+        type="number"
+        register={register("price_in_cents", {valueAsNumber: true})}
         error={errors.price_in_cents}
       />
       <InputField
         id="price_distributor_in_cents"
-        label="Precio Distribuidor"
-        register={register("price_distributor_in_cents")}
+        label="Precio Distribuidor (centavos)"
+        placeholder="$ 1000"
+        type="number"
+        register={register("price_distributor_in_cents", {valueAsNumber: true})}
         error={errors.price_distributor_in_cents}
+      />
+      <InputField
+        id="days_duration"
+        label="Días de duración"
+        placeholder="30"
+        type="number"
+        register={register("days_duration", {valueAsNumber: true})}
+        error={errors.days_duration}
       />
        {/* <label htmlFor="account" className="text-[#444]">
         Cuenta:
@@ -171,7 +166,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
         >
           {loading ? (
             <span>
-              <AiOutlineLoading3Quarters className=" animate-spin inline-block" />{" "}
+              <AiOutlineLoading3Quarters className=" animate-spin inline-block" />
               Cargando
             </span>
           ) : (
@@ -183,4 +178,4 @@ const ProductForm: React.FC<ProductFormProps> = ({
   );
 };
 
-export default ProductForm;
+export default PlatformForm;

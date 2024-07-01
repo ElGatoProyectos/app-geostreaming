@@ -5,12 +5,12 @@ import { useEffect, useState } from "react";
 import InputField from "@/app/components/forms/inputField";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
-import { AccountFormSchema } from "@/app/schemas/accountFormSchema";
+import { getProductFormSchema } from "@/app/schemas/getProductFormSchema";
 type Inputs = {
   email: string;
 };
 
-interface CreditacionesProps {
+interface PlatformProps {
   info: {
     title: string;
     numberAccount?: string;
@@ -19,7 +19,7 @@ interface CreditacionesProps {
   onSubmit: SubmitHandler<Inputs>;
 }
 
-const creditacionesForm: React.FC<CreditacionesProps> = ({
+const PlatformForm: React.FC<PlatformProps> = ({
   info,
   onSubmit,
 }) => {
@@ -31,7 +31,7 @@ const creditacionesForm: React.FC<CreditacionesProps> = ({
     formState: { errors },
     reset,
   } = useForm<Inputs>({
-    resolver: zodResolver(AccountFormSchema),
+    resolver: zodResolver(getProductFormSchema),
   });
 
   const handleFormSubmit: SubmitHandler<Inputs> = async (data) => {
@@ -62,7 +62,6 @@ const creditacionesForm: React.FC<CreditacionesProps> = ({
         </div>
       ) : (
         <div>
-          {" "}
           <h2 className="font-semibold">{info.title}</h2>
           <p className="">
             <span className="font-semibold">Cuenta: </span>
@@ -135,4 +134,4 @@ const creditacionesForm: React.FC<CreditacionesProps> = ({
   );
 };
 
-export default creditacionesForm;
+export default PlatformForm;

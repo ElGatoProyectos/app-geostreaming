@@ -4,29 +4,30 @@ import Table from "@/app/components/common/table";
 import Modal from "@/app/components/common/modal";
 import AccountForm from "./accountForm";
 import { SubmitHandler } from "react-hook-form";
-
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
 
 
 type Inputs = {
   id?: number;
-  is_active: boolean;
-  email: string;
-  password: string;
-  pin: string;
-  numb_profiles: number;
-  numb_days_duration: number;
-  product_id: number;
-  user_id: number;
-  description: string;
-  platform_id: number;
+  is_active?: string;
+  email?: string;
+  password?: string;
+  pin?: string;
+  purchase_date?: string;
+  renewal_date?: string;
+  user_id?: number;
+  description?: string;
+  platform_id?: number;
+  status?: string;
 };
 
 const Account = () => {
   const [accounts, setAccounts] = useState<Inputs[]>([]);
-  const [products, setProducts] = useState<any[]>([]);
+  const [platforms, setPlatform] = useState<any[]>([]);
   const [users, setUsers] = useState<any[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
@@ -48,12 +49,11 @@ const Account = () => {
   };
   const fetchData = async () => {
     try {
-      const [productResponse, userResponse] = await Promise.all([
-        axios.get("/api/account"),
-        axios.get("/api/product"),
+      const [platformResponse, userResponse] = await Promise.all([
+        axios.get("/api/platform"),
         axios.get("/api/user"),
       ]);
-      setProducts(productResponse.data.products);
+      setPlatform(platformResponse.data);
       setUsers(userResponse.data.users);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -65,32 +65,56 @@ const Account = () => {
     fetchData();
   }, []);
 
+  const formatDate = (dateString?: string): string => {
+    if (!dateString) {
+      return "Sin fecha";
+    }
+
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+      return "Fecha inválida";
+    }
+
+    return format(date, "PPPp", { locale: es });
+  };
+
   const columns = [
     { Header: "ID", accessor: "id" },
     {
       Header: "Plataforma",
       accessor: (row: Inputs) => {
-        if (!products || products.length === 0) return "No disponible";
-        const product = products.find((p) => p.id === row.product_id);
-        return product ? product.platform.name : "No disponible";
+        if (!platforms || platforms.length === 0) return "No disponible";
+        const platform = platforms.find((p) => p.id === row.platform_id);
+        return platform ? platform.name : "No disponible";
       },
     },
     { Header: "Correo", accessor: "email" },
     { Header: "Contraseña", accessor: "password" },
     { Header: "Pin", accessor: "pin" },
     {
-      Header: "Estado",
-      accessor: (row: Inputs) => (row.is_active ? "activo" : "inactivo"),
+      Header: "Activo",
+      accessor: (row: Inputs) => (row.is_active ? "si" : "no"),
     },
-    { Header: "Fecha de compra", accessor: "numb_days_duration" },
-    { Header: "Fecha de renovación", accessor: "numb_days_duration" },
-    
+    {
+      Header: "Estado",
+      accessor: (row: Inputs) =>
+        row.status === "BOUGHT" ? "comprado" : "no comprado",
+    },
+    {
+      Header: "Fecha de compra",
+      accessor: (row: Inputs) => formatDate(row.purchase_date),
+    },
+    {
+      Header: "Fecha de renovación",
+      accessor: (row: Inputs) => formatDate(row.renewal_date),
+    },
+
     {
       Header: "Usuario",
       accessor: (row: Inputs) => {
         if (!users || users.length === 0) return "No asignado";
         const user = users.find((u) => u.id === row.user_id);
-        return user ? user.email : "No asignado";
+        return user ? user.full_name : "No asignado";
       },
     },
   ];
@@ -98,7 +122,15 @@ const Account = () => {
   const handleEdit = async (record: Inputs) => {
     try {
       const response = await axios.get(`/api/account/${record.id}`);
-      setSelectedRecord(response.data);
+      const data = response.data;
+      data.is_active = data.is_active ? "1" : "0";
+
+      console.log(data);
+      if (data.purchase_date) {
+        const date = new Date(data.purchase_date);
+        data.purchase_date = date.toISOString().slice(0, 16);
+      }
+      setSelectedRecord(data);
       setModalTitle("Editar cuenta");
       setIsModalOpen(true);
     } catch (error) {
@@ -129,48 +161,50 @@ const Account = () => {
       toast.error("Hubo un error al eliminar la cuenta");
     }
   };
-  const handleUpload = async () => {
-    //
-  };
+
+/*   const formatDateInsert = (date: string | undefined): string | undefined => {
+    if (!date) return undefined;
+  
+    const dateObj = new Date(date);
+    if (isNaN(dateObj.getTime())) {
+      console.error('Fecha de compra inválida:', date);
+      return undefined;
+    }
+  
+    return format(dateObj, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx");
+  }; */
+  
 
   const handleSaveAccount: SubmitHandler<Inputs> = async (data) => {
     setLoading(true);
-    console.log(data);
+   
     try {
+      /* const formattedPurchaseDate = formatDateInsert(data.purchase_date); */
+
       if (data.id) {
-        await axios.put(`/api/account/${data.id}`, {
-          is_active: data.is_active ? true : false,
+        await axios.patch(`/api/account/${data.id}`, {
+          is_active: data.is_active === "1" ? true : false,
           email: data.email,
           password: data.password,
-          description: data.description,
           pin: data.pin,
-          numb_profiles: data.numb_profiles,
-          numb_days_duration: data.numb_days_duration,
+          description: data.description,
           platform_id: data.platform_id,
-          product_id: data.product_id,
-          user_id: data.user_id,
+          status: data.status,
         });
         toast.success("Se actualizo correctamente");
       } else {
-        await axios.post("/api/account", {
-          is_active: data.is_active,
+        await axios.post("/api/account", JSON.stringify( {
+          is_active: data.is_active === "1" ? true : false,
           email: data.email,
           password: data.password,
-          description: data.description,
           pin: data.pin,
-          numb_profiles: data.numb_profiles,
-          numb_days_duration: data.numb_days_duration,
+          description: data.description,
           platform_id: data.platform_id,
-          product_id: data.product_id,
-          user_id: data.user_id,
-        });
+          status: 'NOT_BOUGHT',
+        }));
         toast.success("Se guardo correctamente");
       }
-
-      useEffect(() => {
         fetchAccounts();
-      }, []);
-
       closeModal();
     } catch (error) {
       console.error("Error al guardar la cuenta:", error);
@@ -194,23 +228,11 @@ const Account = () => {
       />
       <Modal isOpen={isModalOpen} onClose={closeModal} title={modalTitle}>
         <AccountForm
-          defaultValues={
-            selectedRecord || {
-              is_active: true,
-              email: "",
-              password: "",
-              pin: "",
-              numb_profiles: 0,
-              numb_days_duration: 0,
-              product_id: 1,
-              platform_id: 1,
-              user_id: 1,
-              description: "",
-            }
-          }
+          defaultValues={selectedRecord || {}}
           onSubmit={handleSaveAccount}
         />
       </Modal>
+      {/* delete modal */}
       <Modal
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}

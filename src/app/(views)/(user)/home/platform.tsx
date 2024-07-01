@@ -1,5 +1,5 @@
 import React from "react";
-import Delivery from "./delilvery";
+import Delivery from "./delivery";
 import Request from "./request";
 
 const products = () => {

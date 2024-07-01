@@ -82,7 +82,6 @@ const Delivery = () => {
         status: "ATTENDED",
       });
       closeModal();
-
       toast.success("Plataforma comprada");
     } catch (error) {
       console.log(error);

@@ -18,6 +18,7 @@ const UserUpdateSchema = UserSchema.extend({
 
 export function validateUser(userInfo: unknown) {
   const parseResut = UserSchema.safeParse(userInfo);
+  console.log(parseResut)
   if (!parseResut.success) {
     throw new Error("Invalid user info");
   }

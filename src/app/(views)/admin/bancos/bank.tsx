@@ -14,7 +14,7 @@ type Inputs = {
   number?: string;
   name?: string;
   type?: string;
-  img_url?: File;
+  bank_url?: string;
 };
 const Bank = () => {
   const [banks, setBanks] = useState<Inputs[]>([]);
@@ -48,8 +48,9 @@ const Bank = () => {
     console.log(data);
     try {
       if (data.id) {
-        console.log("hehe");
-        await axios.put(`/api/bank/${data.id}`, {
+        await axios.patch(`/api/bank/${data.id}`, {
+          id: data.id,
+          bank_url: data.bank_url,
           bank: data.bank,
           number: data.number,
           name: data.name,
@@ -57,40 +58,16 @@ const Bank = () => {
         });
         toast.success("Se actualizo correctamente");
       } else {
-        console.log("hehe");
-
-        // const res = await fetch("/api/img/upload", {
-        //   method: "POST",
-        //   body: data.img_url,
-        // });
-
-        // if (!res.ok) {
-        //   console.error("Error en la respuesta:", res.statusText);
-        //   return;
-        // }
-
-        // const text = await res.text();
-        // if (!text) {
-        //   console.error("Respuesta vacía");
-        //   return;
-        // }
-
-        // const dataimg = JSON.parse(text);
-        // console.log("data", dataimg);
-
         await axios.post("/api/bank", {
+          bank_url: data.bank_url,
           bank: data.bank,
           number: data.number,
           name: data.name,
           type: data.type,
-          bank_url: "sadsadsa",
         });
         toast.success("Se guardo correctamente");
       }
-
-      useEffect(() => {
         fetchBanks();
-      }, []);
 
       closeModal();
     } catch (error) {
@@ -103,6 +80,13 @@ const Bank = () => {
 
   const columns = [
     { Header: "ID", accessor: "id" },
+    { Header: "Imagen",accessor: (row: Inputs) => (
+      <img
+        className="w-10 h-10 object-cover aspect-square rounded-full"
+        src={row.bank_url}
+        alt={row.bank}
+      />
+    ),},
     { Header: "Banco", accessor: "bank" },
     { Header: "Número", accessor: "number" },
     { Header: "Nombre", accessor: "name" },
@@ -115,6 +99,7 @@ const Bank = () => {
       setSelectedRecord(response.data);
       setModalTitle("Editar banco");
       setIsModalOpen(true);
+
     } catch (error) {
       console.log(error);
       toast.error("Error al obtener los datos");

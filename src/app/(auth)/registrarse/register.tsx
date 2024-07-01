@@ -5,6 +5,13 @@ import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { userRegisterSchema } from "@/app/schemas/userRegisterSchema";
 import { CiCircleAlert } from "react-icons/ci";
+import axios from "axios";
+import { Bounce, toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import CountrySelect from "@/app/components/forms/countrySelect";
+
 
 type Inputs = {
   name: string;
@@ -13,9 +20,12 @@ type Inputs = {
   phone: string;
   password: string;
   confirmPassword: string;
+  country_code: string;
 };
 
 const register = () => {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -25,9 +35,21 @@ const register = () => {
     resolver: zodResolver(userRegisterSchema),
   });
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
-    /* modal de confirmacion? */
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    try {
+      const response = await axios.post("/api/auth/register", {
+        full_name: data.name,
+        email: data.email,
+        dni: data.user,
+        country_code: data.country_code,
+        phone: data.phone,
+        password: data.password,
+      });
+      router.push("/ingresar");
+    } catch (e) {
+      console.error("Error en el registro:", e);
+      toast.error("Error en el registro");
+    }
     reset();
   };
 
@@ -131,6 +153,10 @@ const register = () => {
               </p>
             )}
           </div>
+          <CountrySelect
+            id="country_code"
+            register={register("country_code")}
+          />
           <div className="flex flex-col w-full lg:w-1/2 gap-2">
             <label htmlFor="phone" className=" flex items-center">
               Celular (whatsapp):
@@ -232,6 +258,7 @@ const register = () => {
           Geostreaming Copyright ©2024. Todos los derechos reservados
         </small>
       </form>
+      <ToastContainer position="top-right" autoClose={5000} theme="light" />
     </div>
   );
 };

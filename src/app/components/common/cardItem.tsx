@@ -2,6 +2,7 @@ import React from "react";
 
 interface Props {
   isNew?: boolean;
+  id:  number;
   title: string;
   url: string;
   description?: string;
@@ -14,6 +15,7 @@ interface Props {
   onOpenModal: (title: string, info: CardInfo) => void;
 }
 interface CardInfo {
+  id: number;
   title: string;
   url?: string;
   account_number?: string;
@@ -22,6 +24,7 @@ interface CardInfo {
 const CardItem: React.FC<Props> = (props) => {
   const openModal = () => {
     const info: CardInfo = {
+      id: props.id,
       title: props.title,
       account_number: props.account_number,
       url: props.url,
@@ -40,7 +43,7 @@ const CardItem: React.FC<Props> = (props) => {
       <img
         src={props.url}
         alt="logo producto"
-        className=" rounded-full w-24 h-24 object-cover mb-3"
+        className=" rounded-full aspect-square w-24 h-24 object-cover mb-3"
       />
       <div className="text-center flex flex-col">
         <h3 className="text-[#277FF2] font-semibold uppercase mb-2">

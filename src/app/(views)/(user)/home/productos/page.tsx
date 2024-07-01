@@ -1,7 +1,7 @@
 import { lazy, Suspense } from "react";
 import { Metadata } from "next";
 import Loading from "@/app/loading";
-import Products from "./products";
+import Products from "./platform";
 import { NextAuthProvider } from "@/context/sesion.context";
 
 const MainLayout = lazy(() => import("@/app/components/layout/mainLayout"));

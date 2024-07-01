@@ -85,8 +85,8 @@ const home = () => {
             <table className="w-full table-auto">
               <thead className="bg-[#F3F6F9] font-medium text-[#888] text-sm">
                 <tr>
-                  <th className="p-2">N</th>
-                  <th className="p-2">Producto</th>
+                  <th className="p-2 text-left">N</th>
+                  <th className="p-2 text-left">Producto</th>
                   <th className="p-2 text-center">Cantidad</th>
                 </tr>
               </thead>
@@ -111,8 +111,8 @@ const home = () => {
             <table className="w-full table-auto">
               <thead className="bg-[#F3F6F9] font-medium text-[#888] text-sm">
                 <tr>
-                  <th className="p-2">N</th>
-                  <th className="p-2 ">Banco</th>
+                  <th className="p-2 text-left">N</th>
+                  <th className="p-2 text-left">Banco</th>
                   <th className="p-2 text-center">Transacciones</th>
                 </tr>
               </thead>
@@ -137,8 +137,8 @@ const home = () => {
             <table className="w-full table-auto">
               <thead className="bg-[#F3F6F9] font-medium text-[#888] text-sm">
                 <tr>
-                  <th className="p-2">N</th>
-                  <th className="p-2">Afiliado</th>
+                  <th className="p-2 text-left">N</th>
+                  <th className="p-2 text-left">Afiliado</th>
                   <th className="p-2 text-center">Consumidores</th>
                   <th className="p-2 text-center">ventas</th>
                 </tr>
@@ -172,8 +172,8 @@ const home = () => {
             <table className="w-full table-auto">
               <thead className="bg-[#F3F6F9] font-medium text-[#888] text-sm">
                 <tr>
-                  <th className="p-2">N</th>
-                  <th className="p-2">Consumidor</th>
+                  <th className="p-2 text-left">N</th>
+                  <th className="p-2 text-left">Consumidor</th>
                   <th className="p-2 text-center">Cuentas</th>
                   <th className="p-2 text-center">Créditos</th>
                 </tr>

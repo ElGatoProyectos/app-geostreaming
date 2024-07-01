@@ -1,10 +1,10 @@
 import { z } from 'zod';
 
 export const UserSchema = z.object({
-    username: z
+    /* username: z
         .string()
         .min(1, { message: 'El nombre de usuario o número de cédula es requerido' })
-        .regex(/^[a-zA-Z0-9]+$/, { message: 'El nombre de usuario solo puede contener letras y números, sin espacios' }),
+        .regex(/^[a-zA-Z0-9]+$/, { message: 'El nombre de usuario solo puede contener letras y números, sin espacios' }), */
     email: z.string()
         .email({ message: 'Formato de email incorrecto | ejemplo@gmail.com' }),
     ref_id: z.string()

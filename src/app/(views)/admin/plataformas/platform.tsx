@@ -2,33 +2,31 @@
 import React, { useEffect, useState } from "react";
 import Table from "@/app/components/common/table";
 import Modal from "@/app/components/common/modal";
-import ProductForm from "./platformForm";
+import PlatformForm from "./platformForm";
 import { SubmitHandler } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import UploadForm from "./uploadForm";
 
-type ProductStatus = "IMMEDIATE_DELIVERY" | "UPON_REQUEST";
+type PlatformStatus = "IMMEDIATE_DELIVERY" | "UPON_REQUEST";
 
-
-type Product = {
+type Platform = {
   id?: number;
   name?: string;
   description?: string;
   img_url?: string;
   price_in_cents?: number;
   price_distributor_in_cents?: number;
-  status?: ProductStatus;
+  status?: PlatformStatus;
   days_duration?: number;
-  account?: number;
 };
 
 const Platform = () => {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [platforms, setPlatforms] = useState<Platform[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
-  const [selectedRecord, setSelectedRecord] = useState<Product | null>(null);
+  const [selectedRecord, setSelectedRecord] = useState<Platform | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
@@ -51,34 +49,46 @@ const Platform = () => {
     setIsUploadModalOpen(false);
   };
 
-  const fetchProducts = async () => {
+  const fetchPlatforms = async () => {
     try {
-      const response = await axios.get("/api/product");
-      setProducts(response.data.products);
+      const response = await axios.get("/api/platform");
+      setPlatforms(response.data);
     } catch (error) {
-      console.error("Error fetching products:", error);
+      console.error("Error fetching platforms:", error);
     }
   };
 
   useEffect(() => {
-    fetchProducts();
+    fetchPlatforms();
   }, []);
 
-  const handleSaveProduct: SubmitHandler<Product> = async (data) => {
+  const handleSavePlatform: SubmitHandler<Platform> = async (data) => {
     setLoading(true);
-    console.log(data);
     try {
       if (data.id) {
-        await axios.put(`/api/product/${data.id}`, {});
+        await axios.patch(`/api/platform/${data.id}`, {
+          img_url: data.img_url,
+          name: data.name,
+          description: data.description,
+          days_duration: data.days_duration,
+          price_in_cents: data.price_in_cents,
+          price_distributor_in_cents: data.price_distributor_in_cents,
+          status: data.status,
+        });
         toast.success("Se actualizo correctamente");
       } else {
-        await axios.post("/api/product", {});
+        await axios.post("/api/platform", {
+          img_url: data.img_url,
+          name: data.name,
+          description: data.description,
+          days_duration: data.days_duration,
+          price_in_cents: data.price_in_cents,
+          price_distributor_in_cents: data.price_distributor_in_cents,
+          status: data.status,
+        });
         toast.success("Se guardo correctamente");
       }
-
-      useEffect(() => {
-        fetchProducts();
-      }, []);
+      fetchPlatforms();
 
       closeModal();
     } catch (error) {
@@ -91,10 +101,23 @@ const Platform = () => {
 
   const columns = [
     { Header: "ID", accessor: "id" },
-    { Header: "plataforma", accessor: "name" },
+    {
+      Header: "Imagen",
+      accessor: (row: Platform) => (
+        <img
+          className="w-10 h-10 object-cover aspect-square rounded-full"
+          src={row.img_url}
+          alt={"hola"}
+        />
+      ),
+    },
+    {
+      Header: "Plataforma",
+      accessor: "name",
+    },
     {
       Header: "Tipo",
-      accessor: (row: Product) =>
+      accessor: (row: Platform) =>
         row.status === "IMMEDIATE_DELIVERY" ? "Entrega inmediata" : "A pedido",
     },
     { Header: "PRECIO CONSUMIDOR ($)", accessor: "price_in_cents" },
@@ -107,17 +130,14 @@ const Platform = () => {
       accessor: "description",
     },
     {
-      Header: "Días de duración",  accessor: "days_duration",
+      Header: "Días de duración",
+      accessor: "days_duration",
     },
-    {
-      Header: "Cuenta",  accessor: "account",
-    },
-
   ];
 
-  const handleEdit = async (record: Product) => {
+  const handleEdit = async (record: Platform) => {
     try {
-      const response = await axios.get(`/api/product/${record.id}`);
+      const response = await axios.get(`/api/platform/${record.id}`);
       setSelectedRecord(response.data);
       setModalTitle("Editar plataforma");
       setIsModalOpen(true);
@@ -133,7 +153,7 @@ const Platform = () => {
     setIsModalOpen(true);
   };
 
-  const handleDelete = (record: Product) => {
+  const handleDelete = (record: Platform) => {
     setSelectedRecord(record);
     setIsDeleteModalOpen(true);
   };
@@ -142,15 +162,13 @@ const Platform = () => {
     if (!selectedRecord) return;
 
     try {
-      await axios.delete(`/api/product/${selectedRecord.id}`);
-      const updatedProduct = products.filter(
-        (product) => product.id !== selectedRecord.id
-      );
-      setProducts(updatedProduct);
+      await axios.delete(`/api/platform/${selectedRecord.id}`);
+
       setSelectedRecord(null);
       setIsDeleteModalOpen(false);
       toast.success("Se elimino correctamente");
     } catch (e) {
+      console.log(e);
       toast.error("Error al eliminar registro");
     }
   };
@@ -163,7 +181,7 @@ const Platform = () => {
     <>
       <Table
         columns={columns}
-        data={products}
+        data={platforms}
         showActions={true}
         addRecord={true}
         title="Plataformas"
@@ -175,11 +193,9 @@ const Platform = () => {
       />
 
       <Modal isOpen={isModalOpen} onClose={closeModal} title={modalTitle}>
-        <ProductForm
-          defaultValues={
-            selectedRecord || {}
-          }
-          onSubmit={handleSaveProduct}
+        <PlatformForm
+          defaultValues={selectedRecord || {}}
+          onSubmit={handleSavePlatform}
         />
       </Modal>
       <Modal

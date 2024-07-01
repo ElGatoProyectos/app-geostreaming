@@ -5,21 +5,22 @@ import { useEffect, useState } from "react";
 import InputField from "@/app/components/forms/inputField";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
-import { AccountFormSchema } from "@/app/schemas/accountFormSchema";
+import { getProductFormSchema } from "@/app/schemas/getProductFormSchema";
 type Inputs = {
-  email: string;
+  platform_id:number,
 };
 
-interface CreditacionesProps {
+interface PlatformProps {
   info: {
     title: string;
     numberAccount?: string;
+    id: number;
     url?: string;
   };
   onSubmit: SubmitHandler<Inputs>;
 }
 
-const creditacionesForm: React.FC<CreditacionesProps> = ({
+const PlatformForm: React.FC<PlatformProps> = ({
   info,
   onSubmit,
 }) => {
@@ -31,7 +32,7 @@ const creditacionesForm: React.FC<CreditacionesProps> = ({
     formState: { errors },
     reset,
   } = useForm<Inputs>({
-    resolver: zodResolver(AccountFormSchema),
+    resolver: zodResolver(getProductFormSchema),
   });
 
   const handleFormSubmit: SubmitHandler<Inputs> = async (data) => {
@@ -62,7 +63,6 @@ const creditacionesForm: React.FC<CreditacionesProps> = ({
         </div>
       ) : (
         <div>
-          {" "}
           <h2 className="font-semibold">{info.title}</h2>
           <p className="">
             <span className="font-semibold">Cuenta: </span>
@@ -70,42 +70,48 @@ const creditacionesForm: React.FC<CreditacionesProps> = ({
           </p>
         </div>
       )}
-
-      <InputField
-        id="email"
-        label="Correo electrónico"
-        placeholder="Ingrese el correo electrónico de su cliente"
-        register={register("email")}
-        error={errors.email}
-        type="email"
-      />
-      <div>
+      
+      <input type="hidden" id="platform_id" {...register("platform_id")}/>
+     {/*  <div>
         <p>¿Deseas enviarte los datos de la cuenta?</p>
-        <input
-          id="option_no"
-          type="radio"
-          value="n"
-          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-        />
-        <label
-          htmlFor="option_no"
-          className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-        >
-          No
-        </label>
-        <input
-          id="option_si"
-          type="radio"
-          value="y"
-          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-        />
-        <label
-          htmlFor="option_si"
-          className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-        >
-          si
-        </label>
-      </div>
+        <div className="flex gap-8 w-fit mx-auto mt-2">
+          <div className="flex items-center">
+            <input
+              id="option_no"
+              type="radio"
+              value="false"
+              name="send_radio"
+              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+            />
+            <label
+              htmlFor="option_no"
+              className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+            >
+              No
+            </label>
+          </div>
+          <div className="flex items-center">
+            <input
+              id="option_si"
+              type="radio"
+              value="false"
+              name="send_radio"
+              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 full dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+            />
+            <label
+              htmlFor="option_si"
+              className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+            >
+              si
+            </label>
+          </div>
+        </div>
+        {errors.send_radio && (
+          <p className="text-red-500 text-sm font-medium mt-1">
+            {errors.send_radio?.message}
+          </p>
+        )}
+      </div> */}
 
       <div className=" w-full flex flex-col gap-4">
         <button
@@ -127,4 +133,4 @@ const creditacionesForm: React.FC<CreditacionesProps> = ({
   );
 };
 
-export default creditacionesForm;
+export default PlatformForm;

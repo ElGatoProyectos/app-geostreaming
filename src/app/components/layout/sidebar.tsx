@@ -180,8 +180,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
         title: "Ventas",
         links: [
           {
-            href: "/home/productos",
-            label: "Productos",
+            href: "/home/platform",
+            label: "Plataforma",
             icon: <IoMdCart className="text-xl" />,
           },
           {

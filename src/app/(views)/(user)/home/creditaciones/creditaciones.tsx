@@ -58,7 +58,7 @@ const Account = () => {
         date: data.date,
         user_id: 1 /* modificar */,
       });
-      toast.success("Se registro correctamente");
+      toast.success("Compra registrada");
       useEffect(() => {
         fetchBanks();
       }, []);
@@ -77,6 +77,7 @@ const Account = () => {
       <ContainerCard title="Cuentas">
         {banks.map((item) => (
           <CardItem
+            id={item.id}
             key={item.id}
             title={item.bank}
             url={item.url}

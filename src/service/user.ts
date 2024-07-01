@@ -59,11 +59,14 @@ export class UserService {
   create = async ({ req }: { req: NextRequest }) => {
     const user_info = await req.json();
 
-    const hashedPassword = await bcrypt.hash(user_info.password, 10);
+    const hashedPassword = bcrypt.hashSync(user_info.password, 10);
+    console.log(hashedPassword)
     const userValidated = validateUser({
-      password: hashedPassword,
       ...user_info,
+      password: hashedPassword,
+      
     });
+    console.log(userValidated)
     try {
       const newUser = await this.userModel.create({ user_info: userValidated });
       const { password, ...user } = newUser;

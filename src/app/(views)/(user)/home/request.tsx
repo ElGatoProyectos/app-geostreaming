@@ -3,17 +3,19 @@ import React, { useEffect, useState } from "react";
 import ContainerCard from "@/app/components/common/containerCard";
 import CardItem from "@/app/components/common/cardItem";
 import Modal from "@/app/components/common/modal";
-import ProductForm from "./ProductForm";
+import PlatformForm from "./PlatformForm";
 import { SubmitHandler } from "react-hook-form";
 import axios from "axios";
+import { useSession } from "next-auth/react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 interface ProductInfo {
+  id: number;
   title: string;
   url?: string;
 }
-type Inputs = {
-  email: string;
-};
 
 type Product = {
   id: number;
@@ -27,7 +29,7 @@ type Product = {
 };
 
 const request = () => {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [platforms, setPlatform] = useState<Product[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
   const [isModalInfoOpen, setIsModalInfoOpen] = useState(false);
@@ -35,6 +37,8 @@ const request = () => {
   const [registeredInfo, setRegisteredInfo] = useState<ProductInfo | null>(
     null
   );
+  const [loading, setLoading] = useState(false);
+  const session = useSession();
 
   const handleOpenModal = (title: string, info: ProductInfo) => {
     setModalTitle(title);
@@ -56,41 +60,48 @@ const request = () => {
   };
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchPlatform = async () => {
       try {
-        const response = await axios.get("/api/platform",);
+        const response = await axios.get("/api/platform");
         const filteredPlatforms = response.data.filter((platform: any) => {
-          return platform.status === "UPON_REQUEST";
+          return platform.status === "IMMEDIATE_DELIVERY";
         });
-        
-        setProducts(filteredPlatforms);
+        setPlatform(filteredPlatforms);
       } catch (error) {
-        console.error("Error fetching platform:", error);
+        console.error("Error fetching platforms:", error);
       }
     };
-    fetchProducts();
+    fetchPlatform();
   }, []);
 
-  const handleFormSubmit: SubmitHandler<Inputs> = async (data) => {
-    // Lógica
-    console.log(data);
-    // verificar si el producto está disponible
-
-    closeModal();
+  const handleFormSubmit = async (id: number) => {
+    try {
+      await axios.post("/api/order/", {
+        user_id: Number(session.data?.user.id),
+        platform_id: id,
+        status: "ATTENDED",
+      });
+      closeModal();
+      toast.success("Plataforma comprada");
+    } catch (error) {
+      console.log(error);
+      toast.error("error de compra");
+      closeModal();
+      // mensaje de error
+    }
   };
   return (
     <div className="w-full">
       <ContainerCard title="Entrega inmediata">
-        {products.map((product, index) => (
+        {platforms.map((platform, index) => (
           <CardItem
             key={index}
-            title={product.name} 
-            url={product.img_url} 
-            description={
-              product.description
-            } 
-            price_in_cents={product.price_in_cents}
-            price_distributor_in_cents={product.price_distributor_in_cents}
+            id={platform.id}
+            title={platform.name}
+            url={platform.img_url}
+            description={platform.description}
+            price_in_cents={platform.price_in_cents}
+            price_distributor_in_cents={platform.price_distributor_in_cents}
             btn={"Comprar"}
             onOpenModal={handleOpenModal}
           />
@@ -98,13 +109,30 @@ const request = () => {
       </ContainerCard>
       <Modal isOpen={isModalOpen} onClose={closeModal} title={modalTitle}>
         {modalInfo && (
-          <ProductForm
-            info={{
-              title: modalInfo.title,
-              url: modalInfo.url,
-            }}
-            onSubmit={handleFormSubmit}
-          />
+          <div className="flex flex-col items-center justify-center gap-4">
+            <img
+              className="h-16 w-16 object-contain"
+              src={modalInfo.url}
+              alt={modalInfo.title}
+            />
+            <h2 className="font-semibold">{modalInfo.title}</h2>
+            <div className=" w-full flex flex-col gap-4">
+              <button
+                onClick={() => handleFormSubmit(modalInfo.id)}
+                className="bg-[#F2308B] text-white mt-4 px-4 py-1 rounded hover:bg-[#F06FAC] transition-all duration-300 mx-auto "
+                disabled={loading}
+              >
+                {loading ? (
+                  <span>
+                    <AiOutlineLoading3Quarters className=" animate-spin inline-block" />{" "}
+                    Cargando
+                  </span>
+                ) : (
+                  "Guardar"
+                )}
+              </button>
+            </div>
+          </div>
         )}
       </Modal>
       {/* modal de confirmacion */}
