@@ -2,6 +2,7 @@
 CREATE TABLE `Admin` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `email` VARCHAR(191) NOT NULL,
+    `avatar_url` VARCHAR(191) NULL,
     `password` VARCHAR(191) NOT NULL,
     `full_name` VARCHAR(191) NOT NULL,
     `phone` VARCHAR(191) NOT NULL,
@@ -37,7 +38,7 @@ CREATE TABLE `User` (
 -- CreateTable
 CREATE TABLE `Bank` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `bank_url` VARCHAR(191) NOT NULL,
+    `bank_url` VARCHAR(191) NULL,
     `bank` VARCHAR(191) NOT NULL,
     `number` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NOT NULL,
@@ -49,7 +50,7 @@ CREATE TABLE `Bank` (
 -- CreateTable
 CREATE TABLE `Voucher` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `voucher_url` VARCHAR(191) NOT NULL,
+    `voucher_url` VARCHAR(191) NULL,
     `number` VARCHAR(191) NOT NULL,
     `country_code` VARCHAR(191) NOT NULL,
     `value` INTEGER NOT NULL,
