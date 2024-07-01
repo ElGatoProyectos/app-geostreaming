@@ -7,7 +7,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET() {
   try {
     const vouchers = await prisma.voucher.findMany();
-    prisma.$disconnect();
+    await prisma.$disconnect();
     return NextResponse.json(vouchers);
   } catch (error: any) {
     return NextResponse.json(
@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
       newVoucher = await prisma.voucher.create({
         data: validatedVoucher,
       });
-      prisma.$disconnect();
+      await prisma.$disconnect();
       const bytes = await file.arrayBuffer();
       const buffer = Buffer.from(bytes);
       const nameImage = "vouchers_" + newVoucher.id + ".png";
@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
     newVoucher = await prisma.voucher.create({
       data: validatedVoucher,
     });
-    prisma.$disconnect();
+    await prisma.$disconnect();
 
     return NextResponse.json(newVoucher);
   } catch (error: any) {

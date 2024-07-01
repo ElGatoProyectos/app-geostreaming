@@ -36,6 +36,7 @@ export async function POST(req: NextRequest) {
     const newBank = await prisma.bank.create({
       data: bankvalidated,
     });
+    await prisma.$disconnect();
     return NextResponse.json(newBank);
   } catch (error) {
     return NextResponse.json({ error: "Error creating bank" }, { status: 500 });

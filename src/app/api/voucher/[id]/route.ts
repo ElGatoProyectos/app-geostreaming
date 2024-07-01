@@ -13,7 +13,7 @@ export async function GET(
     const foundVoucher = await prisma.voucher.findUnique({
       where: { id: voucher_id },
     });
-    prisma.$disconnect();
+    await prisma.$disconnect();
     return NextResponse.json(foundVoucher);
   } catch (e) {
     return NextResponse.json(
@@ -73,7 +73,7 @@ export async function PATCH(
         where: { id: voucher_id },
         data: validatedVoucher,
       });
-      prisma.$disconnect();
+      await prisma.$disconnect();
       const bytes = await file.arrayBuffer();
       const buffer = Buffer.from(bytes);
       const nameImage = "vouchers_" + newVoucher.id + ".png";
@@ -86,19 +86,11 @@ export async function PATCH(
       where: { id: voucher_id },
       data: validatedVoucher,
     });
-    prisma.$disconnect();
+    await prisma.$disconnect();
 
     return NextResponse.json(newVoucher);
 
-    // const voucher_id = Number(params.id);
-    // const voucherInfo = await req.json();
-    // const validatedVoucher = validateVoucher(voucherInfo);
-    // const updatedVoucher = await prisma.voucher.update({
-    //   where: { id: voucher_id },
-    //   data: validatedVoucher,
-    // });
-    // prisma.$disconnect();
-    // return NextResponse.json(updatedVoucher);
+
   } catch (error: any) {
     return NextResponse.json(
       { error: "Error to update voucher" },
@@ -118,7 +110,7 @@ export async function DELETE(
     await prisma.voucher.delete({
       where: { id: voucher_id },
     });
-    prisma.$disconnect();
+    await prisma.$disconnect();
 
     return NextResponse.json({ message: "deleted voucher" });
   } catch (e) {

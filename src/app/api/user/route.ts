@@ -74,12 +74,12 @@ export async function POST(req: NextRequest) {
       const nameImage = "user_" + newUser.id + ".png";
       const filePath = path.join(process.cwd(), `public/users`, nameImage);
       await writeFile(filePath, buffer);
-      prisma.$disconnect();
+      await prisma.$disconnect();
       return NextResponse.json(newUser);
     }
 
     const newUser = prisma.user.create({ data: validatedUser });
-    prisma.$disconnect();
+    await prisma.$disconnect();
     return NextResponse.json(newUser);
   } catch (error: any) {
     return NextResponse.json(
