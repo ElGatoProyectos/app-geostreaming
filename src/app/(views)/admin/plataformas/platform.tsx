@@ -21,6 +21,9 @@ type Platform = {
   status?: PlatformStatus;
   days_duration?: number;
 };
+type InputsUpload = {
+  file: string;
+};
 
 const Platform = () => {
   const [platforms, setPlatforms] = useState<Platform[]>([]);
@@ -61,6 +64,24 @@ const Platform = () => {
   useEffect(() => {
     fetchPlatforms();
   }, []);
+
+  /* carga masiva */
+  const handleUpload: SubmitHandler<InputsUpload> = async (data) => {
+    try {
+      const formData = new FormData();
+      formData.append("file", data.file[0]);
+      await axios.post("/api/platform/files", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      toast.success("Se subió correctamente");
+    } catch (e) {
+      console.log(e);
+      toast.error("Error al subir el archivo");
+    }
+    closeUploadModal();
+  };
 
   const handleSavePlatform: SubmitHandler<Platform> = async (data) => {
     setLoading(true);
@@ -171,10 +192,6 @@ const Platform = () => {
       console.log(e);
       toast.error("Error al eliminar registro");
     }
-  };
-  /* carga masiva */
-  const handleUpload = async () => {
-    //
   };
 
   return (

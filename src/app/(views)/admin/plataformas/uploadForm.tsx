@@ -38,6 +38,7 @@ const UploadForm: React.FC<UploadFormProps> = ({
     setLoading(true);
 
     try {
+      console.log(data);
       await onSubmit({
         ...data,
       });
@@ -88,7 +89,8 @@ const UploadForm: React.FC<UploadFormProps> = ({
             "Subir"
           )}
         </button>
-        <Link href={'#'} className="mx-auto hover:text-[#F2308B]">Descargar</Link>
+        <Link href={"/models/modeloplataforma.xlsx"} target="_blank"
+              as="/models/modeloplataforma.xlsx"  download className="mx-auto hover:text-[#F2308B]">Descargar</Link>
       </div>
     </form>
   );

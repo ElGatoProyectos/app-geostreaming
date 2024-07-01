@@ -5,6 +5,7 @@ import InputField from "@/app/components/forms/inputField";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 import {UserSchema } from "@/app/schemas/userSchema";
+import CountrySelect from "@/app/components/forms/countrySelect";
 
 type Inputs = {
   username: string;
@@ -13,6 +14,8 @@ type Inputs = {
   phone: string;
   date: string;
   password: string;
+  country_code: string;
+  dni: string;
 };
 
 interface AfiliadorProps {
@@ -79,10 +82,10 @@ const AfiliadosForm: React.FC<AfiliadorProps> = ({
         )}
       </label> */}
       <InputField
-        id="username"
-        label="Nombre de usuario"
-        register={register("username")}
-        error={errors.username}
+        id="dni"
+        label="N de documento de identidad"
+        register={register("dni")}
+        error={errors.dni}
       />
       <InputField
         id="full_name"
@@ -125,13 +128,24 @@ const AfiliadosForm: React.FC<AfiliadorProps> = ({
         error={errors.password}
         /* type="password" */
       />
-     
-      <InputField
+     <div className="flex flex-col md:flex-row gap-4">
+        <CountrySelect
+          id="country_code"
+          register={register("country_code")}
+        />
+         <InputField
         id="phone"
         label="Celular"
         register={register("phone")}
         error={errors.phone}
       />
+      </div>
+     {/*  <InputField
+        id="phone"
+        label="Celular"
+        register={register("phone")}
+        error={errors.phone}
+      /> */}
       {/* <InputField
         id="dni"
         label="DNI"
