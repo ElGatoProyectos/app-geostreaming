@@ -1,7 +1,6 @@
 import prisma from "@/lib/prisma";
 import { UserInType, UserUpdateInType } from "@/types/user";
 import { NextResponse } from "next/server";
-import { userInfo } from "os";
 
 export class UserModel {
   static getById = async ({ user_id }: { user_id: number }) => {
@@ -34,6 +33,7 @@ export class UserModel {
     const userFound = await prisma.user.findUnique({
       where: { email: user_info.email },
     });
+    prisma.$disconnect();
 
     if (userFound) {
       throw NextResponse.json(
@@ -89,6 +89,7 @@ export class UserModel {
     const userFound = await prisma.user.findUnique({
       where: { id: user_id },
     });
+    prisma.$disconnect();
 
     if (!userFound) {
       throw NextResponse.json({ message: "User not exist" }, { status: 400 });
