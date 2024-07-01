@@ -62,14 +62,13 @@ model Bank {
 }
 
 model Voucher {
-  id           Int      @id @default(autoincrement())
-  voucher_url  String?
-  number       String
-  country_code String
-  value        Int
-  user         User     @relation(fields: [user_id], references: [id])
-  user_id      Int
-  date         DateTime
+  id          Int      @id @default(autoincrement())
+  voucher_url String?
+  number      String
+  value       Int
+  user        User     @relation(fields: [user_id], references: [id])
+  user_id     Int
+  date        DateTime
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
