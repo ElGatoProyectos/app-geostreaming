@@ -6,7 +6,6 @@ const voucherSchema = z.object({
   value: z.number().int(),
   date: z.string().datetime(),
   user_id: z.number().int().nonnegative(),
-  country_code: z.string(),
 });
 
 export function validateVoucher(voucherInfo: unknown) {

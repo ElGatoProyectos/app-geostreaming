@@ -24,22 +24,21 @@ export async function POST(req: NextRequest) {
     let data;
     data = await req.formData();
 
-    const { file, number, value, date, user_id, country_code } =
-      Object.fromEntries(data.entries()) as {
-        file: File;
-        number: string;
-        value: string;
-        date: string;
-        user_id: string;
-        country_code: string;
-      };
+    const { file, number, value, date, user_id } = Object.fromEntries(
+      data.entries()
+    ) as {
+      file: File;
+      number: string;
+      value: string;
+      date: string;
+      user_id: string;
+    };
 
     const updateUser = {
       number,
       value,
       date,
       user_id,
-      country_code,
     };
     const validatedVoucher = validateVoucher(updateUser);
     let newVoucher;
