@@ -382,6 +382,58 @@ export default function Page() {
             exportar en excel orders
           </button>
         </div>
+        <h1>Upload json + file</h1>
+        <form
+          onSubmit={async (e) => {
+            e.preventDefault();
+            if (!file) return;
+
+            const datafile = new FormData();
+            datafile.set("file", file);
+            datafile.set("route", "banks");
+            const dataJson = JSON.stringify({
+              name: "hola",
+            });
+
+            datafile.set("json", dataJson);
+
+            try {
+              const res = await fetch("/api/user/1", {
+                method: "PATCH",
+                body: datafile,
+              });
+
+              if (!res.ok) {
+                console.error("Error en la respuesta:", res.statusText);
+                return;
+              }
+
+              const text = await res.text();
+              if (!text) {
+                console.error("Respuesta vacía");
+                return;
+              }
+
+              const data = JSON.parse(text);
+              console.log("data", data);
+            } catch (error) {
+              console.error("Error al enviar el archivo:", error);
+            }
+          }}
+        >
+          <label>upload file</label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+              if (e.currentTarget.files) {
+                console.log(e.currentTarget.files[0]);
+                setFile(e.currentTarget.files[0]);
+              }
+            }}
+          />
+          <button className="bg-gray-400 p-5 rounded-xl">upload</button>
+        </form>
       </div>
     </div>
   );
