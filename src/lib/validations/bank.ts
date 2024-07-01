@@ -15,15 +15,3 @@ export function validateBank(bankInfo: unknown) {
   }
   return parseResut.data;
 }
-
-const updateBank = BankSchema.extend({
-  id: z.number(),
-});
-
-export function validateUpdateBank(bankInfo: unknown) {
-  const parseResut = updateBank.safeParse(bankInfo);
-  if (!parseResut.success) {
-    throw new Error("Invalid bank info");
-  }
-  return parseResut.data;
-}

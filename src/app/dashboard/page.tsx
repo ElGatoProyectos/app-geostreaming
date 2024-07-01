@@ -390,12 +390,14 @@ export default function Page() {
 
             const datafile = new FormData();
             datafile.set("file", file);
-            datafile.set("route", "banks");
-            const dataJson = JSON.stringify({
-              name: "hola",
-            });
-
-            datafile.set("json", dataJson);
+            datafile.set("email", "usertest@gmail.com");
+            datafile.set("ref_id", "1");
+            datafile.set("role", "USER");
+            datafile.set("full_name", " full name");
+            datafile.set("dni", "513513585");
+            datafile.set("phone", "777888999");
+            datafile.set("password", "123456");
+            datafile.set("country_code", "+51");
 
             try {
               const res = await fetch("/api/user/1", {

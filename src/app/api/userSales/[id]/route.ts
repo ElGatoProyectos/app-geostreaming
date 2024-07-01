@@ -26,6 +26,7 @@ export async function GET(
   try {
     foundAccount = await prisma.order.findMany({
       where: { ref_id: user_id },
+      include: { platform: true, user: true },
     });
     if (!foundAccount) {
       return NextResponse.json(

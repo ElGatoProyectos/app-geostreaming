@@ -14,15 +14,3 @@ export function validateOrder(orderInfo: unknown) {
   }
   return parseResut.data;
 }
-
-const updateOrder = orderSchema.extend({
-  id: z.number(),
-});
-
-export function validateUpdateOrder(orderInfo: unknown) {
-  const parseResut = updateOrder.safeParse(orderInfo);
-  if (!parseResut.success) {
-    throw new Error("Invalid Order info");
-  }
-  return parseResut.data;
-}

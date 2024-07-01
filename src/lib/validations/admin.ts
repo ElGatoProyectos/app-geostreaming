@@ -15,15 +15,3 @@ export function validateAdmin(adminInfo: unknown) {
   }
   return parseResut.data;
 }
-
-const updateAdmin = adminSchema.extend({
-  id: z.number(),
-});
-
-export function validateUpdateAdmin(adminInfo: unknown) {
-  const parseResut = updateAdmin.safeParse(adminInfo);
-  if (!parseResut.success) {
-    throw new Error("Invalid admin info");
-  }
-  return parseResut.data;
-}

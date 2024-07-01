@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-import { validateUpdateAdmin } from "@/lib/validations/admin";
+import { validateAdmin } from "@/lib/validations/admin";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import { authOptions } from "../../auth-options";
@@ -87,7 +87,7 @@ export async function PATCH(
   let validatedAdmin;
 
   try {
-    validatedAdmin = validateUpdateAdmin(adminInfo);
+    validatedAdmin = validateAdmin(adminInfo);
   } catch (error) {
     return NextResponse.json({ error: "Validation error" }, { status: 400 });
   }

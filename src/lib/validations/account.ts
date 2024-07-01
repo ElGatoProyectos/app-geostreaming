@@ -9,25 +9,12 @@ const accountSchema = z.object({
   pin: z.string(),
   // new
   platform_id: z.number(),
+  purchase_date: z.date().optional(),
+  renewal_date: z.date().optional(),
 });
 
 export function validateAccount(accountInfo: unknown) {
   const parseResut = accountSchema.safeParse(accountInfo);
-  if (!parseResut.success) {
-    throw new Error("Invalid Account info");
-  }
-  return parseResut.data;
-}
-
-const updateAccount = accountSchema.extend({
-  id: z.number().int().nonnegative(),
-  status: z.enum(["NOT_BOUGHT", "BOUGHT"]),
-  purchase_date: z.date(),
-  renewal_date: z.date(),
-});
-
-export function validateUpdateAccount(accountInfo: unknown) {
-  const parseResut = updateAccount.safeParse(accountInfo);
   if (!parseResut.success) {
     throw new Error("Invalid Account info");
   }

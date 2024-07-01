@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-import { validateUpdateBank } from "@/lib/validations/bank";
+import { validateBank } from "@/lib/validations/bank";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
@@ -62,7 +62,7 @@ export async function PATCH(
   }
 
   try {
-    bankvalidated = validateUpdateBank(bankinfo);
+    bankvalidated = validateBank(bankinfo);
   } catch (error) {
     return NextResponse.json({ error: "Validation error" }, { status: 400 });
   }

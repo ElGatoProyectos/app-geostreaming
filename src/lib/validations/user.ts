@@ -13,7 +13,7 @@ const UserSchema = z.object({
 });
 
 const UserUpdateSchema = UserSchema.extend({
-  avatar_url: z.string(),
+  avatar_url: z.string().optional(),
   role: z.enum(["USER", "DISTRIBUTOR"]),
 });
 
@@ -28,6 +28,7 @@ export function validateUser(userInfo: unknown) {
 
 export function validateUpdateUser(userInfo: unknown) {
   const parseResut = UserUpdateSchema.safeParse(userInfo);
+  console.log("parseResut", parseResut);
   if (!parseResut.success) {
     throw new Error("Invalid user info");
   }
