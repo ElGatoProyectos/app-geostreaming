@@ -29,8 +29,8 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  let data;
   try {
+    let data;
     data = await req.formData();
 
     const {
@@ -74,10 +74,12 @@ export async function POST(req: NextRequest) {
       const nameImage = "user_" + newUser.id + ".png";
       const filePath = path.join(process.cwd(), `public/users`, nameImage);
       await writeFile(filePath, buffer);
+      prisma.$disconnect();
       return NextResponse.json(newUser);
     }
 
     const newUser = prisma.user.create({ data: validatedUser });
+    prisma.$disconnect();
     return NextResponse.json(newUser);
   } catch (error: any) {
     return NextResponse.json(
