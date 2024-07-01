@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import { UserInType, UserUpdateInType } from "@/types/user";
 import { NextResponse } from "next/server";
+import { userInfo } from "os";
 
 export class UserModel {
   static getById = async ({ user_id }: { user_id: number }) => {
@@ -94,6 +95,7 @@ export class UserModel {
     }
 
     const curatedUser = {
+      avatar_url: user_info.avatar_url,
       email: user_info.email,
       ref_id: user_info.ref_id,
       role: user_info.role,
@@ -108,6 +110,7 @@ export class UserModel {
       where: { id: user_id },
       data: curatedUser,
     });
+
     await prisma.$disconnect();
 
     return userUpdated;
