@@ -174,27 +174,31 @@ export async function POST(req: NextRequest) {
 
         const wspMessage = `👋 Hola ${user.full_name}\n _Pedido #${newOrder.id} PENDIENTE_\n🖥️ Plataforma: ${platform.name}\n📧 La espera aproximada es de 1 hora, y enviaremos la información a este número de WhatsApp.`;
 
-        // const userPhone = user.phone;
+        const userPhone = user.phone;
 
-        // const url_wsp = "http://localhost:4000/notifications";
-        // const options = {
-        //   method: "POST",
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //     // Authorization: `Bearer ${token}`,
-        //   },
+        const url_wsp = "http://localhost:4000/notifications";
+        const options = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            // Authorization: `Bearer ${token}`,
+          },
 
-        //   body: JSON.stringify({ phone: userPhone, message: wspMessage, country_code:  }),
-        // };
+          body: JSON.stringify({
+            phone: userPhone,
+            message: wspMessage,
+            country_code: user.country_code,
+          }),
+        };
 
-        // const res = await fetch(url_wsp, options);
-        // const json = await res.json();
+        const res = await fetch(url_wsp, options);
+        const json = await res.json();
 
-        // await prisma.notification.create({
-        //   data: { phone_client: userPhone, message: wspMessage },
-        // });
+        await prisma.notification.create({
+          data: { phone_client: userPhone, message: wspMessage },
+        });
 
-        return NextResponse.json(newOrder);
+        return NextResponse.json({ newOrder, json });
       } catch (e) {
         return NextResponse.json(
           { error: "Error creating order pending" },
