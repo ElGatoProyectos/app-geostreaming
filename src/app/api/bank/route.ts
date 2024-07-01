@@ -1,6 +1,8 @@
 import prisma from "@/lib/prisma";
 import { validateBank } from "@/lib/validations/bank";
 import { NextRequest, NextResponse } from "next/server";
+import path from "path";
+import { writeFile } from "fs/promises";
 
 export async function GET() {
   try {
@@ -17,25 +19,46 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  let bankinfo;
-  let bankvalidated;
+  let data;
+  data = await req.formData();
 
-  try {
-    bankinfo = await req.json();
-  } catch (error) {
-    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
-  }
+  const { file, bank, number, name, type } = Object.fromEntries(
+    data.entries()
+  ) as {
+    file: File;
+    bank: string;
+    number: string;
+    name: string;
+    type: string;
+  };
 
-  try {
-    bankvalidated = validateBank(bankinfo);
-  } catch (error) {
-    return NextResponse.json({ error: "Validation error" }, { status: 400 });
-  }
+  const update = {
+    bank,
+    number,
+    name,
+    type,
+  };
+  const validatedBank = validateBank(update);
+  let newBank;
 
-  try {
-    const newBank = await prisma.bank.create({
-      data: bankvalidated,
+  if (file) {
+    newBank = await prisma.bank.create({
+      data: validatedBank,
     });
+    await prisma.$disconnect();
+    const bytes = await file.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+    const nameImage = "banks_" + newBank.id + ".png";
+    const filePath = path.join(process.cwd(), `public/banks`, nameImage);
+    await writeFile(filePath, buffer);
+    return NextResponse.json(newBank);
+  }
+
+  try {
+    newBank = await prisma.bank.create({
+      data: validatedBank,
+    });
+
     await prisma.$disconnect();
     return NextResponse.json(newBank);
   } catch (error) {

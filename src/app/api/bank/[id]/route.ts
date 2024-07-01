@@ -1,6 +1,8 @@
 import prisma from "@/lib/prisma";
 import { validateBank } from "@/lib/validations/bank";
 import { NextRequest, NextResponse } from "next/server";
+import path from "path";
+import { writeFile } from "fs/promises";
 
 export async function GET(
   _: NextRequest,
@@ -40,8 +42,6 @@ export async function PATCH(
   { params }: { params: { id: string } }
 ) {
   let bank_id;
-  let bankinfo;
-  let bankvalidated;
 
   try {
     bank_id = Number(params.id);
@@ -55,27 +55,52 @@ export async function PATCH(
     );
   }
 
-  try {
-    bankinfo = await req.json();
-  } catch (error) {
-    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
-  }
+  let data;
+  data = await req.formData();
 
-  try {
-    bankvalidated = validateBank(bankinfo);
-  } catch (error) {
-    return NextResponse.json({ error: "Validation error" }, { status: 400 });
-  }
+  const { file, bank, number, name, type } = Object.fromEntries(
+    data.entries()
+  ) as {
+    file: File;
+    bank: string;
+    number: string;
+    name: string;
+    type: string;
+  };
 
-  try {
-    const updatedBank = await prisma.bank.update({
+  const updateBank = {
+    bank,
+    number,
+    name,
+    type,
+  };
+  const validatedBank = validateBank(updateBank);
+  let newBank;
+
+  if (file) {
+    newBank = await prisma.bank.update({
       where: { id: bank_id },
-      data: bankvalidated,
+      data: validatedBank,
+    });
+    await prisma.$disconnect();
+    const bytes = await file.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+    const nameImage = "banks_" + newBank.id + ".png";
+    const filePath = path.join(process.cwd(), `public/banks`, nameImage);
+    await writeFile(filePath, buffer);
+    return NextResponse.json(newBank);
+  }
+
+  try {
+    newBank = await prisma.bank.update({
+      where: { id: bank_id },
+      data: validatedBank,
     });
 
-    return NextResponse.json(updatedBank);
+    await prisma.$disconnect();
+    return NextResponse.json(newBank);
   } catch (error) {
-    return NextResponse.json({ error: "Error updating bank" }, { status: 500 });
+    return NextResponse.json({ error: "Error creating bank" }, { status: 500 });
   } finally {
     await prisma.$disconnect();
   }

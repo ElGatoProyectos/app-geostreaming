@@ -68,6 +68,7 @@ export async function PATCH(
         balance_in_cents: { increment: validatedBalanceUser.balance_in_cents },
       },
     });
+    await prisma.$disconnect();
   } catch (error) {
     return NextResponse.json(
       { error: "Error updating user balance" },
@@ -85,6 +86,7 @@ export async function PATCH(
       where: { id: accountId },
       data: { role: newRole },
     });
+    await prisma.$disconnect();
   } catch (error) {
     return NextResponse.json(
       { error: "Error updating user role" },

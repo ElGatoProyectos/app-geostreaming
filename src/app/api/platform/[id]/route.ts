@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import { validatePlatform } from "@/lib/validations/platform";
-
+import path from "path";
+import { writeFile } from "fs/promises";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
@@ -50,8 +51,6 @@ export async function PATCH(
   { params }: { params: { id: string } }
 ) {
   let platform_id;
-  let platforminfo;
-  let platformValidated;
 
   try {
     platform_id = Number(params.id);
@@ -68,28 +67,59 @@ export async function PATCH(
     );
   }
 
-  try {
-    platforminfo = await req.json();
-  } catch (error) {
-    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
-  }
+  let data;
+  data = await req.formData();
 
-  try {
-    platformValidated = validatePlatform(platforminfo);
-  } catch (error) {
-    return NextResponse.json({ error: "Validation error" }, { status: 400 });
-  }
+  const {
+    file,
+    name,
+    description,
+    days_duration,
+    price_distributor_in_cents,
+    status,
+  } = Object.fromEntries(data.entries()) as {
+    file: File;
+    name: string;
+    description: string;
+    days_duration: string;
+    price_distributor_in_cents: string;
+    status: "IMMEDIATE_DELIVERY" | "UPON_REQUEST";
+  };
 
-  try {
-    const updatedPlatform = await prisma.platform.update({
+  const update = {
+    name,
+    description,
+    days_duration,
+    price_distributor_in_cents,
+    status,
+  };
+  let validatedPlatform = validatePlatform(update);
+  let newPlatform;
+
+  if (file) {
+    newPlatform = await prisma.platform.update({
       where: { id: platform_id },
-      data: platformValidated,
+      data: validatedPlatform,
     });
+    await prisma.$disconnect();
+    const bytes = await file.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+    const nameImage = "platforms_" + newPlatform.id + ".png";
+    const filePath = path.join(process.cwd(), `public/platforms`, nameImage);
+    await writeFile(filePath, buffer);
+    return NextResponse.json(newPlatform);
+  }
 
-    return NextResponse.json(updatedPlatform);
+  try {
+    const newPlatform = await prisma.platform.update({
+      where: { id: platform_id },
+      data: validatedPlatform,
+    });
+    await prisma.$disconnect();
+    return NextResponse.json(newPlatform);
   } catch (error) {
     return NextResponse.json(
-      { error: "Error updating platform" },
+      { error: "Error creating platform" },
       { status: 500 }
     );
   } finally {

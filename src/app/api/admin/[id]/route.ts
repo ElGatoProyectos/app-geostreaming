@@ -28,6 +28,7 @@ export async function GET(
     foundAdmin = await prisma.admin.findUnique({
       where: { id: admin_id },
     });
+    await prisma.$disconnect();
     if (!foundAdmin) {
       return NextResponse.json({ error: "Admin not found" }, { status: 404 });
     }
@@ -99,6 +100,7 @@ export async function PATCH(
       where: { id: admin_id },
       data: validatedAdmin,
     });
+    await prisma.$disconnect();
   } catch (error) {
     return NextResponse.json(
       { error: "Error updating admin" },
@@ -148,6 +150,7 @@ export async function DELETE(
     await prisma.admin.delete({
       where: { id: admin_id },
     });
+    await prisma.$disconnect();
     return NextResponse.json({ message: "Deleted admin" });
   } catch (error) {
     return NextResponse.json(
