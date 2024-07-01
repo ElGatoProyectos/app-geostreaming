@@ -52,7 +52,6 @@ CREATE TABLE `Voucher` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `voucher_url` VARCHAR(191) NULL,
     `number` VARCHAR(191) NOT NULL,
-    `country_code` VARCHAR(191) NOT NULL,
     `value` INTEGER NOT NULL,
     `user_id` INTEGER NOT NULL,
     `date` DATETIME(3) NOT NULL,
