@@ -1,8 +1,7 @@
-import { ProductUpdateInType } from "./product";
-
 export interface UserInType {
   ref_id?: number | null;
   role?: "USER" | "DISTRIBUTOR";
+  avatar_url?: string | null;
   full_name: string;
   dni: string;
   phone: string;
