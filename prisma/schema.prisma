@@ -85,14 +85,15 @@ enum AccountStatus {
 }
 
 model Account {
-  id          Int           @id @default(autoincrement())
-  is_active   Boolean       @default(false)
+  id              Int           @id @default(autoincrement())
+  is_active       Boolean       @default(false)
   // data in
-  email       String
-  password    String
-  description String?
-  pin         String
-  status      AccountStatus @default(NOT_BOUGHT)
+  email           String
+  password        String
+  description     String?
+  pin             String
+  status          AccountStatus @default(NOT_BOUGHT)
+  number_profiles Int
 
   purchase_date DateTime? // fecha compra
   renewal_date  DateTime? // fecha renovacion
