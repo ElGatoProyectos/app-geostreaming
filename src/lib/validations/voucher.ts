@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 const voucherSchema = z.object({
-  voucher_url: z.string(),
+  voucher_url: z.string().optional(),
   number: z.string().min(1),
   value: z.number().int(),
   date: z.string().datetime(),
