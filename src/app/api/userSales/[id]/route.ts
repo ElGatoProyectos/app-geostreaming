@@ -10,6 +10,7 @@ export async function GET(
 
   try {
     user_id = Number(params.id);
+
     if (isNaN(user_id)) {
       return NextResponse.json(
         { error: "Invalid account ID" },
@@ -28,6 +29,7 @@ export async function GET(
       where: { ref_id: user_id },
       include: { platform: true, user: true },
     });
+    prisma.$disconnect();
     if (!foundAccount) {
       return NextResponse.json(
         { message: "No se encontraron ordenes de los referidos" },
