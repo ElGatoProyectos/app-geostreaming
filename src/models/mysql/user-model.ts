@@ -33,7 +33,7 @@ export class UserModel {
     const userFound = await prisma.user.findUnique({
       where: { email: user_info.email },
     });
-    prisma.$disconnect();
+    await prisma.$disconnect();
 
     if (userFound) {
       throw NextResponse.json(
@@ -89,7 +89,7 @@ export class UserModel {
     const userFound = await prisma.user.findUnique({
       where: { id: user_id },
     });
-    prisma.$disconnect();
+    await prisma.$disconnect();
 
     if (!userFound) {
       throw NextResponse.json({ message: "User not exist" }, { status: 400 });

@@ -7,7 +7,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET() {
   try {
     const vouchers = await prisma.voucher.findMany();
-    prisma.$disconnect();
+    await prisma.$disconnect();
     return NextResponse.json(vouchers);
   } catch (error: any) {
     return NextResponse.json(
@@ -24,22 +24,21 @@ export async function POST(req: NextRequest) {
     let data;
     data = await req.formData();
 
-    const { file, number, value, date, user_id, country_code } =
-      Object.fromEntries(data.entries()) as {
-        file: File;
-        number: string;
-        value: string;
-        date: string;
-        user_id: string;
-        country_code?: string;
-      };
+    const { file, number, value, date, user_id } = Object.fromEntries(
+      data.entries()
+    ) as {
+      file: File;
+      number: string;
+      value: string;
+      date: string;
+      user_id: string;
+    };
 
     const updateUser:any = {
       number,
-      value: Number(value),
-      date:new Date(date),
-      user_id: Number(user_id),
-      country_code,
+      value,
+      date,
+      user_id,
     };
     console.log(updateUser);
    /*  const validatedVoucher = validateVoucher(updateUser); */
@@ -48,7 +47,7 @@ export async function POST(req: NextRequest) {
       newVoucher = await prisma.voucher.create({
         data: updateUser,
       });
-      prisma.$disconnect();
+      await prisma.$disconnect();
       const bytes = await file.arrayBuffer();
       const buffer = Buffer.from(bytes);
       const nameImage = "vouchers_" + newVoucher.id + ".png";
@@ -60,7 +59,7 @@ export async function POST(req: NextRequest) {
     newVoucher = await prisma.voucher.create({
       data: updateUser,
     });
-    prisma.$disconnect();
+    await prisma.$disconnect();
 
     return NextResponse.json(newVoucher);
   } catch (error: any) {

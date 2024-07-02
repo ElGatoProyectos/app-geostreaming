@@ -1,6 +1,8 @@
 import prisma from "@/lib/prisma";
 import { validateBank } from "@/lib/validations/bank";
 import { NextRequest, NextResponse } from "next/server";
+import path from "path";
+import { writeFile } from "fs/promises";
 
 export async function GET(
   _: NextRequest,
@@ -54,13 +56,6 @@ export async function PATCH(
       { status: 400 }
     );
   }
-
-  try {
-    bankinfo = await req.json();
-  } catch (error) {
-    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
-  }
-
   try {
     bankvalidated = validateBank(bankinfo);
   } catch (error) {

@@ -38,6 +38,7 @@ export async function POST(req: NextRequest) {
     const newPlatform = await prisma.platform.create({
       data: platformValidated,
     });
+    await prisma.$disconnect();
     return NextResponse.json(newPlatform);
   } catch (error) {
     return NextResponse.json(

@@ -1,6 +1,5 @@
 import prisma from "@/lib/prisma";
 import { validatePlatform } from "@/lib/validations/platform";
-
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
@@ -28,6 +27,7 @@ export async function GET(
     const foundPlatform = await prisma.platform.findUnique({
       where: { id: platform_id },
     });
+    await prisma.$disconnect();
     if (!foundPlatform) {
       return NextResponse.json(
         { error: "Platform not found" },
@@ -85,9 +85,9 @@ export async function PATCH(
       where: { id: platform_id },
       data: platformValidated,
     });
-
+    await prisma.$disconnect();
     return NextResponse.json(updatedPlatform);
-  } catch (error) {
+  } catch (e) {
     return NextResponse.json(
       { error: "Error updating platform" },
       { status: 500 }
@@ -122,6 +122,7 @@ export async function DELETE(
     await prisma.platform.delete({
       where: { id: platform_id },
     });
+    await prisma.$disconnect();
 
     return NextResponse.json({ message: "Deleted platform" });
   } catch (error) {

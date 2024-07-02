@@ -62,6 +62,7 @@ model Bank {
 }
 
 model Voucher {
+<<<<<<< HEAD
   id           Int      @id @default(autoincrement())
   voucher_url  String?
   number       String
@@ -70,6 +71,15 @@ model Voucher {
   user         User     @relation(fields: [user_id], references: [id])
   user_id      Int
   date         DateTime
+=======
+  id          Int      @id @default(autoincrement())
+  voucher_url String?
+  number      String
+  value       Int
+  user        User     @relation(fields: [user_id], references: [id])
+  user_id     Int
+  date        DateTime
+>>>>>>> ec9781190bb1d8bf1b0372b5b0044c7eb416702d
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -86,14 +96,15 @@ enum AccountStatus {
 }
 
 model Account {
-  id          Int           @id @default(autoincrement())
-  is_active   Boolean       @default(false)
+  id              Int           @id @default(autoincrement())
+  is_active       Boolean       @default(false)
   // data in
-  email       String
-  password    String
-  description String?
-  pin         String
-  status      AccountStatus @default(NOT_BOUGHT)
+  email           String
+  password        String
+  description     String?
+  pin             String
+  status          AccountStatus @default(NOT_BOUGHT)
+  number_profiles Int
 
   purchase_date DateTime? // fecha compra
   renewal_date  DateTime? // fecha renovacion

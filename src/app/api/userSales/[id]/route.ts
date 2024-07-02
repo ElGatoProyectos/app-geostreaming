@@ -29,7 +29,7 @@ export async function GET(
       where: { ref_id: user_id },
       include: { platform: true, user: true },
     });
-    prisma.$disconnect();
+    await prisma.$disconnect();
     if (!foundAccount) {
       return NextResponse.json(
         { message: "No se encontraron ordenes de los referidos" },

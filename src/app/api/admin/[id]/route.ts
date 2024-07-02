@@ -30,6 +30,7 @@ export async function GET(
     foundAdmin = await prisma.admin.findUnique({
       where: { id: admin_id },
     });
+    await prisma.$disconnect();
     if (!foundAdmin) {
       return NextResponse.json({ error: "Admin not found" }, { status: 404 });
     }
@@ -114,6 +115,7 @@ export async function PATCH(
   let updatedAdmin;
 
   try {
+<<<<<<< HEAD
     const { file, ...restData } = adminInfo
     if (adminInfo.file!=="undefined") {
       const bytes = await adminInfo.file.arrayBuffer();
@@ -133,6 +135,13 @@ export async function PATCH(
       });
     }
 
+=======
+    updatedAdmin = await prisma.admin.update({
+      where: { id: admin_id },
+      data: validatedAdmin,
+    });
+    await prisma.$disconnect();
+>>>>>>> ec9781190bb1d8bf1b0372b5b0044c7eb416702d
   } catch (error) {
     console.log(error)
     return NextResponse.json(
@@ -183,6 +192,7 @@ export async function DELETE(
     await prisma.admin.delete({
       where: { id: admin_id },
     });
+    await prisma.$disconnect();
     return NextResponse.json({ message: "Deleted admin" });
   } catch (error) {
     return NextResponse.json(

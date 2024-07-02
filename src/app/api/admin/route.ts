@@ -9,6 +9,7 @@ export async function GET() {
 
   try {
     admins = await prisma.admin.findMany();
+    await prisma.$disconnect();
   } catch (e) {
     return NextResponse.json(
       { error: "Error fetching admins" },
@@ -56,6 +57,7 @@ export async function POST(req: NextRequest) {
     newAdmin = await prisma.admin.create({
       data: validatdeAdmin,
     });
+    await prisma.$disconnect();
   } catch (error) {
     return NextResponse.json(
       { error: "Error creating admin" },

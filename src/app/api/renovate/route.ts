@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
       where: { id: renovateValidated.account_id },
       data: { renewal_date: new Date() },
     });
-    prisma.$disconnect();
+   await prisma.$disconnect();
     return NextResponse.json(newPlatform);
   } catch (error) {
     return NextResponse.json(
