@@ -8,6 +8,8 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
 
 type Inputs = {
   email?: string;
@@ -37,23 +39,26 @@ const register = () => {
 
   const handleSaveAfiliados: SubmitHandler<Inputs> = async (data) => {
     try {
-      if (selectedRecord) {
-        // Lógica para editar
-        toast.success("Se actualizo correctamente");
-        console.log("Editar afiliado:", data);
-      } else {
-        await axios.post("/api/auth/register", {
-          full_name: data.full_name,
-          email: data.email,
-          dni: data.dni,
-          country_code: data.country_code,
-          phone: data.phone,
-          password: data.password,
-          ref_id: session.data?.user.id,
-        });
-        console.log("Agregar afiliado:", data);
-        toast.success("Se registro correctamente");
-      }
+      const formDataAll = new FormData();
+      formDataAll.append("email", String(data.email));
+      formDataAll.append("ref_id", String(session.data?.user.id));
+      formDataAll.append("full_name", String(data.full_name));
+      formDataAll.append("dni", String(data.dni));
+      formDataAll.append("phone", String(data.phone));
+      formDataAll.append("country_code", String(data.country_code));
+      formDataAll.append("password", String(data.password));
+      console.log({
+        full_name: data.full_name,
+        email: data.email,
+        dni: data.dni,
+        country_code: data.country_code,
+        phone: data.phone,
+        password: data.password,
+        ref_id: session.data?.user.id,
+      });
+      await axios.post("/api/user", formDataAll);
+      toast.success("Se registro correctamente");
+      fetchData();
     } catch (e) {
       console.log("error:", e);
       toast.error("Error al enviar el registro");
@@ -68,20 +73,36 @@ const register = () => {
       return user.ref_id === session.data?.user.id;
     });
     console.log(filteredUsers);
-    setAfiliados(response.data);
+    setAfiliados(filteredUsers);
   };
 
   useEffect(() => {
     fetchData();
   }, []);
 
+  const formatDate = (dateString?: string): string => {
+    if (!dateString) {
+      return "Sin fecha";
+    }
+
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+      return "Fecha inválida";
+    }
+
+    return format(date, "PPPp", { locale: es });
+  };
+
   const columns = [
     { Header: "Código", accessor: "id" },
-    { Header: "N Documento de identidad", accessor: "username" },
+    { Header: "N Documento de identidad", accessor: "dni" },
     { Header: "Nombre", accessor: "full_name" },
     { Header: "Correo", accessor: "email" },
     { Header: "Celular", accessor: "phone" },
-    { Header: "Fecha de ingreso", accessor: "date" },
+    {
+      Header: "Fecha de ingreso",
+      accessor: (row: any) => formatDate(row.created_at),
+    },
   ];
 
   const handleEdit = (record: Inputs) => {

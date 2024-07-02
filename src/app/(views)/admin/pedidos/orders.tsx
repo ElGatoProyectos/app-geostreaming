@@ -163,7 +163,7 @@ const Order = () => {
 
   return (
     <>
-      <Tables
+      <Table
         columns={columns}
         data={orders}
         showActions={true}

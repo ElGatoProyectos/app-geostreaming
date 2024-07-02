@@ -10,7 +10,6 @@ import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
 type InputsPersonal = {
- /*  dni?: string; */
   full_name?: string;
   email?: string;
   phone?: string;
@@ -38,23 +37,6 @@ const profile = () => {
       fetchData();
     }
   }, []);
-
-  /*   const data = {
-    username: "user1",
-    full_name: "name",
-    email: "email@example.com",
-    phone: "999999999",
-    acreditaciones: "prueba",
-    avatar: "/user.jpg",
-  }; */
-
-  /*   const dataBank = 
-    {
-      bank: "banco prueba",
-      number: "",
-      name: "",
-      type: "",
-    }; */
 
   const handleSavePersonal: SubmitHandler<InputsPersonal> = async (
     data: any
@@ -94,7 +76,7 @@ const profile = () => {
               country_code: admin.country_code,
               email: session.data?.user.email,
             }}
-            avatar={`/admin/admin_${admin.id}.png`}
+            avatar={`/admin/admin_${admin.id}.png` }
             onSubmit={handleSavePersonal}
           />
         </ContainerCard2>

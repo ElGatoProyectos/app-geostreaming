@@ -10,6 +10,7 @@ export const UserSchema = z.object({
         }),
         phone: z.string()
         .regex(/^\d+/, { message: 'El número de celular debe ser numérico' }),
+    dni: z.string().optional(),
 /*     dni: z.string()
     .regex(/^\d+$/, {
         message: 'El documento de identidad  debe ser numérico'

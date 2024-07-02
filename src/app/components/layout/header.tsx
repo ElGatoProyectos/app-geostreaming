@@ -78,14 +78,23 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
   const userEmail = session.data?.user.email;
 
   const showAvatar = () => {
+    let avatarUrl = '/user.jpg';
     const userId = session.data?.user.id;
     if(session.data?.user.role == "ADMIN"){
-      setAvatar(`/admin/admin_${userId}.png`);
+      avatarUrl = `/admin/admin_${userId}.png`;
     }else if(session.data?.user.role === "USER" || session.data?.user.role === "DISTRIBUTOR") {
-      setAvatar(`/users/user_${userId}.png`)
+      avatarUrl = `/users/user_${userId}.png`
     }else{
-      setAvatar('/user.jpg');
+      avatarUrl = '/user.jpg';
     }
+    const img = new Image();
+    img.onload = () => {
+      setAvatar(avatarUrl);
+    };
+    img.onerror = () => {
+      setAvatar('/user.jpg');
+    };
+    img.src = avatarUrl;
   } 
 
   return (

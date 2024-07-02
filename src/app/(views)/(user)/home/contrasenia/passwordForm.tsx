@@ -1,7 +1,7 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CiCircleAlert } from "react-icons/ci";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -39,13 +39,14 @@ const ChangePassword = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
-      await axios.post("/api/user", {
-        /*  */
+      await axios.post("/api/reset-password", {
+        password: data.password,
+        newPassword: data.newPassword,
       });
-      toast.success("Se guardo correctamente");
+      toast.success('Contraseña actualizada')
     } catch (error) {
       console.error("Error al guardar el registro:", error);
-      toast.error("Hubo un error al guardar el registro");
+      toast.error('Error al actualizar su contraseña')
     } finally {
       setLoading(false);
     }

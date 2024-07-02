@@ -1,7 +1,7 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CiCircleAlert } from "react-icons/ci";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -45,7 +45,6 @@ const ChangePassword = () => {
       })
       toast.success('Contraseña actualizada')
     } catch (error) {
-      console.log(error);
       toast.error('Error al actualizar su contraseña')
     }
 
