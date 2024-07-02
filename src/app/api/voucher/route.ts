@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
     let data;
     data = await req.formData();
 
-    const { file, number, value, date, user_id } = Object.fromEntries(
+    const { file, number, value, date, user_id, status } = Object.fromEntries(
       data.entries()
     ) as {
       file: File;
@@ -32,15 +32,17 @@ export async function POST(req: NextRequest) {
       value: string;
       date: string;
       user_id: string;
+      status: "READ" | "UNREAD";
     };
 
-    const updateUser = {
+    const updateVoucher = {
       number,
       value,
       date,
       user_id,
+      status,
     };
-    const validatedVoucher = validateVoucher(updateUser);
+    const validatedVoucher = validateVoucher(updateVoucher);
     let newVoucher;
     if (file) {
       newVoucher = await prisma.voucher.create({

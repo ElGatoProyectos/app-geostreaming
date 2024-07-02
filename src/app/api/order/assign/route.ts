@@ -2,19 +2,6 @@ import prisma from "@/lib/prisma";
 import { validateOrder } from "@/lib/validations/order";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
-  try {
-    const orders = await prisma.order.findMany({
-      include: { platform: true, user: true },
-    });
-    return NextResponse.json(orders);
-  } catch (e) {
-    return NextResponse.json({ error: "Error to get orders" }, { status: 500 });
-  } finally {
-    await prisma.$disconnect();
-  }
-}
-
 export async function POST(req: NextRequest) {
   let orderInfo;
   let orderValidated;

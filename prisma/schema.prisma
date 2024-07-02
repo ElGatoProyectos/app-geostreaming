@@ -61,14 +61,20 @@ model Bank {
   type     String
 }
 
+enum VoucherStatus {
+  READ
+  UNREAD
+}
+
 model Voucher {
-  id          Int      @id @default(autoincrement())
+  id          Int           @id @default(autoincrement())
   voucher_url String?
   number      String
   value       Int
-  user        User     @relation(fields: [user_id], references: [id])
+  user        User          @relation(fields: [user_id], references: [id])
   user_id     Int
   date        DateTime
+  status      VoucherStatus @default(UNREAD)
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt

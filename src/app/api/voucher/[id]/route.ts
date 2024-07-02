@@ -49,22 +49,23 @@ export async function PATCH(
     let data;
     data = await req.formData();
 
-    const { file, number, value, date, user_id, country_code } =
-      Object.fromEntries(data.entries()) as {
-        file: File;
-        number: string;
-        value: string;
-        date: string;
-        user_id: string;
-        country_code: string;
-      };
+    const { file, number, value, date, user_id, status } = Object.fromEntries(
+      data.entries()
+    ) as {
+      file: File;
+      number: string;
+      value: string;
+      date: string;
+      user_id: string;
+      status: "READ" | "UNREAD";
+    };
 
     const updateUser = {
       number,
       value,
       date,
       user_id,
-      country_code,
+      status,
     };
     const validatedVoucher = validateVoucher(updateUser);
     let newVoucher;
@@ -89,8 +90,6 @@ export async function PATCH(
     await prisma.$disconnect();
 
     return NextResponse.json(newVoucher);
-
-
   } catch (error: any) {
     return NextResponse.json(
       { error: "Error to update voucher" },

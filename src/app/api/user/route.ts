@@ -5,6 +5,7 @@ import { UserService } from "@/service/user";
 import { NextRequest, NextResponse } from "next/server";
 import path from "path";
 import { writeFile } from "fs/promises";
+import bcrypt from "bcrypt";
 
 const userService = new UserService({ userModel: UserModel });
 
@@ -54,18 +55,19 @@ export async function POST(req: NextRequest) {
       country_code: string;
       role: string;
     };
-
-    const updateUser = {
+    const newPass = await bcrypt.hash(password, 10);
+    const createUser = {
       email: email,
       role: role,
-      password: password,
+      password: newPass,
       ref_id: Number(ref_id),
       full_name: full_name,
       dni: dni,
       phone: phone,
       country_code: country_code,
     };
-    const validatedUser = validateUser(updateUser);
+
+    const validatedUser = validateUser(createUser);
 
     if (file) {
       const newUser = await prisma.user.create({ data: validatedUser });

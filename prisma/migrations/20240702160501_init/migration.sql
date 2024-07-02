@@ -55,6 +55,7 @@ CREATE TABLE `Voucher` (
     `value` INTEGER NOT NULL,
     `user_id` INTEGER NOT NULL,
     `date` DATETIME(3) NOT NULL,
+    `status` ENUM('READ', 'UNREAD') NOT NULL DEFAULT 'UNREAD',
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
 
