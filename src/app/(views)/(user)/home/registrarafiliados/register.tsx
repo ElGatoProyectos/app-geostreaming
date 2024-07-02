@@ -70,8 +70,9 @@ const register = () => {
   const fetchData = async () => {
     const response = await axios.get("/api/user");
     const filteredUsers = response.data.filter((user: any) => {
-      return user.ref_id === session.data?.user.id;
+      return user.ref_id === Number(session.data?.user.id);
     });
+
     console.log(filteredUsers);
     setAfiliados(filteredUsers);
   };

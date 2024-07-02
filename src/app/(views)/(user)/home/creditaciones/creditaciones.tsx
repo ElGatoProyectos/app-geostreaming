@@ -54,7 +54,6 @@ const Account = () => {
 
   const handleFormSubmit: SubmitHandler<Inputs> = async (data) => {
     setLoading(true);
-    console.log('Form data:', data);
     try {
       
       const formDataAll = new  FormData();
@@ -63,7 +62,7 @@ const Account = () => {
       formDataAll.append('date', new Date(data.date).toISOString());
       formDataAll.append('file',data.file[0]);
       formDataAll.append('number', String(data.number));
-      formDataAll.append('country_code', '');
+      formDataAll.append('status', 'UNREAD');
 
       console.log(formDataAll);
       await axios.post(`/api/voucher`,formDataAll, 

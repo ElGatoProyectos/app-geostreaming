@@ -71,7 +71,10 @@ const AccountForm: React.FC<AccountFormProps> = ({
 
     try {
       await onSubmit(
-        data
+        data /* {
+        ...data,
+        is_active: data.is_active === "1" ? true: false,
+      } */
       );
     } catch (error) {
       console.error("Error al registrar la cuenta:", error);
