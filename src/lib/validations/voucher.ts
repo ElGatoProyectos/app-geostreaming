@@ -1,12 +1,12 @@
 import { z } from "zod";
 
 const voucherSchema = z.object({
-  voucher_url: z.string().optional(),
+  /* voucher_url: z.string().optional(), */
   number: z.string().min(1),
   value: z.number().int(),
-  date: z.string().datetime(),
+  date: z.any(),
   user_id: z.number().int().nonnegative(),
-  country_code: z.string(),
+/*   country_code: z.string(), */
 });
 
 export function validateVoucher(voucherInfo: unknown) {

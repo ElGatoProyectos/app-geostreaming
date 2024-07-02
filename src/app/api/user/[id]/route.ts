@@ -31,7 +31,7 @@ export async function PATCH(
     const {
       file,
       email,
-      password,
+      /* password, */
       ref_id,
       full_name,
       dni,
@@ -41,7 +41,7 @@ export async function PATCH(
     } = Object.fromEntries(data.entries()) as {
       file: File;
       email: string;
-      password: string;
+      /* password: string; */
       ref_id: string;
       full_name: string;
       dni: string;
@@ -53,7 +53,7 @@ export async function PATCH(
     const updateUser = {
       email: email,
       role: role,
-      password: password,
+      /* password: password, */
       ref_id: Number(ref_id),
       full_name: full_name,
       dni: dni,

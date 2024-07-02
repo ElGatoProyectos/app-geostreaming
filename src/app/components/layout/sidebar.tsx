@@ -9,6 +9,8 @@ import { IoLogoUsd } from "react-icons/io5";
 import { IoMdLogOut } from "react-icons/io";
 import { IoMdPersonAdd } from "react-icons/io";
 import { IoDocumentTextOutline } from "react-icons/io5";
+import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
+
 
 import {
   MdMenuBook,
@@ -69,6 +71,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
             href: "/admin/pedidos",
             label: "Pedidos",
             icon: <FaListCheck className="text-xl" />,
+          },
+          {
+            href: "/admin/depositos",
+            label: "Depósitos",
+            icon: <LiaFileInvoiceDollarSolid className="text-xl" />,
           },
         ],
       },
@@ -180,8 +187,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
         title: "Ventas",
         links: [
           {
-            href: "/home/platform",
-            label: "Plataforma",
+            href: "/home/productos",
+            label: "Productos",
             icon: <IoMdCart className="text-xl" />,
           },
           {
@@ -247,7 +254,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
 
   return (
     <div
-      className={`scrollbarFit user-select-none bg-white text-[#888] w-[220px] py-4 max-h-[calc(100vh-70px)] h-full fixed top-[70px] border-r z-10 lg:z-0 transition-transform duration-300 overflow-y-auto shadow-[8px_0px_10px_-3px_rgba(0,0,0,0.1)] ${
+      className={`scrollbarFit user-select-none bg-white text-[#888] w-[220px] py-4 max-h-[calc(100vh-70px)] h-full fixed top-[70px] border-r z-10 lg:z-0 transition-transform duration-300 overflow-y-auto shadow-[8px_0_15px_3px rgba(0,0,0,0.)] ${
         isOpen ? "translate-x-0 " : "-translate-x-full lg:translate-x-0 "
       }`}
     >
@@ -294,7 +301,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
             className={`pl-8 py-3 mr-2 rounded-r-full mb-2 flex gap-4 items-center hover:bg-[#F2308B] hover:text-white transition-all duration-300`}
           >
             <IoMdLogOut className="text-xl" />
-            <span className="text-sm capitalize">Cerrar sesion</span>
+            <span className="text-sm capitalize">Cerrar sesión</span>
           </span>
         </div>
         

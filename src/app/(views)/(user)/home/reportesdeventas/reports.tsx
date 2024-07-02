@@ -9,17 +9,23 @@ import { useSession } from "next-auth/react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
+
+import { access } from "fs";
 
 const Reports = () => {
   const session = useSession();
 
   const [orders, setOrders] = useState<any[]>([]);
+  const [platforms, setPlatform] = useState<any[]>([]);
+  const [users, setUsers] = useState<any[]>([]);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState<any | null>(null);
 
-  const fetchOrder = async () => {
+ /*  const fetchOrder = async () => {
     try {
-      const response = await axios.get("/api/account"); /* user-sales */
+      const response = await axios.get("/api/account"); 
       const filteredOrders = response.data.filter((order: any) => {
         return order.user_id === Number(session.data?.user.id);
       });
@@ -27,18 +33,78 @@ const Reports = () => {
     } catch (error) {
       console.error("Error fetching products:", error);
     }
+  }; */
+
+  const fetchData = async () => {
+    try {
+      const [accountsResponse, platformResponse, userResponse] = await Promise.all([
+        axios.get("/api/account"),
+        axios.get("/api/platform"),
+        axios.get("/api/user"),
+      ]);
+      const filteredOrders = accountsResponse.data.filter((order: any) => {
+        return order.user_id === Number(session.data?.user.id);
+      });
+      setOrders(filteredOrders);
+      setPlatform(platformResponse.data);
+      setUsers(userResponse.data.users);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   };
 
   useEffect(() => {
-    fetchOrder();
+    fetchData();
   }, []);
+
+/*   useEffect(() => {
+    fetchOrder();
+  }, []); */
 
   const columns = [
     { Header: "Código", accessor: "id" },
-    /* { Header: "Estado", accessor: "status" }, */
+    {
+      Header: "Plataforma",
+      accessor: (row: any) => {
+        if (!platforms || platforms.length === 0) return "No disponible";
+        const platform = platforms.find((p) => p.id === row.platform_id);
+        return platform ? platform.name : "No disponible";
+      },
+    },
+    { Header: 'Correo', accessor: 'email' },
+    { Header: 'Contraseña', accessor: 'password' },
+    { Header: 'pin', accessor: 'pin'},
+    {
+      Header: "Activo",
+      accessor: (row: any) => (row.is_active ? "si" : "no"),/* corregir */
+    },
+    {
+      Header: "Fecha de compra",
+      accessor: (row: any) => formatDate(row.purchase_date),
+    },
+    {
+      Header: "Fecha de renovación",
+      accessor: (row: any) => formatDate(row.renewal_date),
+    },/* 
     { Header: "Fecha de compra", accessor: "status" },
-    { Header: "Fecha de vencimiento", accessor: "platform_id" },
+    { Header: "Fecha de vencimiento", accessor: "platform_id" }, */
+   
   ];
+
+
+  const formatDate = (dateString?: string): string => {
+    if (!dateString) {
+      return "Sin fecha";
+    }
+
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+      return "Fecha inválida";
+    }
+
+    return format(date, "PPPp", { locale: es });
+  };
+
 
   const handleModal = (record: any) => {
     setSelectedRecord(record);
@@ -60,20 +126,6 @@ const Reports = () => {
       toast.error("Hubo un error al eliminar el registro");
     }
   };
-
-  /* const customCode = (
-    <>
-      <button
-        onClick={()=> handleModal()}
-        className="relative rounded content-center text-white px-1 py-1 bg-[#5A62F3] w-8 h-8 hover:bg-[#868BF1] group"
-      >
-        <GrUpdate className=" mx-auto" />
-        <span className="px-2 py-0.6 absolute -top-2 z-10 bg-white rounded-full left-1/2 -translate-x-1/2 -translate-y-full text-[#444] shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-500">
-          Renovar
-        </span>
-      </button>
-    </>
-  ); */
 
   return (
     <>

@@ -7,6 +7,8 @@ import ActionButton from "./ActionButton";
 import { BsPencilFill } from "react-icons/bs";
 import { FaTrash } from "react-icons/fa6";
 import { GrUpdate } from "react-icons/gr";
+import { HiMiniClipboardDocumentCheck } from "react-icons/hi2";
+
 
 type CustomAccessor<T> = string | ((row: T) => string | JSX.Element);
 interface TableProps<T> {
@@ -23,6 +25,7 @@ interface TableProps<T> {
   onDelete?: (row: T) => void;
   onUpload?: () => void;
   onRenovate?: (row: T) => void;
+  onApprove?: (row: T) => void;
   code?: ReactNode;
 }
 
@@ -40,6 +43,7 @@ const TableComponent = <T extends Record<string, any>>({
   downloadAction,
   onUpload,
   onRenovate,
+  onApprove,
   code,
 }: TableProps<T>) => {
   const [filteredData, setFilteredData] = useState(data);
@@ -225,6 +229,17 @@ const TableComponent = <T extends Record<string, any>>({
                 {showActions && (
                   <Table.Cell>
                     <div className="flex justify-center items-center gap-2">
+                    {onApprove && (
+                        <button
+                          onClick={() => onApprove && onApprove(row)}
+                          className="relative rounded content-center text-white px-1 py-1 bg-[#5A62F3] w-8 h-8 hover:bg-[#868BF1] group"
+                        >
+                          <HiMiniClipboardDocumentCheck className=" mx-auto" />
+                          <span className="px-2 py-0.6 absolute -top-2 z-10 bg-white rounded-full left-1/2 -translate-x-1/2 -translate-y-full text-[#444] shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-500">
+                            Aprobar
+                          </span>
+                        </button>
+                      )}
                       {onEdit && (
                         <Button
                           className="rounded content-center text-white px-1 py-1 bg-[#5BC0DE] w-8 h-8 hover:bg-[#80DCF8]"
@@ -252,6 +267,7 @@ const TableComponent = <T extends Record<string, any>>({
                           </span>
                         </button>
                       )}
+                      
                       {code}
                     </div>
                   </Table.Cell>

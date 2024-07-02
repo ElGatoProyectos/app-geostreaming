@@ -8,22 +8,20 @@ import {UserSchema } from "@/app/schemas/userSchema";
 import CountrySelect from "@/app/components/forms/countrySelect";
 
 type Inputs = {
-  username: string;
-  email: string;
-  full_name: string;
-  phone: string;
-  date: string;
-  password: string;
-  country_code: string;
-  dni: string;
+  email?: string;
+  full_name?: string;
+  phone?: string;
+  password?: string;
+  country_code?: string;
+  dni?: string;
 };
 
-interface AfiliadorProps {
+interface AfiliadosProps {
   defaultValues?: Inputs;
   onSubmit: SubmitHandler<Inputs>;
 }
 
-const AfiliadosForm: React.FC<AfiliadorProps> = ({
+const AfiliadosForm: React.FC<AfiliadosProps> = ({
   defaultValues,
   onSubmit,
 }) => {
@@ -60,27 +58,6 @@ const AfiliadosForm: React.FC<AfiliadorProps> = ({
       onSubmit={handleSubmit(handleFormSubmit)}
       className="flex w-full flex-col gap-4"
     >
-       {/* <label htmlFor="type" className="text-[#444]">
-        Referido:
-        <select
-          id="ref_id"
-          className={`mt-2 w-full text-[#666] bg-gray-50 border rounded outline-none px-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
-            errors.ref_id
-              ? "border-red-500 focus:ring focus:ring-red-200 focus:border-red-500"
-              : "border-gray-200 "
-          }`}
-          {...register("ref_id")}
-        >
-          <option value="">Seleccione Referido</option>
-          <option value="1">referido 1</option>
-          <option value="2">referido 2</option>
-        </select>
-        {errors.ref_id && (
-          <p className="text-red-500 text-sm font-medium mt-1">
-            {errors.ref_id.message}
-          </p>
-        )}
-      </label> */}
       <InputField
         id="dni"
         label="N de documento de identidad"
@@ -93,27 +70,6 @@ const AfiliadosForm: React.FC<AfiliadorProps> = ({
         register={register("full_name")}
         error={errors.full_name}
       />
-       {/* <label htmlFor="type" className="text-[#444]">
-        Role:
-        <select
-          id="ref_id"
-          className={`mt-2 w-full text-[#666] bg-gray-50 border rounded outline-none px-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
-            errors.ref_id
-              ? "border-red-500 focus:ring focus:ring-red-200 focus:border-red-500"
-              : "border-gray-200 "
-          }`}
-          {...register("ref_id")}
-        >
-          <option value="">Seleccione Rol</option>
-          <option value="1">Consumidor</option>
-          <option value="2">Afiliado</option>
-        </select>
-        {errors.ref_id && (
-          <p className="text-red-500 text-sm font-medium mt-1">
-            {errors.ref_id.message}
-          </p>
-        )}
-      </label> */}
       <InputField
         id="email"
         label="Correo"
@@ -126,7 +82,6 @@ const AfiliadosForm: React.FC<AfiliadorProps> = ({
         label="Contraseña"
         register={register("password")}
         error={errors.password}
-        /* type="password" */
       />
      <div className="flex flex-col md:flex-row gap-4">
         <CountrySelect
@@ -140,18 +95,6 @@ const AfiliadosForm: React.FC<AfiliadorProps> = ({
         error={errors.phone}
       />
       </div>
-     {/*  <InputField
-        id="phone"
-        label="Celular"
-        register={register("phone")}
-        error={errors.phone}
-      /> */}
-      {/* <InputField
-        id="dni"
-        label="DNI"
-        register={register("dni")}
-        error={errors.dni}
-      /> */}
       <div className=" w-full flex flex-col gap-4">
         <button
           type="submit"

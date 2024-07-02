@@ -130,34 +130,6 @@ const PlatformForm: React.FC<PlatformFormProps> = ({
         register={register("days_duration", {valueAsNumber: true})}
         error={errors.days_duration}
       />
-       {/* <label htmlFor="account" className="text-[#444]">
-        Cuenta:
-        <select
-          id="account"
-          className={`mt-2 w-full text-[#666] bg-gray-50 border rounded outline-none px-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
-            errors.account
-              ? "border-red-500 focus:ring focus:ring-red-200 focus:border-red-500"
-              : "border-gray-200 "
-          }`}
-          {...register("account", {valueAsNumber:true} )}
-        >
-          <option value="">Seleccione una cuenta</option>
-          {error ? (
-            <option value="">No hay cuentas disponibles</option>
-          ) : (
-            
-            accounts.map((account) => (
-              <option key={account.id} value={account.id}>{account.email}</option>
-            ))
-          )}
-        </select>
-        {errors.account && (
-          <p className="text-red-500 text-sm font-medium mt-1">
-            {errors.account.message}
-          </p>
-        )}
-      </label> */}
-     
       <div className=" w-full flex flex-col gap-4">
         <button
           type="submit"

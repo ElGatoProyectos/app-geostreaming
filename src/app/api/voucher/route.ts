@@ -31,21 +31,22 @@ export async function POST(req: NextRequest) {
         value: string;
         date: string;
         user_id: string;
-        country_code: string;
+        country_code?: string;
       };
 
-    const updateUser = {
+    const updateUser:any = {
       number,
-      value,
-      date,
-      user_id,
+      value: Number(value),
+      date:new Date(date),
+      user_id: Number(user_id),
       country_code,
     };
-    const validatedVoucher = validateVoucher(updateUser);
+    console.log(updateUser);
+   /*  const validatedVoucher = validateVoucher(updateUser); */
     let newVoucher;
     if (file) {
       newVoucher = await prisma.voucher.create({
-        data: validatedVoucher,
+        data: updateUser,
       });
       prisma.$disconnect();
       const bytes = await file.arrayBuffer();
@@ -57,12 +58,13 @@ export async function POST(req: NextRequest) {
     }
 
     newVoucher = await prisma.voucher.create({
-      data: validatedVoucher,
+      data: updateUser,
     });
     prisma.$disconnect();
 
     return NextResponse.json(newVoucher);
   } catch (error: any) {
+    console.error("Error creating voucher:", error.message, error.stack);
     return NextResponse.json(
       { error: "Error creating voucher", message: error.message },
       { status: 500 }

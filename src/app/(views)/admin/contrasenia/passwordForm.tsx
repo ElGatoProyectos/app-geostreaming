@@ -5,8 +5,11 @@ import { useEffect, useState } from "react";
 import { CiCircleAlert } from "react-icons/ci";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import { changePasswordSchema } from "@/app/schemas/changePasswordSchema";
+import axios from "axios";
 
 type Inputs = {
   password: string;
@@ -34,9 +37,18 @@ const ChangePassword = () => {
     resolver: zodResolver(changePasswordSchema),
   });
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
-    /* modal de confirmacion? */
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    try {
+      await axios.post('/api/reset-password', {
+        password: data.password,
+        newPassword: data.newPassword,
+      })
+      toast.success('Contraseña actualizada')
+    } catch (error) {
+      console.log(error);
+      toast.error('Error al actualizar su contraseña')
+    }
+
     reset();
   };
 

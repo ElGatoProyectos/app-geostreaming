@@ -9,6 +9,9 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { LuSend } from "react-icons/lu";
 import AssignAccountForm from "./assignAccount";
+import { useSession } from "next-auth/react";
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
 
 type userEnabled = "y" | "n";
 
@@ -24,11 +27,15 @@ type Users = {
   enabled: userEnabled;
 };
 const Order = () => {
+  const session = useSession();
+
+  const [orders, setOrders] = useState<any[]>([]);
+  const [platforms, setPlatform] = useState<any[]>([]);
   const [users, setUsers] = useState<Users[]>([]);
   const [isSendModalOpen, setIsSendModalOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
-  const [selectedRecord, setSelectedRecord] = useState<Users | null>(null);
+  const [selectedRecord, setSelectedRecord] = useState<any | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -39,22 +46,29 @@ const Order = () => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
-  const fetchUsers = async () => {
-    /* try {
-      const response = await axios.get("/api/user", {
-        params: { role: "USER" },
-      });
-      setUsers(response.data.users);
+  const fetchData = async () => {
+    try {
+      const [ordersResponse, platformResponse, userResponse] = await Promise.all([
+        axios.get("/api/order"),
+        axios.get("/api/platform"),
+        axios.get("/api/user"),
+      ]);
+      /* const filteredOrders = accountsResponse.data.filter((order: any) => {
+        return order.user_id === Number(session.data?.user.id);
+      }); */
+      setOrders(ordersResponse.data);
+      setPlatform(platformResponse.data);
+      setUsers(userResponse.data.users);
     } catch (error) {
-      console.error("Error fetching user:", error);
-    } */
+      console.error("Error fetching data:", error);
+    }
   };
 
   useEffect(() => {
-    fetchUsers();
+    fetchData();
   }, []);
 
-  const handleSaveOrder: SubmitHandler<Users> = async (data) => {
+  /* const handleSaveOrder: SubmitHandler<Users> = async (data) => {
     setLoading(true);
     console.log(data);
     try {
@@ -66,9 +80,7 @@ const Order = () => {
         toast.success("Se guardo correctamente");
       }
 
-      useEffect(() => {
-        fetchUsers();
-      }, []);
+
 
       closeModal();
     } catch (error) {
@@ -77,23 +89,59 @@ const Order = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }; */
   const columns = [
-    { Header: "ID", accessor: "id" },
-    { Header: "Plataforma", accessor: "product_id" },
-    { Header: "Usuario", accessor: "name" },
-    { Header: "Rol", accessor: "name" },
-    { Header: "Estado", accessor: "status" },
-    { Header: "Referido", accessor: "ref_id" },
-    { Header: "N. de documento", accessor: "dni" },
-    { Header: "Celular", accessor: "phone" },
-/*     {
-      Header: "Activo",
-      accessor: (row: Users) => (row.enabled === "y" ? "activo" : "inactivo"),
-    }, */
+    { Header: "Id", accessor: "id" },
+    {
+      Header: "Plataforma",
+      accessor: (row: any) => {
+        if (!platforms || platforms.length === 0) return "No disponible";
+        const platform = platforms.find((p) => p.id === row.platform_id);
+        return platform ? platform.name : "No disponible";
+      },
+    },
+    {
+      Header: "Usuario",
+      accessor: (row: any) => {
+        if (!users || users.length === 0) return "No disponible";
+        const user = users.find((p) => p.id === row.platform_id);
+        return user ? user.dni : "No disponible";
+      },
+    },
+    /* { Header: 'Correo', accessor: 'email' },
+    { Header: 'Contraseña', accessor: 'password' },
+    { Header: 'pin', accessor: 'pin'}, */
+    {
+      Header: "Estado",
+      accessor: (row: any) => (row.status === 'ATTENDED' ? "Atendido" : "No atendido"),/* corregir */
+    },
+    /* {
+      Header: "Fecha de compra",
+      accessor: (row: any) => formatDate(row.purchase_date),
+    },
+    {
+      Header: "Fecha de renovación",
+      accessor: (row: any) => formatDate(row.renewal_date),
+    }, *//* 
+    { Header: "Fecha de compra", accessor: "status" },
+    { Header: "Fecha de vencimiento", accessor: "platform_id" }, */
+   
   ];
 
-  const handleEdit = async (record: Users) => {
+  const formatDate = (dateString?: string): string => {
+    if (!dateString) {
+      return "Sin fecha";
+    }
+
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+      return "Fecha inválida";
+    }
+
+    return format(date, "PPPp", { locale: es });
+  };
+
+/*   const handleEdit = async (record: Users) => {
     try {
       const response = await axios.get(`/api/user/${record.id}`);
       setSelectedRecord(response.data);
@@ -103,7 +151,7 @@ const Order = () => {
       console.log(error);
       toast.error("Error al obtener los datos");
     }
-  };
+  }; */
 
   /*   const handleAdd = () => {
     setSelectedRecord(null);
@@ -128,49 +176,46 @@ const Order = () => {
     }
     setIsDeleteModalOpen(false);
   };
-  const data: any[] = [
-    {
-      id: 1,
-      name: "prueba",
-      product_id: 2,
-      status: "active",
-      ref_id: 2,
-      dni: "32443243",
-      phone: "2342434",
-    },
-  ];
-  const handleSendModal = () => {
+  const handleSendModal = (record: any) => {
+    setSelectedRecord(record);
+    console.log(record);
     setIsSendModalOpen(true);
   }
 
-  const handleAssignAccount = () => {
-    console.log("oli")
+  const handleAssignAccount: SubmitHandler<any> = async() => {
+    try {
+      await axios.patch('/api/');
+      toast.success("Cuenta asignada correctamente");
+    } catch (error) {
+      console.log("Error al eliminar el registro", error);
+      toast.error("Error al asignar cuenta");
+    }
   }
   
 
 
-  const customCode = (
+/*   const customCode = (
     <>
       <button onClick={handleSendModal} className="rounded content-center text-white px-1 py-1 bg-[#5A62F3] w-8 h-8 hover:bg-[#868BF1]">
         <LuSend className="text-white mx-auto"/>
       </button>
     </>
-  );
+  ); */
 
   return (
     <>
       <Table
         columns={columns}
-        data={data}
+        data={orders}
         showActions={true}
         download={true}
         title="Pedidos"
-        onEdit={handleEdit}
+        /* onEdit={handleEdit} */
         onDelete={handleDelete}
-        code={customCode}
+        onApprove={handleSendModal}
       />
       {/* modal form add and edit */}
-      <Modal isOpen={isModalOpen} onClose={closeModal} title={modalTitle}>
+     {/*  <Modal isOpen={isModalOpen} onClose={closeModal} title={modalTitle}>
         <OrderForm
           defaultValues={
             selectedRecord || {
@@ -186,7 +231,7 @@ const Order = () => {
           }
           onSubmit={handleSaveOrder}
         />
-      </Modal>
+      </Modal> */}
       {/* modal delete */}
       <Modal
         isOpen={isDeleteModalOpen}
@@ -205,7 +250,7 @@ const Order = () => {
       </Modal>
       {/* modal send */}
       <Modal isOpen={isSendModalOpen} title="Asignar Cuenta" onClose={() => setIsSendModalOpen(false)}>
-        <AssignAccountForm onSubmit={handleAssignAccount}/>
+        <AssignAccountForm platformId={selectedRecord?.platform_id} onSubmit={handleAssignAccount}/>
       </Modal>
     </>
   );
