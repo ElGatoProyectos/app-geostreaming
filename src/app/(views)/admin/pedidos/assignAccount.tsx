@@ -15,11 +15,13 @@ type Inputs = {
 interface AssignAccountProps {
   defaultValues?: Inputs;
   onSubmit: SubmitHandler<Inputs>;
+  platformId: number;
 }
 
 const AssignAccountForm: React.FC<AssignAccountProps> = ({
   defaultValues,
   onSubmit,
+  platformId,
 }) => {
   const [accounts, setAccounts] = useState<any[]>([]);
   const [error, setError] = useState(false);
@@ -45,8 +47,11 @@ const AssignAccountForm: React.FC<AssignAccountProps> = ({
         const response = await axios.get("/api/account", {
           params: { status: "NOT_BOUGHT" },
         });
-        console.log(response.data);
-        setAccounts(response.data);
+        const filteredPlatform = response.data.filter((platform: any) => {
+          return platform.platform_id === platformId;
+        });
+
+        setAccounts(filteredPlatform);
         setError(false);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -54,6 +59,7 @@ const AssignAccountForm: React.FC<AssignAccountProps> = ({
       }
     };
     fetchData();
+    console.log(defaultValues)
   }, []);
 
   const handleFormSubmit: SubmitHandler<Inputs> = async (data) => {
@@ -73,6 +79,9 @@ const AssignAccountForm: React.FC<AssignAccountProps> = ({
       onSubmit={handleSubmit(handleFormSubmit)}
       className="relative flex w-full flex-col gap-4"
     >
+      {defaultValues?.id && (
+        <input type="hidden" {...register("id")} value={defaultValues.id} />
+      )}
       <div className="overflow-auto">
         <Autocomplete
           defaultItems={accounts}

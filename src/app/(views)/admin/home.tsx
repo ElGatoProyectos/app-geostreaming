@@ -10,25 +10,25 @@ const home = () => {
   const infoCards = [
     {
       title: "Afiliados",
-      number: 100,
+      number: 120,
       icon: <RiUserSharedLine className="text-xl mx-auto" />,
       span: "registrados",
     },
     {
       title: "Consumidores",
-      number: 100,
+      number: 156,
       icon: <FaUsers className="text-xl mx-auto" />,
       span: "registrados",
     },
     {
       title: "Productos",
-      number: 100,
+      number: 32,
       icon: <IoMdCart className="text-xl mx-auto" />,
       span: "disponibles",
     },
     {
       title: "Cuentas",
-      number: 100,
+      number: 35,
       icon: <MdOutlineAccountBox className="text-xl mx-auto" />,
       span: "activas",
     },
@@ -36,24 +36,35 @@ const home = () => {
 
   /* usuario */
   const topAfiliados = [
-    { name: "Afiliado 1", avatar: "./user.jpg", ventas: 100, consumidores: 5 },
-    { name: "Afiliado 2", avatar: "./user.jpg", ventas: 90, consumidores: 5 },
-    { name: "Afiliado 3", avatar: "./user.jpg", ventas: 80, consumidores: 5 },
-    { name: "Afiliado 4", avatar: "./user.jpg", ventas: 70, consumidores: 5 },
-    { name: "Afiliado 5", avatar: "./user.jpg", ventas: 60, consumidores: 5 },
+    { name: "Hans", avatar: "./user.jpg", ventas: 100, consumidores: 12 },
+    { name: "Sergio", avatar: "./user.jpg", ventas: 90, consumidores: 10 },
+    { name: "Guillermo", avatar: "./user.jpg", ventas: 80, consumidores: 21 },
+    { name: "Fiorella", avatar: "./user.jpg", ventas: 70, consumidores: 23 },
+    { name: "Pedro", avatar: "./user.jpg", ventas: 60, consumidores: 11 },
+    { name: "Juan", avatar: "./user.jpg", ventas: 55, consumidores: 10 },
+    { name: "Mateo", avatar: "./user.jpg", ventas: 45, consumidores: 8 },
+    { name: "Lucia", avatar: "./user.jpg", ventas: 39, consumidores: 7 },
+    { name: "Luis", avatar: "./user.jpg", ventas: 38, consumidores: 8 },
+    { name: "Diego", avatar: "./user.jpg", ventas: 30, consumidores: 7 },
   ];
 
   const topProducts = [
-    { name: "Producto 1", cantidad: 100 },
-    { name: "Producto 2", cantidad: 90 },
-    { name: "Producto 3", cantidad: 80 },
-    { name: "Producto 4", cantidad: 70 },
-    { name: "Producto 5", cantidad: 60 },
+    { name: "Netflix 1 perfil", cantidad: 67 },
+    { name: "Amazon Prime", cantidad: 82 },
+    { name: "Disney+", cantidad: 75 },
+    { name: "Porn Hub", cantidad: 69 },
+    { name: "Canva Pro", cantidad: 60 },
+    { name: "Combo 1", cantidad: 67 },
+    { name: "Combo 2", cantidad: 82 },
+    { name: "Spotify", cantidad: 75 },
+    { name: "Youtube Premium", cantidad: 69 },
+    { name: "Magis TV", cantidad: 60 },
   ];
+
 
   return (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 gap-8">
         {infoCards.map((card, index) => (
           <div
             key={index}
@@ -75,7 +86,7 @@ const home = () => {
         ))}
       </div>
       {/* tops */}
-      <div className="mt-6 grid md:grid-cols-2 xl:grid-cols-2 lg:grid-cols-1 gap-6">
+      <div className="mt-8 grid md:grid-cols-2 xl:grid-cols-2 lg:grid-cols-1 gap-8">
         {/* productos */}
         <div className="w-full rounded-lg bg-white p-6  shadow-box  transition-all duration-500">
           <h2 className=" text-xl capitalize mb-4 text-[#444] font-medium">
@@ -103,7 +114,7 @@ const home = () => {
           </div>
         </div>
         {/* bancos */}
-        <div className="w-full rounded-lg bg-white p-6  shadow-box  transition-all duration-500">
+        {/* <div className="w-full rounded-lg bg-white p-6  shadow-box  transition-all duration-500">
           <h2 className=" text-xl capitalize mb-4 text-[#444] font-medium">
             Top 5 Bancos más usados
           </h2>
@@ -120,14 +131,14 @@ const home = () => {
                 {topAfiliados.map((afiliado, index) => (
                   <tr key={index} className="text  text-[#666]">
                     <td className="p-2">{index + 1}</td>
-                    <td className="p-2 flex flex-wrap items-center gap-2">banco</td>
+                    <td className="p-2 flex flex-wrap items-center gap-2">BCP</td>
                     <td className="p-2 text-center">100</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-        </div>
+        </div> */}
         {/* afiliados */}
         <div className="w-full rounded-lg bg-white p-6  shadow-box  transition-all duration-500">
           <h2 className=" text-xl capitalize mb-4 text-[#444] font-medium">
@@ -164,7 +175,7 @@ const home = () => {
           </div>
         </div>
         {/* consumidores */}
-        <div className="w-full rounded-lg bg-white p-6  shadow-box  transition-all duration-500">
+        {/* <div className="w-full rounded-lg bg-white p-6  shadow-box  transition-all duration-500">
           <h2 className=" text-xl capitalize mb-4 text-[#444] font-medium">
             Top 5 consumidores
           </h2>
@@ -197,7 +208,7 @@ const home = () => {
               </tbody>
             </table>
           </div>
-        </div>
+        </div> */}
       </div>
     </>
   );

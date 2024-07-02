@@ -10,13 +10,12 @@ import axios from "axios";
 import CountrySelect from "@/app/components/forms/countrySelect";
 
 type Inputs = {
-  username: string;
-  full_name: string;
-  email: string;
-  phone: string;
-  acreditaciones?: string;
-  avatar?: string;
-  code_country?: string;
+  /* dni?: string; */
+  full_name?: string;
+  email?: string;
+  phone?: string;
+  country_code?: string;
+  file?: string;
 };
 
 interface UserFormProps {
@@ -64,32 +63,31 @@ const UserForm: React.FC<UserFormProps> = ({
       onSubmit={handleSubmit(handleFormSubmit)}
       className="flex w-full flex-col gap-4 "
     >
-      <InputField
-        id="username"
-        label="Usuario"
-        register={register("username")}
-        error={errors.username}
+     {/*  <InputField
+        id="dni"
+        label="Documento de Identidad"
+        register={register("dni")}
+        error={errors.dni}
         isDisabled={true}
-      />
+      /> */}
       <InputField
         id="full_name"
         label="Nombre"
         register={register("full_name")}
         error={errors.full_name}
-        isDisabled={true}
+        /* isDisabled={true} */
       />
       <InputField
         id="email"
         label="Correo"
         register={register("email")}
         error={errors.email}
-        isDisabled={true}
+        /* isDisabled={true} */
       />
       <div className="flex flex-col md:flex-row gap-4">
         <CountrySelect
-          id="code_country"
-          register={register("code_country")}
-          
+          id="country_code"
+          register={register("country_code")}
         />
          <InputField
         id="phone"
@@ -98,29 +96,6 @@ const UserForm: React.FC<UserFormProps> = ({
         error={errors.phone}
       />
       </div>
-     
-      {/* <label htmlFor="acreditaciones">
-        Acreditación de ganancias
-        <select
-          id="acreditaciones"
-          defaultValue={"Seleccione un método de pago"}
-          className={`w-full text-[#666] bg-gray-100 border rounded outline-none px-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
-            errors.acreditaciones
-              ? "border-red-500 focus:ring focus:ring-red-200 focus:border-red-500"
-              : "border-gray-200 "
-          }`}
-          {...register("acreditaciones")}
-        >
-          <option value='' disabled >Seleccione un método de pago</option>
-          <option value="plataforma">saldo a plataforma</option>
-          <option value="cuenta_bancaria">saldo a cuenta bancaria</option>
-        </select>
-        {errors.acreditaciones && (
-          <p className="text-red-500 text-sm font-medium mt-1">
-            {errors.acreditaciones?.message}
-          </p>
-        )}
-      </label> */}
       <div>
         <label htmlFor="file_input" className="text-[#444]">
           Subir Avatar
@@ -132,18 +107,18 @@ const UserForm: React.FC<UserFormProps> = ({
         />
 
         <input
-          id="input_file"
+          id="file"
           type="file"
           className={`w-full text-[#666] bg-gray-100 border rounded outline-none pr-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
-            errors.avatar
+            errors.file
               ? "border-red-500 focus:ring focus:ring-red-200 focus:border-red-500"
               : "border-gray-200 "
           }`}
-          {...register("avatar")}
+          {...register("file")}
         />
-        {errors.avatar && (
+        {errors.file && (
           <p className="text-red-500 text-sm font-medium mt-1">
-            {errors.avatar?.message}
+            {errors.file?.message}
           </p>
         )}
       </div>

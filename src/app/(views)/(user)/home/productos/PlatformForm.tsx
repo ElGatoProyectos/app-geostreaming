@@ -126,7 +126,7 @@ const PlatformForm: React.FC<PlatformProps> = ({
               Cargando
             </span>
           ) : (
-            "Guardar"
+            "Comprar"
           )}
         </button>
       </div>

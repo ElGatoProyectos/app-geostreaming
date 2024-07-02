@@ -3,6 +3,8 @@ import { validateAdmin } from "@/lib/validations/admin";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import { authOptions } from "../../auth-options";
+import path from "path";
+import { writeFile } from "fs/promises";
 
 export async function GET(
   _: NextRequest,
@@ -80,28 +82,68 @@ export async function PATCH(
   let adminInfo;
 
   try {
-    adminInfo = await req.json();
+    /* adminInfo = await req.json(); */
+    const data : any= await req.formData()
+    
+
+    const file = data.get("file") ;
+    const email = data.get("email");
+    const full_name = data.get("full_name");
+    const phone = data.get("phone");
+    const country_code = data.get("country_code");
+
+    adminInfo = {
+      file,
+      email,
+      full_name,
+      phone,
+      country_code
+    }
+    console.log(adminInfo)
   } catch (error) {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
-  let validatedAdmin;
+  /* let validatedAdmin; */
 
-  try {
+  /* try {
     validatedAdmin = validateAdmin(adminInfo);
   } catch (error) {
     return NextResponse.json({ error: "Validation error" }, { status: 400 });
-  }
+  } */
 
   let updatedAdmin;
 
   try {
+<<<<<<< HEAD
+    const { file, ...restData } = adminInfo
+    if (adminInfo.file!=="undefined") {
+      const bytes = await adminInfo.file.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+      const nameImage = "admin_" + params.id + ".png";
+      const filePath = path.join(process.cwd(), `public/admin`, nameImage);
+      await writeFile(filePath, buffer);
+      updatedAdmin = await prisma.admin.update({
+        where: { id: Number(params.id) },
+        data: restData,
+      });
+    } else {
+
+      updatedAdmin = await prisma.admin.update({
+        where: { id: Number(params.id) },
+        data: restData,
+      });
+    }
+
+=======
     updatedAdmin = await prisma.admin.update({
       where: { id: admin_id },
       data: validatedAdmin,
     });
     await prisma.$disconnect();
+>>>>>>> ec9781190bb1d8bf1b0372b5b0044c7eb416702d
   } catch (error) {
+    console.log(error)
     return NextResponse.json(
       { error: "Error updating admin" },
       { status: 500 }

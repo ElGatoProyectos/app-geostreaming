@@ -9,7 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
-
+import { Span } from "next/dist/trace";
 
 type Inputs = {
   id?: number;
@@ -92,13 +92,21 @@ const Account = () => {
     { Header: "Contraseña", accessor: "password" },
     { Header: "Pin", accessor: "pin" },
     {
-      Header: "Activo",
-      accessor: (row: Inputs) => (row.is_active ? "si" : "no"),
+      Header: "Estado de cuenta",
+      accessor: (row: Inputs) => row.is_active ? (
+          <span className=" whitespace-nowrap px-3 py-0.5 rounded-full bg-gray-100 font-medium text-green-400">Activo</span>
+        ) : (
+          <span className=" whitespace-nowrap px-3 py-0.5 rounded-full bg-gray-100 font-medium text-gray-400">Inactivo</span>
+        ),
     },
     {
-      Header: "Estado",
+      Header: "Estado de compra",
       accessor: (row: Inputs) =>
-        row.status === "BOUGHT" ? "comprado" : "no comprado",
+        row.status === "BOUGHT" ? (
+          <span className=" whitespace-nowrap px-3 py-0.5 rounded-full bg-gray-100 font-medium text-blue-400">Comprado</span>
+        ) : (
+          <span className=" whitespace-nowrap px-3 py-0.5 rounded-full bg-gray-100 font-medium text-yellow-800">No Comprado</span>
+        ),
     },
     {
       Header: "Fecha de compra",
@@ -162,7 +170,7 @@ const Account = () => {
     }
   };
 
-/*   const formatDateInsert = (date: string | undefined): string | undefined => {
+  /*   const formatDateInsert = (date: string | undefined): string | undefined => {
     if (!date) return undefined;
   
     const dateObj = new Date(date);
@@ -173,11 +181,10 @@ const Account = () => {
   
     return format(dateObj, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx");
   }; */
-  
 
   const handleSaveAccount: SubmitHandler<Inputs> = async (data) => {
     setLoading(true);
-   
+
     try {
       /* const formattedPurchaseDate = formatDateInsert(data.purchase_date); */
 
@@ -193,18 +200,21 @@ const Account = () => {
         });
         toast.success("Se actualizo correctamente");
       } else {
-        await axios.post("/api/account", JSON.stringify( {
-          is_active: data.is_active === "1" ? true : false,
-          email: data.email,
-          password: data.password,
-          pin: data.pin,
-          description: data.description,
-          platform_id: data.platform_id,
-          status: 'NOT_BOUGHT',
-        }));
+        await axios.post(
+          "/api/account",
+          JSON.stringify({
+            is_active: data.is_active === "1" ? true : false,
+            email: data.email,
+            password: data.password,
+            pin: data.pin,
+            description: data.description,
+            platform_id: data.platform_id,
+            status: "NOT_BOUGHT",
+          })
+        );
         toast.success("Se guardo correctamente");
       }
-        fetchAccounts();
+      fetchAccounts();
       closeModal();
     } catch (error) {
       console.error("Error al guardar la cuenta:", error);

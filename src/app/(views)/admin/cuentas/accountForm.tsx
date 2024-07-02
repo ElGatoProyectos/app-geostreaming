@@ -6,7 +6,6 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { AccountFormSchema } from "@/app/schemas/accountFormSchema";
 import axios from "axios";
 
-
 type Inputs = {
   id?: number;
   is_active?: string;
@@ -51,29 +50,32 @@ const AccountForm: React.FC<AccountFormProps> = ({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [platformResponse/* , userResponse */] = await Promise.all([
+        const [platformResponse /* , userResponse */] = await Promise.all([
           axios.get("/api/platform"),
-        /*   axios.get("/api/user"), */
+          /*   axios.get("/api/user"), */
         ]);
-
+        console.log(platformResponse.data);
         setPlatforms(platformResponse.data);
-       /*  setUsers(userResponse.data); */
+        /*  setUsers(userResponse.data); */
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
     fetchData();
+    console.log(defaultValues);
   }, []);
 
   const handleFormSubmit: SubmitHandler<Inputs> = async (data) => {
     setLoading(true);
 
     try {
-      await onSubmit( data/* {
+      await onSubmit(
+        data /* {
         ...data,
         is_active: data.is_active === "1" ? true: false,
-      } */);
+      } */
+      );
     } catch (error) {
       console.error("Error al registrar la cuenta:", error);
     } finally {
@@ -93,7 +95,7 @@ const AccountForm: React.FC<AccountFormProps> = ({
         Plataforma
         <select
           id="platform_id"
-          defaultValue={defaultValues?.platform_id ?? ''}
+          defaultValue={defaultValues?.platform_id || ""}
           className={`w-full text-[#666] bg-gray-50 border rounded outline-none px-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
             errors.platform_id
               ? "border-red-500 focus:ring focus:ring-red-200 focus:border-red-500"
@@ -101,11 +103,13 @@ const AccountForm: React.FC<AccountFormProps> = ({
           }`}
           {...register("platform_id", { valueAsNumber: true })}
         >
-          <option value="">
-            Seleccione un plataforma
-          </option>
+          <option value="">Seleccione un plataforma</option>
           {platforms.map((platform) => (
-            <option key={platform.id} value={platform.id}>
+            <option
+              selected={platform.id === defaultValues?.platform_id}
+              key={platform.id}
+              value={platform.id}
+            >
               {platform.name}
             </option>
           ))}
@@ -153,7 +157,7 @@ const AccountForm: React.FC<AccountFormProps> = ({
         Estado de la cuenta
         <select
           id="is_active"
-          defaultValue={defaultValues?.is_active && '1' }
+          defaultValue={defaultValues?.is_active && "1"}
           className={`w-full text-[#666] bg-gray-50 border rounded outline-none px-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
             errors.is_active
               ? "border-red-500 focus:ring focus:ring-red-200 focus:border-red-500"
@@ -161,9 +165,7 @@ const AccountForm: React.FC<AccountFormProps> = ({
           }`}
           {...register("is_active")}
         >
-          <option value="">
-            Seleccione el estado de la cuenta
-          </option>
+          <option value="">Seleccione el estado de la cuenta</option>
           <option value="1">Activo</option>
           <option value="0">Inactivo</option>
         </select>
@@ -177,7 +179,7 @@ const AccountForm: React.FC<AccountFormProps> = ({
         Disponibilidad de la cuenta
         <select
           id="status"
-          defaultValue={defaultValues?.status?? "NOT_BOUGHT"}
+          defaultValue={defaultValues?.status ?? "NOT_BOUGHT"}
           className={`w-full text-[#666] bg-gray-50 border rounded outline-none px-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
             errors.status
               ? "border-red-500 focus:ring focus:ring-red-200 focus:border-red-500"
@@ -185,11 +187,9 @@ const AccountForm: React.FC<AccountFormProps> = ({
           }`}
           {...register("status")}
         >
-          <option value="">
-            Seleccione el estado de la cuenta
-          </option>
-          <option  value="BOUGHT">Comprado</option>
-          <option  value="NOT_BOUGHT">No comprado</option>
+          <option value="">Seleccione el estado de la cuenta</option>
+          <option value="BOUGHT">Comprado</option>
+          <option value="NOT_BOUGHT">No comprado</option>
         </select>
         {errors?.status && (
           <p className="text-red-500 text-sm font-medium mt-1">

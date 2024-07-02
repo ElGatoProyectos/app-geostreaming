@@ -2,7 +2,7 @@ import { z } from "zod";
 
 const adminSchema = z.object({
   email: z.string().email(),
-  password: z.string(),
+  /* password: z.string(), */
   full_name: z.string(),
   phone: z.string(),
   country_code: z.string(),

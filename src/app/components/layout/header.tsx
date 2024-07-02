@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoMenu } from "react-icons/io5";
 import { IoNotificationsOutline } from "react-icons/io5";
 import { FaRegUser } from "react-icons/fa";
@@ -12,15 +12,18 @@ import Modal from "@/app/components/common/modal";
 
 import { BiSolidWallet } from "react-icons/bi";
 
-type UserRole = "ADMIN" | "DISTRIBUTOR" | "USER";
+type UserRoleTranslate = "ADMIN" | "DISTRIBUTOR" | "USER";
 
 import Sidebar from "./sidebar";
 import { useSession } from "next-auth/react";
+import axios from "axios";
 
 const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [perfilOpen, setPerfilOpen] = useState(false);
   const [notificationOpen, setNotificationOpen] = useState(false);
+  let [balance, setBalance] = useState('');
+  let [ avatar, setAvatar] = useState('');
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -44,14 +47,46 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
     setPerfilOpen(false);
   };
 
-
-  const [user, setUser] = useState<any[]>([]);
   const session = useSession();
 
+  const roleTranslate = (role: string) => {
+    switch (role) {
+      case "ADMIN":
+        return "Administrador";
+      case "DISTRIBUTOR":
+        return "Distribuidor";
+      case "USER":
+        return "Consumidor ";
+      default:
+        return role;
+    }
+  };
+
+  const fetchBalance = async () => {
+    const response = await axios.get(`/api/user/${session.data?.user.id}`);
+    const balanceDollars = (response.data.balance_in_cents / 100).toFixed(2);
+    setBalance(balanceDollars);
+  };
+
+  
+
+  useEffect(() => {
+    fetchBalance();
+    showAvatar();
+  }, []);
   const username = session.data?.user.name;
   const userEmail = session.data?.user.email;
-  const userAvatar = "/user.jpg";
- 
+
+  const showAvatar = () => {
+    const userId = session.data?.user.id;
+    if(session.data?.user.role == "ADMIN"){
+      setAvatar(`/admin/admin_${userId}.png`);
+    }else if(session.data?.user.role === "USER" || session.data?.user.role === "DISTRIBUTOR") {
+      setAvatar(`/users/user_${userId}.png`)
+    }else{
+      setAvatar('/user.jpg');
+    }
+  } 
 
   return (
     <div className=" user-select-none fixed z-20 top-0 left-0 h-[70px] shadow w-full bg-white text-[#444}">
@@ -66,7 +101,7 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
         </Link>
 
         <div className="flex gap-4 lg:gap-8 items-center">
-         {/*  <button
+          {/*  <button
             className="rounded-full p-2  hover:bg-gray-100 transition-all duration-300 relative"
             onClick={toggleNotifications}
           >
@@ -78,11 +113,11 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
           {/* monedero */}
           {userRole !== "ADMIN" ? (
             <Link
-              href={"/creditaciones"}
+              href={"/home/creditaciones"}
               className=" rounded-full w-fit h-fit p-1 md:px-4 md:py-2 hover:bg-gray-100 flex items-center gap-2 transition-all duration-300"
             >
               <BiSolidWallet className="text-xl lg:text-2xl text-yellow-800 inline-block" />
-              <span className="text-[#888] text-sm md:text-lg">$ 21.87</span>
+              <span className="text-[#888] text-sm md:text-lg">{balance}</span>
             </Link>
           ) : (
             <button
@@ -98,21 +133,21 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
             onClick={togglePerfil}
           >
             <img
-              src="/user.jpg"
-              alt="user"
-              className="h-full w-auto object-cover rounded-full "
+              src={avatar}
+              alt={session.data?.user.name}
+              className="h-full w-auto object-cover aspect-square rounded-full "
               loading="lazy"
             />
             <div>
-              <p className="text-sm text-[#444]">{username}</p>
-              <p className="text-xs text-[#888]">{userRole}</p>
+              <p className="text-sm text-[#444] capitalize">{username?.toLowerCase()}</p>
+              <p className="text-xs text-[#888] uppercase">{roleTranslate(userRole)}</p>
             </div>
             {/* card profile */}
             {perfilOpen && (
               <div className=" max-h-[90vh]  overflow-y-auto absolute top-[65px]  bg-white shadow-cardFloat w-fit right-0 flex flex-col gap-4 pt-8 items-center rounded-md animate-keep-slide-down">
                 <img
-                  src={userAvatar}
-                  alt="user"
+                  src={avatar}
+                  alt={session.data?.user.name}
                   className="h-20 w-20 object-cover rounded-full shadow "
                   loading="lazy"
                 />
@@ -125,7 +160,9 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
                 <ul>
                   <li>
                     <Link
-                       href={`${userRole === "ADMIN"? '/admin/perfil' : '/home/perfil'}`}
+                      href={`${
+                        userRole === "ADMIN" ? "/admin/perfil" : "/home/perfil"
+                      }`}
                       className="w-full flex gap-4 border-b border-gray-200 px-6 py-2 text-[#888] whitespace-nowrap hover:bg-[#f3f3f9]"
                     >
                       <FaRegUser className="text-xl text-[#F2308B]" /> Mi Perfil
@@ -142,7 +179,11 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
 
                   <li>
                     <Link
-                      href={`${userRole === "ADMIN"? '/admin/contrasenia' : '/home/contrasenia'}`}
+                      href={`${
+                        userRole === "ADMIN"
+                          ? "/admin/contrasenia"
+                          : "/home/contrasenia"
+                      }`}
                       className="w-full flex gap-4 border-b border-gray-200 px-6 py-2 text-[#888] whitespace-nowrap hover:bg-[#f3f3f9]"
                     >
                       <MdLockReset className="text-xl text-[#F2308B]" /> Cambiar

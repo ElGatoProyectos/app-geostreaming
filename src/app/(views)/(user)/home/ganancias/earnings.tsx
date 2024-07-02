@@ -3,14 +3,19 @@ import React, { useEffect, useState } from "react";
 import Table from "@/app/components/common/table";
 import NoRecords from "@/app/components/common/noRecords";
 import axios from "axios";
+import { useSession } from "next-auth/react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Reports = () => {
   const [earnings, setEarnings] = useState<any[]>([]);
   const data: any[] = [];
+  const session = useSession();
 
   const fetchEarnings = async () => {
     try {
-      const response = await axios.get("/api/");/* ? */
+      const response = await axios.get(`/api/userSales/${session.data?.user.id}`);
+      console.log(response.data);
       setEarnings(response.data);
     } catch (error) {
       console.error("Error fetching banks:", error);

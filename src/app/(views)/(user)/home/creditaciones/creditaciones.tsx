@@ -8,6 +8,7 @@ import { SubmitHandler } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useSession } from "next-auth/react";
 
 interface AccountInfo {
   title: string;
@@ -15,9 +16,10 @@ interface AccountInfo {
 }
 type Inputs = {
   id?: number;
-  voucher_number: string;
+  number: string;
   value: string;
   date: string;
+  file: string;
 };
 
 const Account = () => {
@@ -26,6 +28,8 @@ const Account = () => {
   const [modalTitle, setModalTitle] = useState("");
   const [modalInfo, setModalInfo] = useState<AccountInfo | null>(null);
   const [loading, setLoading] = useState(false);
+
+  const session = useSession();
 
   const handleOpenModal = (title: string, info: AccountInfo) => {
     setModalTitle("Registrar Deposito");
@@ -50,18 +54,28 @@ const Account = () => {
 
   const handleFormSubmit: SubmitHandler<Inputs> = async (data) => {
     setLoading(true);
-    console.log(data);
+    console.log('Form data:', data);
     try {
-      await axios.put(`/api/voucher/`, {
-        voucher_number: data.voucher_number,
-        value: data.value,
-        date: data.date,
-        user_id: 1 /* modificar */,
-      });
+      
+      const formDataAll = new  FormData();
+      formDataAll.append('user_id', String(session.data?.user.id));
+      formDataAll.append('value', String(data.value));
+      formDataAll.append('date', new Date(data.date).toISOString());
+      formDataAll.append('file',data.file[0]);
+      formDataAll.append('number', String(data.number));
+      formDataAll.append('country_code', '');
+
+      console.log(formDataAll);
+      await axios.post(`/api/voucher`,formDataAll, 
+        {
+          headers: {
+      
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
       toast.success("Compra registrada");
-      useEffect(() => {
         fetchBanks();
-      }, []);
 
       closeModal();
     } catch (error) {
@@ -80,7 +94,7 @@ const Account = () => {
             id={item.id}
             key={item.id}
             title={item.bank}
-            url={item.url}
+            url={item.bank_url}
             account_number={item.number}
             account_holder={item.name}
             btn={"Registrar"}

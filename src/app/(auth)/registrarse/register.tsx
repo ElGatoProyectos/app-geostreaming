@@ -12,7 +12,6 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import CountrySelect from "@/app/components/forms/countrySelect";
 
-
 type Inputs = {
   name: string;
   email: string;
@@ -124,7 +123,7 @@ const register = () => {
           </div>
         </div>
         <div className="w-full flex flex-col lg:flex-row gap-2 lg:gap-8">
-          <div className="flex flex-col w-full lg:w-1/2 gap-2 ">
+          <div className="flex flex-col w-full gap-2 ">
             <label htmlFor="email" className=" flex items-center">
               Email:
             </label>
@@ -153,13 +152,17 @@ const register = () => {
               </p>
             )}
           </div>
-          <CountrySelect
-            id="country_code"
-            register={register("country_code")}
-          />
+        </div>
+        <div className="w-full flex flex-col lg:flex-row gap-2 lg:gap-8">
+          <div className="w-full lg:w-1/2">
+            <CountrySelect
+              id="country_code"
+              register={register("country_code")}
+            />
+          </div>
           <div className="flex flex-col w-full lg:w-1/2 gap-2">
             <label htmlFor="phone" className=" flex items-center">
-              Celular (whatsapp):
+              Celular (WhatsApp):
             </label>
             <div className="relative">
               <input
