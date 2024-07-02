@@ -141,7 +141,7 @@ const initialPlatforms = [
     days_duration: 30,
     price_in_cents: 1250,
     price_distributor_in_cents: 1100,
-    status: "IMMEDIATE_DELIVERY",
+    status: "UPON_REQUEST",
   },
   {
     img_url:
