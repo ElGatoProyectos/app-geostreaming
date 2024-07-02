@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-import { validateOrder } from "@/lib/validations/order";
+import { validateAssignOrder, validateOrder } from "@/lib/validations/order";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -13,13 +13,22 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    orderValidated = validateOrder(orderInfo);
+    orderValidated = validateAssignOrder(orderInfo);
   } catch (error) {
     return NextResponse.json({ error: "Validation error" }, { status: 400 });
   }
 
   let platform;
   let user;
+  let order;
+
+  order = await prisma.order.findUnique({
+    where: { id: orderValidated.order_id },
+  });
+
+  if (!order) {
+    return NextResponse.json({ error: "order not exist" }, { status: 500 });
+  }
 
   try {
     platform = await prisma.platform.findUnique({
@@ -125,77 +134,10 @@ export async function POST(req: NextRequest) {
         }
       }
     }
-
-    const statusOrder = status;
-
-    if (statusOrder === "PENDING") {
-      const dataOrder = {
-        role: user.role,
-        ref_id: user.ref_id,
-        user_id,
-        platform_id,
-        status: statusOrder,
-      };
-
-      try {
-        const newOrder = await prisma.order.create({
-          data: dataOrder,
-          select: {
-            id: true,
-            role: true,
-            platform: { select: { name: true } },
-          },
-        });
-
-        const wspMessage = `👋 Hola ${user.full_name}\n _Pedido #${newOrder.id} PENDIENTE_\n🖥️ Plataforma: ${platform.name}\n📧 La espera aproximada es de 1 hora, y enviaremos la información a este número de WhatsApp.`;
-
-        const userPhone = user.phone;
-
-        const url_wsp = "http://localhost:4000/notifications";
-        const options = {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            // Authorization: `Bearer ${token}`,
-          },
-
-          body: JSON.stringify({
-            phone: userPhone,
-            message: wspMessage,
-            country_code: user.country_code,
-          }),
-        };
-
-        const res = await fetch(url_wsp, options);
-        const json = await res.json();
-
-        await prisma.notification.create({
-          data: { phone_client: userPhone, message: wspMessage },
-        });
-
-        return NextResponse.json({ newOrder, json });
-      } catch (e) {
-        return NextResponse.json(
-          { error: "Error creating order pending" },
-          { status: 500 }
-        );
-      }
-    }
-
-    const accountselected = platform.Account.find(
-      (cuenta) => !cuenta.is_active
-    );
-
-    if (!accountselected) {
-      return NextResponse.json(
-        { error: "No accounts for sale" },
-        { status: 500 }
-      );
-    }
-
+    let account;
     try {
-      await prisma.account.update({
-        where: { id: accountselected.id },
+      account = await prisma.account.update({
+        where: { id: orderValidated.account_id },
         data: {
           is_active: true,
           user_id: user_id,
@@ -211,29 +153,18 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const dataOrder = {
-      role: user.role,
-      ref_id: user.ref_id,
-      user_id,
-      platform_id,
-    };
-
     try {
-      const newOrder = await prisma.order.create({
-        data: dataOrder,
-        select: {
-          id: true,
-          role: true,
-          platform: { select: { name: true } },
-        },
+      const updatedOrder = await prisma.order.update({
+        where: { id: orderValidated.order_id },
+        data: { status: "ATTENDED" },
       });
 
-      const responseOrder = { ...newOrder, account: accountselected };
+      const responseOrder = { ...updatedOrder, account: account };
 
-      const { email, password, pin, description } = accountselected;
+      const { email, password, pin, description } = account;
 
       const wspMessage = `👋 Hola ${user.full_name}\n _Pedido #${
-        newOrder.id
+        updatedOrder.id
       } Completado_\n🖥️ Plataforma: ${
         platform.name
       }\n📧 Email: ${email}\n🔑 Password: ${password}\n🔢 Pin: ${pin}\n${

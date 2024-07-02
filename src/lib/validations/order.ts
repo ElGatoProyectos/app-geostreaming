@@ -14,3 +14,19 @@ export function validateOrder(orderInfo: unknown) {
   }
   return parseResut.data;
 }
+
+const orderPendingSchema = z.object({
+  order_id: z.number(),
+  account_id: z.number(),
+  user_id: z.number(),
+  platform_id: z.number(),
+  status: z.enum(["ATTENDED", "PENDING"]),
+});
+
+export function validateAssignOrder(orderPending: unknown) {
+  const parseResut = orderPendingSchema.safeParse(orderPending);
+  if (!parseResut.success) {
+    throw new Error("Invalid Order info");
+  }
+  return parseResut.data;
+}

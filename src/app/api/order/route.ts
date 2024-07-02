@@ -194,7 +194,7 @@ export async function POST(req: NextRequest) {
         );
       }
     }
-
+    // si el estatus no esta en pendiente
     const accountselected = platform.Account.find(
       (cuenta) => !cuenta.is_active
     );
