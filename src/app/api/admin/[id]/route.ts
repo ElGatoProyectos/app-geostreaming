@@ -83,10 +83,9 @@ export async function PATCH(
 
   try {
     /* adminInfo = await req.json(); */
-    const data : any= await req.formData()
-    
+    const data: any = await req.formData();
 
-    const file = data.get("file") ;
+    const file = data.get("file");
     const email = data.get("email");
     const full_name = data.get("full_name");
     const phone = data.get("phone");
@@ -97,9 +96,9 @@ export async function PATCH(
       email,
       full_name,
       phone,
-      country_code
-    }
-    console.log(adminInfo)
+      country_code,
+    };
+    console.log(adminInfo);
   } catch (error) {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
@@ -115,9 +114,8 @@ export async function PATCH(
   let updatedAdmin;
 
   try {
-<<<<<<< HEAD
-    const { file, ...restData } = adminInfo
-    if (adminInfo.file!=="undefined") {
+    const { file, ...restData } = adminInfo;
+    if (adminInfo.file !== "undefined") {
       const bytes = await adminInfo.file.arrayBuffer();
       const buffer = Buffer.from(bytes);
       const nameImage = "admin_" + params.id + ".png";
@@ -128,22 +126,19 @@ export async function PATCH(
         data: restData,
       });
     } else {
-
       updatedAdmin = await prisma.admin.update({
         where: { id: Number(params.id) },
         data: restData,
       });
     }
 
-=======
     updatedAdmin = await prisma.admin.update({
       where: { id: admin_id },
-      data: validatedAdmin,
+      data: restData,
     });
     await prisma.$disconnect();
->>>>>>> ec9781190bb1d8bf1b0372b5b0044c7eb416702d
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return NextResponse.json(
       { error: "Error updating admin" },
       { status: 500 }
