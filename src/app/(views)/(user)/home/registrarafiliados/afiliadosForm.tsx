@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import InputField from "@/app/components/forms/inputField";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
-import {UserSchema } from "@/app/schemas/userSchema";
+import {AfiliadosFormSchema } from "@/app/schemas/afiliadosFormSchema";
 import CountrySelect from "@/app/components/forms/countrySelect";
 
 type Inputs = {
@@ -33,7 +33,7 @@ const AfiliadosForm: React.FC<AfiliadosProps> = ({
     formState: { errors },
     reset,
   } = useForm<Inputs>({
-    resolver: zodResolver(UserSchema),
+    resolver: zodResolver(AfiliadosFormSchema),
     defaultValues,
   });
 
