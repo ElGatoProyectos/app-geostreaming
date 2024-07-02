@@ -71,10 +71,7 @@ const AccountForm: React.FC<AccountFormProps> = ({
 
     try {
       await onSubmit(
-        data /* {
-        ...data,
-        is_active: data.is_active === "1" ? true: false,
-      } */
+        data
       );
     } catch (error) {
       console.error("Error al registrar la cuenta:", error);
@@ -157,7 +154,7 @@ const AccountForm: React.FC<AccountFormProps> = ({
         Estado de la cuenta
         <select
           id="is_active"
-          defaultValue={defaultValues?.is_active && "1"}
+          defaultValue={defaultValues?.is_active && "0"}
           className={`w-full text-[#666] bg-gray-50 border rounded outline-none px-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
             errors.is_active
               ? "border-red-500 focus:ring focus:ring-red-200 focus:border-red-500"

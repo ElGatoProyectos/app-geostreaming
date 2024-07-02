@@ -52,12 +52,9 @@ const Order = () => {
         axios.get("/api/platform"),
         axios.get("/api/user"),
       ]);
-      /* const filteredOrders = accountsResponse.data.filter((order: any) => {
-        return order.user_id === Number(session.data?.user.id);
-      }); */
       setOrders(ordersResponse.data);
       setPlatform(platformResponse.data);
-      setUsers(userResponse.data.users);
+      setUsers(userResponse.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -67,28 +64,6 @@ const Order = () => {
     fetchData();
   }, []);
 
-  /* const handleSaveOrder: SubmitHandler<Users> = async (data) => {
-    setLoading(true);
-    console.log(data);
-    try {
-      if (data.id) {
-        await axios.put(`/api/user/${data.id}`, {});
-        toast.success("Se actualizo correctamente");
-      } else {
-        await axios.post("/api/user", {});
-        toast.success("Se guardo correctamente");
-      }
-
-
-
-      closeModal();
-    } catch (error) {
-      console.error("Error al guardar la cuenta:", error);
-      toast.error("Hubo un error al guardar la cuenta");
-    } finally {
-      setLoading(false);
-    }
-  }; */
   const columns = [
     { Header: "Id", accessor: "id" },
     {
@@ -102,43 +77,16 @@ const Order = () => {
     {
       Header: "Usuario",
       accessor: (row: any) => {
-        if (!users || users.length === 0) return "No disponible";
-        const user = users.find((p) => p.id === row.platform_id);
-        return user ? user.dni : "No disponible";
+        if (!users || users.length === 0) return "No asignado";
+        const user = users.find((u) => u.id === row.user_id);
+        return user ? user.dni : "No asignado";
       },
     },
-    /* { Header: 'Correo', accessor: 'email' },
-    { Header: 'Contraseña', accessor: 'password' },
-    { Header: 'pin', accessor: 'pin'}, */
     {
       Header: "Estado",
       accessor: (row: any) => (row.status === 'ATTENDED' ? "Atendido" : "No atendido"),/* corregir */
     },
-    /* {
-      Header: "Fecha de compra",
-      accessor: (row: any) => formatDate(row.purchase_date),
-    },
-    {
-      Header: "Fecha de renovación",
-      accessor: (row: any) => formatDate(row.renewal_date),
-    }, *//* 
-    { Header: "Fecha de compra", accessor: "status" },
-    { Header: "Fecha de vencimiento", accessor: "platform_id" }, */
-   
   ];
-
-  const formatDate = (dateString?: string): string => {
-    if (!dateString) {
-      return "Sin fecha";
-    }
-
-    const date = new Date(dateString);
-    if (isNaN(date.getTime())) {
-      return "Fecha inválida";
-    }
-
-    return format(date, "PPPp", { locale: es });
-  };
 
   const handleSendModal = (record: any) => {
     setSelectedRecord(record);
@@ -172,7 +120,6 @@ const Order = () => {
     
         onApprove={handleSendModal}
       />
-      {/* modal send */}
       <Modal isOpen={isSendModalOpen} title="Asignar Cuenta" onClose={() => setIsSendModalOpen(false)}>
         <AssignAccountForm platformId={selectedRecord?.platform_id} onSubmit={handleAssignAccount}/>
       </Modal>

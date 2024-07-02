@@ -20,7 +20,6 @@ const Deposits = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState<any | null>(null);
-/*   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); */
   const [loading, setLoading] = useState(false);
 
   /* fetch */
@@ -68,23 +67,6 @@ const Deposits = () => {
     setSelectedImage(`/vouchers/vouchers_${voucherId}.png`);
   };
 
-/*   const handleDelete = (record: any) => {
-    setSelectedRecord(record);
-    setIsDeleteModalOpen(true);
-  }; */
-
-/*   const handleDeleteConfirm = async () => {
-    try {
-      await axios.delete(`/api/voucher/`);
-      toast.success("Cuenta eliminada correctamente");
-      fetchDeposits();
-      setIsDeleteModalOpen(false);
-    } catch (error) {
-      console.error("Error al eliminar la cuenta:", error);
-      toast.error("Hubo un error al eliminar la cuenta");
-    }
-  }; */
-
   const handleApprove: SubmitHandler<any> = async (data) => {
     console.log(selectedRecord?.user_id)
     console.log(data);
@@ -101,6 +83,7 @@ const Deposits = () => {
 
   const columns = [
     { Header: "ID", accessor: "id" },
+    { Header: "Estado", accessor: "status" },
     {
       Header: "Usuario",
       accessor: (row: any) => {
@@ -132,7 +115,6 @@ const Deposits = () => {
         data={vouchers}
         showActions={true}
         title="Depósitos"
-        /* onDelete={handleDelete} */
         onApprove={handleModal}
       />
 
@@ -144,32 +126,7 @@ const Deposits = () => {
         <DepositForm
         onSubmit={handleApprove}
         />
-        {/* <label htmlFor="value">Monto(centavos)</label>
-        <input type="number" id="value" required placeholder="Ingresar monto en centavos " title="Ingresar el monto en centavos" className="w-full"/>
-
-        <div className="mx-auto mt-4 w-fit">
-          <ActionButton onClick={handleApprove}>
-            Confirmar Aprobación
-          </ActionButton>
-        </div> */}
       </Modal>
-      {/* delete modal */}
-      {/* <Modal
-        isOpen={isDeleteModalOpen}
-        onClose={() => setIsDeleteModalOpen(false)}
-        title="Confirmar eliminación"
-      >
-        <div>
-          <p>¿Está seguro(a) de que quiere eliminar esta cuenta?</p>
-          <button
-            onClick={handleDeleteConfirm}
-            className="bg-red-500 text-white mt-4 px-4 py-1 rounded"
-          >
-            Eliminar
-          </button>
-        </div>
-      </Modal> */}
-
       {selectedImage && (
         <div className="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-75 flex justify-center items-center z-50">
           <img

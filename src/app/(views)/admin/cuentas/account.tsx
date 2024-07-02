@@ -202,7 +202,7 @@ const Account = () => {
       } else {
         await axios.post(
           "/api/account",
-          JSON.stringify({
+          {
             is_active: data.is_active === "1" ? true : false,
             email: data.email,
             password: data.password,
@@ -210,7 +210,7 @@ const Account = () => {
             description: data.description,
             platform_id: data.platform_id,
             status: "NOT_BOUGHT",
-          })
+          }
         );
         toast.success("Se guardo correctamente");
       }
