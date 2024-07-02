@@ -7,7 +7,6 @@ import { SubmitHandler } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { LuSend } from "react-icons/lu";
 import AssignAccountForm from "./assignAccount";
 import { useSession } from "next-auth/react";
 import { format } from "date-fns";
@@ -164,27 +163,42 @@ const Order = () => {
     setIsDeleteModalOpen(true);
   };
 
-  const handleDeleteConfirm = async () => {
+/*   const handleDeleteConfirm = async () => {
     try {
-      /*  await axios.delete(`/api/account/${selectedRecord?.id}`);
+       await axios.delete(`/api/account/${selectedRecord?.id}`);
       toast.success("Registro eliminado correctamente");
-      fetchUsers(); */
+      fetchUsers();
       setIsDeleteModalOpen(false);
     } catch (error) {
       console.error("Error al eliminar el registro:", error);
       toast.error("Hubo un error al eliminar el registro");
     }
     setIsDeleteModalOpen(false);
-  };
+  }; */
   const handleSendModal = (record: any) => {
     setSelectedRecord(record);
     console.log(record);
     setIsSendModalOpen(true);
   }
 
-  const handleAssignAccount: SubmitHandler<any> = async() => {
+  const handleAssignAccount: SubmitHandler<any> = async(data) => {
+    console.log({
+      order_id: selectedRecord.id,
+      account_id: Number(data.account),
+      user_id: selectedRecord.user_id,
+      platform_id: selectedRecord.platform_id,
+      status: 'ATTENDED'
+    });
+
     try {
-      await axios.patch('/api/');
+     const response = await axios.post('/api/order/assign', {
+        order_id: selectedRecord.id,
+        account_id: data.account,
+        user_id: selectedRecord.user_id,
+        platform_id: selectedRecord.platform_id,
+        status: 'ATTENDED'
+      });
+      console.log(response);
       toast.success("Cuenta asignada correctamente");
     } catch (error) {
       console.log("Error al eliminar el registro", error);
@@ -211,7 +225,7 @@ const Order = () => {
         download={true}
         title="Pedidos"
         /* onEdit={handleEdit} */
-        onDelete={handleDelete}
+       /*  onDelete={handleDelete} */
         onApprove={handleSendModal}
       />
       {/* modal form add and edit */}
@@ -233,7 +247,7 @@ const Order = () => {
         />
       </Modal> */}
       {/* modal delete */}
-      <Modal
+     {/*  <Modal
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
         title="Confirmar eliminación"
@@ -247,7 +261,7 @@ const Order = () => {
             Eliminar
           </button>
         </div>
-      </Modal>
+      </Modal> */}
       {/* modal send */}
       <Modal isOpen={isSendModalOpen} title="Asignar Cuenta" onClose={() => setIsSendModalOpen(false)}>
         <AssignAccountForm platformId={selectedRecord?.platform_id} onSubmit={handleAssignAccount}/>

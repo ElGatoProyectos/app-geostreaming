@@ -1,34 +1,47 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { RiUserSharedLine } from "react-icons/ri";
 import { FaUsers } from "react-icons/fa";
 import CountNumber from "@/app/components/countNumber";
 import { IoMdCart } from "react-icons/io";
 import { MdOutlineAccountBox } from "react-icons/md";
+import axios from "axios";
 
 const home = () => {
+  const [data, setData] = useState<any>({});
+  const [products, setProducts] = useState<any>({});
+  const [afiliados, setAfiliados] = useState<any>({});
+  const fetchData = async() => {
+    const response = await axios.get('/api/dashboard');
+    console.log(response.data);
+    setData(response.data);
+  }
+  useEffect(()=>{
+    fetchData();
+  }, []);
+
   const infoCards = [
     {
       title: "Afiliados",
-      number: 120,
+      number: data.afiliados,
       icon: <RiUserSharedLine className="text-xl mx-auto" />,
       span: "registrados",
     },
     {
       title: "Consumidores",
-      number: 156,
+      number: data.consumidores,
       icon: <FaUsers className="text-xl mx-auto" />,
       span: "registrados",
     },
     {
       title: "Productos",
-      number: 32,
+      number: data.cantidadDeProductos,
       icon: <IoMdCart className="text-xl mx-auto" />,
       span: "disponibles",
     },
     {
       title: "Cuentas",
-      number: 35,
+      number: data.cuentasDeVenta,
       icon: <MdOutlineAccountBox className="text-xl mx-auto" />,
       span: "activas",
     },
@@ -113,32 +126,6 @@ const home = () => {
             </table>
           </div>
         </div>
-        {/* bancos */}
-        {/* <div className="w-full rounded-lg bg-white p-6  shadow-box  transition-all duration-500">
-          <h2 className=" text-xl capitalize mb-4 text-[#444] font-medium">
-            Top 5 Bancos más usados
-          </h2>
-          <div className="overflow-x-auto">
-            <table className="w-full table-auto">
-              <thead className="bg-[#F3F6F9] font-medium text-[#888] text-sm">
-                <tr>
-                  <th className="p-2 text-left">N</th>
-                  <th className="p-2 text-left">Banco</th>
-                  <th className="p-2 text-center">Transacciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                {topAfiliados.map((afiliado, index) => (
-                  <tr key={index} className="text  text-[#666]">
-                    <td className="p-2">{index + 1}</td>
-                    <td className="p-2 flex flex-wrap items-center gap-2">BCP</td>
-                    <td className="p-2 text-center">100</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div> */}
         {/* afiliados */}
         <div className="w-full rounded-lg bg-white p-6  shadow-box  transition-all duration-500">
           <h2 className=" text-xl capitalize mb-4 text-[#444] font-medium">
@@ -174,41 +161,7 @@ const home = () => {
             </table>
           </div>
         </div>
-        {/* consumidores */}
-        {/* <div className="w-full rounded-lg bg-white p-6  shadow-box  transition-all duration-500">
-          <h2 className=" text-xl capitalize mb-4 text-[#444] font-medium">
-            Top 5 consumidores
-          </h2>
-          <div className="overflow-x-auto">
-            <table className="w-full table-auto">
-              <thead className="bg-[#F3F6F9] font-medium text-[#888] text-sm">
-                <tr>
-                  <th className="p-2 text-left">N</th>
-                  <th className="p-2 text-left">Consumidor</th>
-                  <th className="p-2 text-center">Cuentas</th>
-                  <th className="p-2 text-center">Créditos</th>
-                </tr>
-              </thead>
-              <tbody>
-                {topAfiliados.map((afiliado, index) => (
-                  <tr key={index} className="text  text-[#666]">
-                    <td className="p-2">{index + 1}</td>
-                    <td className="p-2 flex flex-wrap items-center gap-2">
-                      <img
-                        className="h-6 w-6 object-cover rounded-full inline-block"
-                        src={afiliado.avatar}
-                        alt={afiliado.name}
-                      />
-                      consumidor
-                    </td>
-                    <td className="p-2 text-center">10</td>
-                    <td className="p-2 text-center">$ 50.00</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div> */}
+       
       </div>
     </>
   );

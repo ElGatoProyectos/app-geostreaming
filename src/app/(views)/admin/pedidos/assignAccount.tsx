@@ -16,6 +16,7 @@ interface AssignAccountProps {
   defaultValues?: Inputs;
   onSubmit: SubmitHandler<Inputs>;
   platformId: number;
+
 }
 
 const AssignAccountForm: React.FC<AssignAccountProps> = ({
@@ -59,12 +60,11 @@ const AssignAccountForm: React.FC<AssignAccountProps> = ({
       }
     };
     fetchData();
-    console.log(defaultValues)
   }, []);
 
   const handleFormSubmit: SubmitHandler<Inputs> = async (data) => {
     setLoading(true);
-
+    console.log(data);
     try {
       await onSubmit(data);
     } catch (error) {
@@ -82,21 +82,23 @@ const AssignAccountForm: React.FC<AssignAccountProps> = ({
       {defaultValues?.id && (
         <input type="hidden" {...register("id")} value={defaultValues.id} />
       )}
-      <div className="overflow-auto">
+      {/* <div className="overflow-auto">
         <Autocomplete
           defaultItems={accounts}
           placeholder="Seleccione una cuenta"
           className="bg-gray-100 placeholder:text-[#444]"
+          id="account"
+          {...register("account")}
         >
           {(account: any) => (
-            <AutocompleteItem key={account.id}>
+            <AutocompleteItem value={account.id} key={account.id}>
               {account.email}
             </AutocompleteItem>
           )}
         </Autocomplete>
-      </div>
+      </div> */}
 
-      {/* <label htmlFor="type" className="text-[#444]">
+      <label htmlFor="type" className="text-[#444]">
         Seleccionar Cuenta:
         <select
           id="account"
@@ -108,15 +110,17 @@ const AssignAccountForm: React.FC<AssignAccountProps> = ({
           {...register("account")}
         >
           <option value="">Seleccione una cuenta</option>
-          <option value="1">cuenta 1</option>
-          <option value="2">cuenta 2</option>
+          {accounts.map((account) =>(
+            <option value={account.id}>{account.email}</option>
+          ))}
+        
         </select>
         {errors.account && (
           <p className="text-red-500 text-sm font-medium mt-1">
             {errors.account.message}
           </p>
         )}
-      </label> */}
+      </label>
       <div className=" w-full flex flex-col gap-4">
         <button
           type="submit"
