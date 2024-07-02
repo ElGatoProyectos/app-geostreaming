@@ -173,7 +173,7 @@ export async function POST(req: NextRequest) {
 
       const userPhone = user.phone;
 
-      const url_wsp = "http://localhost:4000/notifications";
+     /*  const url_wsp = "http://localhost:4000/notifications";
       const options = {
         method: "POST",
         headers: {
@@ -187,7 +187,7 @@ export async function POST(req: NextRequest) {
           country_code: user.country_code,
         }),
       };
-
+ */
       try {
         await prisma.user.update({
           where: { id: user_id },
@@ -200,8 +200,8 @@ export async function POST(req: NextRequest) {
         );
       }
 
-      const res = await fetch(url_wsp, options);
-      const json = await res.json();
+/*       const res = await fetch(url_wsp, options);
+      const json = await res.json(); */
 
       await prisma.notification.create({
         data: { phone_client: userPhone, message: wspMessage },
@@ -209,7 +209,7 @@ export async function POST(req: NextRequest) {
 
       return NextResponse.json({
         ...responseOrder,
-        json,
+        /* json, */
       });
     } catch (e) {
       return NextResponse.json(

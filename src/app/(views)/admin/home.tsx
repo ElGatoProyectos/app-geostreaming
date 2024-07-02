@@ -11,12 +11,14 @@ const home = () => {
   const [data, setData] = useState<any>({});
   const [products, setProducts] = useState<any>({});
   const [afiliados, setAfiliados] = useState<any>({});
-  const fetchData = async() => {
-    const response = await axios.get('/api/dashboard');
-    console.log(response.data);
+  const fetchData = async () => {
+    const response = await axios.get("/api/dashboard");
+    /* console.log(response.data); */
+    setProducts(response.data.productosMasVendidos);
+    setAfiliados(response.data.topAfiliados);
     setData(response.data);
-  }
-  useEffect(()=>{
+  };
+  useEffect(() => {
     fetchData();
   }, []);
 
@@ -61,20 +63,6 @@ const home = () => {
     { name: "Diego", avatar: "./user.jpg", ventas: 30, consumidores: 7 },
   ];
 
-  const topProducts = [
-    { name: "Netflix 1 perfil", cantidad: 67 },
-    { name: "Amazon Prime", cantidad: 82 },
-    { name: "Disney+", cantidad: 75 },
-    { name: "Porn Hub", cantidad: 69 },
-    { name: "Canva Pro", cantidad: 60 },
-    { name: "Combo 1", cantidad: 67 },
-    { name: "Combo 2", cantidad: 82 },
-    { name: "Spotify", cantidad: 75 },
-    { name: "Youtube Premium", cantidad: 69 },
-    { name: "Magis TV", cantidad: 60 },
-  ];
-
-
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 gap-8">
@@ -115,13 +103,19 @@ const home = () => {
                 </tr>
               </thead>
               <tbody>
-                {topProducts.map((product, index) => (
-                  <tr key={index} className="text  text-[#666]">
-                    <td className="p-2">{index + 1}</td>
-                    <td className="p-2">{product.name}</td>
-                    <td className="p-2 text-center">{product.cantidad}</td>
+                {products.length > 0 ? (
+                  products.map((product: any, index:number) => (
+                    <tr key={index} className="text  text-[#666]">
+                      <td className="p-2">{index + 1}</td>
+                      <td className="p-2">{product.name}</td>
+                      <td className="p-2 text-center">{product._count.Account !== undefined? product._count.Account : 0}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={3} className="p-2 text-[#666]">Sin productos</td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
           </div>
@@ -142,26 +136,23 @@ const home = () => {
                 </tr>
               </thead>
               <tbody>
-                {topAfiliados.map((afiliado, index) => (
-                  <tr key={index} className="text  text-[#666]">
-                    <td className="p-2">{index + 1}</td>
-                    <td className="p-2 flex flex-wrap items-center gap-2">
-                      <img
-                        className="h-6 w-6 object-cover rounded-full inline-block"
-                        src={afiliado.avatar}
-                        alt={afiliado.name}
-                      />
-                      {afiliado.name}
-                    </td>
-                    <td className="p-2 text-center">{afiliado.consumidores}</td>
-                    <td className="p-2 text-center">{afiliado.ventas}</td>
+                {afiliados.length > 0 ? (
+                  afiliados.map((afiliados: any, index:number) => (
+                    <tr key={index} className="text  text-[#666]">
+                      <td className="p-2">{index + 1}</td>
+                      <td className="p-2">{afiliados.name}</td>
+                      <td className="p-2 text-center">{afiliados.Account !== undefined ? afiliados.Account : 0}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={3} className="p-2 text-[#666]">Sin afiliados</td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
           </div>
         </div>
-       
       </div>
     </>
   );
