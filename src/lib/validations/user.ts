@@ -7,7 +7,7 @@ const UserSchema = z.object({
   full_name: z.string(),
   dni: z.string(),
   phone: z.string(),
-  /* password: z.string(), */
+  password: z.string(),
   country_code: z.string(),
   enabled: z.enum(["y", "n"]).default("y"),
 });
