@@ -36,7 +36,6 @@ const Platform = () => {
 
   /* modal add and edit */
 
-
   const closeModal = () => {
     setIsModalOpen(false);
   };
@@ -82,11 +81,11 @@ const Platform = () => {
   };
 
   const handleSavePlatform: SubmitHandler<Platform> = async (data) => {
-    console.log(data)
+    console.log(data);
     setLoading(true);
     try {
       if (data.id) {
-        console.log(data)
+        console.log(data);
         await axios.patch(`/api/platform/${data.id}`, {
           img_url: data.img_url,
           name: data.name,
@@ -98,7 +97,7 @@ const Platform = () => {
         });
         toast.success("Se actualizo correctamente");
       } else {
-        console.log(data)
+        console.log(data);
         await axios.post("/api/platform", {
           img_url: data.img_url,
           name: data.name,

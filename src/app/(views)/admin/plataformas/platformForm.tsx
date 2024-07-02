@@ -7,7 +7,6 @@ import { PlatformFormSchema } from "@/app/schemas/plataformFormSchema";
 
 type PlatformStatus = "IMMEDIATE_DELIVERY" | "UPON_REQUEST";
 
-
 type Inputs = {
   id?: number;
   name?: string;
@@ -28,7 +27,6 @@ const PlatformForm: React.FC<PlatformFormProps> = ({
   defaultValues,
   onSubmit,
 }) => {
-  
   const [loading, setLoading] = useState(false);
 
   const {
@@ -83,12 +81,12 @@ const PlatformForm: React.FC<PlatformFormProps> = ({
         register={register("description")}
         error={errors.description}
       />
-      
+
       <label htmlFor="status" className="text-[#444]">
         Tipo:
         <select
           id="status"
-          defaultValue={defaultValues?.status?? ""}
+          defaultValue={defaultValues?.status ?? ""}
           className={`mt-2 w-full text-[#666] bg-gray-50 border rounded outline-none px-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
             errors.status
               ? "border-red-500 focus:ring focus:ring-red-200 focus:border-red-500"
@@ -97,7 +95,7 @@ const PlatformForm: React.FC<PlatformFormProps> = ({
           {...register("status")}
         >
           <option value="">Seleccione tipo de producto</option>
-          <option  value="IMMEDIATE_DELIVERY">Entrega inmediata</option>
+          <option value="IMMEDIATE_DELIVERY">Entrega inmediata</option>
           <option value="UPON_REQUEST">A pedido</option>
         </select>
         {errors.status && (
@@ -111,7 +109,7 @@ const PlatformForm: React.FC<PlatformFormProps> = ({
         label="Precio Consumidor (centavos)"
         placeholder="$ 1000"
         type="number"
-        register={register("price_in_cents", {valueAsNumber: true})}
+        register={register("price_in_cents", { valueAsNumber: true })}
         error={errors.price_in_cents}
       />
       <InputField
@@ -119,7 +117,9 @@ const PlatformForm: React.FC<PlatformFormProps> = ({
         label="Precio Distribuidor (centavos)"
         placeholder="$ 1000"
         type="number"
-        register={register("price_distributor_in_cents", {valueAsNumber: true})}
+        register={register("price_distributor_in_cents", {
+          valueAsNumber: true,
+        })}
         error={errors.price_distributor_in_cents}
       />
       <InputField
@@ -127,7 +127,7 @@ const PlatformForm: React.FC<PlatformFormProps> = ({
         label="Días de duración"
         placeholder="30"
         type="number"
-        register={register("days_duration", {valueAsNumber: true})}
+        register={register("days_duration", { valueAsNumber: true })}
         error={errors.days_duration}
       />
       <div className=" w-full flex flex-col gap-4">
