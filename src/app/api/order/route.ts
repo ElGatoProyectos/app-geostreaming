@@ -164,29 +164,29 @@ export async function POST(req: NextRequest) {
 
         const userPhone = user.phone;
 
-        const url_wsp = "http://localhost:4000/notifications";
-        const options = {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            // Authorization: `Bearer ${token}`,
-          },
+        // const url_wsp = "http://localhost:4000/notifications";
+        // const options = {
+        //   method: "POST",
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //     // Authorization: `Bearer ${token}`,
+        //   },
 
-          body: JSON.stringify({
-            phone: userPhone,
-            message: wspMessage,
-            country_code: user.country_code,
-          }),
-        };
+        //   body: JSON.stringify({
+        //     phone: userPhone,
+        //     message: wspMessage,
+        //     country_code: user.country_code,
+        //   }),
+        // };
 
-        const res = await fetch(url_wsp, options);
-        const json = await res.json();
+        // const res = await fetch(url_wsp, options);
+        // const json = await res.json();
 
         await prisma.notification.create({
           data: { phone_client: userPhone, message: wspMessage },
         });
 
-        return NextResponse.json({ newOrder, json });
+        return NextResponse.json({ newOrder });
       } catch (e) {
         return NextResponse.json(
           { error: "Error creating order pending" },

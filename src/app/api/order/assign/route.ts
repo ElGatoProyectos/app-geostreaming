@@ -135,6 +135,7 @@ export async function POST(req: NextRequest) {
       }
     }
     let account;
+    console.log("orderValidated", orderValidated);
     try {
       account = await prisma.account.update({
         where: { id: orderValidated.account_id },
@@ -173,7 +174,7 @@ export async function POST(req: NextRequest) {
 
       const userPhone = user.phone;
 
-     /*  const url_wsp = "http://localhost:4000/notifications";
+      /*  const url_wsp = "http://localhost:4000/notifications";
       const options = {
         method: "POST",
         headers: {
@@ -200,7 +201,7 @@ export async function POST(req: NextRequest) {
         );
       }
 
-/*       const res = await fetch(url_wsp, options);
+      /*       const res = await fetch(url_wsp, options);
       const json = await res.json(); */
 
       await prisma.notification.create({
