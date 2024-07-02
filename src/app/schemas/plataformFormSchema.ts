@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const PlatformFormSchema = z.object({
-    id: z.number(),
+    id: z.number().optional(),
     name: z.string()
         .min(1, { message: 'El campo producto es requerido' }),
 
@@ -16,7 +16,9 @@ export const PlatformFormSchema = z.object({
     description: z.string()
         .min(1, { message: 'El campo descripción es requerido' }),
 
-    status: z.string(),
+    status: z.enum([
+        "IMMEDIATE_DELIVERY", "UPON_REQUEST"
+    ]).optional(),
     /* z.enum(['IMMEDIATE_DELIVERY', 'UPON_REQUEST'])
         .transform(value => value || undefined)
         .refine(

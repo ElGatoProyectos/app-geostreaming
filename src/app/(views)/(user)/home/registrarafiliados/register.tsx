@@ -8,6 +8,8 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
 
 type Inputs = {
   email?: string;
@@ -42,7 +44,7 @@ const register = () => {
         toast.success("Se actualizo correctamente");
         console.log("Editar afiliado:", data);
       } else {
-        await axios.post("/api/auth/register", {
+        await axios.post("/api/user", {
           full_name: data.full_name,
           email: data.email,
           dni: data.dni,
@@ -68,20 +70,33 @@ const register = () => {
       return user.ref_id === session.data?.user.id;
     });
     console.log(filteredUsers);
-    setAfiliados(response.data);
+    setAfiliados(filteredUsers);
   };
 
   useEffect(() => {
     fetchData();
   }, []);
 
+  const formatDate = (dateString?: string): string => {
+    if (!dateString) {
+      return "Sin fecha";
+    }
+
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+      return "Fecha inválida";
+    }
+
+    return format(date, "PPPp", { locale: es });
+  };
+
   const columns = [
     { Header: "Código", accessor: "id" },
-    { Header: "N Documento de identidad", accessor: "username" },
+    { Header: "N Documento de identidad", accessor: "dni" },
     { Header: "Nombre", accessor: "full_name" },
     { Header: "Correo", accessor: "email" },
     { Header: "Celular", accessor: "phone" },
-    { Header: "Fecha de ingreso", accessor: "date" },
+    { Header: "Fecha de ingreso", accessor: (row : any) => formatDate(row.created_at)},
   ];
 
   const handleEdit = (record: Inputs) => {

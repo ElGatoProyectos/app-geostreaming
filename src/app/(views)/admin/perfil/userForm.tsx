@@ -44,8 +44,6 @@ const UserForm: React.FC<UserFormProps> = ({
     reset(defaultValues);
   }, [defaultValues, reset]);
 
-  
-
   const handleFormSubmit: SubmitHandler<Inputs> = async (data) => {
     setLoading(true);
 
@@ -63,38 +61,26 @@ const UserForm: React.FC<UserFormProps> = ({
       onSubmit={handleSubmit(handleFormSubmit)}
       className="flex w-full flex-col gap-4 "
     >
-     {/*  <InputField
-        id="dni"
-        label="Documento de Identidad"
-        register={register("dni")}
-        error={errors.dni}
-        isDisabled={true}
-      /> */}
       <InputField
         id="full_name"
         label="Nombre"
         register={register("full_name")}
         error={errors.full_name}
-        /* isDisabled={true} */
       />
       <InputField
         id="email"
         label="Correo"
         register={register("email")}
         error={errors.email}
-        /* isDisabled={true} */
       />
       <div className="flex flex-col md:flex-row gap-4">
-        <CountrySelect
-          id="country_code"
-          register={register("country_code")}
+        <CountrySelect id="country_code" register={register("country_code")} />
+        <InputField
+          id="phone"
+          label="Celular"
+          register={register("phone")}
+          error={errors.phone}
         />
-         <InputField
-        id="phone"
-        label="Celular"
-        register={register("phone")}
-        error={errors.phone}
-      />
       </div>
       <div>
         <label htmlFor="file_input" className="text-[#444]">
@@ -135,7 +121,7 @@ const UserForm: React.FC<UserFormProps> = ({
               Cargando
             </span>
           ) : (
-            "Ingresar"
+            "Guardar"
           )}
         </button>
       </div>

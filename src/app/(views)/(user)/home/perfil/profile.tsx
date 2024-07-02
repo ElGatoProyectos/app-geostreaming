@@ -5,76 +5,51 @@ import UserForm from "./userForm";
 import BankForm from "./bankForm";
 import { SubmitHandler } from "react-hook-form";
 import axios from "axios";
+import { useSession } from "next-auth/react";
 
 type InputsPersonal = {
-  username: string;
+  dni: string;
   full_name: string;
   email: string;
   phone: string;
-  acreditaciones?: string;
-  avatar?: string;
-  code_country?: string;
-};
-type InputsBank = {
-  bank: string;
-  number: string;
-  name: string;
-  type: string;
+  country_code?: string;
+  file?: string;
 };
 
 const profile = () => {
+  const session = useSession();
+  const [user, setUser] = useState<any>({});
 
-  const data = {
-    id: 1,
-    username: "user1",
-    full_name: "name",
-    email: "email@example.com",
-    phone: "999999999",
-    acreditaciones: "prueba",
-    avatar: "/user.jpg",
+  const fetchData = async () => {
+    const { data } = await axios.get(`/api/user/${session.data?.user.id}`);
+    console.log(data);
+    setUser(data);
   };
-
-  /* const dataBank = {
-    bank: "banco prueba",
-    number: "",
-    name: "",
-    type: "",
-  };
- */
+  useEffect(() => {
+    if (session.status === "authenticated") {
+      fetchData();
+    }
+  }, []);
+  
   const handleSavePersonal: SubmitHandler<InputsPersonal> = async (data) => {
     console.log("Editar información personal:", data);
   };
-  const handleSaveBank: SubmitHandler<InputsBank> = async (data) => {
-    console.log("Editar información del banco:", data);
-  };
+ 
   return (
     <div className="w-full max-w-[800px] mx-auto flex flex-col gap-8">
       <ContainerCard2 title="Tu Información Personal">
         <UserForm
           defaultValues={{
-            id: data.id,
-            username: data.username,
-            full_name: data.full_name,
-            email: data.email,
-            phone: data.phone,
-            acreditaciones: data.acreditaciones,
+            dni: user.dni,
+            full_name: user.full_name,
+              phone: user.phone,
+              country_code: user.country_code,
+              email: String(session.data?.user.email),
           }}
-          avatar={data.avatar}
+          avatar={`/users/user_${user.id}.png`}
           onSubmit={handleSavePersonal}
         />
       </ContainerCard2>
-
-      {/*  <ContainerCard2 title="Tu Información Bancaria">
-        <BankForm
-          defaultValues={{
-            bank: dataBank.bank,
-            number: dataBank.number,
-            name: dataBank.name,
-            type: dataBank.type,
-          }}
-          onSubmit={handleSaveBank}
-        />
-      </ContainerCard2> */}
     </div>
   );
 };
