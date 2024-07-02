@@ -71,7 +71,7 @@ CREATE TABLE `Account` (
     `description` VARCHAR(191) NULL,
     `pin` VARCHAR(191) NOT NULL,
     `status` ENUM('BOUGHT', 'NOT_BOUGHT') NOT NULL DEFAULT 'NOT_BOUGHT',
-    `number_profiles` INTEGER NOT NULL,
+    `number_profiles` INTEGER NULL,
     `purchase_date` DATETIME(3) NULL,
     `renewal_date` DATETIME(3) NULL,
     `platform_id` INTEGER NOT NULL,

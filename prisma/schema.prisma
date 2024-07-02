@@ -99,7 +99,7 @@ model Account {
   description     String?
   pin             String
   status          AccountStatus @default(NOT_BOUGHT)
-  number_profiles Int
+  number_profiles Int?
 
   purchase_date DateTime? // fecha compra
   renewal_date  DateTime? // fecha renovacion
