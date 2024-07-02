@@ -3,6 +3,7 @@ import { validateAdmin } from "@/lib/validations/admin";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import { authOptions } from "../auth-options";
+import bcrypt from "bcrypt";
 
 export async function GET() {
   let admins;
@@ -47,15 +48,25 @@ export async function POST(req: NextRequest) {
   }
 
   let validatdeAdmin;
+
   try {
     validatdeAdmin = validateAdmin(adminInfo);
   } catch (error) {
     return NextResponse.json({ error: "Validation error" }, { status: 400 });
   }
 
+  const newPass = await bcrypt.hash(validatdeAdmin.password, 10);
+
+  const { password, ...rest } = validatdeAdmin;
+
+  const newAdminn = {
+    ...rest,
+    password: newPass,
+  };
+
   try {
     newAdmin = await prisma.admin.create({
-      data: validatdeAdmin,
+      data: newAdminn,
     });
     await prisma.$disconnect();
   } catch (error) {
