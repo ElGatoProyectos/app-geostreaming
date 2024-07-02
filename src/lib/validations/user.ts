@@ -12,9 +12,17 @@ const UserSchema = z.object({
   enabled: z.enum(["y", "n"]).default("y"),
 });
 
-const UserUpdateSchema = UserSchema.extend({
+const UserUpdateSchema = z.object({
   avatar_url: z.string().optional(),
-  role: z.enum(["USER", "DISTRIBUTOR"]),
+  email: z.string().email(),
+  ref_id: z.number().int().positive().optional().nullable(),
+  role: z.enum(["USER", "DISTRIBUTOR"]).optional(),
+  full_name: z.string(),
+  dni: z.string(),
+  phone: z.string(),
+  password: z.string(),
+  country_code: z.string(),
+  enabled: z.enum(["y", "n"]).default("y"),
 });
 
 export function validateUser(userInfo: unknown) {

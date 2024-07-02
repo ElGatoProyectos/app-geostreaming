@@ -203,6 +203,7 @@ const users = [
     country_code: "+85",
     password: "123456",
     balance_in_cents: 20000,
+    role: "DISTRIBUTOR",
   },
 ];
 

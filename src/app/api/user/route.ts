@@ -58,7 +58,7 @@ export async function POST(req: NextRequest) {
     const newPass = await bcrypt.hash(password, 10);
     const createUser = {
       email: email,
-      role: role,
+      role: role ?? "USER",
       password: newPass,
       ref_id: Number(ref_id),
       full_name: full_name,
@@ -80,7 +80,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(newUser);
     }
 
-    const newUser = prisma.user.create({ data: validatedUser });
+    const newUser = await prisma.user.create({ data: validatedUser });
+
     await prisma.$disconnect();
     return NextResponse.json(newUser);
   } catch (error: any) {
