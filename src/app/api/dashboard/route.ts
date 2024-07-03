@@ -56,12 +56,15 @@ export async function GET() {
       },
     });
 
-    // Crear un diccionario para contar los afiliados por ref_id
-    const affiliateCounts = {};
+    interface AffiliateCounts {
+      [key: number]: number;
+    }
+
+    const affiliateCounts: AffiliateCounts = {};
 
     // Contar el número de afiliados por ref_id
     usersWithAffiliates.forEach((user) => {
-      const refId = user.ref_id;
+      const refId = user.ref_id!;
       if (affiliateCounts[refId]) {
         affiliateCounts[refId]++;
       } else {
