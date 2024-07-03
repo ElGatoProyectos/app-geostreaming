@@ -128,7 +128,7 @@ const request = () => {
                     Cargando
                   </span>
                 ) : (
-                  "Guardar"
+                  "Comprar"
                 )}
               </button>
             </div>

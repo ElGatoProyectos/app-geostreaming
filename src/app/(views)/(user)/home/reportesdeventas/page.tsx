@@ -8,7 +8,7 @@ const MainLayout = lazy(() => import("@/app/components/layout/mainLayout"));
 
 const roleName = "role";
 export const metadata: Metadata = {
-  title: " Reportes de venta - " + roleName,
+  title: " Reportes de venta",
 };
 const page = () => {
   return (

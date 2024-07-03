@@ -82,7 +82,6 @@ const Delivery = () => {
         status: "ATTENDED",
       });
       closeModal();
-
       toast.success("Plataforma comprada");
     } catch (error) {
       console.log(error);
@@ -129,7 +128,7 @@ const Delivery = () => {
                     Cargando
                   </span>
                 ) : (
-                  "Guardar"
+                  "Comprar"
                 )}
               </button>
             </div>

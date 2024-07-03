@@ -5,12 +5,14 @@ export const BankFormSchema = z.object({
     bank: z.string()
         .min(1, { message: 'El campo banco es requerido' }),
     number: z.string()
-        .min(1, { message: 'El campo número de cuenta es requerido' }),
+        .min(1, { message: 'El campo número de cuenta es requerido' })
+        .regex(/^\d+/, { message: 'El campo número de cuenta debe ser numérico' }),
     name: z.string()
         .min(1, { message: 'El campo nombre del titular es requerido' }),
     type: z.string()
         .min(1, { message: 'El campo tipo es requerido' }),
-    bank_url: z.string(),
+    bank_url: z.string()
+    .min(1, { message: 'El campo imagen del logo es requerido'}),
     
 });
 
