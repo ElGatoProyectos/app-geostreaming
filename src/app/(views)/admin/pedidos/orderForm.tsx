@@ -146,7 +146,7 @@ const ConsumidorForm: React.FC<ConsumidorProps> = ({
               Cargando
             </span>
           ) : (
-            "Ingresar"
+            "Guardar"
           )}
         </button>
       </div>

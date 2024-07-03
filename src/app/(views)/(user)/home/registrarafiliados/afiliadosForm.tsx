@@ -107,7 +107,7 @@ const AfiliadosForm: React.FC<AfiliadosProps> = ({
               Cargando
             </span>
           ) : (
-            "Ingresar"
+            "Guardar"
           )}
         </button>
       </div>

@@ -133,7 +133,7 @@ const AssignAccountForm: React.FC<AssignAccountProps> = ({
               Cargando
             </span>
           ) : (
-            "Ingresar"
+            "Asignar"
           )}
         </button>
       </div>

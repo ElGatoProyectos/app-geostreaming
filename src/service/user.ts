@@ -96,7 +96,7 @@ export class UserService {
     const user_info = await req.json();
     const { id } = params;
 
-    const userValidated = validateUpdateUser(user_info);
+    const userValidated = validateUpdateUser(user_info) as any;
 
     try {
       const userUpdated = await this.userModel.update({

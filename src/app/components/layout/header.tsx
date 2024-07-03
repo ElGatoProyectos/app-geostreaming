@@ -62,7 +62,7 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
         return role;
     }
   };
-
+  /* aqui va el qr */
   const fetchBalance = async () => {
     const response = await axios.get(`/api/user/${session.data?.user.id}`);
     const balanceDollars = (response.data.balance_in_cents / 100).toFixed(2);

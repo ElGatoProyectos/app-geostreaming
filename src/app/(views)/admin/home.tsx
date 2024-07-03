@@ -77,7 +77,7 @@ const home = () => {
         {/* productos */}
         <div className="w-full rounded-lg bg-white p-6  shadow-box  transition-all duration-500">
           <h2 className=" text-xl capitalize mb-4 text-[#444] font-medium">
-            Top 5 productos más vendidos
+            Top productos
           </h2>
           <div className="overflow-x-auto">
             <table className="w-full table-auto">
@@ -109,7 +109,7 @@ const home = () => {
         {/* afiliados */}
         <div className="w-full rounded-lg bg-white p-6  shadow-box  transition-all duration-500">
           <h2 className=" text-xl capitalize mb-4 text-[#444] font-medium">
-            Top 5 Afiliados
+            Top Afiliados
           </h2>
           <div className="overflow-x-auto">
             <table className="w-full table-auto">

@@ -256,7 +256,7 @@ const AccountForm: React.FC<AccountFormProps> = ({
               Cargando
             </span>
           ) : (
-            "Ingresar"
+            "Guardar"
           )}
         </button>
       </div>

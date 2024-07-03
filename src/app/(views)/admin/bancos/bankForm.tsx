@@ -114,7 +114,7 @@ const BankForm: React.FC<BankFormProps> = ({ defaultValues, onSubmit }) => {
               Cargando
             </span>
           ) : (
-            "Ingresar"
+            "Guardar"
           )}
         </button>
       </div>

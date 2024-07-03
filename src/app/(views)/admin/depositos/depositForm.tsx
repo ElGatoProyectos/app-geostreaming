@@ -75,7 +75,7 @@ const DepositForm: React.FC<DepositFormProps> = ({
               Cargando
             </span>
           ) : (
-            "Ingresar"
+            "Guardar"
           )}
         </button>
       </div>

@@ -49,7 +49,6 @@ const Bank = () => {
     try {
       if (data.id) {
         await axios.patch(`/api/bank/${data.id}`, {
-          id: data.id,
           bank_url: data.bank_url,
           bank: data.bank,
           number: data.number,

@@ -57,11 +57,13 @@ export async function PATCH(
     );
   }
   try {
-    bankvalidated = validateBank(bankinfo);
+    bankinfo = await req.json();
+    bankvalidated = validateBank(bankinfo) as any;
   } catch (error) {
+    console.log(error);
     return NextResponse.json({ error: "Validation error" }, { status: 400 });
   }
-
+  
   try {
     const updatedBank = await prisma.bank.update({
       where: { id: bank_id },

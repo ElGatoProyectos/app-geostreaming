@@ -147,7 +147,7 @@ const DistributorForm: React.FC<DistributorProps> = ({
               Cargando
             </span>
           ) : (
-            "Ingresar"
+            "guardar"
           )}
         </button>
       </div>
