@@ -1,8 +1,9 @@
+import { url_backend } from "@/context/token";
 import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const url_wsp = "http://localhost:4000/qrcode";
+    const url_wsp = `${url_backend}/qrcode`;
     const options = {
       method: "GET",
     };

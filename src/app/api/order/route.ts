@@ -1,4 +1,4 @@
-import { dev } from "@/context/token";
+import { dev, url_backend } from "@/context/token";
 import prisma from "@/lib/prisma";
 import { validateOrder } from "@/lib/validations/order";
 import { NextRequest, NextResponse } from "next/server";
@@ -169,7 +169,7 @@ export async function POST(req: NextRequest) {
 
         const userPhone = user.phone;
 
-        const url_wsp = "http://localhost:4000/notifications";
+        const url_wsp = `${url_backend}/notifications`;
         const options = {
           method: "POST",
           headers: {
@@ -277,7 +277,7 @@ export async function POST(req: NextRequest) {
 
       const userPhone = user.phone;
 
-      const url_wsp = "http://localhost:4000/notifications";
+      const url_wsp = `${url_backend}/notifications`;
       const options = {
         method: "POST",
         headers: {

@@ -1,5 +1,6 @@
 "use client";
 
+import { url_backend } from "@/context/token";
 import { convertNumber } from "@/utils/convertToFloat";
 import { Button } from "@mui/material";
 import axios from "axios";
@@ -133,7 +134,7 @@ export default function Page() {
 
     const fetchQR = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/qrcode", {
+        const response = await axios.get(`${url_backend}/qrcode`, {
           responseType: "blob",
         });
         const imageUrl = URL.createObjectURL(response.data);

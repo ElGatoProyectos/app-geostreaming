@@ -3,7 +3,7 @@ import { validateVoucher } from "@/lib/validations/voucher";
 import path from "path";
 import { writeFile } from "fs/promises";
 import { NextRequest, NextResponse } from "next/server";
-import { dev } from "@/context/token";
+import { dev, url_backend } from "@/context/token";
 
 export async function GET() {
   try {
@@ -54,7 +54,7 @@ export async function POST(req: NextRequest) {
       ? "next-auth.session-token"
       : "__Secure-next-auth.session-token";
     const token = req.cookies.get(cookiesesion)?.value as any;
-    const url_wsp = "http://localhost:4000/notifications";
+    const url_wsp = `${url_backend}/notifications`;
 
     const admi = await prisma.admin.findMany();
 
