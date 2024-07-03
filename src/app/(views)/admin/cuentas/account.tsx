@@ -10,6 +10,7 @@ import axios from "axios";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { Span } from "next/dist/trace";
+import { useSession } from "next-auth/react";
 
 type Inputs = {
   id?: number;
@@ -26,6 +27,7 @@ type Inputs = {
 };
 
 const Account = () => {
+  const session = useSession();
   const [accounts, setAccounts] = useState<Inputs[]>([]);
   const [platforms, setPlatform] = useState<any[]>([]);
   const [users, setUsers] = useState<any[]>([]);
@@ -54,15 +56,17 @@ const Account = () => {
         axios.get("/api/user"),
       ]);
       setPlatform(platformResponse.data);
-      setUsers(userResponse.data.users);
+      setUsers(userResponse.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
 
   useEffect(() => {
+    if(session.status === 'authenticated'){
     fetchAccounts();
     fetchData();
+    }
   }, []);
 
   const formatDate = (dateString?: string): string => {

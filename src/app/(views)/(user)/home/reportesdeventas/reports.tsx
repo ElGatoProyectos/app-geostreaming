@@ -23,18 +23,6 @@ const Reports = () => {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState<any | null>(null);
 
- /*  const fetchOrder = async () => {
-    try {
-      const response = await axios.get("/api/account"); 
-      const filteredOrders = response.data.filter((order: any) => {
-        return order.user_id === Number(session.data?.user.id);
-      });
-      setOrders(filteredOrders);
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    }
-  }; */
-
   const fetchData = async () => {
     try {
       const [accountsResponse, platformResponse, userResponse] = await Promise.all([
@@ -57,9 +45,6 @@ const Reports = () => {
     fetchData();
   }, []);
 
-/*   useEffect(() => {
-    fetchOrder();
-  }, []); */
 
   const columns = [
     { Header: "Código", accessor: "id" },
@@ -75,8 +60,12 @@ const Reports = () => {
     { Header: 'Contraseña', accessor: 'password' },
     { Header: 'pin', accessor: 'pin'},
     {
-      Header: "Activo",
-      accessor: (row: any) => (row.is_active ? "si" : "no"),/* corregir */
+      Header: "Estado",
+      accessor: (row: any) => row.is_active ? (
+        <span className=" whitespace-nowrap px-3 py-0.5 rounded-full bg-gray-100 font-medium text-green-400">Activo</span>
+      ) : (
+        <span className=" whitespace-nowrap px-3 py-0.5 rounded-full bg-gray-100 font-medium text-gray-400">Inactivo</span>
+      ),
     },
     {
       Header: "Fecha de compra",

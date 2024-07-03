@@ -1,8 +1,11 @@
-import React from "react";
+"use client";
+import axios from "axios";
+import { useSession } from "next-auth/react";
+import React, { useEffect, useState } from "react";
 
 interface Props {
   isNew?: boolean;
-  id:  number;
+  id: number;
   title: string;
   url: string;
   description?: string;
@@ -22,6 +25,9 @@ interface CardInfo {
 }
 
 const CardItem: React.FC<Props> = (props) => {
+  const [balance, setBalance]  = useState<number | null>(null)
+  const session = useSession();
+  
   const openModal = () => {
     const info: CardInfo = {
       id: props.id,
@@ -31,7 +37,25 @@ const CardItem: React.FC<Props> = (props) => {
     };
     props.onOpenModal(props.title, info);
   };
-  /* consultar */
+
+  const fetchBalance = async () => {
+    const response = await axios.get(`/api/user/${session.data?.user.id}`);
+    const balanceDollars = parseFloat((response.data.balance_in_cents / 100).toFixed(2));
+    setBalance(balanceDollars);
+  };
+
+  useEffect(() => {
+    if(session.status === 'authenticated'){
+      fetchBalance();
+    }
+  }, [session]);
+
+  const productPrice =
+  session.data?.user.role === "DISTRIBUTOR"
+    ? (props.price_distributor_in_cents! / 100).toFixed(2)
+    : (props.price_in_cents! / 100).toFixed(2);
+
+
   return (
     <div className="flex flex-col justify-center items-center shadow-cardItem rounded-full w-full md:w-[40%] xl:w-[25%] aspect-square px-4 py-8 relative overflow-y-auto">
       {props.isNew && (
@@ -61,18 +85,21 @@ const CardItem: React.FC<Props> = (props) => {
         <span
           className={`text-[#277FF2] ${props.price_in_cents ? "text-xl" : ""} `}
         >
-          {/* validar rol de consumidor o distribuidor */}
-          {props.price_in_cents
-            ? `$ ${props.price_in_cents}`
-            : `${props.account_holder?.toUpperCase()}`}
+          {props.account_holder ? `${props.account_holder?.toUpperCase()}`
+            : `$ ${productPrice}`}
         </span>
         {props.type && (
           <span className="text-[#888]">{props.type.toUpperCase()}</span>
         )}
       </div>
-      <button className="text-white bg-[#F2308B] rounded-full  px-4 py-1  hover:bg-[#F06FAC] transition-all duration-300 mt-4 capitalize" onClick={openModal}>
-        {props.btn} 
+      <button
+        className="text-white bg-[#F2308B] rounded-full  px-4 py-1  hover:bg-[#F06FAC] transition-all duration-300 mt-4 capitalize disabled:bg-[#E3ABC6]"
+        onClick={openModal}
+        disabled={balance !== null && balance < parseFloat(productPrice)}
+      >
+        {props.btn}
       </button>
+
     </div>
   );
 };

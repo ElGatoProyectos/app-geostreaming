@@ -97,15 +97,24 @@ const Distributors = () => {
   const columns = [
     { Header: "ID", accessor: "id" },
     { Header: "Email", accessor: "email" },
-    { Header: "Referido", accessor: "ref_id" },
+    {
+      Header: "Referido",
+      accessor: (row: any) => {
+        if (!users || users.length === 0) return "No asignado";
+        const user = users.find((u) => u.id === row.ref_id);
+        return user ? user.full_name : "No asignado";
+      },
+    },
     { Header: "Nombre", accessor: "full_name" },
-    { Header: "Role", accessor: "role" },
+    { Header: "Role", accessor: (row:any) => row.role === 'USER' ? 'Consumidor' : 'Distribuidor' },
     { Header: "DNI", accessor: "dni" },
     { Header: "Celular", accessor: "phone" },
-    { Header: "Créditos", accessor: "balance_in_cents" },
+    { Header: "Créditos($)", accessor: (row:any) => (row.balance_in_cents/100).toFixed(2)},
     {
-      Header: "Activo",
-      accessor: (row: Users) => (row.enabled === "y" ? "activo" : "inactivo"),
+      Header: "Estado",
+      accessor: (row: Users) => (row.enabled === "y" ? (<span className=" whitespace-nowrap px-3 py-0.5 rounded-full bg-gray-100 font-medium text-green-400">Activo</span>) : (
+        <span className=" whitespace-nowrap px-3 py-0.5 rounded-full bg-gray-100 font-medium text-gray-400">Inactivo</span>
+      )),
     },
   ];
   const data: string[] = [];

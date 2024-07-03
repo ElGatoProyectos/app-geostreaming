@@ -249,7 +249,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
   const router = useRouter();
   function handleLogout() {
     signOut();
-    // router.push("/ingresar");
   }
 
   return (

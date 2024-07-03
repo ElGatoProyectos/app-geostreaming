@@ -13,7 +13,6 @@ const home = () => {
   const [afiliados, setAfiliados] = useState<any>({});
   const fetchData = async () => {
     const response = await axios.get("/api/dashboard");
-    /* console.log(response.data); */
     setProducts(response.data.productosMasVendidos);
     setAfiliados(response.data.topAfiliados);
     setData(response.data);
@@ -49,19 +48,6 @@ const home = () => {
     },
   ];
 
-  /* usuario */
-  const topAfiliados = [
-    { name: "Hans", avatar: "./user.jpg", ventas: 100, consumidores: 12 },
-    { name: "Sergio", avatar: "./user.jpg", ventas: 90, consumidores: 10 },
-    { name: "Guillermo", avatar: "./user.jpg", ventas: 80, consumidores: 21 },
-    { name: "Fiorella", avatar: "./user.jpg", ventas: 70, consumidores: 23 },
-    { name: "Pedro", avatar: "./user.jpg", ventas: 60, consumidores: 11 },
-    { name: "Juan", avatar: "./user.jpg", ventas: 55, consumidores: 10 },
-    { name: "Mateo", avatar: "./user.jpg", ventas: 45, consumidores: 8 },
-    { name: "Lucia", avatar: "./user.jpg", ventas: 39, consumidores: 7 },
-    { name: "Luis", avatar: "./user.jpg", ventas: 38, consumidores: 8 },
-    { name: "Diego", avatar: "./user.jpg", ventas: 30, consumidores: 7 },
-  ];
 
   return (
     <>
@@ -130,9 +116,9 @@ const home = () => {
               <thead className="bg-[#F3F6F9] font-medium text-[#888] text-sm">
                 <tr>
                   <th className="p-2 text-left">N</th>
-                  <th className="p-2 text-left">Afiliado</th>
-                  <th className="p-2 text-center">Consumidores</th>
-                  <th className="p-2 text-center">ventas</th>
+                  <th className="p-2 text-left">Usuario</th>
+                  <th className="p-2 text-center">N de afiliados</th>
+                  <th className="p-2 text-center">Ventas</th>
                 </tr>
               </thead>
               <tbody>
@@ -140,8 +126,9 @@ const home = () => {
                   afiliados.map((afiliados: any, index:number) => (
                     <tr key={index} className="text  text-[#666]">
                       <td className="p-2">{index + 1}</td>
-                      <td className="p-2">{afiliados.name}</td>
-                      <td className="p-2 text-center">{afiliados.Account !== undefined ? afiliados.Account : 0}</td>
+                      <td className="p-2">{afiliados.Nombre_del_afiliador}</td>
+                      <td className="p-2 text-center">{afiliados.Cuantos_usuarios_tienen_el_Ref_id}</td>
+                      <td className="p-2 text-center">{afiliados.Ventas_del_afiliador}</td>
                     </tr>
                   ))
                 ) : (

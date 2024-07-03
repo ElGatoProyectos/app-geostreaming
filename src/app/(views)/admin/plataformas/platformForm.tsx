@@ -106,16 +106,16 @@ const PlatformForm: React.FC<PlatformFormProps> = ({
       </label>
       <InputField
         id="price_in_cents"
-        label="Precio Consumidor (centavos)"
-        placeholder="$ 1000"
+        label="Precio Consumidor ($1 = 100 centavos)"
+        placeholder="Ingresar monto en centavos"
         type="number"
         register={register("price_in_cents", { valueAsNumber: true })}
         error={errors.price_in_cents}
       />
       <InputField
         id="price_distributor_in_cents"
-        label="Precio Distribuidor (centavos)"
-        placeholder="$ 1000"
+        label="Precio Distribuidor ($1 = 100 centavos)"
+        placeholder="Ingresar monto en centavos"
         type="number"
         register={register("price_distributor_in_cents", {
           valueAsNumber: true,

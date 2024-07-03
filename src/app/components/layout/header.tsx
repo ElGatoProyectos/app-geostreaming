@@ -17,6 +17,7 @@ type UserRoleTranslate = "ADMIN" | "DISTRIBUTOR" | "USER";
 import Sidebar from "./sidebar";
 import { useSession } from "next-auth/react";
 import axios from "axios";
+import { signOut } from "next-auth/react";
 
 const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -68,12 +69,17 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
     setBalance(balanceDollars);
   };
 
-  
-
   useEffect(() => {
-    fetchBalance();
-    showAvatar();
+    if(session.status === 'authenticated'){
+      fetchBalance();
+      showAvatar();
+    }
+    
   }, []);
+
+  function handleLogout() {
+    signOut();
+  }
   const username = session.data?.user.name;
   const userEmail = session.data?.user.email;
 
@@ -126,7 +132,7 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
               className=" rounded-full w-fit h-fit p-1 md:px-4 md:py-2 hover:bg-gray-100 flex items-center gap-2 transition-all duration-300"
             >
               <BiSolidWallet className="text-xl lg:text-2xl text-yellow-800 inline-block" />
-              <span className="text-[#888] text-sm md:text-lg">{balance}</span>
+              <span className="text-[#888] text-sm md:text-lg">$ {balance}</span>
             </Link>
           ) : (
             <button
@@ -200,13 +206,13 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
                     </Link>
                   </li>
                   <li>
-                    <Link
-                      href={"/ingresar"}
+                    <button
+                      onClick={handleLogout}
                       className="w-full flex gap-4 px-6 py-2 text-[#888] whitespace-nowrap hover:bg-[#f3f3f9]"
                     >
                       <IoMdLogOut className="text-xl text-[#F2308B]" /> Cerrar
                       sesión
-                    </Link>
+                    </button>
                   </li>
                 </ul>
               </div>

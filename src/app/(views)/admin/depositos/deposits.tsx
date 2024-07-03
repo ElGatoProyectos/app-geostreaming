@@ -85,7 +85,6 @@ const Deposits = () => {
 
   const columns = [
     { Header: "ID", accessor: "id" },
-    { Header: "Estado", accessor: "status" },
     {
       Header: "Usuario",
       accessor: (row: any) => {
@@ -108,6 +107,11 @@ const Deposits = () => {
         />
       ),
     },
+    { Header: "Estado", accessor: (row: any) => row.status === 'READ' ? (
+      <span className=" whitespace-nowrap px-3 py-0.5 rounded-full bg-gray-100 font-medium text-green-400">Aprobado</span>
+    ) : (
+      <span className=" whitespace-nowrap px-3 py-0.5 rounded-full bg-gray-100 font-medium text-gray-600">Sin Revisar</span>
+    ),},
   ];
 
   return (
