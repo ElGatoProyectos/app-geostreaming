@@ -3,11 +3,6 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { authOptions } from "../../auth-options";
 import { validateBalance } from "@/lib/validations/balance";
-import {
-  CentsToBeADistributor,
-  distributor_role,
-  user_role,
-} from "@/constants/roles";
 
 export async function PATCH(
   req: NextRequest,
@@ -81,23 +76,5 @@ export async function PATCH(
     );
   }
 
-  const isDistributor = user.balance_in_cents >= CentsToBeADistributor;
-  const newRole = isDistributor ? distributor_role : user_role;
-
-  let updateUser;
-
-  try {
-    updateUser = await prisma.user.update({
-      where: { id: accountId },
-      data: { role: newRole },
-    });
-    await prisma.$disconnect();
-  } catch (error) {
-    return NextResponse.json(
-      { error: "Error updating user role" },
-      { status: 500 }
-    );
-  }
-
-  return NextResponse.json(updateUser);
+  return NextResponse.json(user);
 }

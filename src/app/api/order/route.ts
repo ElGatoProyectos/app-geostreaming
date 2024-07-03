@@ -102,20 +102,6 @@ export async function POST(req: NextRequest) {
       }
       newBalanceInCents =
         user.balance_in_cents - price_distributor_in_cents * quantity;
-
-      if (refId) {
-        try {
-          await prisma.user.update({
-            where: { id: refId },
-            data: { balance_in_cents: { increment: 100 } },
-          });
-        } catch (e) {
-          return NextResponse.json(
-            { error: "Error to inscrement user ref balance" },
-            { status: 500 }
-          );
-        }
-      }
     } else if (user.role === "USER") {
       if (price_in_cents * quantity > user.balance_in_cents) {
         return NextResponse.json(
@@ -124,20 +110,6 @@ export async function POST(req: NextRequest) {
         );
       }
       newBalanceInCents = user.balance_in_cents - price_in_cents * quantity;
-
-      if (refId) {
-        try {
-          await prisma.user.update({
-            where: { id: refId },
-            data: { balance_in_cents: { increment: 100 } },
-          });
-        } catch (e) {
-          return NextResponse.json(
-            { error: "Error to inscrement user ref balance" },
-            { status: 500 }
-          );
-        }
-      }
     }
 
     const statusOrder = status;
@@ -164,6 +136,32 @@ export async function POST(req: NextRequest) {
             platform: { select: { name: true } },
           },
         });
+
+        try {
+          await prisma.user.update({
+            where: { id: user_id },
+            data: { balance_in_cents: newBalanceInCents },
+          });
+        } catch (e) {
+          return NextResponse.json(
+            { error: "Error updating user balance" },
+            { status: 500 }
+          );
+        }
+
+        if (refId) {
+          try {
+            await prisma.user.update({
+              where: { id: refId },
+              data: { balance_in_cents: { increment: 10 } },
+            });
+          } catch (e) {
+            return NextResponse.json(
+              { error: "Error to inscrement user ref balance" },
+              { status: 500 }
+            );
+          }
+        }
 
         const wspMessage = `👋 Hola ${user.full_name}\n _Pedido #${newOrder.id} PENDIENTE_\n🖥️ Plataforma: ${platform.name}\n📧 La espera aproximada es de 1 hora, y enviaremos la información a este número de WhatsApp.`;
 
@@ -216,6 +214,7 @@ export async function POST(req: NextRequest) {
         );
       }
     }
+
     // si el estatus no esta en pendiente
     const accountselected = platform.Account.find(
       (cuenta) => !cuenta.is_active
@@ -244,6 +243,20 @@ export async function POST(req: NextRequest) {
         { error: "Error updating account" },
         { status: 500 }
       );
+    }
+
+    if (refId) {
+      try {
+        await prisma.user.update({
+          where: { id: refId },
+          data: { balance_in_cents: { increment: 10 } },
+        });
+      } catch (e) {
+        return NextResponse.json(
+          { error: "Error to inscrement user ref balance" },
+          { status: 500 }
+        );
+      }
     }
 
     const dataOrder = {

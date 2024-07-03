@@ -80,9 +80,11 @@ export async function POST(req: NextRequest) {
         data: validatedVoucher,
       });
       await prisma.$disconnect();
+
       const bytes = await file.arrayBuffer();
       const buffer = Buffer.from(bytes);
       const nameImage = "vouchers_" + newVoucher.id + ".png";
+
       const filePath = path.join(process.cwd(), `public/vouchers`, nameImage);
       await writeFile(filePath, buffer);
       return NextResponse.json(newVoucher);

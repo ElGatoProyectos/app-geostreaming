@@ -1,6 +1,6 @@
 import { dev, url_backend } from "@/context/token";
 import prisma from "@/lib/prisma";
-import { validateAssignOrder, validateOrder } from "@/lib/validations/order";
+import { validateAssignOrder } from "@/lib/validations/order";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -82,59 +82,8 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const { price_distributor_in_cents, price_in_cents } = platform;
     const { user_id, platform_id, status } = orderValidated;
 
-    let newBalanceInCents;
-    let quantity = 1;
-    let refId = user.ref_id;
-
-    if (user.role === "DISTRIBUTOR") {
-      if (price_distributor_in_cents * quantity > user.balance_in_cents) {
-        return NextResponse.json(
-          { error: "Insufficient balance" },
-          { status: 500 }
-        );
-      }
-      newBalanceInCents =
-        user.balance_in_cents - price_distributor_in_cents * quantity;
-
-      if (refId) {
-        try {
-          await prisma.user.update({
-            where: { id: refId },
-            data: { balance_in_cents: { increment: 100 } },
-          });
-        } catch (e) {
-          return NextResponse.json(
-            { error: "Error to inscrement user ref balance" },
-            { status: 500 }
-          );
-        }
-      }
-    } else if (user.role === "USER") {
-      if (price_in_cents * quantity > user.balance_in_cents) {
-        return NextResponse.json(
-          { error: "Insufficient balance" },
-          { status: 500 }
-        );
-      }
-      newBalanceInCents = user.balance_in_cents - price_in_cents * quantity;
-
-      if (refId) {
-        try {
-          await prisma.user.update({
-            where: { id: refId },
-            data: { balance_in_cents: { increment: 100 } },
-          });
-        } catch (e) {
-          return NextResponse.json(
-            { error: "Error to inscrement user ref balance" },
-            { status: 500 }
-          );
-        }
-      }
-    }
     let account;
 
     try {
@@ -156,6 +105,8 @@ export async function POST(req: NextRequest) {
     }
 
     try {
+
+      
       const updatedOrder = await prisma.order.update({
         where: { id: orderValidated.order_id },
         data: { status: "ATTENDED" },
@@ -193,18 +144,6 @@ export async function POST(req: NextRequest) {
           country_code: user.country_code,
         }),
       };
-
-      try {
-        await prisma.user.update({
-          where: { id: user_id },
-          data: { balance_in_cents: newBalanceInCents },
-        });
-      } catch (e) {
-        return NextResponse.json(
-          { error: "Error updating user balance" },
-          { status: 500 }
-        );
-      }
 
       const res = await fetch(url_wsp, options);
       const json = await res.json();
