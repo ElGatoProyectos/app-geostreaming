@@ -34,6 +34,7 @@ export async function GET() {
       },
     });
     // top afiliates
+    // Obtener todos los usuarios con ref_id no nulo
     const usersWithAffiliates = await prisma.user.findMany({
       where: {
         ref_id: {
@@ -47,29 +48,32 @@ export async function GET() {
       },
     });
 
-    const affiliateCounts = await prisma.user.groupBy({
-      by: ["ref_id"],
-      _count: {
-        _all: true,
-      },
-      where: {
-        ref_id: {
-          not: null,
-        },
+    // Obtener todos los usuarios (afiliadores)
+    const allUsers = await prisma.user.findMany({
+      select: {
+        id: true,
+        full_name: true,
       },
     });
 
-    const topAfiliados = affiliateCounts.map((affiliate) => {
-      const user = usersWithAffiliates.find(
-        (u) => u.ref_id === affiliate.ref_id
-      );
+    // Crear un diccionario para contar los afiliados por ref_id
+    const affiliateCounts = {};
 
-      return {
-        Nombre_del_afiliador: user?.full_name,
-        Cuantos_usuarios_tienen_el_Ref_id: affiliate._count._all,
-        Ventas_del_afiliador: user?.id,
-      };
+    // Contar el número de afiliados por ref_id
+    usersWithAffiliates.forEach((user) => {
+      const refId = user.ref_id;
+      if (affiliateCounts[refId]) {
+        affiliateCounts[refId]++;
+      } else {
+        affiliateCounts[refId] = 1;
+      }
     });
+
+    // Crear el resultado final
+    const result = allUsers.map((user) => ({
+      Nombre_del_afiliador: user.full_name,
+      Cuantos_usuarios_tienen_el_Ref_id: affiliateCounts[user.id] || 0,
+    }));
 
     await prisma.$disconnect();
 
@@ -78,7 +82,7 @@ export async function GET() {
       consumidores,
       cantidadDeProductos,
       cuentasDeVenta,
-      topAfiliados,
+      topAfiliados: result, // here,
       productosMasVendidos,
     });
   } catch (error) {

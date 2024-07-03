@@ -3,6 +3,7 @@ import { validateVoucher } from "@/lib/validations/voucher";
 import path from "path";
 import { writeFile } from "fs/promises";
 import { NextRequest, NextResponse } from "next/server";
+import { dev } from "@/context/token";
 
 export async function GET() {
   try {
@@ -44,6 +45,34 @@ export async function POST(req: NextRequest) {
     };
 
     const validatedVoucher = validateVoucher(createVoucher);
+
+    const userwe = await prisma.user.findUnique({
+      where: { id: validatedVoucher.user_id },
+    });
+
+    let cookiesesion = dev
+      ? "next-auth.session-token"
+      : "__Secure-next-auth.session-token";
+    const token = req.cookies.get(cookiesesion)?.value as any;
+    const url_wsp = "http://localhost:4000/notifications";
+
+    const admi = await prisma.admin.findMany();
+
+    const wspmessageadmi = `👋 Hola ${admi[0].full_name} tienes un voucher pendiente del usuario ${userwe?.full_name} con el id de ${userwe?.id} por favor revisarlo en depositos`;
+    const resadmi = await fetch(url_wsp, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${token}`,
+      },
+      body: JSON.stringify({
+        phone: admi[0].phone,
+        message: wspmessageadmi,
+        country_code: admi[0].country_code,
+      }),
+    });
+
+    await resadmi.json();
 
     let newVoucher;
     if (file) {

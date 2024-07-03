@@ -9,6 +9,7 @@ import { MdLockReset } from "react-icons/md";
 import { FaRegClock } from "react-icons/fa6";
 import { FaWhatsapp } from "react-icons/fa";
 import Modal from "@/app/components/common/modal";
+import { cookies } from "next/headers";
 
 import { BiSolidWallet } from "react-icons/bi";
 
@@ -72,22 +73,22 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
     let cookiesesion = dev
       ? "next-auth.session-token"
       : "__Secure-next-auth.session-token";
-    const token = cookies.get(cookiesesion) as any;
+    const token = cookies.get("__Secure-next-auth.session-token") as any;
     console.log("token", token);
     try {
-      if (session.status === "authenticated") {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/qrcode`,
-          {
-            responseType: "blob",
-            headers: {
-              Authorization: `${token}`,
-            },
-          }
-        );
-        const imageUrl = URL.createObjectURL(response.data);
-        setQrimagen(imageUrl);
-      }
+      // if (session.status === "authenticated") {
+      //   const response = await axios.get(
+      //     `${process.env.NEXT_PUBLIC_BACKEND_URL}/qrcode`,
+      //     {
+      //       responseType: "blob",
+      //       headers: {
+      //         Authorization: `${token}`,
+      //       },
+      //     }
+      //   );
+      //   const imageUrl = URL.createObjectURL(response.data);
+      //   setQrimagen(imageUrl);
+      // }
     } catch (err) {
       console.log(err);
       alert("Hay un error en el qr intente otra vez");

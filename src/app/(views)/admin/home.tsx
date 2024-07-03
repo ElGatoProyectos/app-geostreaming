@@ -48,7 +48,6 @@ const home = () => {
     },
   ];
 
-
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 gap-8">
@@ -77,7 +76,7 @@ const home = () => {
         {/* productos */}
         <div className="w-full rounded-lg bg-white p-6  shadow-box  transition-all duration-500">
           <h2 className=" text-xl capitalize mb-4 text-[#444] font-medium">
-            Top productos
+            Productos
           </h2>
           <div className="overflow-x-auto">
             <table className="w-full table-auto">
@@ -90,16 +89,22 @@ const home = () => {
               </thead>
               <tbody>
                 {products.length > 0 ? (
-                  products.map((product: any, index:number) => (
+                  products.slice(0, 15).map((product: any, index: number) => (
                     <tr key={index} className="text  text-[#666]">
                       <td className="p-2">{index + 1}</td>
                       <td className="p-2">{product.name}</td>
-                      <td className="p-2 text-center">{product._count.Account !== undefined? product._count.Account : 0}</td>
+                      <td className="p-2 text-center">
+                        {product._count.Account !== undefined
+                          ? product._count.Account
+                          : 0}
+                      </td>
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={3} className="p-2 text-[#666]">Sin productos</td>
+                    <td colSpan={3} className="p-2 text-[#666]">
+                      Sin productos
+                    </td>
                   </tr>
                 )}
               </tbody>
@@ -109,7 +114,7 @@ const home = () => {
         {/* afiliados */}
         <div className="w-full rounded-lg bg-white p-6  shadow-box  transition-all duration-500">
           <h2 className=" text-xl capitalize mb-4 text-[#444] font-medium">
-            Top Afiliados
+            Afiliados
           </h2>
           <div className="overflow-x-auto">
             <table className="w-full table-auto">
@@ -118,22 +123,30 @@ const home = () => {
                   <th className="p-2 text-left">N</th>
                   <th className="p-2 text-left">Usuario</th>
                   <th className="p-2 text-center">N de afiliados</th>
-                  <th className="p-2 text-center">Ventas</th>
+                  {/* <th className="p-2 text-center">Ventas</th> */}
                 </tr>
               </thead>
               <tbody>
                 {afiliados.length > 0 ? (
-                  afiliados.map((afiliados: any, index:number) => (
-                    <tr key={index} className="text  text-[#666]">
-                      <td className="p-2">{index + 1}</td>
-                      <td className="p-2">{afiliados.Nombre_del_afiliador}</td>
-                      <td className="p-2 text-center">{afiliados.Cuantos_usuarios_tienen_el_Ref_id}</td>
-                      <td className="p-2 text-center">{afiliados.Ventas_del_afiliador}</td>
-                    </tr>
-                  ))
+                  afiliados
+                    .slice(0, 15)
+                    .map((afiliados: any, index: number) => (
+                      <tr key={index} className="text  text-[#666]">
+                        <td className="p-2">{index + 1}</td>
+                        <td className="p-2">
+                          {afiliados.Nombre_del_afiliador}
+                        </td>
+                        <td className="p-2 text-center">
+                          {afiliados.Cuantos_usuarios_tienen_el_Ref_id}
+                        </td>
+                        {/* <td className="p-2 text-center">{afiliados.Ventas_del_afiliador}</td> */}
+                      </tr>
+                    ))
                 ) : (
                   <tr>
-                    <td colSpan={3} className="p-2 text-[#666]">Sin afiliados</td>
+                    <td colSpan={3} className="p-2 text-[#666]">
+                      Sin afiliados
+                    </td>
                   </tr>
                 )}
               </tbody>
