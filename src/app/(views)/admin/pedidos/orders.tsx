@@ -11,6 +11,7 @@ import AssignAccountForm from "./assignAccount";
 import { useSession } from "next-auth/react";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
+import { ExportOrders } from "./export";
 
 type userEnabled = "y" | "n";
 
@@ -111,6 +112,10 @@ const Order = () => {
     }
   };
 
+  function handleDownload() {
+    ExportOrders(orders);
+  }
+
   return (
     <>
       <Table
@@ -119,6 +124,7 @@ const Order = () => {
         showActions={true}
         download={true}
         title="Pedidos"
+        downloadAction={handleDownload}
         onApprove={handleSendModal}
       />
       <Modal
