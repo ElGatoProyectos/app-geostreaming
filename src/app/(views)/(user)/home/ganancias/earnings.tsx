@@ -9,7 +9,6 @@ import "react-toastify/dist/ReactToastify.css";
 
 const Reports = () => {
   const [earnings, setEarnings] = useState<any[]>([]);
-  const data: any[] = [];
   const session = useSession();
 
   const fetchEarnings = async () => {
@@ -22,8 +21,11 @@ const Reports = () => {
     }
   };
   useEffect(() => {
-    fetchEarnings();
-  }, []);
+    if(session.status === 'authenticated'){
+      fetchEarnings();
+    }
+    
+  }, [session.status]);
   
   const columns = [
     { Header: "Código", accessor: "id" },
@@ -36,12 +38,12 @@ const Reports = () => {
   
   return (
     <>
-    {data.length === 0 ? (
+    {earnings.length === 0 ? (
         <NoRecords title="ganancias" />
       ) : (
         <Table
         columns={columns}
-        data={data}
+        data={earnings}
         showActions={false}
         title="Historial de ganancias"
         download={true}
