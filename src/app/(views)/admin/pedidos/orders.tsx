@@ -11,6 +11,7 @@ import AssignAccountForm from "./assignAccount";
 import { useSession } from "next-auth/react";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
+import { ExportOrders } from "./export";
 
 type userEnabled = "y" | "n";
 
@@ -47,11 +48,12 @@ const Order = () => {
   };
   const fetchData = async () => {
     try {
-      const [ordersResponse, platformResponse, userResponse] = await Promise.all([
-        axios.get("/api/order"),
-        axios.get("/api/platform"),
-        axios.get("/api/user"),
-      ]);
+      const [ordersResponse, platformResponse, userResponse] =
+        await Promise.all([
+          axios.get("/api/order"),
+          axios.get("/api/platform"),
+          axios.get("/api/user"),
+        ]);
       setOrders(ordersResponse.data);
       setPlatform(platformResponse.data);
       setUsers(userResponse.data);
@@ -84,29 +86,34 @@ const Order = () => {
     },
     {
       Header: "Estado",
-      accessor: (row: any) => (row.status === 'ATTENDED' ? "Atendido" : "No atendido"),/* corregir */
+      accessor: (row: any) =>
+        row.status === "ATTENDED" ? "Atendido" : "No atendido" /* corregir */,
     },
   ];
 
   const handleSendModal = (record: any) => {
     setSelectedRecord(record);
     setIsSendModalOpen(true);
-  }
+  };
 
-  const handleAssignAccount: SubmitHandler<any> = async(data) => {
+  const handleAssignAccount: SubmitHandler<any> = async (data) => {
     try {
-     const response = await axios.post('/api/order/assign', {
+      const response = await axios.post("/api/order/assign", {
         order_id: selectedRecord.id,
-        account_id:  Number(data.account),
+        account_id: Number(data.account),
         user_id: selectedRecord.user_id,
         platform_id: selectedRecord.platform_id,
-        status: 'ATTENDED'
+        status: "ATTENDED",
       });
       toast.success("Cuenta asignada correctamente");
     } catch (error) {
       console.log("Error al asignar cuenta", error);
       toast.error("Error al asignar cuenta");
     }
+  };
+
+  function handleDownload() {
+    ExportOrders(orders);
   }
 
   return (
@@ -117,11 +124,18 @@ const Order = () => {
         showActions={true}
         download={true}
         title="Pedidos"
-    
+        downloadAction={handleDownload}
         onApprove={handleSendModal}
       />
-      <Modal isOpen={isSendModalOpen} title="Asignar Cuenta" onClose={() => setIsSendModalOpen(false)}>
-        <AssignAccountForm platformId={selectedRecord?.platform_id} onSubmit={handleAssignAccount}/>
+      <Modal
+        isOpen={isSendModalOpen}
+        title="Asignar Cuenta"
+        onClose={() => setIsSendModalOpen(false)}
+      >
+        <AssignAccountForm
+          platformId={selectedRecord?.platform_id}
+          onSubmit={handleAssignAccount}
+        />
       </Modal>
     </>
   );
