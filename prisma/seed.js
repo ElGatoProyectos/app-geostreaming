@@ -3,6 +3,17 @@ const bcrypt = require("bcrypt");
 
 const prisma = new PrismaClient();
 
+const initialBanks = [
+  {
+    bank_url:
+      "https://images.ctfassets.net/y2ske730sjqp/5QQ9SVIdc1tmkqrtFnG9U1/de758bba0f65dcc1c6bc1f31f161003d/BrandAssets_Logos_02-NSymbol.jpg?w=940",
+    name: "Jose perez mendoza",
+    number: "7777888899999",
+    bank: "Pichincha",
+    type: "CORRIENTE",
+  },
+];
+
 const initialAccounts = [
   {
     email: "jasdsad@gmail.com",
@@ -258,6 +269,13 @@ async function main() {
     console.log(`Created account with id: ${newAccount.id}`);
   }
   console.log("Seeding finished.");
+
+  for (const bank of initialBanks) {
+    const newBank = await prisma.bank.create({
+      data: bank,
+    });
+    console.log(`Created Bank with id: ${newBank.id}`);
+  }
 }
 main()
   .then(async () => {

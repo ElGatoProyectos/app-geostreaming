@@ -35,19 +35,20 @@ export async function POST(req: NextRequest) {
       status: "READ" | "UNREAD";
     };
 
-    const updateUser: any = {
+    const createVoucher: any = {
       number,
-      value,
-      date,
-      user_id,
+      value: parseInt(value),
+      date: new Date(date),
+      user_id: Number(user_id),
       status,
     };
-    console.log(updateUser);
-    /*  const validatedVoucher = validateVoucher(updateUser); */
+
+    const validatedVoucher = validateVoucher(createVoucher);
+
     let newVoucher;
     if (file) {
       newVoucher = await prisma.voucher.create({
-        data: updateUser,
+        data: validatedVoucher,
       });
       await prisma.$disconnect();
       const bytes = await file.arrayBuffer();
@@ -59,7 +60,7 @@ export async function POST(req: NextRequest) {
     }
 
     newVoucher = await prisma.voucher.create({
-      data: updateUser,
+      data: createVoucher,
     });
     await prisma.$disconnect();
 
