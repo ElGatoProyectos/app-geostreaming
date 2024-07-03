@@ -68,27 +68,25 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
   };
   /* aqui va el qr */
   const [qrimagen, setQrimagen] = useState("");
-  const cookies = useCookies();
+
   const fetchQR = async () => {
-    let cookiesesion = dev
-      ? "next-auth.session-token"
-      : "__Secure-next-auth.session-token";
-    const token = cookies.get("__Secure-next-auth.session-token") as any;
-    console.log("token", token);
+    const { data } = await axios.get("/api/acookie");
+    console.log("data", data);
+
     try {
-      // if (session.status === "authenticated") {
-      //   const response = await axios.get(
-      //     `${process.env.NEXT_PUBLIC_BACKEND_URL}/qrcode`,
-      //     {
-      //       responseType: "blob",
-      //       headers: {
-      //         Authorization: `${token}`,
-      //       },
-      //     }
-      //   );
-      //   const imageUrl = URL.createObjectURL(response.data);
-      //   setQrimagen(imageUrl);
-      // }
+      if (session.status === "authenticated") {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/qrcode`,
+          {
+            responseType: "blob",
+            headers: {
+              Authorization: `${data.token}`,
+            },
+          }
+        );
+        const imageUrl = URL.createObjectURL(response.data);
+        setQrimagen(imageUrl);
+      }
     } catch (err) {
       console.log(err);
       alert("Hay un error en el qr intente otra vez");
