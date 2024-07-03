@@ -62,10 +62,10 @@ const creditacionesForm: React.FC<CreditacionesProps> = ({ info, onSubmit }) => 
       />
       <InputField
         id="value"
-        label="Valor"
+        label="Valor ($1 = 100 centavos)"
         register={register("value")}
         error={errors.value}
-        placeholder="El valor mínimo es de $10"
+        placeholder="Ingrese el valor en centavos"
       />
       <InputField
         id="date"

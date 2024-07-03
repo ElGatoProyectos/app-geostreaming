@@ -82,22 +82,6 @@ const AssignAccountForm: React.FC<AssignAccountProps> = ({
       {defaultValues?.id && (
         <input type="hidden" {...register("id")} value={defaultValues.id} />
       )}
-      {/* <div className="overflow-auto">
-        <Autocomplete
-          defaultItems={accounts}
-          placeholder="Seleccione una cuenta"
-          className="bg-gray-100 placeholder:text-[#444]"
-          id="account"
-          {...register("account")}
-        >
-          {(account: any) => (
-            <AutocompleteItem value={account.id} key={account.id}>
-              {account.email}
-            </AutocompleteItem>
-          )}
-        </Autocomplete>
-      </div> */}
-
       <label htmlFor="type" className="text-[#444]">
         Seleccionar Cuenta:
         <select

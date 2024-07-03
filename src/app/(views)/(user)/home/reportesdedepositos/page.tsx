@@ -6,9 +6,8 @@ import { NextAuthProvider } from "@/context/sesion.context";
 
 const MainLayout = lazy(() => import("@/app/components/layout/mainLayout"));
 
-const roleName = "role";
 export const metadata: Metadata = {
-  title: " Reportes de depósitos - " + roleName,
+  title: " Reportes de depósitos",
 };
 const page = () => {
   return (

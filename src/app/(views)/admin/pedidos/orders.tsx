@@ -87,9 +87,24 @@ const Order = () => {
     {
       Header: "Estado",
       accessor: (row: any) =>
-        row.status === "ATTENDED" ? "Atendido" : "No atendido" /* corregir */,
+        row.status === "ATTENDED" ? (
+          <span className=" whitespace-nowrap px-3 py-0.5 rounded-full bg-gray-100 font-medium text-green-400">
+            Atendido
+          </span>
+        ) : (
+          (<span className=" whitespace-nowrap px-3 py-0.5 rounded-full bg-gray-100 font-medium text-yellow-800">No Atendido</span>)
+        ) /* corregir */,
     },
   ];
+  /* {
+    Header: "Estado de compra",
+    accessor: (row: Inputs) =>
+      row.status === "BOUGHT" ? (
+        <span className=" whitespace-nowrap px-3 py-0.5 rounded-full bg-gray-100 font-medium text-blue-400">Comprado</span>
+      ) : (
+        <span className=" whitespace-nowrap px-3 py-0.5 rounded-full bg-gray-100 font-medium text-yellow-800">No Comprado</span>
+      ),
+  }, */
 
   const handleSendModal = (record: any) => {
     setSelectedRecord(record);
@@ -105,6 +120,7 @@ const Order = () => {
         platform_id: selectedRecord.platform_id,
         status: "ATTENDED",
       });
+      setIsSendModalOpen(false);
       toast.success("Cuenta asignada correctamente");
     } catch (error) {
       console.log("Error al asignar cuenta", error);

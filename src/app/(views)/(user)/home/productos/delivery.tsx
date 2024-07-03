@@ -128,7 +128,7 @@ const Delivery = () => {
                     Cargando
                   </span>
                 ) : (
-                  "Guardar"
+                  "Comprar"
                 )}
               </button>
             </div>

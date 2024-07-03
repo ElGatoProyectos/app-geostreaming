@@ -13,20 +13,14 @@ type userEnabled = "y" | "n";
 
 type Users = {
   id?: number;
-  email: string;
-  ref_id: number;
   role: string;
-  full_name: string;
-  dni: string;
-  phone: string;
-  balance_in_cents: number;
   enabled: userEnabled;
 };
 const Distributors = () => {
-  const [users, setUsers] = useState<Users[]>([]);
+  const [users, setUsers] = useState<any[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
-  const [selectedRecord, setSelectedRecord] = useState<Users | null>(null);
+  const [selectedRecord, setSelectedRecord] = useState<any | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -57,34 +51,15 @@ const Distributors = () => {
     setLoading(true);
     console.log(data);
     try {
-      if (data.id) {
-        await axios.put(`/api/user/${data.id}`, {
-          email: data.email,
-          ref_id: data.ref_id,
+      if (selectedRecord?.id) {
+        /* modificar user?? */
+        await axios.put(`/api/user/${selectedRecord?.id}`, {
           role: data.role,
-          full_name: data.full_name,
-          dni: data.dni,
-          phone: data.phone,
           enabled: data.enabled,
         });
         toast.success("Se actualizo correctamente");
-      } else {
-        await axios.post("/api/user", {
-          email: data.email,
-          ref_id: data.ref_id,
-          role: data.role,
-          full_name: data.full_name,
-          dni: data.dni,
-          phone: data.phone,
-          enabled: data.enabled,
-        });
-        toast.success("Se guardo correctamente");
       }
-
-      useEffect(() => {
         fetchUsers();
-      }, []);
-
       closeModal();
     } catch (error) {
       console.error("Error al guardar la cuenta:", error);
@@ -117,13 +92,12 @@ const Distributors = () => {
       )),
     },
   ];
-  const data: string[] = [];
 
   const handleEdit = async (record: Users) => {
     try {
       const response = await axios.get(`/api/user/${record.id}`);
       setSelectedRecord(response.data);
-      setModalTitle("Editar afiliado");
+      setModalTitle("Editar Distribuidor");
       setIsModalOpen(true);
     } catch (error) {
       console.log(error);
@@ -131,7 +105,7 @@ const Distributors = () => {
     }
   };
 
-  const handleAdd = () => {
+/*   const handleAdd = () => {
     setSelectedRecord(null);
     setModalTitle("Agregar afiliado");
     setIsModalOpen(true);
@@ -140,7 +114,7 @@ const Distributors = () => {
   const handleDelete = (record: Users) => {
     setSelectedRecord(record);
     setIsDeleteModalOpen(true);
-  };
+  }; */
 
   const handleDeleteConfirm = async () => {
     try {
@@ -163,8 +137,9 @@ const Distributors = () => {
       <Table
         columns={columns}
         data={users}
-        showActions={false}
+        showActions={true}
         download={true}
+        onEdit={handleEdit}
         downloadAction={handleDownload}
         title="Distribuidores"
       />
@@ -173,13 +148,7 @@ const Distributors = () => {
         <DistributorForm
           defaultValues={
             selectedRecord || {
-              email: "",
-              ref_id: 0,
               role: "",
-              full_name: "",
-              dni: "",
-              phone: "",
-              balance_in_cents: 0,
               enabled: "y",
             }
           }
