@@ -13,20 +13,14 @@ type userEnabled = "y" | "n";
 
 type Users = {
   id?: number;
-  email: string;
-  ref_id: number;
   role: string;
-  full_name: string;
-  dni: string;
-  phone: string;
-  balance_in_cents: number;
   enabled: userEnabled;
 };
 const Consumers = () => {
-  const [users, setUsers] = useState<Users[]>([]);
+  const [users, setUsers] = useState<any[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
-  const [selectedRecord, setSelectedRecord] = useState<Users | null>(null);
+  const [selectedRecord, setSelectedRecord] = useState<any | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -55,36 +49,16 @@ const Consumers = () => {
 
   const handleSaveConsumer: SubmitHandler<Users> = async (data) => {
     setLoading(true);
-  
     try {
-      if (data.id) {
-        await axios.put(`/api/user/${data.id}`, {
-          email: data.email,
-          ref_id: data.ref_id,
+      if (selectedRecord?.id) {
+        /* modificar user?? */
+        await axios.put(`/api/user/${selectedRecord?.id}`, {
           role: data.role,
-          full_name: data.full_name,
-          dni: data.dni,
-          phone: data.phone,
           enabled: data.enabled,
         });
         toast.success("Se actualizo correctamente");
-      } else {
-        await axios.post("/api/user", {
-          email: data.email,
-          ref_id: data.ref_id,
-          role: data.role,
-          full_name: data.full_name,
-          dni: data.dni,
-          phone: data.phone,
-          enabled: data.enabled,
-        });
-        toast.success("Se guardo correctamente");
       }
-
-      useEffect(() => {
         fetchUsers();
-      }, []);
-
       closeModal();
     } catch (error) {
       console.error("Error al guardar la cuenta:", error);
@@ -158,7 +132,8 @@ const Consumers = () => {
         columns={columns}
         data={users}
         downloadAction={handleDownload}
-        showActions={false}
+        showActions={true}
+        onEdit={handleEdit}
         download={true}
         title="Consumidores"
       />

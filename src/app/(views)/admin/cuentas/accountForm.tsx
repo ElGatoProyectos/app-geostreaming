@@ -30,7 +30,6 @@ const AccountForm: React.FC<AccountFormProps> = ({
   onSubmit,
 }) => {
   const [platforms, setPlatforms] = useState<any[]>([]);
-  /* const [users, setUsers] = useState<any[]>([]); */
   const [loading, setLoading] = useState(false);
 
   const {
@@ -50,7 +49,7 @@ const AccountForm: React.FC<AccountFormProps> = ({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [platformResponse /* , userResponse */] = await Promise.all([
+        const [platformResponse] = await Promise.all([
           axios.get("/api/platform"),
         ]);
 
@@ -69,10 +68,7 @@ const AccountForm: React.FC<AccountFormProps> = ({
 
     try {
       await onSubmit(
-        data /* {
-        ...data,
-        is_active: data.is_active === "1" ? true: false,
-      } */
+        data 
       );
     } catch (error) {
       console.error("Error al registrar la cuenta:", error);
@@ -137,20 +133,6 @@ const AccountForm: React.FC<AccountFormProps> = ({
         register={register("pin")}
         error={errors.pin}
       />
-      {/*<InputField
-        id="purchase_date"
-        label="Fecha de compra"
-        type="datetime-local"
-        register={register("purchase_date", { valueAsDate: true })}
-        error={errors.purchase_date}
-      />
-       <InputField
-        id="renewal_date"
-        label="fecha de renovación"
-        type="datetime-local"
-        register={register("renewal_date", { valueAsDate: true })}
-        error={errors.renewal_date}
-      /> */}
       <label htmlFor="is_active">
         Estado de la cuenta
         <select
@@ -195,34 +177,6 @@ const AccountForm: React.FC<AccountFormProps> = ({
           </p>
         )}
       </label>
-
-      {/* <label htmlFor="user_id">
-        Usuario
-        <select
-          id="user_id"
-          defaultValue={defaultValues?.user_id ?? ""}
-          className={`w-full text-[#666] bg-gray-50 border rounded outline-none px-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
-            errors.user_id
-              ? "border-red-500 focus:ring focus:ring-red-200 focus:border-red-500"
-              : "border-gray-200 "
-          }`}
-          {...register("user_id", { valueAsNumber: true })}
-        >
-          <option value="">
-            Seleccione un usuario
-          </option>
-          {users.map((user) => (
-            <option key={user.id} value={user.id}>
-              {user.full_name}
-            </option>
-          ))}
-        </select>
-        {errors?.user_id && (
-          <p className="text-red-500 text-sm font-medium mt-1">
-            {errors.user_id.message}
-          </p>
-        )}
-      </label> */}
       <div className="w-full text-[#444]">
         <label htmlFor="description">Descripción</label>
         <textarea

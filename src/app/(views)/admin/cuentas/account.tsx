@@ -137,7 +137,6 @@ const Account = () => {
       const data = response.data;
       data.is_active = data.is_active ? "1" : "0";
 
-     
       if (data.purchase_date) {
         const date = new Date(data.purchase_date);
         data.purchase_date = date.toISOString().slice(0, 16);
@@ -173,25 +172,10 @@ const Account = () => {
       toast.error("Hubo un error al eliminar la cuenta");
     }
   };
-
-  /*   const formatDateInsert = (date: string | undefined): string | undefined => {
-    if (!date) return undefined;
-  
-    const dateObj = new Date(date);
-    if (isNaN(dateObj.getTime())) {
-      console.error('Fecha de compra inválida:', date);
-      return undefined;
-    }
-  
-    return format(dateObj, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx");
-  }; */
-
   const handleSaveAccount: SubmitHandler<Inputs> = async (data) => {
     setLoading(true);
 
     try {
-      /* const formattedPurchaseDate = formatDateInsert(data.purchase_date); */
-
       if (data.id) {
         await axios.patch(`/api/account/${data.id}`, {
           is_active: data.is_active === "1" ? true : false,

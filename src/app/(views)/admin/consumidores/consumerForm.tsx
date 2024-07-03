@@ -1,20 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useEffect, useState } from "react";
-import InputField from "@/app/components/forms/inputField";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
-import { UserSchema } from "@/app/schemas/userSchema";
+import { roleEditSchema } from "@/app/schemas/roleEditSchema";
 type userEnabled = "y" | "n";
 type Inputs = {
-  id?: number;
-  email: string;
-  ref_id: number;
   role: string;
-  full_name: string;
-  dni: string;
-  phone: string;
-  balance_in_cents: number;
   enabled: userEnabled;
 };
 
@@ -35,7 +27,7 @@ const ConsumidorForm: React.FC<ConsumidorProps> = ({
     formState: { errors },
     reset,
   } = useForm<Inputs>({
-    resolver: zodResolver(UserSchema),
+    resolver: zodResolver(roleEditSchema),
     defaultValues,
   });
 
@@ -61,38 +53,27 @@ const ConsumidorForm: React.FC<ConsumidorProps> = ({
       className="flex w-full flex-col gap-4"
     >
       <label htmlFor="type" className="text-[#444]">
-        Referido:
+        Estado del usuario:
         <select
-          id="ref_id"
+          id="enabled"
           className={`mt-2 w-full text-[#666] bg-gray-50 border rounded outline-none px-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
-            errors.ref_id
+            errors.enabled
               ? "border-red-500 focus:ring focus:ring-red-200 focus:border-red-500"
               : "border-gray-200 "
           }`}
-          {...register("ref_id")}
+          {...register("enabled")}
         >
-          <option value="">Seleccione Referido</option>
-          <option value="1">referido 1</option>
-          <option value="2">referido 2</option>
+          <option value="">Seleccione estado</option>
+          <option value="y">Activo</option>
+          <option value="n">Inactivo</option>
         </select>
-        {errors.ref_id && (
+        {errors.enabled && (
           <p className="text-red-500 text-sm font-medium mt-1">
-            {errors.ref_id.message}
+            {errors.enabled.message}
           </p>
         )}
       </label>
-      {/*  <InputField
-        id="username"
-        label="Nombre de usuario"
-        register={register("username")}
-        error={errors.username}
-      /> */}
-      <InputField
-        id="full_name"
-        label="Nombre Completo"
-        register={register("full_name")}
-        error={errors.full_name}
-      />
+     
       <label htmlFor="type" className="text-[#444]">
         Role:
         <select
@@ -106,7 +87,7 @@ const ConsumidorForm: React.FC<ConsumidorProps> = ({
         >
           <option value="">Seleccione Rol</option>
           <option value="USER">Consumidor</option>
-          <option value="DISTRIBUTOR">Afiliado</option>
+          <option value="DISTRIBUTOR">Distribuidor</option>
         </select>
         {errors.role && (
           <p className="text-red-500 text-sm font-medium mt-1">
@@ -114,26 +95,6 @@ const ConsumidorForm: React.FC<ConsumidorProps> = ({
           </p>
         )}
       </label>
-      <InputField
-        id="email"
-        label="Correo"
-        register={register("email")}
-        error={errors.email}
-        type="email"
-      />
-
-      <InputField
-        id="phone"
-        label="Celular"
-        register={register("phone")}
-        error={errors.phone}
-      />
-      <InputField
-        id="dni"
-        label="DNI"
-        register={register("dni")}
-        error={errors.dni}
-      />
       <div className=" w-full flex flex-col gap-4">
         <button
           type="submit"
