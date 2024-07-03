@@ -97,6 +97,7 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
     const response = await axios.get(`/api/user/${session.data?.user.id}`);
     const balanceDollars = (response.data.balance_in_cents / 100).toFixed(2);
     setBalance(balanceDollars);
+   
   };
 
   useEffect(() => {

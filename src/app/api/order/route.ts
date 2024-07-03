@@ -147,6 +147,7 @@ export async function POST(req: NextRequest) {
     const token = req.cookies.get(cookiesesion)?.value as any;
 
     if (statusOrder === "PENDING") {
+      console.log("url_backend", url_backend);
       const dataOrder = {
         role: user.role,
         ref_id: user.ref_id,
