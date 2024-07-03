@@ -1,3 +1,4 @@
+import { dev } from "@/context/token";
 import prisma from "@/lib/prisma";
 import { validateAssignOrder, validateOrder } from "@/lib/validations/order";
 import { NextRequest, NextResponse } from "next/server";
@@ -135,7 +136,7 @@ export async function POST(req: NextRequest) {
       }
     }
     let account;
-    console.log("orderValidated", orderValidated);
+
     try {
       account = await prisma.account.update({
         where: { id: orderValidated.account_id },
@@ -173,13 +174,17 @@ export async function POST(req: NextRequest) {
       }🕒 Duración de la cuenta: ${platform.days_duration} días}`;
 
       const userPhone = user.phone;
+      let cookiesesion = dev
+        ? "next-auth.session-token"
+        : "__Secure-next-auth.session-token";
+      const token = req.cookies.get(cookiesesion)?.value as any;
 
-      /*  const url_wsp = "http://localhost:4000/notifications";
+      const url_wsp = "http://localhost:4000/notifications";
       const options = {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          // Authorization: `Bearer ${token}`,
+          Authorization: `${token}`,
         },
 
         body: JSON.stringify({
@@ -188,7 +193,7 @@ export async function POST(req: NextRequest) {
           country_code: user.country_code,
         }),
       };
- */
+
       try {
         await prisma.user.update({
           where: { id: user_id },
@@ -201,8 +206,8 @@ export async function POST(req: NextRequest) {
         );
       }
 
-      /*       const res = await fetch(url_wsp, options);
-      const json = await res.json(); */
+      const res = await fetch(url_wsp, options);
+      const json = await res.json();
 
       await prisma.notification.create({
         data: { phone_client: userPhone, message: wspMessage },
@@ -210,7 +215,7 @@ export async function POST(req: NextRequest) {
 
       return NextResponse.json({
         ...responseOrder,
-        /* json, */
+        json,
       });
     } catch (e) {
       return NextResponse.json(

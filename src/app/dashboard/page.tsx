@@ -2,6 +2,7 @@
 
 import { convertNumber } from "@/utils/convertToFloat";
 import { Button } from "@mui/material";
+import axios from "axios";
 import { useState } from "react";
 import * as xlsx from "xlsx";
 
@@ -109,23 +110,41 @@ export default function Page() {
     }
   };
 
+  const [qrimagen, setQrimagen] = useState("");
+
   const getQR = async () => {
-    try {
-      const res = await fetch("/api/qr", {
-        method: "GET",
-      });
+    // try {
+    //   const res = await fetch("/api/qr", {
+    //     method: "GET",
+    //   });
 
-      const text = await res.text();
-      if (!text) {
-        console.error("Respuesta vacía");
-        return;
+    //   const text = await res.text();
+    //   if (!text) {
+    //     console.error("Respuesta vacía");
+    //     return;
+    //   }
+
+    //   const data = JSON.parse(text);
+    //   console.log("data", data);
+    //   setQrimagen(data.qr);
+    // } catch (error) {
+    //   console.error("Error al ordenar", error);
+    // }
+
+    const fetchQR = async () => {
+      try {
+        const response = await axios.get("http://localhost:4000/qrcode", {
+          responseType: "blob",
+        });
+        const imageUrl = URL.createObjectURL(response.data);
+        setQrimagen(imageUrl);
+        setError(null);
+      } catch (err) {
+      } finally {
       }
+    };
 
-      const data = JSON.parse(text);
-      console.log("data", data);
-    } catch (error) {
-      console.error("Error al ordenar", error);
-    }
+    fetchQR();
   };
 
   const exportExcel = async () => {
@@ -364,6 +383,8 @@ export default function Page() {
             obtener qr
           </button>
         </div>
+
+        <img src={qrimagen} alt="imagenrq" className="h-52 w-52" />
 
         <form onSubmit={handlesubmitt}>
           <label htmlFor="date">Selecciona una fecha: </label>

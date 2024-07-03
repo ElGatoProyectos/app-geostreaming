@@ -18,13 +18,16 @@ import Sidebar from "./sidebar";
 import { useSession } from "next-auth/react";
 import axios from "axios";
 import { signOut } from "next-auth/react";
+import { headers } from "next/headers";
+import { useCookies } from "next-client-cookies";
+import { dev } from "@/context/token";
 
 const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [perfilOpen, setPerfilOpen] = useState(false);
   const [notificationOpen, setNotificationOpen] = useState(false);
-  let [balance, setBalance] = useState('');
-  let [ avatar, setAvatar] = useState('');
+  let [balance, setBalance] = useState("");
+  let [avatar, setAvatar] = useState("");
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -63,6 +66,34 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
     }
   };
   /* aqui va el qr */
+  const [qrimagen, setQrimagen] = useState("");
+  const cookies = useCookies();
+  const fetchQR = async () => {
+    let cookiesesion = dev
+      ? "next-auth.session-token"
+      : "__Secure-next-auth.session-token";
+    const token = cookies.get(cookiesesion) as any;
+    console.log("token", token);
+    try {
+      if (session.status === "authenticated") {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/qrcode`,
+          {
+            responseType: "blob",
+            headers: {
+              Authorization: `${token}`,
+            },
+          }
+        );
+        const imageUrl = URL.createObjectURL(response.data);
+        setQrimagen(imageUrl);
+      }
+    } catch (err) {
+      console.log(err);
+      alert("Hay un error en el qr intente otra vez");
+    }
+  };
+
   const fetchBalance = async () => {
     const response = await axios.get(`/api/user/${session.data?.user.id}`);
     const balanceDollars = (response.data.balance_in_cents / 100).toFixed(2);
@@ -70,11 +101,10 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
   };
 
   useEffect(() => {
-    if(session.status === 'authenticated'){
+    if (session.status === "authenticated") {
       fetchBalance();
       showAvatar();
     }
-    
   }, []);
 
   function handleLogout() {
@@ -84,24 +114,27 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
   const userEmail = session.data?.user.email;
 
   const showAvatar = () => {
-    let avatarUrl = '/user.jpg';
+    let avatarUrl = "/user.jpg";
     const userId = session.data?.user.id;
-    if(session.data?.user.role == "ADMIN"){
+    if (session.data?.user.role == "ADMIN") {
       avatarUrl = `/admin/admin_${userId}.png`;
-    }else if(session.data?.user.role === "USER" || session.data?.user.role === "DISTRIBUTOR") {
-      avatarUrl = `/users/user_${userId}.png`
-    }else{
-      avatarUrl = '/user.jpg';
+    } else if (
+      session.data?.user.role === "USER" ||
+      session.data?.user.role === "DISTRIBUTOR"
+    ) {
+      avatarUrl = `/users/user_${userId}.png`;
+    } else {
+      avatarUrl = "/user.jpg";
     }
     const img = new Image();
     img.onload = () => {
       setAvatar(avatarUrl);
     };
     img.onerror = () => {
-      setAvatar('/user.jpg');
+      setAvatar("/user.jpg");
     };
     img.src = avatarUrl;
-  } 
+  };
 
   return (
     <div className=" user-select-none fixed z-20 top-0 left-0 h-[70px] shadow w-full bg-white text-[#444}">
@@ -132,7 +165,9 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
               className=" rounded-full w-fit h-fit p-1 md:px-4 md:py-2 hover:bg-gray-100 flex items-center gap-2 transition-all duration-300"
             >
               <BiSolidWallet className="text-xl lg:text-2xl text-yellow-800 inline-block" />
-              <span className="text-[#888] text-sm md:text-lg">$ {balance}</span>
+              <span className="text-[#888] text-sm md:text-lg">
+                $ {balance}
+              </span>
             </Link>
           ) : (
             <button
@@ -154,8 +189,12 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
               loading="lazy"
             />
             <div>
-              <p className="text-sm text-[#444] capitalize">{username?.toLowerCase()}</p>
-              <p className="text-xs text-[#888] uppercase">{roleTranslate(userRole)}</p>
+              <p className="text-sm text-[#444] capitalize">
+                {username?.toLowerCase()}
+              </p>
+              <p className="text-xs text-[#888] uppercase">
+                {roleTranslate(userRole)}
+              </p>
             </div>
             {/* card profile */}
             {perfilOpen && (
@@ -282,7 +321,21 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
       {/* modal */}
 
       <Modal title="QR WhatsApp" isOpen={isModalOpen} onClose={closeModal}>
-        <img className="h-40 w-40 mx-auto" src="/user.jpg" alt="qr" />
+        <img
+          className="h-72 w-72 mx-auto"
+          src={qrimagen ? qrimagen : "/user.jpg"}
+          alt="qr"
+        />
+
+        <div className="flex justify-center items-center">
+          <button
+            className="p-4 bg-[#F2308B] rounded-xl text-white mt-4"
+            type="button"
+            onClick={fetchQR}
+          >
+            Obtener Nuevo QR
+          </button>
+        </div>
       </Modal>
     </div>
   );

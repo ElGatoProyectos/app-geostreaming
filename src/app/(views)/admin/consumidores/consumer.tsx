@@ -55,7 +55,7 @@ const Consumers = () => {
 
   const handleSaveConsumer: SubmitHandler<Users> = async (data) => {
     setLoading(true);
-    console.log(data);
+  
     try {
       if (data.id) {
         await axios.put(`/api/user/${data.id}`, {
@@ -124,17 +124,12 @@ const Consumers = () => {
       setModalTitle("Editar consumidor");
       setIsModalOpen(true);
     } catch (error) {
-      console.log(error);
+    
       toast.error("Error al obtener los datos");
     }
   };
 
-  /*   const handleAdd = () => {
-    setSelectedRecord(null);
-    setModalTitle("Agregar consumidor");
-    setIsModalOpen(true);
-  };
- */
+
   const handleDelete = (record: Users) => {
     setSelectedRecord(record);
     setIsDeleteModalOpen(true);

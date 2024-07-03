@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ message: "success", data: newPlataforms });
   } catch (e) {
-    console.log(e);
+  
     return NextResponse.json({ error: "falló" });
   }
 }

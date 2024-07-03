@@ -79,13 +79,13 @@ const Delivery = () => {
       await axios.post("/api/order/", {
         user_id: Number(session.data?.user.id),
         platform_id: id,
-        status: "ATTENDED",
+        status: "PENDING",
       });
       closeModal();
 
       toast.success("Plataforma comprada");
     } catch (error) {
-      console.log(error);
+    
       toast.error("error de compra");
       closeModal();
       // mensaje de error

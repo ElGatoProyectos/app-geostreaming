@@ -7,8 +7,7 @@ export async function POST(request: NextRequest) {
     const datafile = await request.formData();
     const file = datafile.get("file") as File;
     const routeFile = datafile.get("route") as File;
-    console.log("file", file);
-    console.log("routeFile", routeFile);
+  
 
     if (!file) {
       return NextResponse.json(

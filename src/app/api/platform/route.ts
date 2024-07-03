@@ -21,7 +21,7 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   let platformInfo;
   let platformValidated;
-  console.log("wtf");
+
 
   try {
     platformInfo = await req.json();
@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
-  console.log("platformInfo", platformInfo);
+
 
   try {
     platformValidated = validatePlatform(platformInfo);

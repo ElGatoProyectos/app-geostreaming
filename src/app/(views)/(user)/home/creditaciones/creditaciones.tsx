@@ -64,7 +64,7 @@ const Account = () => {
       formDataAll.append('number', String(data.number));
       formDataAll.append('status', 'UNREAD');
 
-      console.log(formDataAll);
+ 
       await axios.post(`/api/voucher`,formDataAll, 
         {
           headers: {

@@ -24,7 +24,7 @@ const profile = () => {
 
   const fetchData = async () => {
     const { data } = await axios.get(`/api/user/${session.data?.user.id}`);
-    console.log(data);
+  
     setUser(data);
   };
   useEffect(() => {
@@ -44,7 +44,7 @@ const profile = () => {
       formDataAll.append("phone", String(data.phone));
       formDataAll.append("country_code", String(data.country_code));
 
-      console.log(formDataAll);
+     
       await axios.patch(`/api/user/${session.data?.user.id}`, formDataAll, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -52,7 +52,7 @@ const profile = () => {
       });
       toast.success("Información actualizado");
     } catch (e) {
-      console.log("Error", e);
+     
       toast.error("Error al actualizar su información");
     }
   };

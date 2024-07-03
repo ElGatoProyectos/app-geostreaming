@@ -98,7 +98,7 @@ export async function PATCH(
       phone,
       country_code,
     };
-    console.log(adminInfo);
+   
   } catch (error) {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }

@@ -8,6 +8,7 @@ export async function GET() {
     };
 
     const res = await fetch(url_wsp, options);
+    console.log("res", res);
 
     if (!res.ok) {
       throw new Error("Failed to fetch QR code");

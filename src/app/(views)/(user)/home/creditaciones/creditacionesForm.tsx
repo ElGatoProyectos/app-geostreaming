@@ -37,7 +37,7 @@ const creditacionesForm: React.FC<CreditacionesProps> = ({ info, onSubmit }) => 
 
   const handleFormSubmit: SubmitHandler<Inputs> = async (data) => {
     setLoading(true);
-    console.log(data);
+    
     try {
       await onSubmit(data);
       reset(); 

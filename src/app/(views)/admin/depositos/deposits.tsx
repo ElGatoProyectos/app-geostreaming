@@ -68,8 +68,7 @@ const Deposits = () => {
   };
 
   const handleApprove: SubmitHandler<any> = async (data) => {
-    console.log(selectedRecord?.user_id)
-    console.log(data);
+
     try {
       await axios.patch(`/api/balance/${selectedRecord.user_id}`,{
         balance_in_cents: data.value,
