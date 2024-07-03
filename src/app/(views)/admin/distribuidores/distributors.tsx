@@ -7,6 +7,7 @@ import { SubmitHandler } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Export } from "./export";
 
 type userEnabled = "y" | "n";
 
@@ -144,18 +145,19 @@ const Distributors = () => {
     }
     setIsDeleteModalOpen(false);
   };
+  const handleDownload = () => {
+    Export(users)
+  }
 
   return (
     <>
       <Table
         columns={columns}
         data={users}
-        showActions={true}
+        showActions={false}
         download={true}
+        downloadAction={handleDownload}
         title="Distribuidores"
-        onAdd={handleAdd}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
       />
 
       <Modal isOpen={isModalOpen} onClose={closeModal} title={modalTitle}>

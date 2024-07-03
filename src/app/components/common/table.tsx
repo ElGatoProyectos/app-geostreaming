@@ -130,6 +130,11 @@ const TableComponent = <T extends Record<string, any>>({
       onUpload();
     }
   };
+  const onDownloadAction = () => {
+    if (downloadAction) {
+      downloadAction();
+    }
+  };
 
   return (
     <div className="bg-white px-8 py-8 shadow-box rounded-xl">
@@ -162,7 +167,7 @@ const TableComponent = <T extends Record<string, any>>({
               className="block w-full px-4 py-2 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-purple-300 focus:border-purple-500 max-w-[400px]"
             />
             {download && (
-              <ActionButton onClick={() => downloadAction}>
+              <ActionButton onClick={onDownloadAction}>
                 Descargar
               </ActionButton>
             )}

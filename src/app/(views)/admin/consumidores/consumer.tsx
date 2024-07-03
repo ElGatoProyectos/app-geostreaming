@@ -148,11 +148,10 @@ const Consumers = () => {
       <Table
         columns={columns}
         data={users}
-        showActions={true}
+        showActions={false}
         download={true}
         title="Consumidores"
-        onEdit={handleEdit}
-        onDelete={handleDelete}
+        
       />
       <Modal isOpen={isModalOpen} onClose={closeModal} title={modalTitle}>
         <ConsumerForm

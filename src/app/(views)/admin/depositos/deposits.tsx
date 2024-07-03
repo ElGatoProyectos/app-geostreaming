@@ -73,12 +73,14 @@ const Deposits = () => {
     try {
       await axios.patch(`/api/balance/${selectedRecord.user_id}`,{
         balance_in_cents: data.value,
+        voucher_id: Number(selectedRecord.id),
       });
       toast.success("Depósito aprobado correctamente");
     } catch (error) {
       toast.error("Error al confirmar el depósito");
       console.log("Error al confirmar deposito", error);
     }
+    fetchDeposits();
   };
 
   const columns = [

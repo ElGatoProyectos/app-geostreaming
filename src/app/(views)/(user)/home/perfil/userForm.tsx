@@ -7,13 +7,12 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 /* CAMBIAR SCHEMA */
 import { UserSchema } from "@/app/schemas/userSchema";
 import CountrySelect from "@/app/components/forms/countrySelect";
-import axios from "axios";
 
 type Inputs = {
-  dni: string;
-  full_name: string;
-  email: string;
-  phone: string;
+  dni?: string;
+  full_name?: string;
+  email?: string;
+  phone?: string;
   country_code?: string;
   file?: string;
 };
@@ -66,7 +65,6 @@ const UserForm: React.FC<UserFormProps> = ({
         label="Documento de Identidad"
         register={register("dni")}
         error={errors.dni}
-        isDisabled={true}
       />
       <InputField
         id="full_name"
@@ -79,7 +77,6 @@ const UserForm: React.FC<UserFormProps> = ({
         label="Correo"
         register={register("email")}
         error={errors.email}
-        isDisabled={true}
       />
       <div className="flex flex-col md:flex-row gap-4">
         <CountrySelect id="country_code" register={register("country_code")} />
