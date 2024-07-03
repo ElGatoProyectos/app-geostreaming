@@ -60,6 +60,11 @@ export async function PATCH(
   }
 
   let user;
+  // Actualizar el voucher en la base de datos utilizando Prisma
+  await prisma.voucher.update({
+    where: { id: validatedBalanceUser.voucher_id },
+    data: { status: "READ" },
+  });
 
   try {
     user = await prisma.user.update({

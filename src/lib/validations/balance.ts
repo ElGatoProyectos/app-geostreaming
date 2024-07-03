@@ -2,6 +2,7 @@ import { z } from "zod";
 
 const balanceSchema = z.object({
   balance_in_cents: z.number(),
+  voucher_id: z.number(),
 });
 
 export function validateBalance(orderInfo: unknown) {
