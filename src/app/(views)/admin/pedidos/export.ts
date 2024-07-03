@@ -1,13 +1,14 @@
 import * as xlsx from "xlsx";
 
-export const ExportConsumidores = (data: any) => {
+export const ExportOrders = (data: any) => {
   try {
     const alldata = data.map((item: any) => {
       const formatData = {
-        "NOMBRES COMPLETOS": item.full_name,
-        CORREO: item.email,
+        "NOMBRES COMPLETOS": item.user.full_name,
+        CORREO: item.user.email,
         CELULAR: item.country_code + item.phone,
-        "DOCUMENTO DE IDENTIDAD": item.dni,
+        PLATAFORMA: item.platform.name,
+        "FECHA DE PEDIDO": item.created_at,
       };
       return formatData;
     });
@@ -17,6 +18,6 @@ export const ExportConsumidores = (data: any) => {
     /*  */
     xlsx.utils.book_append_sheet(workbook, worksheet, "Users");
 
-    return xlsx.writeFile(workbook, "reporte-consumidores.xlsx");
+    return xlsx.writeFile(workbook, "reporte-pedidos.xlsx");
   } catch (error) {}
 };

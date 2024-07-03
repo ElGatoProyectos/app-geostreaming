@@ -1,3 +1,4 @@
+import { dev, url_backend } from "@/context/token";
 import prisma from "@/lib/prisma";
 import { validateOrder } from "@/lib/validations/order";
 import { NextRequest, NextResponse } from "next/server";
@@ -140,6 +141,10 @@ export async function POST(req: NextRequest) {
     }
 
     const statusOrder = status;
+    let cookiesesion = dev
+      ? "next-auth.session-token"
+      : "__Secure-next-auth.session-token";
+    const token = req.cookies.get(cookiesesion)?.value as any;
 
     if (statusOrder === "PENDING") {
       const dataOrder = {
@@ -164,29 +169,46 @@ export async function POST(req: NextRequest) {
 
         const userPhone = user.phone;
 
-        // const url_wsp = "http://localhost:4000/notifications";
-        // const options = {
-        //   method: "POST",
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //     // Authorization: `Bearer ${token}`,
-        //   },
+        const url_wsp = `${url_backend}/notifications`;
+        const options = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `${token}`,
+          },
 
-        //   body: JSON.stringify({
-        //     phone: userPhone,
-        //     message: wspMessage,
-        //     country_code: user.country_code,
-        //   }),
-        // };
+          body: JSON.stringify({
+            phone: userPhone,
+            message: wspMessage,
+            country_code: user.country_code,
+          }),
+        };
 
-        // const res = await fetch(url_wsp, options);
-        // const json = await res.json();
+        const res = await fetch(url_wsp, options);
+
+        const admi = await prisma.admin.findMany();
+        const wspmessageadmi = `👋 Hola ${admi[0].full_name} tienes un pedido pendiente de la plataforma ${platform.name} por favor revisarlo en pedidos`;
+        const resadmi = await fetch(url_wsp, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `${token}`,
+          },
+          body: JSON.stringify({
+            phone: admi[0].phone,
+            message: wspmessageadmi,
+            country_code: admi[0].country_code,
+          }),
+        });
+
+        const json = await res.json();
+        const jsonadmi = await resadmi.json();
 
         await prisma.notification.create({
           data: { phone_client: userPhone, message: wspMessage },
         });
 
-        return NextResponse.json({ newOrder });
+        return NextResponse.json({ newOrder, json });
       } catch (e) {
         return NextResponse.json(
           { error: "Error creating order pending" },
@@ -255,12 +277,12 @@ export async function POST(req: NextRequest) {
 
       const userPhone = user.phone;
 
-     /*  const url_wsp = "http://localhost:4000/notifications";
+      const url_wsp = `${url_backend}/notifications`;
       const options = {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          // Authorization: `Bearer ${token}`,
+          Authorization: `${token}`,
         },
 
         body: JSON.stringify({
@@ -268,7 +290,7 @@ export async function POST(req: NextRequest) {
           message: wspMessage,
           country_code: user.country_code,
         }),
-      }; */
+      };
 
       try {
         await prisma.user.update({
@@ -282,8 +304,8 @@ export async function POST(req: NextRequest) {
         );
       }
 
-    /*   const res = await fetch(url_wsp, options); */
-     /*  const json = await res.json(); */
+      const res = await fetch(url_wsp, options);
+      const json = await res.json();
 
       await prisma.notification.create({
         data: { phone_client: userPhone, message: wspMessage },
@@ -291,7 +313,7 @@ export async function POST(req: NextRequest) {
 
       return NextResponse.json({
         ...responseOrder,
-       /*  json, */
+        json,
       });
     } catch (e) {
       return NextResponse.json(

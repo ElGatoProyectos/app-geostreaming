@@ -27,7 +27,7 @@ const UserUpdateSchema = z.object({
 
 export function validateUser(userInfo: unknown) {
   const parseResut = UserSchema.safeParse(userInfo);
-  console.log(parseResut);
+
   if (!parseResut.success) {
     throw new Error("Invalid user info");
   }
@@ -36,7 +36,7 @@ export function validateUser(userInfo: unknown) {
 
 export function validateUpdateUser(userInfo: unknown) {
   const parseResut = UserUpdateSchema.safeParse(userInfo);
-  console.log("parseResut", parseResut);
+ 
   if (!parseResut.success) {
     throw new Error("Invalid user info");
   }

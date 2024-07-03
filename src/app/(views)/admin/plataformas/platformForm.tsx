@@ -45,7 +45,7 @@ const PlatformForm: React.FC<PlatformFormProps> = ({
 
   const handleFormSubmit: SubmitHandler<Inputs> = async (data) => {
     setLoading(true);
-    console.log('hola');
+  
     try {
       await onSubmit(data);
     } catch (error) {

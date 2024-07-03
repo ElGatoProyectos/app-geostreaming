@@ -40,14 +40,14 @@ const login = () => {
         redirect: false,
       });
 
-      console.log(responseAuth);
+     
 
       if (responseAuth?.ok) {
         const session = await getSession();
         const role = session?.user?.role;
 
         if (role === "ADMIN") {
-          console.log("run to admin");
+          
           router.push("/admin");
         } else if (role === "USER" || role === "DISTRIBUTOR") {
           router.push("/home");

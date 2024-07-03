@@ -1,13 +1,15 @@
+import { url_backend } from "@/context/token";
 import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const url_wsp = "http://localhost:4000/qrcode";
+    const url_wsp = `${url_backend}/qrcode`;
     const options = {
       method: "GET",
     };
 
     const res = await fetch(url_wsp, options);
+    console.log("res", res);
 
     if (!res.ok) {
       throw new Error("Failed to fetch QR code");

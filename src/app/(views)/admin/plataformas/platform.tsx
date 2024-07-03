@@ -74,18 +74,18 @@ const Platform = () => {
       });
       toast.success("Se subió correctamente");
     } catch (e) {
-      console.log(e);
+      
       toast.error("Error al subir el archivo");
     }
     closeUploadModal();
   };
 
   const handleSavePlatform: SubmitHandler<Platform> = async (data) => {
-    console.log(data);
+  
     setLoading(true);
     try {
       if (data.id) {
-        console.log(data);
+      
         await axios.patch(`/api/platform/${data.id}`, {
           img_url: data.img_url,
           name: data.name,
@@ -97,7 +97,7 @@ const Platform = () => {
         });
         toast.success("Se actualizo correctamente");
       } else {
-        console.log(data);
+     
         await axios.post("/api/platform", {
           img_url: data.img_url,
           name: data.name,
@@ -163,7 +163,7 @@ const Platform = () => {
       setModalTitle("Editar plataforma");
       setIsModalOpen(true);
     } catch (error) {
-      console.log(error);
+    
       toast.error("Error al obtener los datos");
     }
   };
@@ -189,7 +189,7 @@ const Platform = () => {
       setIsDeleteModalOpen(false);
       toast.success("Se elimino correctamente");
     } catch (e) {
-      console.log(e);
+      
       toast.error("Error al eliminar registro");
     }
   };

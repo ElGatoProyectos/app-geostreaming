@@ -45,7 +45,7 @@ const Bank = () => {
 
   const handleSaveBank: SubmitHandler<Inputs> = async (data) => {
     setLoading(true);
-    console.log(data);
+   
     try {
       if (data.id) {
         await axios.patch(`/api/bank/${data.id}`, {
@@ -100,7 +100,7 @@ const Bank = () => {
       setIsModalOpen(true);
 
     } catch (error) {
-      console.log(error);
+   
       toast.error("Error al obtener los datos");
     }
   };

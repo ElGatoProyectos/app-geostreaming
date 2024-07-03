@@ -52,11 +52,9 @@ const AccountForm: React.FC<AccountFormProps> = ({
       try {
         const [platformResponse /* , userResponse */] = await Promise.all([
           axios.get("/api/platform"),
-          /*   axios.get("/api/user"), */
         ]);
-        console.log(platformResponse.data);
+
         setPlatforms(platformResponse.data);
-        /*  setUsers(userResponse.data); */
       } catch (error) {
         console.error("Error fetching data:", error);
       }

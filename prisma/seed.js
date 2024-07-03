@@ -6,10 +6,26 @@ const prisma = new PrismaClient();
 const initialBanks = [
   {
     bank_url:
-      "https://images.ctfassets.net/y2ske730sjqp/5QQ9SVIdc1tmkqrtFnG9U1/de758bba0f65dcc1c6bc1f31f161003d/BrandAssets_Logos_02-NSymbol.jpg?w=940",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTglLyEuBFP1w0fLXQnQp0XSEf9pzIkSxJK6Q&s",
     name: "Jose perez mendoza",
     number: "7777888899999",
     bank: "Pichincha",
+    type: "CORRIENTE",
+  },
+  {
+    bank_url:
+      "https://yt3.googleusercontent.com/1il06CSbBwwG5lyybUYa6KnisWtswkvFPK9y2C92R3Vp5hd6rCdTBYD-TGKGAQt9V6FMMSXsxw=s900-c-k-c0x00ffffff-no-rj",
+    name: "Jose perez mendoza",
+    number: "55556666111122",
+    bank: "BCP",
+    type: "CORRIENTE",
+  },
+  {
+    bank_url:
+      "https://pbs.twimg.com/profile_images/1607365667950305283/HpdPjItg_400x400.jpg",
+    name: "Jose perez mendoza",
+    number: "55556666111122",
+    bank: "INTERBANK",
     type: "CORRIENTE",
   },
 ];
@@ -253,22 +269,22 @@ async function main() {
     data: usersEncryptedPass,
   });
 
-  for (const platform of initialPlatforms) {
-    const newPlatform = await prisma.platform.create({
-      data: platform,
-    });
+  // for (const platform of initialPlatforms) {
+  //   const newPlatform = await prisma.platform.create({
+  //     data: platform,
+  //   });
 
-    await prisma.$disconnect();
-    console.log(`Created platform with id: ${newPlatform.id}`);
-  }
+  //   await prisma.$disconnect();
+  //   console.log(`Created platform with id: ${newPlatform.id}`);
+  // }
 
-  for (const account of initialAccounts) {
-    const newAccount = await prisma.account.create({
-      data: account,
-    });
-    console.log(`Created account with id: ${newAccount.id}`);
-  }
-  console.log("Seeding finished.");
+  // for (const account of initialAccounts) {
+  //   const newAccount = await prisma.account.create({
+  //     data: account,
+  //   });
+  //   console.log(`Created account with id: ${newAccount.id}`);
+  // }
+  // console.log("Seeding finished.");
 
   for (const bank of initialBanks) {
     const newBank = await prisma.bank.create({

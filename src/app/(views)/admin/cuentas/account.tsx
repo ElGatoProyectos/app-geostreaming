@@ -137,7 +137,7 @@ const Account = () => {
       const data = response.data;
       data.is_active = data.is_active ? "1" : "0";
 
-      console.log(data);
+     
       if (data.purchase_date) {
         const date = new Date(data.purchase_date);
         data.purchase_date = date.toISOString().slice(0, 16);
@@ -146,7 +146,7 @@ const Account = () => {
       setModalTitle("Editar cuenta");
       setIsModalOpen(true);
     } catch (error) {
-      console.log(error);
+
       toast.error("Error al obtener los datos");
     }
   };

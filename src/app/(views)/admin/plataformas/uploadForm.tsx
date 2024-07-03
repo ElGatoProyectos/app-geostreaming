@@ -38,7 +38,7 @@ const UploadForm: React.FC<UploadFormProps> = ({
     setLoading(true);
 
     try {
-      console.log(data);
+  
       await onSubmit({
         ...data,
       });

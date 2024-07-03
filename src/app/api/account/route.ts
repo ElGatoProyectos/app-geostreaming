@@ -47,14 +47,11 @@ export async function POST(req: NextRequest) {
 
   let validatedAccount;
 
-  console.log("accountInfo", accountInfo);
   try {
     validatedAccount = validateAccount(accountInfo);
   } catch (error) {
     return NextResponse.json({ error: "Validation error" }, { status: 400 });
   }
-
-  console.log("validatedAccount", validatedAccount);
 
   let newAccount;
 
