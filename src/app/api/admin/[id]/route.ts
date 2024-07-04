@@ -104,15 +104,19 @@ export async function PATCH(
   try {
     const { file, ...restData } = adminInfo;
     if (adminInfo.file !== "undefined") {
+      console.log(file);
       const formDataAll = new FormData();
-      formDataAll.append("image", file);
+      formDataAll.append("image-admin", file);
 
       const res = await fetch(`${url_front_to_wsp}/file/profile-admin`, {
         method: "POST",
         body: formDataAll,
       });
 
+      console.log("res", res);
+
       const json = await res.json();
+      console.log("json", json);
     }
 
     updatedAdmin = await prisma.admin.update({
