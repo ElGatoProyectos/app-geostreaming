@@ -35,6 +35,7 @@ const profile = () => {
   
   const handleSavePersonal: SubmitHandler<InputsPersonal> = async (data:any) => {
     try {
+      // aqui va fetch profile
       const formDataAll = new FormData();
       formDataAll.append("email", String(data.email));
       formDataAll.append("role", String(session.data?.user.role));

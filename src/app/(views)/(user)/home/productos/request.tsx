@@ -74,18 +74,20 @@ const request = () => {
     fetchPlatform();
   }, []);
 
-  const handleFormSubmit = async (id: number) => {
+  const handleFormSubmit:SubmitHandler<any>  = async (data) => {
     try {
       await axios.post("/api/order/", {
         user_id: Number(session.data?.user.id),
-        platform_id: id,
+        platform_id: modalInfo?.id,
+        phone: data.phone,
+        country_code: data.country_code,
         status: "ATTENDED",
       });
       closeModal();
       toast.success("Plataforma comprada");
     } catch (error) {
       
-      toast.error("error de compra");
+      toast.error("Error de compra");
       closeModal();
       // mensaje de error
     }
@@ -107,16 +109,18 @@ const request = () => {
           />
         ))}
       </ContainerCard>
-      <Modal isOpen={isModalOpen} onClose={closeModal} title={modalTitle}>
+      {/* <Modal isOpen={isModalOpen} onClose={closeModal} title={modalTitle}>
         {modalInfo && (
           <div className="flex flex-col items-center justify-center gap-4">
             <img
-              className="h-16 w-16 object-contain"
+              className="h-16 w-16 rounded-full object-contain"
               src={modalInfo.url}
               alt={modalInfo.title}
             />
             <h2 className="font-semibold">{modalInfo.title}</h2>
             <div className=" w-full flex flex-col gap-4">
+              <label htmlFor="phone" className="text-[#444] capitalize">Ingrese número de WhatsApp</label>
+              <input type="text" id="phone" className="bg-gray-100 w-full text-[#666] bg-gray-10 border rounded outline-none px-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 "/>
               <button
                 onClick={() => handleFormSubmit(modalInfo.id)}
                 className="bg-[#F2308B] text-white mt-4 px-4 py-1 rounded hover:bg-[#F06FAC] transition-all duration-300 mx-auto "
@@ -133,6 +137,11 @@ const request = () => {
               </button>
             </div>
           </div>
+        )}
+      </Modal> */}
+      <Modal isOpen={isModalOpen} onClose={closeModal} title={modalTitle}>
+        {modalInfo && (
+          <PlatformForm info={modalInfo} onSubmit={handleFormSubmit}></PlatformForm>
         )}
       </Modal>
       {/* modal de confirmacion */}

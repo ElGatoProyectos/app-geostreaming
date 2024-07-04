@@ -3,6 +3,7 @@ import ContainerCard2 from '@/app/components/common/containerCard2'
 import React from 'react'
 import DocumentForm from './documentForm'
 const Document = () => {
+    // aqui va descarga del pdf documentacion
     const handleDownload = () => {
         console.log("descargando :p");
       };

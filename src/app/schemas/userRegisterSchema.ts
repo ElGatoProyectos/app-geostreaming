@@ -16,7 +16,7 @@ export const userRegisterSchema = z.object({
         .email({ message: 'Formato de email incorrecto | ejemplo@gmail.com' }),
     country_code: z.string(),
     phone: z.string()
-        .regex(/^\d+/, { message: 'El número de celular debe tener 9 dígitos' }),
+        .regex(/^\d+/, { message: 'El número de celular debe ser numérico' }),
     password: z.string()
         .min(8, { message: 'La contraseña debe tener al menos 8 caracteres' }),
 

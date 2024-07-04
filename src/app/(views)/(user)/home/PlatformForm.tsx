@@ -6,15 +6,16 @@ import InputField from "@/app/components/forms/inputField";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 import { getProductFormSchema } from "@/app/schemas/getProductFormSchema";
+import CountrySelect from "@/app/components/forms/countrySelect";
 type Inputs = {
-  platform_id:number,
+  country_code: string,
+  phone: string,
 };
 
 interface PlatformProps {
   info: {
     title: string;
     numberAccount?: string;
-    id: number;
     url?: string;
   };
   onSubmit: SubmitHandler<Inputs>;
@@ -55,7 +56,7 @@ const PlatformForm: React.FC<PlatformProps> = ({
       {info.numberAccount == null ? (
         <div className="flex flex-col items-center justify-center gap-4">
           <img
-            className="h-16 w-16 object-contain"
+            className="h-16 w-16 rounded-full object-contain"
             src={info.url}
             alt={info.title}
           />
@@ -70,8 +71,16 @@ const PlatformForm: React.FC<PlatformProps> = ({
           </p>
         </div>
       )}
+      <CountrySelect id="country_code" register={register("country_code")} />
       
-      <input type="hidden" id="platform_id" {...register("platform_id")}/>
+      <InputField
+        id="phone"
+        label="Numero de WhatsApp"
+        placeholder="Ingrese número al que se le enviara la cuenta"
+        register={register("phone")}
+        error={errors.phone}
+        type="phone"
+      />
      {/*  <div>
         <p>¿Deseas enviarte los datos de la cuenta?</p>
         <div className="flex gap-8 w-fit mx-auto mt-2">
@@ -79,8 +88,8 @@ const PlatformForm: React.FC<PlatformProps> = ({
             <input
               id="option_no"
               type="radio"
-              value="false"
-              name="send_radio"
+              value="n"
+              name="send-radio"
               className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
             />
             <label
@@ -94,8 +103,8 @@ const PlatformForm: React.FC<PlatformProps> = ({
             <input
               id="option_si"
               type="radio"
-              value="false"
-              name="send_radio"
+              value="y"
+              name="send-radio"
               className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 full dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
             />
             <label
@@ -106,11 +115,6 @@ const PlatformForm: React.FC<PlatformProps> = ({
             </label>
           </div>
         </div>
-        {errors.send_radio && (
-          <p className="text-red-500 text-sm font-medium mt-1">
-            {errors.send_radio?.message}
-          </p>
-        )}
       </div> */}
 
       <div className=" w-full flex flex-col gap-4">
@@ -125,7 +129,7 @@ const PlatformForm: React.FC<PlatformProps> = ({
               Cargando
             </span>
           ) : (
-            "Guardar"
+            "Comprar"
           )}
         </button>
       </div>

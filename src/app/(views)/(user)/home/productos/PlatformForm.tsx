@@ -6,8 +6,10 @@ import InputField from "@/app/components/forms/inputField";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 import { getProductFormSchema } from "@/app/schemas/getProductFormSchema";
+import CountrySelect from "@/app/components/forms/countrySelect";
 type Inputs = {
-  email: string;
+  country_code: string,
+  phone: string,
 };
 
 interface PlatformProps {
@@ -54,7 +56,7 @@ const PlatformForm: React.FC<PlatformProps> = ({
       {info.numberAccount == null ? (
         <div className="flex flex-col items-center justify-center gap-4">
           <img
-            className="h-16 w-16 object-contain"
+            className="h-16 w-16 rounded-full object-contain"
             src={info.url}
             alt={info.title}
           />
@@ -69,16 +71,17 @@ const PlatformForm: React.FC<PlatformProps> = ({
           </p>
         </div>
       )}
-      {/* 
+      <CountrySelect id="country_code" register={register("country_code")} />
+      
       <InputField
-        id="email"
-        label="Correo electrónico"
-        placeholder="Ingrese el correo electrónico de su cliente"
-        register={register("email")}
-        error={errors.email}
-        type="email"
-      /> */}
-      <div>
+        id="phone"
+        label="Numero de WhatsApp"
+        placeholder="Ingrese número al que se le enviara la cuenta"
+        register={register("phone")}
+        error={errors.phone}
+        type="phone"
+      />
+     {/*  <div>
         <p>¿Deseas enviarte los datos de la cuenta?</p>
         <div className="flex gap-8 w-fit mx-auto mt-2">
           <div className="flex items-center">
@@ -112,7 +115,7 @@ const PlatformForm: React.FC<PlatformProps> = ({
             </label>
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div className=" w-full flex flex-col gap-4">
         <button

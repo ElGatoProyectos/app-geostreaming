@@ -74,18 +74,20 @@ const request = () => {
     fetchPlatform();
   }, []);
 
-  const handleFormSubmit = async (id: number) => {
+  const handleFormSubmit:SubmitHandler<any>  = async (data) => {
     try {
       await axios.post("/api/order/", {
         user_id: Number(session.data?.user.id),
-        platform_id: id,
+        platform_id: modalInfo?.id,
+        phone: data.phone,
+        country_code: data.country_code,
         status: "ATTENDED",
       });
       closeModal();
       toast.success("Plataforma comprada");
     } catch (error) {
-
-      toast.error("error de compra");
+      
+      toast.error("Error de compra");
       closeModal();
       // mensaje de error
     }
@@ -108,6 +110,11 @@ const request = () => {
         ))}
       </ContainerCard>
       <Modal isOpen={isModalOpen} onClose={closeModal} title={modalTitle}>
+        {modalInfo && (
+          <PlatformForm info={modalInfo} onSubmit={handleFormSubmit}></PlatformForm>
+        )}
+      </Modal>
+      {/* <Modal isOpen={isModalOpen} onClose={closeModal} title={modalTitle}>
         {modalInfo && (
           <div className="flex flex-col items-center justify-center gap-4">
             <img
@@ -134,7 +141,7 @@ const request = () => {
             </div>
           </div>
         )}
-      </Modal>
+      </Modal> */}
       {/* modal de confirmacion */}
       <Modal
         isOpen={isModalInfoOpen}

@@ -42,6 +42,7 @@ const profile = () => {
     data: any
   ) => {
     try {
+      //aqui va fetch profile-admin
       const formDataAll = new FormData();
       formDataAll.append("email", data.email);
       formDataAll.append("role", String(session.data?.user.role));
