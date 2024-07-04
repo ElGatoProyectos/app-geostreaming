@@ -1,5 +1,6 @@
 import prisma from "@/lib/prisma";
 import { validatePlatform } from "@/lib/validations/platform";
+import { convertToCents } from "@/utils/convertToCents";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
@@ -22,14 +23,11 @@ export async function POST(req: NextRequest) {
   let platformInfo;
   let platformValidated;
 
-
   try {
     platformInfo = await req.json();
   } catch (error) {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
-
-
 
   try {
     platformValidated = validatePlatform(platformInfo);
@@ -37,7 +35,13 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Validation error" }, { status: 400 });
   }
 
-  console.log("platformValidated", platformValidated);
+  const { price_in_cents, price_distributor_in_cents } = platformValidated;
+
+  platformValidated = {
+    ...platformValidated,
+    price_distributor_in_cents: convertToCents(price_distributor_in_cents),
+    price_in_cents: convertToCents(price_in_cents),
+  };
 
   try {
     const newPlatform = await prisma.platform.create({
