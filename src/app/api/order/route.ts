@@ -125,6 +125,8 @@ export async function POST(req: NextRequest) {
         user_id,
         platform_id,
         status: statusOrder,
+        country_code: orderValidated.country_code,
+        phone: orderValidated.phone,
       };
 
       try {
@@ -163,9 +165,7 @@ export async function POST(req: NextRequest) {
           }
         }
 
-        const wspMessage = `👋 Hola ${user.full_name}\n _Pedido #${newOrder.id} PENDIENTE_\n🖥️ Plataforma: ${platform.name}\n📧 La espera aproximada es de 1 hora, y enviaremos la información a este número de WhatsApp.`;
-
-        const userPhone = user.phone;
+        const wspMessage = `👋 Hola \n _Pedido #${newOrder.id} PENDIENTE_\n🖥️ Plataforma: ${platform.name}\n📧 La espera aproximada es de 1 hora, y enviaremos la información a este número de WhatsApp.`;
 
         const url_wsp = `${url_backend}/notifications`;
         const options = {
@@ -176,9 +176,9 @@ export async function POST(req: NextRequest) {
           },
 
           body: JSON.stringify({
-            phone: userPhone,
+            phone: orderValidated.phone,
             message: wspMessage,
-            country_code: user.country_code,
+            country_code: orderValidated.country_code,
           }),
         };
 
@@ -203,7 +203,7 @@ export async function POST(req: NextRequest) {
         const jsonadmi = await resadmi.json();
 
         await prisma.notification.create({
-          data: { phone_client: userPhone, message: wspMessage },
+          data: { phone_client: orderValidated.phone, message: wspMessage },
         });
 
         return NextResponse.json({ newOrder, json });
@@ -216,6 +216,7 @@ export async function POST(req: NextRequest) {
     }
 
     // si el estatus no esta en pendiente
+
     const accountselected = platform.Account.find(
       (cuenta) => !cuenta.is_active
     );
@@ -264,6 +265,8 @@ export async function POST(req: NextRequest) {
       ref_id: user.ref_id,
       user_id,
       platform_id,
+      phone: orderValidated.phone,
+      country_code: orderValidated.country_code,
     };
 
     try {

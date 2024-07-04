@@ -105,8 +105,6 @@ export async function POST(req: NextRequest) {
     }
 
     try {
-
-      
       const updatedOrder = await prisma.order.update({
         where: { id: orderValidated.order_id },
         data: { status: "ATTENDED" },
@@ -116,7 +114,7 @@ export async function POST(req: NextRequest) {
 
       const { email, password, pin, description } = account;
 
-      const wspMessage = `👋 Hola ${user.full_name}\n _Pedido #${
+      const wspMessage = `👋 Hola \n _Pedido #${
         updatedOrder.id
       } Completado_\n🖥️ Plataforma: ${
         platform.name
@@ -139,9 +137,9 @@ export async function POST(req: NextRequest) {
         },
 
         body: JSON.stringify({
-          phone: userPhone,
+          phone: order.phone,
           message: wspMessage,
-          country_code: user.country_code,
+          country_code: order.country_code,
         }),
       };
 
