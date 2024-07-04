@@ -4,8 +4,8 @@ import { BsEmojiLaughing } from "react-icons/bs";
 import { BsEmojiWink } from "react-icons/bs";
 import { RiCheckDoubleLine } from "react-icons/ri";
 import { useEffect, useState } from "react";
-import Aos from 'aos';
-import 'aos/dist/aos.css';
+import Aos from "aos";
+import "aos/dist/aos.css";
 
 interface Service {
   name: string;
@@ -30,7 +30,7 @@ const services = () => {
         "Las credenciales de la cuenta que compres son personales y te llegan a tu correo o Whatsapp.",
       ],
       description:
-        "Pasa los fines de semana en compañía de tu familia o amigos disfrutando de las mejores películas, canales o series que brinda cada una de las plataformas de streaming que tenemos disponible.",
+        "Solo le das clic en comprar y ya puedes empezar a disfrutar de tus cuentas de streaming favoritas.",
     },
     {
       name: "Servicio para distribuidores",
@@ -42,7 +42,7 @@ const services = () => {
         "Ofrece más productos en tu negocio y no dejes de tener nuevos clientes.",
       ],
       description:
-        "Si tienes una tienda, farmacia, cyber o cualquier tipo de negocio contáctanos y ofrece cuentas de entretenimiento para que obtengas más ganancias.",
+        "Olvídate de crear cuentas y editar perfiles, con nuestra plataforma solo tienes que vender.",
     },
     {
       name: "Servicio Web Service",
@@ -65,10 +65,13 @@ const services = () => {
   };
 
   return (
-    <div id="services" className="pt-8 pb-16" >
+    <div id="services" className="pt-8 pb-16">
       <div className="flex flex-col gap-8 px-4 md:px-10 max-w-[1440px] mx-auto">
         <div>
-          <ul className="flex gap-8 w-4/5 mx-auto lg:w-[60%] text-[#444444]" data-aos="fade-up">
+          <ul
+            className="flex gap-8 w-4/5 mx-auto lg:w-[60%] text-[#444444]"
+            data-aos="fade-up"
+          >
             {dServices.map((service, index) => (
               <li
                 key={index}
@@ -120,7 +123,7 @@ const services = () => {
               </li>
             ))}
 
-{/*             <li className="w-1/3 border border-gray hover:border-gray-200 transition-all duration-300-300 group ">
+            {/*             <li className="w-1/3 border border-gray hover:border-gray-200 transition-all duration-300-300 group ">
               <button className="w-full p-4 flex md:py-8 justify-center items-center lg:gap-2">
                 <BsEmojiWink className="text-3xl group-hover:text-[#F2308B] transition-all duration-300" />
                 <span className=" capitalize text-xl hidden lg:inline ml-2 group-hover:text-[#F2308B] transition-all duration-300">
@@ -152,15 +155,13 @@ const services = () => {
             </h3>
             <ul>
               {selectedService.items.map((item, index) => (
-               <li className="mb-4" key={index} data-aos="fade-up">
-                <RiCheckDoubleLine className="text-[#F2308B] text-xl inline-block" />
-                <span>{item}</span>
-              </li> 
+                <li className="mb-4" key={index} data-aos="fade-up">
+                  <RiCheckDoubleLine className="text-[#F2308B] text-xl inline-block" />
+                  <span>{item}</span>
+                </li>
               ))}
             </ul>
-            <p data-aos="fade-up">
-              {selectedService.description}
-            </p>
+            <p data-aos="fade-up">{selectedService.description}</p>
           </div>
         </div>
       </div>

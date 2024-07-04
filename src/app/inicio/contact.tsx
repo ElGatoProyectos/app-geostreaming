@@ -3,8 +3,9 @@ import React, { useEffect } from "react";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { FaRegEnvelope } from "react-icons/fa";
 import { LuPhoneCall } from "react-icons/lu";
-import Aos from 'aos';
-import 'aos/dist/aos.css';
+import Aos from "aos";
+import "aos/dist/aos.css";
+import Link from "next/link";
 
 const contact = () => {
   useEffect(() => {
@@ -13,15 +14,19 @@ const contact = () => {
   return (
     <div className=" w-full" id="contact" data-aos="fade-up">
       <div className=" px-4 py-8 md:px-10 max-w-[1440px] mx-auto">
-        <h2 className="text-3xl font-bold uppercase text-[#444444] flex flex-col gap-4 justify-center items-center text-center mb-8" data-aos="fade-up">
+        <h2
+          className="text-3xl font-bold uppercase text-[#444444] flex flex-col gap-4 justify-center items-center text-center mb-8"
+          data-aos="fade-up"
+        >
           Contáctanos<span className="w-12 h-1 bg-[#F2308B]"></span>
         </h2>
         <p className="text-center mb-8" data-aos="fade-up">
-        Tienes dudas o ya quieres empezar a trabajar con nosotros. Escríbenos o llámanos y te daremos la información necesaria.
+          Tienes dudas o ya quieres empezar a trabajar con nosotros. Escríbenos
+          o llámanos y te daremos la información necesaria.
         </p>
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+        <div className="grid grid-cols-1 gap-8 ">
           <div className="grid grid-cols-1 gap-8" data-aos="fade-up">
-            <div className="text-center text-[#444444] shadow-box flex flex-col justify-center items-center p-8 bg-white">
+            {/* <div className="text-center text-[#444444] shadow-box flex flex-col justify-center items-center p-8 bg-white">
               <div className="w-12 h-12 flex items-center justify-center p-2 rounded-full  border-[#F06FAC] border-2 border-dotted bg-white shadow-box mb-4">
                 <FaMapMarkerAlt className="text-2xl text-[#F2308B]" />
               </div>
@@ -31,7 +36,7 @@ const contact = () => {
               <p className="text-sm">
                 Argentinos y Pichincha, RIOBAMBA, ECUADOR
               </p>
-            </div>
+            </div> */}
             <div className="flex flex-col md:flex-row gap-8">
               <div className="w-full md:w-1/2 text-center text-[#444444] shadow-box flex flex-col justify-center items-center p-8">
                 <div className="w-12 h-12 flex items-center justify-center p-2 rounded-full  border-[#F06FAC] border-2 border-dotted bg-white shadow-box mb-4">
@@ -40,9 +45,7 @@ const contact = () => {
                 <h3 className="font-bold text-xl mb-4 text-[#777777]">
                   Escríbenos
                 </h3>
-                <p className="text-sm">
-                  info@geostreaming.com <br /> comercial@geostreaming.com
-                </p>
+                <p className="text-sm">ventas@geostreaming.org</p>
               </div>
               <div className="w-full md:w-1/2 text-center text-[#444444] shadow-box flex flex-col justify-center items-center p-8">
                 <div className="w-12 h-12 flex items-center justify-center p-2 rounded-full  border-[#F06FAC] border-2 border-dotted bg-white shadow-box mb-4">
@@ -51,11 +54,17 @@ const contact = () => {
                 <h3 className="font-bold text-xl mb-4 text-[#777777]">
                   Llámanos
                 </h3>
-                <p className="text-sm">+593 982519269</p>
+                <Link
+                  href={"https://wa.link/5hyrwj"}
+                  target="_blank"
+                  className="text-sm"
+                >
+                  +593986221088
+                </Link>
               </div>
             </div>
           </div>
-          <div data-aos="fade-up">
+          {/* <div data-aos="fade-up">
             <form
               action=""
               className="shadow-box p-8 flex flex-col gap-8 text-[#444444] items-center"
@@ -96,7 +105,7 @@ const contact = () => {
                 Enviar Mensaje
               </button>
             </form>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
