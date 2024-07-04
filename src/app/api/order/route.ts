@@ -286,7 +286,7 @@ export async function POST(req: NextRequest) {
         platform.name
       }\n📧 Email: ${email}\n🔑 Password: ${password}\n🔢 Pin: ${pin}\n${
         description ? `📝 Descripción: ${description}\n` : ""
-      }🕒 Duración de la cuenta: ${platform.days_duration} días}`;
+      }🕒 Duración de la cuenta: ${platform.days_duration} días`;
 
       const userPhone = orderValidated.phone;
 

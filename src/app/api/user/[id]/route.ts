@@ -1,11 +1,15 @@
 import prisma from "@/lib/prisma";
-import { validateUpdateUser } from "@/lib/validations/user";
+import {
+  validateUpdateRole,
+  validateUpdateUser,
+  validateUser,
+} from "@/lib/validations/user";
 import { UserModel } from "@/models/mysql/user-model";
 import { UserService } from "@/service/user";
 import { NextRequest, NextResponse } from "next/server";
 import path from "path";
 import { writeFile } from "fs/promises";
-import bcrypt from "bcrypt";
+import { url_front_to_wsp } from "@/context/token";
 
 const userService = new UserService({ userModel: UserModel });
 
@@ -15,6 +19,7 @@ export async function GET(
 ) {
   try {
     const user = await userService.getById({ params });
+    await prisma.$disconnect();
     return NextResponse.json(user);
   } catch (error: any) {
     return NextResponse.json({ error: "Error to get user" }, { status: 404 });
@@ -95,16 +100,34 @@ export async function GET(
 //   }
 // }
 
+export async function PUT(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  let userInfo = await req.json();
+  let validateduser = validateUpdateRole(userInfo);
+
+  const curedUser = {
+    role: validateduser.role,
+    enabled: validateduser.enabled,
+  };
+
+  const updatedUser = await prisma.user.update({
+    where: { id: Number(params.id) },
+    data: curedUser,
+  });
+
+  await prisma.$disconnect();
+  return NextResponse.json(updatedUser);
+}
+
 export async function PATCH(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  
-
   let userInfo;
 
   try {
-    /* adminInfo = await req.json(); */
     const data: any = await req.formData();
 
     const file = data.get("file");
@@ -112,6 +135,8 @@ export async function PATCH(
     const full_name = data.get("full_name");
     const phone = data.get("phone");
     const country_code = data.get("country_code");
+
+    console.log("userInfo", userInfo);
 
     userInfo = {
       file,
@@ -124,28 +149,23 @@ export async function PATCH(
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
-  /* let validatedAdmin; */
-
-  /* try {
-    validatedAdmin = validateAdmin(adminInfo);
-  } catch (error) {
-    return NextResponse.json({ error: "Validation error" }, { status: 400 });
-  } */
-
-  let updatedAdmin;
+  let updatedUser;
 
   try {
     const { file, ...restData } = userInfo;
     if (userInfo.file !== "undefined") {
-      const bytes = await userInfo.file.arrayBuffer();
-      const buffer = Buffer.from(bytes);
-      const nameImage = "user_" + params.id + ".png";
-      const filePath = path.join(process.cwd(), `public/users`, nameImage);
-      await writeFile(filePath, buffer);
-     
-    } 
+      const formDataAll = new FormData();
+      formDataAll.append("image", userInfo.file);
 
-    updatedAdmin = await prisma.user.update({
+      const res = await fetch(`${url_front_to_wsp}/file/profile/${params.id}`, {
+        method: "POST",
+        body: formDataAll,
+      });
+
+      const json = await res.json();
+    }
+
+    updatedUser = await prisma.user.update({
       where: { id: Number(params.id) },
       data: restData,
     });
@@ -160,7 +180,7 @@ export async function PATCH(
     await prisma.$disconnect();
   }
 
-  return NextResponse.json(updatedAdmin);
+  return NextResponse.json(updatedUser);
 }
 
 export async function DELETE(

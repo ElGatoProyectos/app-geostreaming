@@ -11,6 +11,7 @@ import CountrySelect from "@/app/components/forms/countrySelect";
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { url_backend, url_front_to_wsp } from "@/context/token";
 
 type Inputs = {
   file: string;
@@ -32,11 +33,16 @@ const DocumentForm = () => {
     setLoading(true);
 
     try {
-      // aqui va fetch pdf
       const formDataAll = new FormData();
-      formDataAll.append("file", data.file[0]);
-      await axios.post("/api/", formDataAll);
-      console.log(formDataAll);
+      formDataAll.append("pdf", data.file[0]);
+
+      const res = await fetch(`${url_front_to_wsp}/file/pdf`, {
+        method: "POST",
+        body: formDataAll,
+      });
+
+      const json = await res.json();
+
       toast.success("El documento se subió correctamente");
     } catch (error) {
       console.error("Error al registrar la cuenta:", error);
@@ -45,8 +51,6 @@ const DocumentForm = () => {
       setLoading(false);
     }
   };
-
-
 
   return (
     <form
@@ -60,6 +64,7 @@ const DocumentForm = () => {
         <input
           id="file"
           type="file"
+          accept=".pdf"
           className={`w-full text-[#666] bg-gray-100 border rounded outline-none pr-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
             errors.file
               ? "border-red-500 focus:ring focus:ring-red-200 focus:border-red-500"

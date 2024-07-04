@@ -21,7 +21,7 @@ import axios from "axios";
 import { signOut } from "next-auth/react";
 import { headers } from "next/headers";
 import { useCookies } from "next-client-cookies";
-import { dev } from "@/context/token";
+import { dev, url_front_to_wsp } from "@/context/token";
 
 const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -97,13 +97,12 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
     const response = await axios.get(`/api/user/${session.data?.user.id}`);
     const balanceDollars = (response.data.balance_in_cents / 100).toFixed(2);
     setBalance(balanceDollars);
-   
   };
 
   useEffect(() => {
     if (session.status === "authenticated") {
       fetchBalance();
-      showAvatar();
+      showAvatarApi();
     }
   }, []);
 
@@ -134,6 +133,31 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
       setAvatar("/user.jpg");
     };
     img.src = avatarUrl;
+  };
+
+  const [imageUser, setimageUser] = useState("");
+
+  const showAvatarApi = async () => {
+    let response;
+
+    try {
+      if (session.data?.user.role === "ADMIN") {
+        response = await axios.get(`${url_front_to_wsp}/file/profile-admin`, {
+          responseType: "blob",
+        });
+      } else {
+        response = await axios.get(
+          `${url_front_to_wsp}/file/profile/${session.data?.user.id}`,
+          {
+            responseType: "blob",
+          }
+        );
+      }
+      const imageUrl = URL.createObjectURL(response.data);
+      setimageUser(imageUrl);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -183,7 +207,7 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
             onClick={togglePerfil}
           >
             <img
-              src={avatar}
+              src={imageUser}
               alt={session.data?.user.name}
               className="h-full w-auto object-cover aspect-square rounded-full "
               loading="lazy"
@@ -200,7 +224,7 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
             {perfilOpen && (
               <div className=" max-h-[90vh]  overflow-y-auto absolute top-[65px]  bg-white shadow-cardFloat w-fit right-0 flex flex-col gap-4 pt-8 items-center rounded-md animate-keep-slide-down">
                 <img
-                  src={avatar}
+                  src={imageUser}
                   alt={session.data?.user.name}
                   className="h-20 w-20 object-cover rounded-full shadow "
                   loading="lazy"

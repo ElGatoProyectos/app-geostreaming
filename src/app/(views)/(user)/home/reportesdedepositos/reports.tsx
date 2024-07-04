@@ -10,6 +10,7 @@ import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { url_front_to_wsp } from "@/context/token";
 
 const Reports = () => {
   const session = useSession();
@@ -53,12 +54,18 @@ const Reports = () => {
     {
       Header: "Comprobante",
       accessor: (row: any) => (
-        <img
-          className="w-[100px] h-[100px]  object-cover cursor-pointer hover:shadow-lg rounded-md"
-          src={`/vouchers/vouchers_${row.id}.png`}
-          alt={`comprobante N: ${row.id}`}
+        <button
+          className="p-2 rounded-lg bg-[#F2308B] text-white"
           onClick={() => handleImageClick(row.id)}
-        />
+        >
+          Ver Imagen
+        </button>
+        // <img
+        //   className="w-[100px] h-[100px]  object-cover cursor-pointer hover:shadow-lg rounded-md"
+        //   src={`/vouchers/vouchers_${row.id}.png`}
+        //   alt={`comprobante N: ${row.id}`}
+        //   onClick={() => handleImageClick(row.id)}
+        // />
       ),
     },
   ];
@@ -80,11 +87,24 @@ const Reports = () => {
     fetchData();
   }, []);
 
-  const handleImageClick = (voucherId: number) => {
-    console.log("voucherId", voucherId);
-    setSelectedImage(
-      `../../../../../../public/vouchers/vouchers_${voucherId}.png`
-    );
+  const [showVoucher, setShowVoucher] = useState("");
+  const handleImageClick = async (voucherId: number) => {
+    let response;
+    try {
+      response = await axios.get(
+        `${url_front_to_wsp}/file/voucher/${voucherId}`,
+        {
+          responseType: "blob",
+        }
+      );
+    } catch (e) {
+      console.log(e);
+    }
+    if (!response) return;
+
+    const imageUrl = URL.createObjectURL(response.data);
+    setShowVoucher(imageUrl);
+    setSelectedImage(imageUrl);
   };
 
   return (
@@ -103,7 +123,7 @@ const Reports = () => {
       {selectedImage && (
         <div className="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-75 flex justify-center items-center z-50">
           <img
-            src={selectedImage}
+            src={showVoucher}
             alt="Ampliación de comprobante"
             className="max-w-[90%] max-h-[90vh] object-contain"
           />

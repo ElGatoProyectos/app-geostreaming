@@ -95,6 +95,7 @@ const UserForm: React.FC<UserFormProps> = ({
         <input
           id="file"
           type="file"
+          accept="image/*"
           className={`w-full text-[#666] bg-gray-100 border rounded outline-none pr-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
             errors.file
               ? "border-red-500 focus:ring focus:ring-red-200 focus:border-red-500"

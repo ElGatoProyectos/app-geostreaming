@@ -8,6 +8,7 @@ import { useSession } from "next-auth/react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import { url_front_to_wsp } from "@/context/token";
 
 type InputsPersonal = {
   full_name?: string;
@@ -26,15 +27,30 @@ type InputsBank = {
 const profile = () => {
   const session = useSession();
   const [admin, setAdmin] = useState<any>({});
+  const [imageAdmin, setImageAdmin] = useState("");
+  const getImageAdmin = async () => {
+    let response;
+    try {
+      response = await axios.get(`${url_front_to_wsp}/file/profile-admin/`, {
+        responseType: "blob",
+      });
+    } catch (e) {
+      console.log(e);
+    }
+    if (!response) return;
+
+    const imageUrl = URL.createObjectURL(response.data);
+    setImageAdmin(imageUrl);
+  };
 
   const fetchData = async () => {
     const { data } = await axios.get(`/api/admin/${session.data?.user.id}`);
-    console.log(data);
     setAdmin(data);
   };
   useEffect(() => {
     if (session.status === "authenticated") {
       fetchData();
+      getImageAdmin();
     }
   }, []);
 
@@ -77,7 +93,7 @@ const profile = () => {
               country_code: admin.country_code,
               email: session.data?.user.email,
             }}
-            avatar={`/admin/admin_${admin.id}.png` }
+            avatar={imageAdmin}
             onSubmit={handleSavePersonal}
           />
         </ContainerCard2>
