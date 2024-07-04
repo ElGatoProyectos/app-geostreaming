@@ -11,7 +11,6 @@ import { IoMdPersonAdd } from "react-icons/io";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
 
-
 import {
   MdMenuBook,
   MdAccountBalance,
@@ -284,15 +283,27 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
             </ul>
           </div>
         ))}
-        <div>
-          <span
-            role="button"
-            className={`pl-8 py-3 mr-2 rounded-r-full mb-2 flex gap-4 items-center hover:bg-[#F2308B] hover:text-white transition-all duration-300`}
-          >
-            <IoDocumentTextOutline className="text-xl" />
-            <span className="text-sm capitalize">Documentación</span>
-          </span>
-        </div>
+        {role === "ADMIN" ? (
+          <Link href={'/admin/documentacion'}>
+            <span
+              className={`pl-8 py-3 mr-2 rounded-r-full mb-2 flex gap-4 items-center hover:bg-[#F2308B] hover:text-white transition-all duration-300`}
+            >
+              <IoDocumentTextOutline className="text-xl" />
+              <span className="text-sm capitalize">Documentación</span>
+            </span>
+          </Link>
+        ) : (
+          <div>
+            <span
+              role="button"
+              className={`pl-8 py-3 mr-2 rounded-r-full mb-2 flex gap-4 items-center hover:bg-[#F2308B] hover:text-white transition-all duration-300`}
+            >
+              <IoDocumentTextOutline className="text-xl" />
+              <span className="text-sm capitalize">Documentación</span>
+            </span>
+          </div>
+        )}
+
         <div>
           <span
             role="button"
@@ -303,7 +314,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
             <span className="text-sm capitalize">Cerrar sesión</span>
           </span>
         </div>
-        
       </div>
     </div>
   );

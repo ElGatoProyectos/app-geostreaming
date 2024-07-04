@@ -84,10 +84,8 @@ const Delivery = () => {
       closeModal();
       toast.success("Plataforma comprada");
     } catch (error) {
-    
       toast.error("error de compra");
       closeModal();
-      // mensaje de error
     }
   };
   return (
