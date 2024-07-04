@@ -11,7 +11,6 @@ import { es } from "date-fns/locale";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-
 const Reports = () => {
   const session = useSession();
   const [vouchers, setVouchers] = useState<any[]>([]);
@@ -34,12 +33,23 @@ const Reports = () => {
     { Header: "ID", accessor: "id" },
     { Header: "Numero de comprobante", accessor: "number" },
     { Header: "Fecha y hora", accessor: (row: any) => formatDate(row.date) },
-    { Header: "Monto ($)", accessor:(row:any) => (row.value/100).toFixed(2) },
-    { Header: "Estado", accessor: (row: any) => row.status === 'READ' ? (
-      <span className=" whitespace-nowrap px-3 py-0.5 rounded-full bg-gray-100 font-medium text-green-400">Aprobado</span>
-    ) : (
-      <span className=" whitespace-nowrap px-3 py-0.5 rounded-full bg-gray-100 font-medium text-gray-600">Sin Revisar</span>
-    ),},
+    {
+      Header: "Monto ($)",
+      accessor: (row: any) => (row.value / 100).toFixed(2),
+    },
+    {
+      Header: "Estado",
+      accessor: (row: any) =>
+        row.status === "READ" ? (
+          <span className=" whitespace-nowrap px-3 py-0.5 rounded-full bg-gray-100 font-medium text-green-400">
+            Aprobado
+          </span>
+        ) : (
+          <span className=" whitespace-nowrap px-3 py-0.5 rounded-full bg-gray-100 font-medium text-gray-600">
+            Sin Revisar
+          </span>
+        ),
+    },
     {
       Header: "Comprobante",
       accessor: (row: any) => (
@@ -70,7 +80,10 @@ const Reports = () => {
   }, []);
 
   const handleImageClick = (voucherId: number) => {
-    setSelectedImage(`/vouchers/vouchers_${voucherId}.png`);
+    console.log("voucherId", voucherId);
+    setSelectedImage(
+      `../../../../../../public/vouchers/vouchers_${voucherId}.png`
+    );
   };
 
   return (
