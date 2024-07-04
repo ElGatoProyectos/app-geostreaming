@@ -1,4 +1,4 @@
-export const dev = true;
+export const dev = false;
 
 const { NEXT_PUBLIC_BACKEND_URL } = process.env;
 
