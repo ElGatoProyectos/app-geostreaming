@@ -11,7 +11,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://app-geostreaming.vercel.app/"),
+  metadataBase: new URL("http://geostreaming.org"),
   title: {
     default: "Geostreaming",
     template: "%s - Geostreaming",
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   },
   authors: [
     { name: "Geostreaming" },
-    { name: "Geostreaming", url: "https://app-geostreaming.vercel.app/" },
+    { name: "Geostreaming", url: "geostreaming.org" },
   ],
   referrer: "origin-when-cross-origin",
   formatDetection: {
