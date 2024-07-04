@@ -74,7 +74,7 @@ const creditacionesForm: React.FC<CreditacionesProps> = ({ info, onSubmit }) => 
           <div className="relative mt-2 ">
             <input
               type="number"
-              id="value"
+              id="Valor"
               placeholder="El monto mínimo es de $5"
               spellCheck="true"
               className={` bg-gray-100 w-full text-[#666] bg-gray-10 border rounded outline-none px-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${

@@ -77,6 +77,7 @@ const request = () => {
   const handleFormSubmit:SubmitHandler<any>  = async (data) => {
     try {
       await axios.post("/api/order/", {
+        //aqui compra de producto
         user_id: Number(session.data?.user.id),
         platform_id: modalInfo?.id,
         phone: data.phone,
