@@ -34,7 +34,8 @@ const Bank = () => {
   const fetchBanks = async () => {
     try {
       const response = await axios.get("/api/bank");
-      setBanks(response.data);
+      const descendingBank = response.data.sort((a:any, b:any) => b.id - a.id);
+      setBanks(descendingBank);
     } catch (error) {
       console.error("Error fetching banks:", error);
     }

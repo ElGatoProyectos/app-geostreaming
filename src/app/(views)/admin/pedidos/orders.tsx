@@ -54,7 +54,8 @@ const Order = () => {
           axios.get("/api/platform"),
           axios.get("/api/user"),
         ]);
-      setOrders(ordersResponse.data);
+      const descendingOrders = ordersResponse.data.sort((a:any, b:any) => b.id - a.id);
+      setOrders(descendingOrders);
       setPlatform(platformResponse.data);
       setUsers(userResponse.data);
     } catch (error) {

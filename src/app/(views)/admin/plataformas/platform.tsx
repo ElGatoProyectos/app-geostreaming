@@ -52,7 +52,8 @@ const Platform = () => {
   const fetchPlatforms = async () => {
     try {
       const response = await axios.get("/api/platform");
-      setPlatforms(response.data);
+      const descendingPlatform = response.data.sort((a:any, b:any) => b.id - a.id);
+      setPlatforms(descendingPlatform);
     } catch (error) {
       console.error("Error fetching platforms:", error);
     }

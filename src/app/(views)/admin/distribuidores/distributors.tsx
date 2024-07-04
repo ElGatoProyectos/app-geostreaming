@@ -53,7 +53,7 @@ const Distributors = () => {
     try {
       if (selectedRecord?.id) {
         /* modificar user?? */
-        await axios.put(`/api/user/${selectedRecord?.id}`, {
+        await axios.patch(`/api/user/${selectedRecord?.id}`, {
           role: data.role,
           enabled: data.enabled,
         });
