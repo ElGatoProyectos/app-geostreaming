@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useSession } from "next-auth/react";
+import PlatformForm from "./PlatformForm";
 
 interface ProductInfo {
   id: number;
@@ -74,20 +75,21 @@ const Delivery = () => {
     fetchPlatform();
   }, []);
 
-  const handleFormSubmit = async (id: number) => {
+  const handleFormSubmit:SubmitHandler<any>  = async (data) => {
     try {
       await axios.post("/api/order/", {
         user_id: Number(session.data?.user.id),
-        platform_id: id,
+        platform_id: modalInfo?.id,
+        phone: data.phone,
+        country_code: data.country_code,
         status: "PENDING",
       });
       closeModal();
       toast.success("Plataforma comprada");
     } catch (error) {
-    
-      toast.error("error de compra");
+      
+      toast.error("Error de compra");
       closeModal();
-      // mensaje de error
     }
   };
   return (
@@ -109,30 +111,7 @@ const Delivery = () => {
       </ContainerCard>
       <Modal isOpen={isModalOpen} onClose={closeModal} title={modalTitle}>
         {modalInfo && (
-          <div className="flex flex-col items-center justify-center gap-4">
-            <img
-              className="h-16 w-16 object-contain"
-              src={modalInfo.url}
-              alt={modalInfo.title}
-            />
-            <h2 className="font-semibold">{modalInfo.title}</h2>
-            <div className=" w-full flex flex-col gap-4">
-              <button
-                onClick={() => handleFormSubmit(modalInfo.id)}
-                className="bg-[#F2308B] text-white mt-4 px-4 py-1 rounded hover:bg-[#F06FAC] transition-all duration-300 mx-auto "
-                disabled={loading}
-              >
-                {loading ? (
-                  <span>
-                    <AiOutlineLoading3Quarters className=" animate-spin inline-block" />{" "}
-                    Cargando
-                  </span>
-                ) : (
-                  "Comprar"
-                )}
-              </button>
-            </div>
-          </div>
+          <PlatformForm info={modalInfo} onSubmit={handleFormSubmit}></PlatformForm>
         )}
       </Modal>
       {/* modal de confirmacion */}

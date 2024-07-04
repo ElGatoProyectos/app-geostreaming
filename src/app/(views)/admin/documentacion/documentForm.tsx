@@ -32,6 +32,7 @@ const DocumentForm = () => {
     setLoading(true);
 
     try {
+      // aqui va fetch pdf
       const formDataAll = new FormData();
       formDataAll.append("file", data.file[0]);
       await axios.post("/api/", formDataAll);

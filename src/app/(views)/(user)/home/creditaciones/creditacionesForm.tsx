@@ -4,7 +4,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useState } from "react";
 import InputField from "@/app/components/forms/inputField";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-
+import { CiCircleAlert } from "react-icons/ci";
 import { creditacionesFormSchema } from "@/app/schemas/creditacionesFormSchema";
 type Inputs = {
   id?: number;
@@ -25,7 +25,7 @@ interface CreditacionesProps {
 
 const creditacionesForm: React.FC<CreditacionesProps> = ({ info, onSubmit }) => {
   const [loading, setLoading] = useState(false);
-  const [value, setValue] = useState<string>("");
+  const [monto, setMonto] = useState<string>("");
 
   const {
     register,
@@ -41,12 +41,17 @@ const creditacionesForm: React.FC<CreditacionesProps> = ({ info, onSubmit }) => 
     
     try {
       await onSubmit(data);
+      setMonto('');
       reset(); 
     } catch (error) {
       console.error("Error al registrar el depósito:", error);
     } finally {
       setLoading(false);
     }
+  };
+
+  const handlePriceInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setMonto(e.target.value);
   };
   return (
     <form
@@ -61,13 +66,46 @@ const creditacionesForm: React.FC<CreditacionesProps> = ({ info, onSubmit }) => 
         register={register("number")}
         error={errors.number}
       />
-      <InputField
+      <div className="w-full">
+        <div className="w-full text-[#444]">
+          <label htmlFor="value" className=" capitalize">
+          Value: {monto && `$ ${monto}`}
+          </label>
+          <div className="relative mt-2 ">
+            <input
+              type="number"
+              id="value"
+              placeholder="El monto mínimo es de $5"
+              spellCheck="true"
+              className={` bg-gray-100 w-full text-[#666] bg-gray-10 border rounded outline-none px-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
+                errors.value
+                  ? "border-red-500 focus:ring focus:ring-red-200 focus:border-red-500"
+                  : "border-gray-200 "
+              }`}
+              {...register("value")}
+              onChange={handlePriceInputChange}
+            />
+            <CiCircleAlert
+              className={`absolute text-xl right-2 top-1/2 -translate-y-1/2 font-bold text-red-500 ${
+                errors.value ? "block" : "hidden"
+              } `}
+            />
+          </div>
+        </div>
+        {errors.value && (
+          <p className="text-red-500 text-sm font-medium mt-1">
+            {errors.value.message}
+          </p>
+        )}
+      </div>
+      {/* <InputField
         id="value"
-        label="Valor ($1 = 100 centavos)"
+        label={`Valor ${monto && `$ ${monto}`}`}
         register={register("value")}
         error={errors.value}
         placeholder="Ingrese el valor en centavos"
-      />
+        onChange={handlePriceInputChange}
+      /> */}
       <InputField
         id="date"
         label="Fecha del depósito"

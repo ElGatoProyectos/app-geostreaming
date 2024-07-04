@@ -141,10 +141,10 @@ const Platform = () => {
       accessor: (row: Platform) =>
         row.status === "IMMEDIATE_DELIVERY" ? "Entrega inmediata" : "A pedido",
     },
-    { Header: "PRECIO CONSUMIDOR ($)", accessor: "price_in_cents" },
+    { Header: "PRECIO CONSUMIDOR ($)", accessor: (row: any) => (row.price_in_cents/100).toFixed(2) },
     {
       Header: "PRECIO DISTRIBUIDOR ($)",
-      accessor: "price_distributor_in_cents",
+      accessor: (row: any) =>(row.price_distributor_in_cents/100).toFixed(2) ,
     },
     {
       Header: "DESCRIPCIÓN",

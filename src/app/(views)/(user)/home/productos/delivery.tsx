@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useSession } from "next-auth/react";
+import PlatformForm from "../PlatformForm";
 
 interface ProductInfo {
   id: number;
@@ -73,8 +74,25 @@ const Delivery = () => {
   useEffect(() => {
     fetchPlatform();
   }, []);
+  const handleFormSubmit:SubmitHandler<any>  = async (data) => {
+    try {
+      await axios.post("/api/order/", {
+        user_id: Number(session.data?.user.id),
+        platform_id: modalInfo?.id,
+        phone: data.phone,
+        country_code: data.country_code,
+        status: "PENDING",
+      });
+      closeModal();
+      toast.success("Plataforma comprada");
+    } catch (error) {
+      
+      toast.error("Error de compra");
+      closeModal();
+    }
+  };
 
-  const handleFormSubmit = async (id: number) => {
+  /* const handleFormSubmit = async (id: number) => {
     try {
       await axios.post("/api/order/", {
         user_id: Number(session.data?.user.id),
@@ -87,7 +105,7 @@ const Delivery = () => {
       toast.error("error de compra");
       closeModal();
     }
-  };
+  }; */
   return (
     <div className="w-full">
       <ContainerCard title="Bajo pedido (1 hora)">
@@ -106,6 +124,11 @@ const Delivery = () => {
         ))}
       </ContainerCard>
       <Modal isOpen={isModalOpen} onClose={closeModal} title={modalTitle}>
+        {modalInfo && (
+          <PlatformForm info={modalInfo} onSubmit={handleFormSubmit}></PlatformForm>
+        )}
+      </Modal>
+      {/* <Modal isOpen={isModalOpen} onClose={closeModal} title={modalTitle}>
         {modalInfo && (
           <div className="flex flex-col items-center justify-center gap-4">
             <img
@@ -132,7 +155,7 @@ const Delivery = () => {
             </div>
           </div>
         )}
-      </Modal>
+      </Modal> */}
       {/* modal de confirmacion */}
       <Modal
         isOpen={isModalInfoOpen}
