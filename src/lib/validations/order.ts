@@ -5,6 +5,8 @@ const orderSchema = z.object({
   user_id: z.number().positive(),
   platform_id: z.number().positive(),
   status: z.enum(["ATTENDED", "PENDING"]),
+  country_code: z.string(),
+  phone: z.string(),
 });
 
 export function validateOrder(orderInfo: unknown) {

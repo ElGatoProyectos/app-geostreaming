@@ -288,7 +288,7 @@ export async function POST(req: NextRequest) {
         description ? `📝 Descripción: ${description}\n` : ""
       }🕒 Duración de la cuenta: ${platform.days_duration} días}`;
 
-      const userPhone = user.phone;
+      const userPhone = orderValidated.phone;
 
       const url_wsp = `${url_backend}/notifications`;
       const options = {
@@ -301,7 +301,7 @@ export async function POST(req: NextRequest) {
         body: JSON.stringify({
           phone: userPhone,
           message: wspMessage,
-          country_code: user.country_code,
+          country_code: orderValidated.country_code,
         }),
       };
 
