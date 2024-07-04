@@ -25,6 +25,7 @@ interface CreditacionesProps {
 
 const creditacionesForm: React.FC<CreditacionesProps> = ({ info, onSubmit }) => {
   const [loading, setLoading] = useState(false);
+  const [value, setValue] = useState<string>("");
 
   const {
     register,
@@ -71,7 +72,7 @@ const creditacionesForm: React.FC<CreditacionesProps> = ({ info, onSubmit }) => 
         id="date"
         label="Fecha del depósito"
         register={register("date")}
-        error={errors.date}
+        error={errors.date} 
         type="datetime-local"
       />
 

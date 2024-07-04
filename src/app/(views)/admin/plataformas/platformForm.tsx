@@ -141,7 +141,7 @@ const PlatformForm: React.FC<PlatformFormProps> = ({
                   : "border-gray-200 "
               }`}
               value={priceInCents}
-              {...register("price_in_cents")}
+              {...register("price_in_cents", {valueAsNumber:true})}
               onChange={handlePriceInputChange}
             />
             <CiCircleAlert
@@ -168,14 +168,13 @@ const PlatformForm: React.FC<PlatformFormProps> = ({
               id="price_distributor_in_cents"
               placeholder=""
               spellCheck="true"
-              
               className={` bg-gray-100 w-full text-[#666] bg-gray-10 border rounded outline-none px-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
                 errors.price_distributor_in_cents
                   ? "border-red-500 focus:ring focus:ring-red-200 focus:border-red-500"
                   : "border-gray-200 "
               }`}
               value={priceDistributorInCents}
-              {...register("price_distributor_in_cents")}
+              {...register("price_distributor_in_cents", {valueAsNumber:true})}
               onChange={handlePriceDistributorInputChange}
             />
             <CiCircleAlert
