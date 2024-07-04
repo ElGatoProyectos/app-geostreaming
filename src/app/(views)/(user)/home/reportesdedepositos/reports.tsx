@@ -60,12 +60,6 @@ const Reports = () => {
         >
           Ver Imagen
         </button>
-        // <img
-        //   className="w-[100px] h-[100px]  object-cover cursor-pointer hover:shadow-lg rounded-md"
-        //   src={`/vouchers/vouchers_${row.id}.png`}
-        //   alt={`comprobante N: ${row.id}`}
-        //   onClick={() => handleImageClick(row.id)}
-        // />
       ),
     },
   ];
@@ -76,7 +70,9 @@ const Reports = () => {
       const filteredVoucher = response.data.filter((voucher: any) => {
         return voucher.user_id === Number(session.data?.user.id);
       });
-      const descendingVouchers = filteredVoucher.sort((a:any, b:any) => b.id - a.id);
+      const descendingVouchers = filteredVoucher.sort(
+        (a: any, b: any) => b.id - a.id
+      );
       setVouchers(descendingVouchers);
     } catch (error) {
       console.error("Error fetching products:", error);
