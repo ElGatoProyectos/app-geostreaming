@@ -3,7 +3,7 @@ import { validateVoucher } from "@/lib/validations/voucher";
 import path from "path";
 import { writeFile } from "fs/promises";
 import { NextRequest, NextResponse } from "next/server";
-import { dev, url_backend } from "@/context/token";
+import { dev, url_backend, url_front_to_wsp } from "@/context/token";
 
 export async function GET() {
   try {
@@ -81,12 +81,25 @@ export async function POST(req: NextRequest) {
       });
       await prisma.$disconnect();
 
-      const bytes = await file.arrayBuffer();
-      const buffer = Buffer.from(bytes);
-      const nameImage = "vouchers_" + newVoucher.id + ".png";
+      const formDataAll = new FormData();
+      formDataAll.append("voucher", file);
 
-      const filePath = path.join(process.cwd(), `public/vouchers`, nameImage);
-      await writeFile(filePath, buffer);
+      const res = await fetch(
+        `${url_front_to_wsp}/file/voucher/${newVoucher.id}`,
+        {
+          method: "POST",
+          body: formDataAll,
+        }
+      );
+
+      const json = await res.json();
+
+      // const bytes = await file.arrayBuffer();
+      // const buffer = Buffer.from(bytes);
+      // const nameImage = "vouchers_" + newVoucher.id + ".png";
+
+      // const filePath = path.join(process.cwd(), `public/vouchers`, nameImage);
+      // await writeFile(filePath, buffer);
       return NextResponse.json(newVoucher);
     }
 

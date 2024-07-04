@@ -1,10 +1,8 @@
 import prisma from "@/lib/prisma";
-import { validateAdmin } from "@/lib/validations/admin";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import { authOptions } from "../../auth-options";
-import path from "path";
-import { writeFile } from "fs/promises";
+import { url_front_to_wsp } from "@/context/token";
 
 export async function GET(
   _: NextRequest,
@@ -82,7 +80,6 @@ export async function PATCH(
   let adminInfo;
 
   try {
-    /* adminInfo = await req.json(); */
     const data: any = await req.formData();
 
     const file = data.get("file");
@@ -98,38 +95,24 @@ export async function PATCH(
       phone,
       country_code,
     };
-   
   } catch (error) {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
-
-  /* let validatedAdmin; */
-
-  /* try {
-    validatedAdmin = validateAdmin(adminInfo);
-  } catch (error) {
-    return NextResponse.json({ error: "Validation error" }, { status: 400 });
-  } */
 
   let updatedAdmin;
 
   try {
     const { file, ...restData } = adminInfo;
     if (adminInfo.file !== "undefined") {
-      const bytes = await adminInfo.file.arrayBuffer();
-      const buffer = Buffer.from(bytes);
-      const nameImage = "admin_" + params.id + ".png";
-      const filePath = path.join(process.cwd(), `public/admin`, nameImage);
-      await writeFile(filePath, buffer);
-      updatedAdmin = await prisma.admin.update({
-        where: { id: Number(params.id) },
-        data: restData,
+      const formDataAll = new FormData();
+      formDataAll.append("image", file);
+
+      const res = await fetch(`${url_front_to_wsp}/file/profile-admin`, {
+        method: "POST",
+        body: formDataAll,
       });
-    } else {
-      updatedAdmin = await prisma.admin.update({
-        where: { id: Number(params.id) },
-        data: restData,
-      });
+
+      const json = await res.json();
     }
 
     updatedAdmin = await prisma.admin.update({

@@ -36,7 +36,21 @@ export function validateUser(userInfo: unknown) {
 
 export function validateUpdateUser(userInfo: unknown) {
   const parseResut = UserUpdateSchema.safeParse(userInfo);
- 
+
+  if (!parseResut.success) {
+    throw new Error("Invalid user info");
+  }
+  return parseResut.data;
+}
+
+const UserSchemaRole = z.object({
+  role: z.enum(["USER", "DISTRIBUTOR"]),
+  enabled: z.enum(["y", "n"]),
+});
+
+export function validateUpdateRole(userInfo: unknown) {
+  const parseResut = UserSchemaRole.safeParse(userInfo);
+
   if (!parseResut.success) {
     throw new Error("Invalid user info");
   }

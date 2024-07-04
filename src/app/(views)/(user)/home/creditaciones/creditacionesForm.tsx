@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useState } from "react";
@@ -18,12 +18,14 @@ interface CreditacionesProps {
   info: {
     title: string;
     numberAccount: string;
-    
   };
   onSubmit: SubmitHandler<Inputs>;
 }
 
-const creditacionesForm: React.FC<CreditacionesProps> = ({ info, onSubmit }) => {
+const creditacionesForm: React.FC<CreditacionesProps> = ({
+  info,
+  onSubmit,
+}) => {
   const [loading, setLoading] = useState(false);
   const [monto, setMonto] = useState<string>("");
 
@@ -38,11 +40,11 @@ const creditacionesForm: React.FC<CreditacionesProps> = ({ info, onSubmit }) => 
 
   const handleFormSubmit: SubmitHandler<Inputs> = async (data) => {
     setLoading(true);
-    
+
     try {
       await onSubmit(data);
-      setMonto('');
-      reset(); 
+      setMonto("");
+      reset();
     } catch (error) {
       console.error("Error al registrar el depósito:", error);
     } finally {
@@ -59,7 +61,10 @@ const creditacionesForm: React.FC<CreditacionesProps> = ({ info, onSubmit }) => 
       className="flex w-full flex-col gap-4"
     >
       <h2 className="font-semibold">{info.title}</h2>
-      <p className=""><span className="font-semibold">Cuenta: </span>{info.numberAccount}</p>
+      <p className="">
+        <span className="font-semibold">Cuenta: </span>
+        {info.numberAccount}
+      </p>
       <InputField
         id="number"
         label="Numero de comprobante"
@@ -69,7 +74,7 @@ const creditacionesForm: React.FC<CreditacionesProps> = ({ info, onSubmit }) => 
       <div className="w-full">
         <div className="w-full text-[#444]">
           <label htmlFor="value" className=" capitalize">
-          Value: {monto && `$ ${monto}`}
+            Value: {monto && `$ ${monto}`}
           </label>
           <div className="relative mt-2 ">
             <input
@@ -110,17 +115,18 @@ const creditacionesForm: React.FC<CreditacionesProps> = ({ info, onSubmit }) => 
         id="date"
         label="Fecha del depósito"
         register={register("date")}
-        error={errors.date} 
+        error={errors.date}
         type="datetime-local"
       />
 
-       <div>
+      <div>
         <label htmlFor="file" className="text-[#444]">
           Foto del comprobante
         </label>
         <input
           id="file"
           type="file"
+          accept="image/*"
           className={`w-full text-[#666] bg-gray-100 border rounded outline-none pr-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
             errors.file
               ? "border-red-500 focus:ring focus:ring-red-200 focus:border-red-500"
