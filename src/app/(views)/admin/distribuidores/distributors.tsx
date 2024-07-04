@@ -38,7 +38,8 @@ const Distributors = () => {
       const filteredUser = response.data.filter((user: any) => {
         return user.role === "DISTRIBUTOR";
       });
-      setUsers(filteredUser);
+      const descendingUsers = filteredUser.sort((a:any, b:any) => b.id - a.id);
+      setUsers(descendingUsers);
     } catch (error) {
       console.error("Error fetching user:", error);
     }
@@ -83,7 +84,7 @@ const Distributors = () => {
     { Header: "Nombre", accessor: "full_name" },
     { Header: "Role", accessor: (row:any) => row.role === 'USER' ? 'Consumidor' : 'Distribuidor' },
     { Header: "DNI", accessor: "dni" },
-    { Header: "Celular", accessor: "phone" },
+    { Header: "Celular", accessor: (row:any) => row.country_code + ' ' + row.phone },
     { Header: "Créditos($)", accessor: (row:any) => (row.balance_in_cents/100).toFixed(2)},
     {
       Header: "Estado",

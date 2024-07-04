@@ -44,7 +44,8 @@ const Account = () => {
   const fetchAccounts = async () => {
     try {
       const response = await axios.get("/api/account");
-      setAccounts(response.data);
+      const descendingAccounts = response.data.sort((a:any, b:any) => b.id - a.id);
+      setAccounts(descendingAccounts);
     } catch (error) {
       console.error("Error fetching accounts:", error);
     }

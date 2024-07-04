@@ -9,7 +9,6 @@ import { FaTrash } from "react-icons/fa6";
 import { GrUpdate } from "react-icons/gr";
 import { HiMiniClipboardDocumentCheck } from "react-icons/hi2";
 
-
 type CustomAccessor<T> = string | ((row: T) => string | JSX.Element);
 interface TableProps<T> {
   columns: Array<{ Header: string; accessor: CustomAccessor<T> }>;
@@ -167,9 +166,7 @@ const TableComponent = <T extends Record<string, any>>({
               className="block w-full px-4 py-2 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-purple-300 focus:border-purple-500 max-w-[400px]"
             />
             {download && (
-              <ActionButton onClick={onDownloadAction}>
-                Descargar
-              </ActionButton>
+              <ActionButton onClick={onDownloadAction}>Descargar</ActionButton>
             )}
             {addRecord && (
               <ActionButton onClick={openModal}>Agregar</ActionButton>
@@ -234,7 +231,7 @@ const TableComponent = <T extends Record<string, any>>({
                 {showActions && (
                   <Table.Cell>
                     <div className="flex justify-center items-center gap-2">
-                    {onApprove && (
+                      {onApprove && (
                         <button
                           onClick={() => onApprove && onApprove(row)}
                           className="relative rounded content-center text-white px-1 py-1 bg-[#5A62F3] w-8 h-8 hover:bg-[#868BF1] group"
@@ -272,7 +269,7 @@ const TableComponent = <T extends Record<string, any>>({
                           </span>
                         </button>
                       )}
-                      
+
                       {code}
                     </div>
                   </Table.Cell>

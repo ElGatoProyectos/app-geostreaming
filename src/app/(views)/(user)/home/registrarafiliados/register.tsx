@@ -65,8 +65,8 @@ const register = () => {
       return user.ref_id === Number(session.data?.user.id);
     });
 
-  
-    setAfiliados(filteredUsers);
+    const descendingUsers = filteredUsers.sort((a:any, b:any) => b.id - a.id);
+    setAfiliados(descendingUsers);
   };
 
   useEffect(() => {

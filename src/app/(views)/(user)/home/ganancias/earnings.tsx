@@ -17,7 +17,8 @@ const Reports = () => {
       const response = await axios.get(
         `/api/userSales/${session.data?.user.id}`
       );
-      setEarnings(response.data);
+      const descendingEarnings = response.data.sort((a:any, b:any) => b.id - a.id);
+      setEarnings(descendingEarnings);
     } catch (error) {
       console.error("Error fetching banks:", error);
     }

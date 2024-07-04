@@ -12,12 +12,10 @@ import "react-toastify/dist/ReactToastify.css";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 
-import { access } from "fs";
-
 const Reports = () => {
   const session = useSession();
 
-  const [orders, setOrders] = useState<any[]>([]);
+  const [orders, setAccounts] = useState<any[]>([]);
   const [platforms, setPlatform] = useState<any[]>([]);
   const [users, setUsers] = useState<any[]>([]);
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -30,10 +28,12 @@ const Reports = () => {
         axios.get("/api/platform"),
         axios.get("/api/user"),
       ]);
-      const filteredOrders = accountsResponse.data.filter((order: any) => {
-        return order.user_id === Number(session.data?.user.id);
+      const filteredAccounts = accountsResponse.data.filter((account: any) => {
+        return account.user_id === Number(session.data?.user.id);
       });
-      setOrders(filteredOrders);
+
+      const descendingAccounts = filteredAccounts.sort((a:any, b:any) => b.id - a.id);
+      setAccounts(descendingAccounts);
       setPlatform(platformResponse.data);
       setUsers(userResponse.data.users);
     } catch (error) {

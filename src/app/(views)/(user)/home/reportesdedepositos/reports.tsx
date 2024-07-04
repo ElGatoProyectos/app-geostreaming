@@ -69,7 +69,8 @@ const Reports = () => {
       const filteredVoucher = response.data.filter((voucher: any) => {
         return voucher.user_id === Number(session.data?.user.id);
       });
-      setVouchers(filteredVoucher);
+      const descendingVouchers = filteredVoucher.sort((a:any, b:any) => b.id - a.id);
+      setVouchers(descendingVouchers);
     } catch (error) {
       console.error("Error fetching products:", error);
     }

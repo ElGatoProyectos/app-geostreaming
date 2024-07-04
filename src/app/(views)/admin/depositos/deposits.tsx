@@ -26,7 +26,8 @@ const Deposits = () => {
   const fetchDeposits = async () => {
     try {
       const response = await axios.get("/api/voucher");
-      setVouchers(response.data);
+      const descendingVouchers = response.data.sort((a:any, b:any) => b.id - a.id);
+      setVouchers(descendingVouchers);
     } catch (error) {
       console.error("Error fetching vouchers:", error);
     }
