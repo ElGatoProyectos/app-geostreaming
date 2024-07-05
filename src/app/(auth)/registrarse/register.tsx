@@ -53,7 +53,7 @@ const register = () => {
   };
 
   return (
-    <div className="relative bg-white shadow-md shadow-[#277FF2] rounded-xl h-auto md:max-w-[50%] xl:max-w-[33%] w-full pb-2 m-4 ">
+    <div className="relative bg-white shadow-md shadow-[#277FF2] rounded-xl h-auto md:max-w-[500px]  w-full pb-2 m-4 ">
       <div className="w-full p-2 bg-[#277FF2] text-white text-center rounded-t-lg">
         Regístrate
       </div>
@@ -61,8 +61,8 @@ const register = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="w-full px-8 pt-8 flex flex-col gap-4 items-center"
       >
-        <div className="w-full flex flex-col lg:flex-row gap-2 lg:gap-8">
-          <div className="flex flex-col w-full lg:w-1/2 gap-2">
+        <div className="w-full flex flex-col gap-2 lg:gap-8">
+          <div className="flex flex-col w-full gap-2">
             <label htmlFor="user" className="">
               Documento de identidad:
             </label>
@@ -91,7 +91,7 @@ const register = () => {
               </p>
             )}
           </div>
-          <div className="flex flex-col w-full lg:w-1/2 gap-2">
+          <div className="flex flex-col w-full gap-2">
             <label htmlFor="name" className="">
               Nombre y apellido:
             </label>
@@ -122,7 +122,7 @@ const register = () => {
             )}
           </div>
         </div>
-        <div className="w-full flex flex-col lg:flex-row gap-2 lg:gap-8">
+        <div className="w-full flex flex-col gap-2 lg:gap-8">
           <div className="flex flex-col w-full gap-2 ">
             <label htmlFor="email" className=" flex items-center">
               Email:
@@ -153,14 +153,19 @@ const register = () => {
             )}
           </div>
         </div>
-        <div className="w-full flex flex-col lg:flex-row gap-2 lg:gap-8">
-          <div className="w-full lg:w-1/2">
+        <div className="w-full flex flex-col md:flex-row gap-2 lg:gap-8">
+          <div className="w-full">
             <CountrySelect
               id="country_code"
               register={register("country_code")}
             />
+            {errors.country_code && (
+          <p className="text-red-500 text-sm font-semibold">
+            {errors.country_code.message}
+          </p>
+        )}
           </div>
-          <div className="flex flex-col w-full lg:w-1/2 gap-2">
+          <div className="flex flex-col w-full gap-2">
             <label htmlFor="phone" className=" flex items-center">
               Celular (WhatsApp):
             </label>
@@ -190,8 +195,8 @@ const register = () => {
             )}
           </div>
         </div>
-        <div className="w-full flex flex-col lg:flex-row gap-2 lg:gap-8">
-          <div className="flex flex-col w-full lg:w-1/2 gap-2">
+        <div className="w-full flex flex-col gap-2 lg:gap-8">
+          <div className="flex flex-col w-full gap-2">
             <label htmlFor="password" className=" flex items-center">
               Contraseña:
             </label>
@@ -219,7 +224,7 @@ const register = () => {
               </p>
             )}
           </div>
-          <div className="flex flex-col w-full lg:w-1/2 gap-2">
+          <div className="flex flex-col w-full gap-2">
             <label htmlFor="confirm_password" className=" flex items-center">
               Confirmar contraseña:
             </label>

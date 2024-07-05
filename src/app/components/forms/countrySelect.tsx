@@ -1,76 +1,111 @@
+'use client';
+import Select, { StylesConfig } from 'react-select';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 
 interface SelectFieldProps {
-    id: string;
-    defaultValue?: string;
-    isDisabled?: boolean;
-    register?: any;
-    error?: any;
-  }
-
-  interface Country {
-    name: string;
-    code: string;
-    flag: string;
-  }
-
-  
-const CountrySelect:React.FC<SelectFieldProps> = ({
-    id,
-    register,
-    error,
-    defaultValue ='',
-    isDisabled = false,
-}) => {
-    const [codes, setCodes] = useState<Country[]>([]);
-    const fetchCountries = async () => {
-        try {
-          const response = await axios.get("https://restcountries.com/v3.1/all");
-          let countryData: Country[] = response.data.map((country: any) => ({
-            name: country.name.common,
-            code: country.idd.root + (country.idd.suffixes ? country.idd.suffixes[0] : ''),
-            flag: country.flags.svg,
-          }));
-          countryData = countryData.sort((a, b) => a.name.localeCompare(b.name));
-          setCodes(countryData);
-        } catch (e) {
-          console.error(e);
-        }
-      };
-    
-      useEffect(() => {
-        fetchCountries();
-      }, []);
-  return (
-    <div className='w-full text-[#444]'>
-      <label htmlFor={id} className=' capitalize'>
-          Código del país
-          <select
-            id={id}
-            defaultValue={defaultValue}
-            className={`mt-2 w-full text-[#666] bg-gray-100 border rounded outline-none px-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
-              error
-                ? "border-red-500 focus:ring focus:ring-red-200 focus:border-red-500"
-                : "border-gray-200 "
-            }`}
-            {...register}
-          >
-            <option value="">Seleccione un país</option>
-            {codes.map((country, index) => (
-              <option key={index} value={country.code}>
-                ({country.code}) {country.name} 
-              </option>
-            ))}
-          </select>
-          {error && (
-          <p className="text-red-500 text-sm font-medium mt-1">
-            {error?.message}
-          </p>
-        )}
-        </label>
-    </div>
-  )
+  id: string;
+  defaultValue?: string;
+  isDisabled?: boolean;
+  register?: any;
+  error?: any;
 }
 
-export default CountrySelect
+interface Country {
+  name: string;
+  code: string;
+}
+
+const CountrySelect: React.FC<SelectFieldProps> = ({
+  id,
+  register,
+  error,
+  defaultValue = '',
+  isDisabled = false,
+}) => {
+  const [codes, setCodes] = useState<Country[]>([]);
+
+  const fetchCountries = async () => {
+    try {
+      const response = await axios.get("https://raw.githubusercontent.com/Desarrollo2Gato/countries/main/data.json");
+      let countryData: Country[] = response.data.map((country: any) => ({
+        name: country.country,
+        code: country.calling_code,
+      }));
+      countryData = countryData.sort((a, b) => a.name.localeCompare(b.name));
+      setCodes(countryData);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  useEffect(() => {
+    fetchCountries();
+  }, []);
+
+  const options = codes.map((country) => ({
+    value: country.code,
+    label: `(${country.code}) ${country.name}`,
+  }));
+
+  const customStyles: StylesConfig<{ value: string; label: string }, false> = {
+    control: (provided, state) => ({
+      ...provided,
+      fontSize: '14px',
+      backgroundColor: state.isFocused ? 'white' : '#FAFAFA',
+      borderColor: error ? '#277FF2' : '#EEEEEE',
+      boxShadow: state.isFocused
+        ? error
+          ? '0 0 0 1px #f20707'
+          : '0 0 0 1px #277FF2'
+        : 'none',
+      '&:hover': {
+        borderColor: state.isFocused
+          ? error
+            ? '#f20707'
+            : '#277FF2'
+          : '#EEEEEE',
+      },
+    }),
+    placeholder: (provided) => ({
+      ...provided,
+      color: '#666',
+    }),
+    singleValue: (provided) => ({
+      ...provided,
+      color: '#444',
+    }),
+  };
+
+  return (
+    <div className='w-full text-[#444]'>
+      <label htmlFor={id} className='capitalize'>
+        Código del país
+        <div className='mt-2'>
+          <Select
+            inputId={id}
+            defaultValue={options.find((opt) => opt.value === defaultValue)}
+            options={options}
+            styles={customStyles}
+            placeholder='seleccione...'
+            isDisabled={isDisabled}
+            onChange={(selectedOption) => {
+              if (register) {
+                register.onChange({
+                  target: {
+                    name: register.name,
+                    value: selectedOption?.value,
+                  },
+                });
+              }
+            }}
+            onBlur={register?.onBlur}
+          />
+        </div>
+        
+      </label>
+    </div>
+  );
+};
+
+export default CountrySelect;

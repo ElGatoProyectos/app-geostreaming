@@ -8,11 +8,11 @@ export const metadata: Metadata = {
 };
 const page = () => {
   return (
-    <div className="md:h-screen w-screen flex justify-center items-center p-4 overflow-y-auto">
-      <Suspense fallback={<Loading />}>
+    <Suspense fallback={<Loading />}>
+      <div className="md:h-full w-screen flex justify-center items-center p-4 overflow-y-auto ">
         <Register></Register>
-      </Suspense>
-    </div>
+      </div>
+    </Suspense>
   );
 };
 

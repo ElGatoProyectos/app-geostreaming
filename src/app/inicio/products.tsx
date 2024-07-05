@@ -29,7 +29,7 @@ const Products = () => {
 
               
               <div>
-                <Link href={'#'} className="text-white text-xl font-bold  hover:underline transition-all duration-300">{product.name}</Link>
+                <Link href={'/ingresar'} className="text-white text-xl font-bold  hover:underline transition-all duration-300">{product.name}</Link>
                 <p className="mt-4">{product.description}</p>
               </div>
             </div>

@@ -70,18 +70,21 @@ const navigation = () => {
               ))}
             </ul>
           </div>
+          <div className="grid grid-cols-2 gap-4 text-center">
           <Link
             href={"/registrarse"}
-            className="bg-[#F2308B] rounded text-white text-sm md:text-base px-3 md:px-4 py-1 md:py-2"
+            className="bg-[#F2308B] rounded text-white text-sm md:text-base px-3 md:px-4 py-1 md:py-2 w-full"
           >
             Regístrate
           </Link>
           <Link
             href={"ingresar"}
-            className="bg-[#F2308B] rounded text-white text-sm md:text-base px-3 md:px-4 py-1 md:py-2"
+            className="bg-[#F2308B] rounded text-white text-sm md:text-base px-3 md:px-4 py-1 md:py-2 w-full"
           >
             Ingresa
           </Link>
+          </div>
+          
 
           <button onClick={toggleMenu} className=" lg:hidden">
             <IoMenu className="text-2xl text-[#444444]" />

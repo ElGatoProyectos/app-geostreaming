@@ -66,7 +66,7 @@ const login = () => {
   };
 
   return (
-    <div className="relative bg-white shadow-md shadow-[#277FF2] rounded-xl h-auto md:max-w-[50%] xl:max-w-[640px] w-full m-4 pb-2 ">
+    <div className="relative bg-white shadow-md shadow-[#277FF2] rounded-xl h-auto md:max-w-[500px] w-full m-4 pb-2 ">
       <div className="w-full p-2 bg-[#277FF2] text-white text-center rounded-t-lg">
         Accede
       </div>
