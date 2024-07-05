@@ -11,8 +11,7 @@ import { IoMdClose } from "react-icons/io";
 import ActionButton from "@/app/components/common/ActionButton";
 import DepositForm from "./depositForm";
 import { SubmitHandler } from "react-hook-form";
-
-
+import { url_front_to_wsp } from "@/context/token";
 
 const Deposits = () => {
   const [vouchers, setVouchers] = useState<any[]>([]);
@@ -26,7 +25,9 @@ const Deposits = () => {
   const fetchDeposits = async () => {
     try {
       const response = await axios.get("/api/voucher");
-      const descendingVouchers = response.data.sort((a:any, b:any) => b.id - a.id);
+      const descendingVouchers = response.data.sort(
+        (a: any, b: any) => b.id - a.id
+      );
       setVouchers(descendingVouchers);
     } catch (error) {
       console.error("Error fetching vouchers:", error);
@@ -63,15 +64,29 @@ const Deposits = () => {
     setSelectedRecord(record);
     setIsOpenModal(true);
   };
+  const [showVoucher, setShowVoucher] = useState("");
+  const handleImageClick = async (voucherId: number) => {
+    let response;
+    try {
+      response = await axios.get(
+        `${url_front_to_wsp}/file/voucher/${voucherId}`,
+        {
+          responseType: "blob",
+        }
+      );
+    } catch (e) {
+      console.log(e);
+    }
+    if (!response) return;
 
-  const handleImageClick = (voucherId: number) => {
-    setSelectedImage(`/vouchers/vouchers_${voucherId}.png`);
+    const imageUrl = URL.createObjectURL(response.data);
+    setShowVoucher(imageUrl);
+    setSelectedImage(imageUrl);
   };
 
   const handleApprove: SubmitHandler<any> = async (data) => {
-
     try {
-      await axios.patch(`/api/balance/${selectedRecord.user_id}`,{
+      await axios.patch(`/api/balance/${selectedRecord.user_id}`, {
         balance_in_cents: data.value,
         voucher_id: Number(selectedRecord.id),
       });
@@ -99,19 +114,27 @@ const Deposits = () => {
     {
       Header: "Comprobante",
       accessor: (row: any) => (
-        <img
-          className="w-[100px] h-[100px]  object-cover cursor-pointer hover:shadow-lg rounded-md"
-          src={`/vouchers/vouchers_${row.id}.png`}
-          alt={`comprobante N: ${row.id}`}
+        <button
+          className="p-2 rounded-lg bg-[#F2308B] text-white"
           onClick={() => handleImageClick(row.id)}
-        />
+        >
+          Ver Imagen
+        </button>
       ),
     },
-    { Header: "Estado", accessor: (row: any) => row.status === 'READ' ? (
-      <span className=" whitespace-nowrap px-3 py-0.5 rounded-full bg-gray-100 font-medium text-green-400">Aprobado</span>
-    ) : (
-      <span className=" whitespace-nowrap px-3 py-0.5 rounded-full bg-gray-100 font-medium text-gray-600">Sin Revisar</span>
-    ),},
+    {
+      Header: "Estado",
+      accessor: (row: any) =>
+        row.status === "READ" ? (
+          <span className=" whitespace-nowrap px-3 py-0.5 rounded-full bg-gray-100 font-medium text-green-400">
+            Aprobado
+          </span>
+        ) : (
+          <span className=" whitespace-nowrap px-3 py-0.5 rounded-full bg-gray-100 font-medium text-gray-600">
+            Sin Revisar
+          </span>
+        ),
+    },
   ];
 
   return (
@@ -129,14 +152,12 @@ const Deposits = () => {
         onClose={() => setIsOpenModal(false)}
         title={"Aprobar Depósito"}
       >
-        <DepositForm
-        onSubmit={handleApprove}
-        />
+        <DepositForm onSubmit={handleApprove} />
       </Modal>
       {selectedImage && (
         <div className="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-75 flex justify-center items-center z-50">
           <img
-            src={selectedImage}
+            src={showVoucher}
             alt="Ampliación de comprobante"
             className="max-w-[90%] max-h-[90vh] object-contain"
           />

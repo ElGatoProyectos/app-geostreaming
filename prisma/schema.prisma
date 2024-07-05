@@ -150,6 +150,10 @@ model Order {
   user_id     Int
   status      StatusOrder @default(ATTENDED)
 
+  // client final
+  phone        String
+  country_code String
+
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 }

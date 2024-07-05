@@ -269,22 +269,22 @@ async function main() {
     data: usersEncryptedPass,
   });
 
-  for (const platform of initialPlatforms) {
-    const newPlatform = await prisma.platform.create({
-      data: platform,
-    });
+  // for (const platform of initialPlatforms) {
+  //   const newPlatform = await prisma.platform.create({
+  //     data: platform,
+  //   });
 
-    await prisma.$disconnect();
-    console.log(`Created platform with id: ${newPlatform.id}`);
-  }
+  //   await prisma.$disconnect();
+  //   console.log(`Created platform with id: ${newPlatform.id}`);
+  // }
 
-  for (const account of initialAccounts) {
-    const newAccount = await prisma.account.create({
-      data: account,
-    });
-    console.log(`Created account with id: ${newAccount.id}`);
-  }
-  console.log("Seeding finished.");
+  // for (const account of initialAccounts) {
+  //   const newAccount = await prisma.account.create({
+  //     data: account,
+  //   });
+  //   console.log(`Created account with id: ${newAccount.id}`);
+  // }
+  // console.log("Seeding finished.");
 
   for (const bank of initialBanks) {
     const newBank = await prisma.bank.create({
