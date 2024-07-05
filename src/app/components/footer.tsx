@@ -6,12 +6,13 @@ const Footer = () => {
     <div className="bg-[#111111] ">
       <div className="max-w-[1440px] mx-auto text-sm text-white p-8 md:px-10 flex flex-col md:flex-row  gap-4 justify-center items-center text-center md:justify-between ">
         <span>
-          © Copyright <strong>Geostreaming 2024.</strong> Todos los derechos
+           <strong>© 2024, Desarrollado por agencia gato.</strong> Todos los derechos
           reservados
         </span>
         <div className="w-fit flex gap-2 ">
           <Link
-            href={"#"}
+            href={"https://www.facebook.com/profile.php?id=61561566585098"}
+            target="_blank"
             className=" rounded bg-[#2b2b2b] w-9 h-9 p-2 flex justify-center items-center hover:bg-[#F2308B] transition-all duration-300"
           >
             <svg
@@ -28,7 +29,8 @@ const Footer = () => {
             </svg>
           </Link>
           <Link
-            href={"#"}
+            href={"https://wa.link/icp3uj"}
+            target="_blank"
             className=" rounded bg-[#2b2b2b] w-9 h-9 p-2 flex justify-center items-center hover:bg-[#F2308B] transition-all duration-300"
           >
             <svg
@@ -57,7 +59,8 @@ const Footer = () => {
             </svg>
           </Link>
           <Link
-            href={"#"}
+            href={"https://www.instagram.com/geos.treaming/"}
+            target="_blank"
             className=" rounded bg-[#2b2b2b] w-9 h-9 p-2 flex justify-center items-center hover:bg-[#F2308B] transition-all duration-300"
           >
             <svg
