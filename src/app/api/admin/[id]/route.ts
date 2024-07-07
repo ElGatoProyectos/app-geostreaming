@@ -82,19 +82,19 @@ export async function PATCH(
 
   try {
     const data: any = await req.formData();
-
-    const file = data.get("file");
     const email = data.get("email");
     const full_name = data.get("full_name");
     const phone = data.get("phone");
     const country_code = data.get("country_code");
+    const avatar_url = data.get("avatar_url");
+
 
     adminInfo = {
-      file,
       email,
       full_name,
       phone,
       country_code,
+      avatar_url
     };
   } catch (error) {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
@@ -103,28 +103,28 @@ export async function PATCH(
   let updatedAdmin;
 
   try {
-    const { file, ...restData } = adminInfo;
-    if (adminInfo.file !== "undefined") {
-      console.log(file);
-      const formDataAll = new FormData();
-      formDataAll.append("image-admin", file);
+    // const { file, ...restData } = adminInfo;
+    // if (adminInfo.file !== "undefined") {
+    //   console.log(file);
+    //   const formDataAll = new FormData();
+    //   formDataAll.append("image-admin", file);
 
-     /*  const res = await fetch(`${url_front_to_wsp}/file/profile-admin`, {
-        method: "POST",
-        body: formDataAll,
-      }); */
-      const res = await axios.post(`${url_front_to_wsp}/file/profile-admin`, formDataAll);
+    //  /*  const res = await fetch(`${url_front_to_wsp}/file/profile-admin`, {
+    //     method: "POST",
+    //     body: formDataAll,
+    //   }); */
+    //   const res = await axios.post(`${url_front_to_wsp}/file/profile-admin`, formDataAll);
 
-      console.log("res", res);
+    //   console.log("res", res);
 
-      /* const json = await res.json(); */
-      console.log(res)
-      /* console.log("json", json); */
-    }
+    //   /* const json = await res.json(); */
+    //   console.log(res)
+    //   /* console.log("json", json); */
+    // }
 
     updatedAdmin = await prisma.admin.update({
       where: { id: admin_id },
-      data: restData,
+      data: adminInfo,
     });
     await prisma.$disconnect();
   } catch (error) {

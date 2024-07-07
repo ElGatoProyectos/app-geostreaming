@@ -64,8 +64,9 @@ const profile = () => {
       formDataAll.append("role", String(session.data?.user.role));
       formDataAll.append("full_name", String(data.full_name));
       formDataAll.append("dni", String(data.dni));
-      formDataAll.append("file", data.file[0]);
+      /* formDataAll.append("file", data.file[0]); */
       formDataAll.append("phone", String(data.phone));
+      formDataAll.append("avatar_url", data.avatar_url);
       formDataAll.append("country_code", String(data.country_code));
 
       await axios.patch(`/api/user/${session.data?.user.id}`, formDataAll, {
@@ -90,6 +91,7 @@ const profile = () => {
               phone: user.phone,
               country_code: user.country_code,
               email: String(session.data?.user.email),
+              avatar_url: user.avatar_url
             }}
             avatar={imageAdmin}
             onSubmit={handleSavePersonal}

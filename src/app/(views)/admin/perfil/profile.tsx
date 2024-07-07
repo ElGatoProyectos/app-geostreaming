@@ -16,6 +16,7 @@ type InputsPersonal = {
   phone?: string;
   country_code?: string;
   file?: string;
+  avatar_url?: string;
 };
 type InputsBank = {
   bank: string;
@@ -63,7 +64,7 @@ const profile = () => {
       formDataAll.append("email", data.email);
       formDataAll.append("role", String(session.data?.user.role));
       formDataAll.append("full_name", data.full_name);
-      formDataAll.append("file", data.file[0]);
+      formDataAll.append("avatar_url", data.avatar_url);
       formDataAll.append("phone", String(data.phone));
       formDataAll.append("country_code", data.country_code);
 
@@ -92,6 +93,8 @@ const profile = () => {
               phone: admin.phone,
               country_code: admin.country_code,
               email: session.data?.user.email,
+               avatar_url: admin.avatar_url,
+
             }}
             avatar={imageAdmin}
             onSubmit={handleSavePersonal}

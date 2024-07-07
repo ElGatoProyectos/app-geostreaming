@@ -12,6 +12,7 @@ import ActionButton from "@/app/components/common/ActionButton";
 import DepositForm from "./depositForm";
 import { SubmitHandler } from "react-hook-form";
 import { url_front_to_wsp } from "@/context/token";
+import { Link } from "phosphor-react";
 
 const Deposits = () => {
   const [vouchers, setVouchers] = useState<any[]>([]);
@@ -33,6 +34,7 @@ const Deposits = () => {
       console.error("Error fetching vouchers:", error);
     }
   };
+
   const fetchUsers = async () => {
     try {
       const response = await axios.get("/api/user");
@@ -64,9 +66,9 @@ const Deposits = () => {
     setSelectedRecord(record);
     setIsOpenModal(true);
   };
-  const [showVoucher, setShowVoucher] = useState("");
-  const handleImageClick = async (voucherId: number) => {
-    let response;
+  // const [showVoucher, setShowVoucher] = useState("");
+  const handleImageClick =(voucher_url: string) => {
+   /*  let response;
     try {
       response = await axios.get(
         `${url_front_to_wsp}/file/voucher/${voucherId}`,
@@ -79,9 +81,9 @@ const Deposits = () => {
     }
     if (!response) return;
 
-    const imageUrl = URL.createObjectURL(response.data);
-    setShowVoucher(imageUrl);
-    setSelectedImage(imageUrl);
+    const imageUrl = URL.createObjectURL(response.data); */
+    // setShowVoucher(imageUrl);
+    setSelectedImage(voucher_url);
   };
 
   const handleApprove: SubmitHandler<any> = async (data) => {
@@ -116,7 +118,7 @@ const Deposits = () => {
       accessor: (row: any) => (
         <button
           className="p-2 rounded-lg bg-[#F2308B] text-white"
-          onClick={() => handleImageClick(row.id)}
+          onClick={() => handleImageClick(row.voucher_url)}
         >
           Ver Imagen
         </button>
@@ -135,6 +137,10 @@ const Deposits = () => {
           </span>
         ),
     },
+    /* {
+      Header: "Voucher (url)",
+      accessor: (row: any) => <Link href={row.voucher_url}>{row.voucher_url}</Link>,
+    }, */
   ];
 
   return (
@@ -154,12 +160,14 @@ const Deposits = () => {
       >
         <DepositForm onSubmit={handleApprove} />
       </Modal>
+
+      
       {selectedImage && (
         <div className="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-75 flex justify-center items-center z-50">
           <img
-            src={showVoucher}
+            src={selectedImage}
             alt="Ampliación de comprobante"
-            className="max-w-[90%] max-h-[90vh] object-contain"
+            className="max-w-[90%] w-full h-full max-h-[90vh] object-contain"
           />
           <button
             className="absolute top-4 right-4 text-white"

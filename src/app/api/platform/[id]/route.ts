@@ -54,6 +54,7 @@ export async function PATCH(
   let platforminfo;
   let platformValidated;
 
+  // validacion si id es numerico
   try {
     platform_id = Number(params.id);
     if (isNaN(platform_id)) {
@@ -69,6 +70,7 @@ export async function PATCH(
     );
   }
 
+  // obtencion de informacion
   try {
     platforminfo = await req.json();
   } catch (error) {

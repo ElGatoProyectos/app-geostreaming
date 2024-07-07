@@ -19,7 +19,8 @@ type Inputs = {
   number: string;
   value: string;
   date: string;
-  file: string;
+  /* file: string; */
+  voucher_url: string;
 };
 
 const Account = () => {
@@ -60,9 +61,13 @@ const Account = () => {
       formDataAll.append('user_id', String(session.data?.user.id));
       formDataAll.append('value', String(data.value));
       formDataAll.append('date', new Date(data.date).toISOString());
-      formDataAll.append('file',data.file[0]);
+      /* formDataAll.append('file',data.voucher_url); */
       formDataAll.append('number', String(data.number));
       formDataAll.append('status', 'UNREAD');
+      formDataAll.append('voucher_url', String(data.voucher_url));
+
+
+      // avatar_url   String?
 
  
       await axios.post(`/api/voucher`,formDataAll, 

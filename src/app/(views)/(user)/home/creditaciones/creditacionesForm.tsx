@@ -11,7 +11,7 @@ type Inputs = {
   number: string;
   value: string;
   date: string;
-  file: string;
+  voucher_url: string;
 };
 
 interface CreditacionesProps {
@@ -117,6 +117,12 @@ const creditacionesForm: React.FC<CreditacionesProps> = ({
         register={register("date")}
         error={errors.date}
         type="datetime-local"
+      />
+      <InputField
+        id="voucher_url"
+        label="Adjuntar voucher(url)"
+        register={register("voucher_url")}
+        error={errors.voucher_url}
       />
 
      {/*  <div>

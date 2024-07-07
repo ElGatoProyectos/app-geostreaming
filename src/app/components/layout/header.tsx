@@ -137,27 +137,49 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
  */
   const [imageUser, setimageUser] = useState("");
 
+  // const showAvatarApi = async () => {
+  //   let response;
+
+  //   try {
+  //     if (session.data?.user.role === "ADMIN") {
+  //       response = await axios.get(`${url_front_to_wsp}/file/profile-admin`, {
+  //         responseType: "blob",
+  //       });
+  //       /* response = await axios.get(`/api/backend/file/profile-admin`, {
+  //         responseType: "blob",
+  //       }); */
+  //     } else {
+  //       response = await axios.get(
+  //         `${url_front_to_wsp}/file/profile/${session.data?.user.id}`,
+  //         {
+  //           responseType: "blob",
+  //         }
+  //       );
+  //     }
+  //     const imageUrl = URL.createObjectURL(response.data);
+  //     setimageUser(imageUrl);
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // };
+
   const showAvatarApi = async () => {
     let response;
 
     try {
       if (session.data?.user.role === "ADMIN") {
-        response = await axios.get(`${url_front_to_wsp}/file/profile-admin`, {
-          responseType: "blob",
-        });
+        response = await axios.get(`/api/admin/${session.data?.user.id}`);
         /* response = await axios.get(`/api/backend/file/profile-admin`, {
           responseType: "blob",
         }); */
       } else {
         response = await axios.get(
-          `${url_front_to_wsp}/file/profile/${session.data?.user.id}`,
-          {
-            responseType: "blob",
-          }
-        );
+          `/api/user/${session.data?.user.id}` );
       }
-      const imageUrl = URL.createObjectURL(response.data);
-      setimageUser(imageUrl);
+      // const imageUrl = URL.createObjectURL(response.data);
+      // setimageUser(imageUrl);
+      setimageUser(response.data.avatar_url);
+
     } catch (e) {
       console.log(e);
     }
@@ -209,6 +231,7 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
             className="gap-4 items-center h-full bg-gray-100 p-4 cursor-pointer relative hidden md:flex"
             onClick={togglePerfil}
           >
+            {/* avatar */}
             <img
               src={imageUser}
               alt={session.data?.user.name}

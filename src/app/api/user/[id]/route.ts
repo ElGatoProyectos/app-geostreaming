@@ -100,6 +100,7 @@ export async function GET(
 //   }
 // }
 
+// solo para el rol
 export async function PUT(
   req: NextRequest,
   { params }: { params: { id: string } }
@@ -121,6 +122,8 @@ export async function PUT(
   return NextResponse.json(updatedUser);
 }
 
+
+// pa lo demas
 export async function PATCH(
   req: NextRequest,
   { params }: { params: { id: string } }
@@ -130,21 +133,25 @@ export async function PATCH(
   try {
     const data: any = await req.formData();
 
-    const file = data.get("file");
+    // const file = data.get("file");
     const email = data.get("email");
     const full_name = data.get("full_name");
     const phone = data.get("phone");
     const country_code = data.get("country_code");
+    const avatar_url = data.get("avatar_url");
+
 
     console.log("userInfo", userInfo);
 
     userInfo = {
-      file,
       email,
       full_name,
       phone,
       country_code,
+      avatar_url
     };
+
+    console.log("userInfo", userInfo);
   } catch (error) {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
@@ -152,22 +159,22 @@ export async function PATCH(
   let updatedUser;
 
   try {
-    const { file, ...restData } = userInfo;
-    if (userInfo.file !== "undefined") {
-      const formDataAll = new FormData();
-      formDataAll.append("image", userInfo.file);
+    // const { file, ...restData } = userInfo;
+    // if (userInfo.file !== "undefined") {
+    //   const formDataAll = new FormData();
+    //   formDataAll.append("image", userInfo.file);
 
-      const res = await fetch(`${url_front_to_wsp}/file/profile/${params.id}`, {
-        method: "POST",
-        body: formDataAll,
-      });
+    //   const res = await fetch(`${url_front_to_wsp}/file/profile/${params.id}`, {
+    //     method: "POST",
+    //     body: formDataAll,
+    //   });
 
-      const json = await res.json();
-    }
+    //   const json = await res.json();
+    // }
 
     updatedUser = await prisma.user.update({
       where: { id: Number(params.id) },
-      data: restData,
+      data: userInfo,
     });
     await prisma.$disconnect();
   } catch (error) {

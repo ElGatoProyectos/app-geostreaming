@@ -11,6 +11,8 @@ import { es } from "date-fns/locale";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { url_front_to_wsp } from "@/context/token";
+import Link from "next/link";
+import { ExportDeposits } from "./export";
 
 const Reports = () => {
   const session = useSession();
@@ -36,7 +38,7 @@ const Reports = () => {
     { Header: "Fecha y hora", accessor: (row: any) => formatDate(row.date) },
     {
       Header: "Monto ($)",
-      accessor: (row: any) => (row.value / 100).toFixed(2),
+      accessor: (row: any) => row.value,
     },
     {
       Header: "Estado",
@@ -51,7 +53,22 @@ const Reports = () => {
           </span>
         ),
     },
+    /* {
+      Header: "Voucher (url)",
+      accessor: (row: any) => <Link href={row.voucher_url}>{row.voucher_url}</Link>,
+    }, */
     {
+      Header: "Comprobante",
+      accessor: (row: any) => (
+        <button
+          className="p-2 rounded-lg bg-[#F2308B] text-white"
+          onClick={() => handleImageClick(row.voucher_url)}
+        >
+          Ver Imagen
+        </button>
+      ),
+    },
+   /*  {
       Header: "Comprobante",
       accessor: (row: any) => (
         <button
@@ -61,7 +78,7 @@ const Reports = () => {
           Ver Imagen
         </button>
       ),
-    },
+    }, */
   ];
 
   const fetchData = async () => {
@@ -83,25 +100,29 @@ const Reports = () => {
     fetchData();
   }, []);
 
-  const [showVoucher, setShowVoucher] = useState("");
-  const handleImageClick = async (voucherId: number) => {
-    let response;
-    try {
-      response = await axios.get(
-        `${url_front_to_wsp}/file/voucher/${voucherId}`,
-        {
-          responseType: "blob",
-        }
-      );
-    } catch (e) {
-      console.log(e);
-    }
-    if (!response) return;
+  const handleImageClick =(voucher_url: string) => {
+    /*  let response;
+     try {
+       response = await axios.get(
+         `${url_front_to_wsp}/file/voucher/${voucherId}`,
+         {
+           responseType: "blob",
+         }
+       );
+     } catch (e) {
+       console.log(e);
+     }
+     if (!response) return;
+ 
+     const imageUrl = URL.createObjectURL(response.data); */
+     // setShowVoucher(imageUrl);
+     setSelectedImage(voucher_url);
+   };
 
-    const imageUrl = URL.createObjectURL(response.data);
-    setShowVoucher(imageUrl);
-    setSelectedImage(imageUrl);
-  };
+   function handleDownload(){
+    console.log("Downloading")
+    ExportDeposits(vouchers);
+   }
 
   return (
     <>
@@ -114,14 +135,16 @@ const Reports = () => {
           showActions={false}
           title="Historial de depósitos"
           download={true}
+          downloadAction={handleDownload}
+          
         />
       )}
       {selectedImage && (
         <div className="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-75 flex justify-center items-center z-50">
           <img
-            src={showVoucher}
+            src={selectedImage}
             alt="Ampliación de comprobante"
-            className="max-w-[90%] max-h-[90vh] object-contain"
+           className="max-w-[90%] w-full h-full max-h-[90vh] object-contain"
           />
           <button
             className="absolute top-4 right-4 text-white"

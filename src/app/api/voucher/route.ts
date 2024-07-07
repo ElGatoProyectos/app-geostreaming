@@ -20,20 +20,23 @@ export async function GET() {
   }
 }
 
+
+//todo ok - solo imagen
 export async function POST(req: NextRequest) {
   try {
     let data;
     data = await req.formData();
 
-    const { file, number, value, date, user_id, status } = Object.fromEntries(
+    const { number, value, date, user_id, status, voucher_url } = Object.fromEntries(
       data.entries()
     ) as {
-      file: File;
+      
       number: string;
       value: string;
       date: string;
       user_id: string;
       status: "READ" | "UNREAD";
+      voucher_url:string;
     };
 
     const createVoucher: any = {
@@ -42,66 +45,67 @@ export async function POST(req: NextRequest) {
       date: new Date(date),
       user_id: Number(user_id),
       status,
+      voucher_url
     };
 
-    const validatedVoucher = validateVoucher(createVoucher);
+    // const validatedVoucher = validateVoucher(createVoucher);
 
     const userwe = await prisma.user.findUnique({
-      where: { id: validatedVoucher.user_id },
+      where: { id: Number(user_id) },
     });
 
-    let cookiesesion = dev
-      ? "next-auth.session-token"
-      : "__Secure-next-auth.session-token";
-    const token = req.cookies.get(cookiesesion)?.value as any;
-    const url_wsp = `${url_backend}/notifications`;
+    //todo envio de mensajes
 
-    const admi = await prisma.admin.findMany();
+    // let cookiesesion = dev
+    //   ? "next-auth.session-token"
+    //   : "__Secure-next-auth.session-token";
+    // const token = req.cookies.get(cookiesesion)?.value as any;
+    // const url_wsp = `${url_backend}/notifications`;
 
-    const wspmessageadmi = `👋 Hola ${admi[0].full_name} tienes un voucher pendiente del usuario ${userwe?.full_name} con el id de ${userwe?.id} por favor revisarlo en depositos`;
-    const resadmi = await fetch(url_wsp, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `${token}`,
-      },
-      body: JSON.stringify({
-        phone: admi[0].phone,
-        message: wspmessageadmi,
-        country_code: admi[0].country_code,
-      }),
-    });
+    // const admi = await prisma.admin.findMany();
 
-    await resadmi.json();
+    // const wspmessageadmi = `👋 Hola ${admi[0].full_name} tienes un voucher pendiente del usuario ${userwe?.full_name} con el id de ${userwe?.id} por favor revisarlo en depositos`;
+    // const resadmi = await fetch(url_wsp, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     Authorization: `${token}`,
+    //   },
+    //   body: JSON.stringify({
+    //     phone: admi[0].phone,
+    //     message: wspmessageadmi,
+    //     country_code: admi[0].country_code,
+    //   }),
+    // });
+
+    // await resadmi.json();
+
+     //todo end envio de mensajes
+
 
     let newVoucher;
-    if (file) {
-      newVoucher = await prisma.voucher.create({
-        data: validatedVoucher,
-      });
-      await prisma.$disconnect();
+    // if (file) {
+    //   newVoucher = await prisma.voucher.create({
+    //     data: validatedVoucher,
+    //   });
+    //   await prisma.$disconnect();
 
-      const formDataAll = new FormData();
-      formDataAll.append("voucher", file);
+    //   const formDataAll = new FormData();
+    //   formDataAll.append("voucher", file);
 
-      const res = await fetch(
-        `${url_front_to_wsp}/file/voucher/${newVoucher.id}`,
-        {
-          method: "POST",
-          body: formDataAll,
-        }
-      );
+    //   const res = await fetch(
+    //     `${url_front_to_wsp}/file/voucher/${newVoucher.id}`,
+    //     {
+    //       method: "POST",
+    //       body: formDataAll,
+    //     }
+    //   );
 
-      const json = await res.json();
+    //   const json = await res.json();
 
-      // const bytes = await file.arrayBuffer();
-      // const buffer = Buffer.from(bytes);
-      // const nameImage = "vouchers_" + newVoucher.id + ".png";
-
-      // const filePath = path.join(process.cwd(), `public/vouchers`, nameImage);
-      // await writeFile(filePath, buffer);
-      return NextResponse.json(newVoucher);
-    }
+     
+    //   return NextResponse.json(newVoucher);
+    // }
 
     newVoucher = await prisma.voucher.create({
       data: createVoucher,

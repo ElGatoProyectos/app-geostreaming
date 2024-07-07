@@ -6,7 +6,9 @@ export const creditacionesFormSchema = z.object({
     number: z.string()
         .min(1, { message: 'El campo número de comprobante es requerido' })
         .regex(/^\d+/, { message: 'El campo número de comprobante debe ser numérico' }),
-    file: z.any(),
+    /*  file: z.any(), */
+    voucher_url: z.string().optional(),
+    /* .min(1, {message: 'El campo file '}) */
     /*  .min(1, { message: 'El campo foto del comprobante es requerido' }), */
     value: z.string()
         .min(1, { message: 'El campo valor es requerido' })
