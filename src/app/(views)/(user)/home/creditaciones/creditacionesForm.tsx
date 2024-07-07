@@ -119,7 +119,7 @@ const creditacionesForm: React.FC<CreditacionesProps> = ({
         type="datetime-local"
       />
 
-      <div>
+     {/*  <div>
         <label htmlFor="file" className="text-[#444]">
           Foto del comprobante
         </label>
@@ -140,7 +140,7 @@ const creditacionesForm: React.FC<CreditacionesProps> = ({
           </p>
         )}
       </div>
-
+ */}
       <div className=" w-full flex flex-col gap-4">
         <button
           type="submit"

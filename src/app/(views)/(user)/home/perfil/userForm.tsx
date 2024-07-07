@@ -92,7 +92,7 @@ const UserForm: React.FC<UserFormProps> = ({
           error={errors.phone}
         />
       </div>
-      <div>
+      {/* <div>
         <label htmlFor="file_input" className="text-[#444]">
           Subir Avatar
         </label>
@@ -117,7 +117,7 @@ const UserForm: React.FC<UserFormProps> = ({
             {errors.file?.message}
           </p>
         )}
-      </div>
+      </div> */}
       <div className="flex items-center space-x-4"></div>
       <div className=" w-full flex flex-col gap-4">
         <button

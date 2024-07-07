@@ -14,7 +14,8 @@ export const userRegisterSchema = z.object({
         }),
     email: z.string()
         .email({ message: 'Formato de email incorrecto | ejemplo@gmail.com' }),
-    country_code: z.string(),
+    country_code: z.string()
+    .min(1, { message: 'Seleccione su código de país'}),
     phone: z.string()
         .regex(/^\d+/, { message: 'El número de celular debe ser numérico' }),
     password: z.string()
