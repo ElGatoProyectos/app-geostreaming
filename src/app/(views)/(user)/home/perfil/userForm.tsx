@@ -79,7 +79,12 @@ const UserForm: React.FC<UserFormProps> = ({
         error={errors.email}
       />
       <div className="flex flex-col md:flex-row gap-4">
-        <CountrySelect id="country_code" register={register("country_code")} />
+        <CountrySelect
+          id="country_code"
+          error={errors.country_code}
+          defaultValue={defaultValues?.country_code}
+          register={register("country_code")}
+        />
         <InputField
           id="phone"
           label="Celular"

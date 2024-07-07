@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import { authOptions } from "../../auth-options";
 import { url_front_to_wsp } from "@/context/token";
+import axios from "axios";
 
 export async function GET(
   _: NextRequest,
@@ -108,15 +109,17 @@ export async function PATCH(
       const formDataAll = new FormData();
       formDataAll.append("image-admin", file);
 
-      const res = await fetch(`${url_front_to_wsp}/file/profile-admin`, {
+     /*  const res = await fetch(`${url_front_to_wsp}/file/profile-admin`, {
         method: "POST",
         body: formDataAll,
-      });
+      }); */
+      const res = await axios.post(`${url_front_to_wsp}/file/profile-admin`, formDataAll);
 
       console.log("res", res);
 
-      const json = await res.json();
-      console.log("json", json);
+      /* const json = await res.json(); */
+      console.log(res)
+      /* console.log("json", json); */
     }
 
     updatedAdmin = await prisma.admin.update({

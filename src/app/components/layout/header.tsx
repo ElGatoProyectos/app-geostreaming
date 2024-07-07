@@ -112,7 +112,7 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
   const username = session.data?.user.name;
   const userEmail = session.data?.user.email;
 
-  const showAvatar = () => {
+ /*  const showAvatar = () => {
     let avatarUrl = "/user.jpg";
     const userId = session.data?.user.id;
     if (session.data?.user.role == "ADMIN") {
@@ -134,7 +134,7 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
     };
     img.src = avatarUrl;
   };
-
+ */
   const [imageUser, setimageUser] = useState("");
 
   const showAvatarApi = async () => {

@@ -84,6 +84,7 @@ const CountrySelect: React.FC<SelectFieldProps> = ({
         <div className='mt-2'>
           <Select
             inputId={id}
+            inputValue={defaultValue}
             defaultValue={options.find((opt) => opt.value === defaultValue)}
             options={options}
             styles={customStyles}
