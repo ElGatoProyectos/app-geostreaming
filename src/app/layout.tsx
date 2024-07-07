@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
+import Head from "next/head";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -84,6 +85,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
+      <Head>
+        <meta
+          httpEquiv="Content-Security-Policy"
+          content="default-src 'self'; img-src * data:; child-src 'none'; connect-src http://161.132.37.105:4000/;"
+        />
+      </Head>
       <body className={poppins.className}>{children}</body>
     </html>
   );

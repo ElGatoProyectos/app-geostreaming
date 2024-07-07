@@ -145,6 +145,9 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
         response = await axios.get(`${url_front_to_wsp}/file/profile-admin`, {
           responseType: "blob",
         });
+        /* response = await axios.get(`/api/backend/file/profile-admin`, {
+          responseType: "blob",
+        }); */
       } else {
         response = await axios.get(
           `${url_front_to_wsp}/file/profile/${session.data?.user.id}`,
