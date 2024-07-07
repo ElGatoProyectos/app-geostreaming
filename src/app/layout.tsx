@@ -87,8 +87,8 @@ export default function RootLayout({
     <html lang="es">
       <Head>
         <meta
-          httpEquiv="Content-Security-Policy"
-          content="default-src 'self'; img-src * data:; child-src 'none'; connect-src http://161.132.37.105:4000/;"
+          http-equiv="Content-Security-Policy"
+          content="upgrade-insecure-requests"
         />
       </Head>
       <body className={poppins.className}>{children}</body>
