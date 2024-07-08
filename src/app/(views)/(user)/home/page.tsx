@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useState } from "react";
 import { Metadata } from "next";
 import Loading from "@/app/loading";
 import Home from "./home";

@@ -1,18 +1,21 @@
 "use client";
 
 import Header from "@/app/components/layout/header";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import { Suspense, lazy } from "react";
 import Loading from "@/app/loading";
 import { ToastContainer } from "react-toastify";
 import { useSession } from "next-auth/react";
 import WsFloat from "../wsFloat";
+
 interface LayoutProps {
   children: ReactNode;
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const session = useSession();
+
+
   if (session.status === "authenticated") {
     return (
       <Suspense fallback={<Loading />}>
@@ -24,6 +27,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </main>
           <ToastContainer position="top-right" autoClose={5000} theme="light" />
           {/* {session.data?.user.role !== "ADMIN" && <WsFloat />} */}
+
         </div>
       </Suspense>
     );

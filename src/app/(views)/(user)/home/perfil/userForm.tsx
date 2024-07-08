@@ -93,12 +93,12 @@ const UserForm: React.FC<UserFormProps> = ({
           error={errors.phone}
         />
       </div>
-      <InputField
+      {/* <InputField
         id="avatar_url"
         label="Avatar (URL)"
         register={register("avatar_url")}
         error={errors.avatar_url}
-      />
+      /> */}
       {/* <div>
         <label htmlFor="file_input" className="text-[#444]">
           Subir Avatar

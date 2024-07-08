@@ -57,7 +57,7 @@ const Reports = () => {
       Header: "Voucher (url)",
       accessor: (row: any) => <Link href={row.voucher_url}>{row.voucher_url}</Link>,
     }, */
-    {
+    /* {
       Header: "Comprobante",
       accessor: (row: any) => (
         <button
@@ -67,7 +67,7 @@ const Reports = () => {
           Ver Imagen
         </button>
       ),
-    },
+    }, */
    /*  {
       Header: "Comprobante",
       accessor: (row: any) => (

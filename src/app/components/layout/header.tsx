@@ -233,7 +233,7 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
           >
             {/* avatar */}
             <img
-              src={imageUser}
+              src='/user.jpg'
               alt={session.data?.user.name}
               className="h-full w-auto object-cover aspect-square rounded-full "
               loading="lazy"
@@ -250,7 +250,7 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
             {perfilOpen && (
               <div className=" max-h-[90vh]  overflow-y-auto absolute top-[65px]  bg-white shadow-cardFloat w-fit right-0 flex flex-col gap-4 pt-8 items-center rounded-md animate-keep-slide-down">
                 <img
-                  src={imageUser}
+                  src='/user.jpg'
                   alt={session.data?.user.name}
                   className="h-20 w-20 object-cover rounded-full shadow "
                   loading="lazy"

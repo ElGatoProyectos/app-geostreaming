@@ -4,7 +4,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
-import { DocumentSchema } from "@/app/schemas/documentSchema";
+import { AlertFormSchema } from "@/app/schemas/alertFromSchema";
 import axios from "axios";
 
 import { toast } from "react-toastify";
@@ -12,10 +12,10 @@ import "react-toastify/dist/ReactToastify.css";
 import { url_backend, url_front_to_wsp } from "@/context/token";
 
 type Inputs = {
-  file: string;
+  description: string;
 };
 
-const DocumentForm = () => {
+const AlertForm = () => {
   const [loading, setLoading] = useState(false);
 
   const {
@@ -24,31 +24,23 @@ const DocumentForm = () => {
     formState: { errors },
     reset,
   } = useForm<Inputs>({
-    resolver: zodResolver(DocumentSchema),
+    resolver: zodResolver(AlertFormSchema),
   });
 
   const handleFormSubmit: SubmitHandler<Inputs> = async (data) => {
     setLoading(true);
-
+    // api alert
     try {
-      const formDataAll = new FormData();
-      formDataAll.append("pdf", data.file[0]);
-
-      const res = await fetch(`${url_front_to_wsp}/file/pdf`, {
-        method: "POST",
-        body: formDataAll,
-      });
-
-      const json = await res.json();
-
-      toast.success("El documento se subió correctamente");
+     const response = await axios.post("/api/alerts",{description: data.description})
+      toast.success("La description se guardo correctamente");
     } catch (error) {
-      console.error("Error al subir el documento:", error);
-      toast.error("Error al subir el documento");
+      console.error("Error al guardar descripción:", error);
+      toast.error("Error al guardar descripción");
     } finally {
       setLoading(false);
     }
   };
+  
 
   return (
     <form
@@ -56,23 +48,21 @@ const DocumentForm = () => {
       className="flex w-full flex-col gap-4 "
     >
       <div>
-        <label htmlFor="file_input" className="text-[#444]">
-          Subir archivo
+        <label htmlFor="description" className="text-[#444]">
+          Descripción
         </label>
-        <input
-          id="file"
-          type="file"
-          accept=".pdf"
+        <textarea
+          id="description"
           className={`w-full text-[#666] bg-gray-100 border rounded outline-none pr-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
-            errors.file
+            errors.description
               ? "border-red-500 focus:ring focus:ring-red-200 focus:border-red-500"
               : "border-gray-200 "
           }`}
-          {...register("file")}
-        />
-        {errors.file && (
+          {...register("description")}
+        ></textarea>
+        {errors.description && (
           <p className="text-red-500 text-sm font-medium mt-1">
-            {errors.file?.message}
+            {errors.description?.message}
           </p>
         )}
       </div>
@@ -97,4 +87,4 @@ const DocumentForm = () => {
   );
 };
 
-export default DocumentForm;
+export default AlertForm;

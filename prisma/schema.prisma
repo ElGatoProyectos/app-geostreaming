@@ -164,3 +164,8 @@ model Notification {
   message      String
   created_at   DateTime @default(now())
 }
+model Alert {
+  id           Int      @id @default(autoincrement())
+  description      String
+  created_at   DateTime @default(now())
+}

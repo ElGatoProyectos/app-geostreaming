@@ -118,12 +118,12 @@ const creditacionesForm: React.FC<CreditacionesProps> = ({
         error={errors.date}
         type="datetime-local"
       />
-      <InputField
+      {/* <InputField
         id="voucher_url"
         label="Adjuntar voucher(url)"
         register={register("voucher_url")}
         error={errors.voucher_url}
-      />
+      /> */}
 
      {/*  <div>
         <label htmlFor="file" className="text-[#444]">

@@ -113,7 +113,7 @@ const Deposits = () => {
     { Header: "Número de comprobante", accessor: "number" },
     { Header: "Fecha y hora", accessor: (row: any) => formatDate(row.date) },
     { Header: "Monto (centavos)", accessor: "value" },
-    {
+    /* {
       Header: "Comprobante",
       accessor: (row: any) => (
         <button
@@ -123,7 +123,7 @@ const Deposits = () => {
           Ver Imagen
         </button>
       ),
-    },
+    }, */
     {
       Header: "Estado",
       accessor: (row: any) =>
