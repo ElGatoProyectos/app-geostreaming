@@ -74,7 +74,7 @@ const creditacionesForm: React.FC<CreditacionesProps> = ({
       <div className="w-full">
         <div className="w-full text-[#444]">
           <label htmlFor="value" className=" capitalize">
-            Value: {monto && `$ ${monto}`}
+            Valor: {monto && `$ ${monto}`}
           </label>
           <div className="relative mt-2 ">
             <input

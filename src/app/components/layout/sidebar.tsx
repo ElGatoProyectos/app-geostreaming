@@ -22,6 +22,7 @@ import { FaRegUser, FaUsers } from "react-icons/fa";
 import { GiProfit } from "react-icons/gi";
 import { RiUserSharedLine } from "react-icons/ri";
 import { signOut } from "next-auth/react";
+import { url_front_to_wsp } from "@/context/token";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -247,7 +248,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
 
   const router = useRouter();
   function handleLogout() {
-    signOut();
+    signOut({ redirect: false });
+
+    router.push('https://geostreaming.org/ingresar');
   }
 
   return (
@@ -284,24 +287,27 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
           </div>
         ))}
         {role === "ADMIN" ? (
-          <Link href={'/admin/documentacion'}>
+          <Link href={"/admin/documentacion"}>
             <span
-              className={`pl-8 py-3 mr-2 rounded-r-full mb-2 flex gap-4 items-center hover:bg-[#F2308B] hover:text-white transition-all duration-300`}
+              className={`pl-8 py-3 mr-2 rounded-r-full mb-2 flex gap-4 items-center hover:bg-[#F2308B] hover:text-white transition-all duration-300 ${
+                currentPath === "/admin/documentacion"
+                  ? "bg-[#F2308B] text-white font-semibold"
+                  : "hover:bg-[#F2308B] hover:text-white transition-all duration-300 group"
+              }`}
             >
               <IoDocumentTextOutline className="text-xl" />
               <span className="text-sm capitalize">Documentación</span>
             </span>
           </Link>
         ) : (
-          <div>
+          <a href={`${url_front_to_wsp}/file/pdf`} download target="_blank">
             <span
-              role="button"
               className={`pl-8 py-3 mr-2 rounded-r-full mb-2 flex gap-4 items-center hover:bg-[#F2308B] hover:text-white transition-all duration-300`}
             >
               <IoDocumentTextOutline className="text-xl" />
               <span className="text-sm capitalize">Documentación</span>
             </span>
-          </div>
+          </a>
         )}
 
         <div>

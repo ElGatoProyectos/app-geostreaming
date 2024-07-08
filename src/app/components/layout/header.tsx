@@ -22,6 +22,7 @@ import { signOut } from "next-auth/react";
 import { headers } from "next/headers";
 import { useCookies } from "next-client-cookies";
 import { dev, url_front_to_wsp } from "@/context/token";
+import { useRouter } from "next/router";
 
 const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -105,9 +106,11 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
       showAvatarApi();
     }
   }, []);
-
+  const router = useRouter();
   function handleLogout() {
-    signOut();
+    signOut({ redirect: false });
+
+    router.push('https://geostreaming.org/ingresar');
   }
   const username = session.data?.user.name;
   const userEmail = session.data?.user.email;
