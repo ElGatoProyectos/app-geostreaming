@@ -1,9 +1,9 @@
-export const dev = true;
+export const dev = false;
 
-const { NEXT_PUBLIC_BACKEND_URL } = process.env;
-
-export const url_backend = dev? "http://localhost:4000": "http://161.132.37.105:4000";
+export const url_backend = dev
+  ? "http://localhost:4000/"
+  : "https://whatsapp-service-geostream.onrender.com/";
 
 export const url_front_to_wsp = dev
-  ? "http://localhost:4000"
-  : "http://161.132.37.105:4000";
+  ? "http://localhost:4000/"
+  : "https://whatsapp-service-geostream.onrender.com/";
