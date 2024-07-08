@@ -57,7 +57,7 @@ const CardItem: React.FC<Props> = (props) => {
 
 
   return (
-    <div className="flex flex-col justify-center items-center shadow-cardItem  w-full rounded-2xl px-4 py-8 relative overflow-y-auto h-full">
+    <div className="flex flex-col justify-center items-center   w-full rounded-2xl px-4 py-8 relative overflow-y-auto h-full">
       {props.isNew && (
         <span className="absolute top-0 left-0 -translate-y-1/2 bg-green-600 px-4 py-1 rounded-r-xl rounded-tl-xl font-semibold text-white">
           Nuevo
