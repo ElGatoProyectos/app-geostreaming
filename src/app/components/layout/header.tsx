@@ -76,7 +76,7 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
     try {
       if (session.status === "authenticated") {
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/qrcode`,
+          `https://whatsapp-service-geostream.onrender.com/qrcode`,
           {
             responseType: "blob",
             headers: {
