@@ -1,7 +1,5 @@
-'use client';
-import Select, { StylesConfig } from 'react-select';
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 
 interface SelectFieldProps {
   id: string;
@@ -20,14 +18,16 @@ const CountrySelect: React.FC<SelectFieldProps> = ({
   id,
   register,
   error,
-  defaultValue = '',
+  defaultValue = "",
   isDisabled = false,
 }) => {
   const [codes, setCodes] = useState<Country[]>([]);
 
   const fetchCountries = async () => {
     try {
-      const response = await axios.get("https://raw.githubusercontent.com/Desarrollo2Gato/countries/main/data.json");
+      const response = await axios.get(
+        "https://raw.githubusercontent.com/Desarrollo2Gato/countries/main/data.json"
+      );
       let countryData: Country[] = response.data.map((country: any) => ({
         name: country.country,
         code: country.calling_code,
@@ -43,66 +43,36 @@ const CountrySelect: React.FC<SelectFieldProps> = ({
     fetchCountries();
   }, []);
 
-  const options = codes.map((country) => ({
-    value: country.code,
-    label: `(${country.code}) ${country.name}`,
-  }));
-
-  const customStyles: StylesConfig<{ value: string; label: string }, false> = {
-    control: (provided, state) => ({
-      ...provided,
-      fontSize: '14px',
-      backgroundColor: state.isFocused ? 'white' : '#FAFAFA',
-      borderColor: error ? '#277FF2' : '#EEEEEE',
-      boxShadow: state.isFocused
-        ? error
-          ? '0 0 0 1px #f20707'
-          : '0 0 0 1px #277FF2'
-        : 'none',
-      '&:hover': {
-        borderColor: state.isFocused
-          ? error
-            ? '#f20707'
-            : '#277FF2'
-          : '#EEEEEE',
-      },
-    }),
-    placeholder: (provided) => ({
-      ...provided,
-      color: '#666',
-    }),
-    singleValue: (provided) => ({
-      ...provided,
-      color: '#444',
-    }),
-  };
-
   return (
-    <div className='w-full text-[#444]'>
-      <label htmlFor={id} className='capitalize'>
+    <div className="w-full text-[#444]">
+      <label htmlFor={id} className="capitalize">
         Código del país
-        <div className='mt-2'>
-          <Select
-            inputId={id}
-            defaultValue={options.find((opt) => opt.value === defaultValue)}
-            options={options}
-            styles={customStyles}
-            placeholder='seleccione...'
-            isDisabled={isDisabled}
-            onChange={(selectedOption) => {
-              if (register) {
-                register.onChange({
-                  target: {
-                    name: register.name,
-                    value: selectedOption?.value,
-                  },
-                });
-              }
-            }}
-            onBlur={register?.onBlur}
-          />
+        <div className="mt-2">
+          <select
+            id={id}
+            name={id}
+            defaultValue={defaultValue}
+            className={` bg-gray-100 w-full text-[#666] bg-gray-10 border rounded outline-none px-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
+              error
+                ? "border-red-500 focus:ring focus:ring-red-200 focus:border-red-500"
+                : "border-gray-200 "
+            }`}
+            {...register}
+          >
+            <option value="" disabled hidden>
+              Seleccione...
+            </option>
+            {codes.map((country) => (
+              <option
+                key={country.code}
+                value={country.code}
+                selected={country.code === defaultValue}
+              >
+                ({country.code}) {country.name}
+              </option>
+            ))}
+          </select>
         </div>
-        
       </label>
     </div>
   );
