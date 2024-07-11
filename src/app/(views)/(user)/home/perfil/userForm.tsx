@@ -46,6 +46,7 @@ const UserForm: React.FC<UserFormProps> = ({
   }, [defaultValues, reset]);
 
   const handleFormSubmit: SubmitHandler<Inputs> = async (data) => {
+    console.log(data);
     setLoading(true);
     try {
       await onSubmit(data);
@@ -93,38 +94,7 @@ const UserForm: React.FC<UserFormProps> = ({
           error={errors.phone}
         />
       </div>
-      {/* <InputField
-        id="avatar_url"
-        label="Avatar (URL)"
-        register={register("avatar_url")}
-        error={errors.avatar_url}
-      /> */}
-      {/* <div>
-        <label htmlFor="file_input" className="text-[#444]">
-          Subir Avatar
-        </label>
-        <img
-          className="h-16 w-16 object-cover rounded-full my-2"
-          src={avatar}
-          alt="user"
-        />
-        <input
-          id="file"
-          type="file"
-          accept="image/*"
-          className={`w-full text-[#666] bg-gray-100 border rounded outline-none pr-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 ${
-            errors.file
-              ? "border-red-500 focus:ring focus:ring-red-200 focus:border-red-500"
-              : "border-gray-200 "
-          }`}
-          {...register("file")}
-        />
-        {errors.file && (
-          <p className="text-red-500 text-sm font-medium mt-1">
-            {errors.file?.message}
-          </p>
-        )}
-      </div> */}
+
       <div className="flex items-center space-x-4"></div>
       <div className=" w-full flex flex-col gap-4">
         <button

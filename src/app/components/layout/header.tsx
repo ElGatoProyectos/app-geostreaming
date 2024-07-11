@@ -22,7 +22,7 @@ import { signOut } from "next-auth/react";
 import { headers } from "next/headers";
 import { useCookies } from "next-client-cookies";
 import { dev, url_front_to_wsp } from "@/context/token";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -110,12 +110,12 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
   function handleLogout() {
     signOut({ redirect: false });
 
-    router.push('https://geostreaming.org/ingresar');
+    router.push("https://geostreaming.org/ingresar");
   }
   const username = session.data?.user.name;
   const userEmail = session.data?.user.email;
 
- /*  const showAvatar = () => {
+  /*  const showAvatar = () => {
     let avatarUrl = "/user.jpg";
     const userId = session.data?.user.id;
     if (session.data?.user.role == "ADMIN") {
@@ -176,13 +176,11 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
           responseType: "blob",
         }); */
       } else {
-        response = await axios.get(
-          `/api/user/${session.data?.user.id}` );
+        response = await axios.get(`/api/user/${session.data?.user.id}`);
       }
       // const imageUrl = URL.createObjectURL(response.data);
       // setimageUser(imageUrl);
       setimageUser(response.data.avatar_url);
-
     } catch (e) {
       console.log(e);
     }
@@ -236,7 +234,7 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
           >
             {/* avatar */}
             <img
-              src='/user.jpg'
+              src="/user.jpg"
               alt={session.data?.user.name}
               className="h-full w-auto object-cover aspect-square rounded-full "
               loading="lazy"
@@ -253,7 +251,7 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
             {perfilOpen && (
               <div className=" max-h-[90vh]  overflow-y-auto absolute top-[65px]  bg-white shadow-cardFloat w-fit right-0 flex flex-col gap-4 pt-8 items-center rounded-md animate-keep-slide-down">
                 <img
-                  src='/user.jpg'
+                  src="/user.jpg"
                   alt={session.data?.user.name}
                   className="h-20 w-20 object-cover rounded-full shadow "
                   loading="lazy"

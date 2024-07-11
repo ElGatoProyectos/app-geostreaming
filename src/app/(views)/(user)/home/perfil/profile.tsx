@@ -16,7 +16,6 @@ type InputsPersonal = {
   email?: string;
   phone?: string;
   country_code?: string;
-  file?: string;
 };
 
 const profile = () => {
@@ -50,13 +49,14 @@ const profile = () => {
   useEffect(() => {
     if (session.status === "authenticated") {
       fetchData();
-      getImageAdmin();
+      // getImageAdmin();
     }
   }, []);
 
   const handleSavePersonal: SubmitHandler<InputsPersonal> = async (
     data: any
   ) => {
+    console.log("handleSavePersonal");
     try {
       // aqui va fetch profile
       const formDataAll = new FormData();
@@ -66,7 +66,7 @@ const profile = () => {
       formDataAll.append("dni", String(data.dni));
       /* formDataAll.append("file", data.file[0]); */
       formDataAll.append("phone", String(data.phone));
-      formDataAll.append("avatar_url", data.avatar_url);
+      // formDataAll.append("avatar_url", data.avatar_url);
       formDataAll.append("country_code", String(data.country_code));
 
       await axios.patch(`/api/user/${session.data?.user.id}`, formDataAll, {
@@ -91,7 +91,6 @@ const profile = () => {
               phone: user.phone,
               country_code: user.country_code,
               email: String(session.data?.user.email),
-              avatar_url: user.avatar_url
             }}
             avatar={imageAdmin}
             onSubmit={handleSavePersonal}
