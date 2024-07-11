@@ -18,6 +18,7 @@ type Inputs = {
   description?: string;
   platform_id?: number;
   status?: string;
+  profile?: string;
 };
 
 interface AccountFormProps {
@@ -115,9 +116,15 @@ const AccountForm: React.FC<AccountFormProps> = ({
         )}
       </label>
       <InputField
+        id="profile"
+        label="Perfil"
+        register={register("profile")}
+        error={errors.profile}
+      />
+      <InputField
         id="email"
         label="Correo"
-        type="email"
+        type="text"
         register={register("email")}
         error={errors.email}
       />

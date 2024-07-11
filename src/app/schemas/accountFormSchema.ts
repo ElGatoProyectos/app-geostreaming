@@ -7,9 +7,10 @@ export const AccountFormSchema = z.object({
             invalid_type_error: 'Seleccione una plataforma'
     }).positive('Seleccione una plataforma'),
 /*     user_id: z.number().optional(), */
+    profile: z.string().optional(),
     email: z.string()
-        .min(1, 'El campo correo es requerido')
-        .email('Formato de email incorrecto | ejemplo@gmail.com'),
+        .min(1, 'El campo correo es requerido'),
+        /* .email('Formato de email incorrecto | ejemplo@gmail.com'), */
     password: z.string()
         .min(1, 'El campo contraseña es requerido'),
     pin: z.string()

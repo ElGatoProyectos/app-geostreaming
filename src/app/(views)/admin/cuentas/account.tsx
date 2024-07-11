@@ -24,6 +24,7 @@ type Inputs = {
   description?: string;
   platform_id?: number;
   status?: string;
+  profile?: string;
 };
 
 const Account = () => {
@@ -96,6 +97,7 @@ const Account = () => {
       },
     },
     { Header: "Correo", accessor: "email" },
+    { Header: "Perfil", accessor: "profile" },
     { Header: "Contraseña", accessor: "password" },
     { Header: "Pin", accessor: "pin" },
     {
@@ -196,6 +198,7 @@ const Account = () => {
           description: data.description,
           platform_id: data.platform_id,
           status: data.status,
+          profile: data.profile,
         });
         toast.success("Se actualizo correctamente");
       } else {
@@ -207,6 +210,7 @@ const Account = () => {
           description: data.description,
           platform_id: data.platform_id,
           status: data.status,
+          profile: data.profile,
         });
         toast.success("Se guardo correctamente");
       }

@@ -6,6 +6,15 @@ import CountNumber from "@/app/components/countNumber";
 import { IoMdCart } from "react-icons/io";
 import { MdOutlineAccountBox } from "react-icons/md";
 import axios from "axios";
+import { styled } from "@mui/system";
+import {
+  TablePagination,
+  tablePaginationClasses as classes,
+} from "@mui/base/TablePagination";
+import FirstPageRoundedIcon from "@mui/icons-material/FirstPageRounded";
+import LastPageRoundedIcon from "@mui/icons-material/LastPageRounded";
+import ChevronLeftRoundedIcon from "@mui/icons-material/ChevronLeftRounded";
+import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 
 const home = () => {
   const [data, setData] = useState<any>({});
@@ -15,6 +24,11 @@ const home = () => {
   const [userRoleCount, setUserRoleCount] = useState<number>(0);
   const [platformCount, setPlatformCount] = useState<number>(0);
   const [notBoughtAccounts, setNotBoughtAccounts] = useState<number>(0);
+
+  const [productsPage, setProductsPage] = useState(0);
+  const [productsRowsPerPage, setProductsRowsPerPage] = useState(5);
+  const [afiliadosPage, setAfiliadosPage] = useState(0);
+  const [afiliadosRowsPerPage, setAfiliadosRowsPerPage] = useState(5);
 
   const fetchData = async () => {
     try {
@@ -68,8 +82,6 @@ const home = () => {
     fetchAllData();
   }, []);
 
-  console.log(afiliados);
-
   const infoCards = [
     {
       title: "Afiliados",
@@ -97,6 +109,82 @@ const home = () => {
     },
   ];
 
+  /* paginacion */
+
+  const handleProductsPageChange = (
+    event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => {
+    setProductsPage(newPage);
+  };
+
+  const handleProductsRowsPerPageChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setProductsRowsPerPage(parseInt(event.target.value, 10));
+    setProductsPage(0);
+  };
+
+  const handleAfiliadosPageChange = (
+    event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => {
+    setAfiliadosPage(newPage);
+  };
+
+  const handleAfiliadosRowsPerPageChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setAfiliadosRowsPerPage(parseInt(event.target.value, 10));
+    setAfiliadosPage(0);
+  };
+
+  const CustomTablePagination = styled(TablePagination)`
+    & .${classes.toolbar} {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+      color: #888;
+      padding: 4px 0;
+
+      @media (min-width: 768px) {
+        flex-direction: row;
+        align-items: center;
+      }
+    }
+
+    & .${classes.selectLabel} {
+      margin: 0;
+    }
+
+    & .${classes.select} {
+      border: 1px solid #eee;
+      border-radius: 5px;
+    }
+
+    & .${classes.displayedRows} {
+      margin: 0;
+
+      @media (min-width: 768px) {
+        margin-left: auto;
+      }
+    }
+
+    & .${classes.spacer} {
+      display: none;
+    }
+
+    & .${classes.actions} {
+      display: flex;
+      gap: 0.25rem;
+    }
+    & .${classes.actions} button {
+      background-color: #f0f0f0;
+      border-radius: 4px;
+      padding: 0 4px;
+    }
+  `;
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 gap-8">
@@ -127,7 +215,7 @@ const home = () => {
           <h2 className=" text-xl capitalize mb-4 text-[#444] font-medium">
             Resumen de productos
           </h2>
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto max-h-[800px] overflow-y-auto">
             <table className="w-full table-auto">
               <thead className="bg-[#F3F6F9] font-medium text-[#888] text-sm">
                 <tr>
@@ -138,18 +226,22 @@ const home = () => {
               </thead>
               <tbody>
                 {products.length > 0 ? (
-                  products.slice(0, 15).map((product: any, index: number) => (
-                    <tr key={index} className="text  text-[#666]">
-                      <td className="p-2">{index + 1}</td>
-                      <td className="p-2">{product.name}</td>
-                      <td className="p-2 text-center">
-                        {/* no esta marcando la cantidad de cuentas */}
-                        {product._count.Account !== undefined
-                          ? product._count.Account
-                          : 0}
-                      </td>
-                    </tr>
-                  ))
+                  products
+                    .slice(
+                      productsPage * productsRowsPerPage,
+                      productsPage * productsRowsPerPage + productsRowsPerPage
+                    )
+                    .map((product: any, index: number) => (
+                      <tr key={index} className="text  text-[#666]">
+                        <td className="p-2">{index + 1}</td>
+                        <td className="p-2">{product.name}</td>
+                        <td className="p-2 text-center">
+                          {product._count.Account !== undefined
+                            ? product._count.Account
+                            : 0}
+                        </td>
+                      </tr>
+                    ))
                 ) : (
                   <tr>
                     <td colSpan={3} className="p-2 text-[#666]">
@@ -158,6 +250,40 @@ const home = () => {
                   </tr>
                 )}
               </tbody>
+              <tfoot>
+                <tr>
+                  <CustomTablePagination
+                    rowsPerPageOptions={[
+                      5,
+                      10,
+                      25,
+                      { label: "Todos", value: -1 },
+                    ]}
+                    colSpan={3}
+                    count={products.length}
+                    rowsPerPage={productsRowsPerPage}
+                    page={productsPage}
+                    onPageChange={handleProductsPageChange}
+                    onRowsPerPageChange={handleProductsRowsPerPageChange}
+                    labelRowsPerPage="Filas"
+                    slotProps={{
+                      select: {
+                        "aria-label": "rows per page",
+                      },
+                      actions: {
+                        showFirstButton: true,
+                        showLastButton: true,
+                        slots: {
+                          firstPageIcon: FirstPageRoundedIcon,
+                          lastPageIcon: LastPageRoundedIcon,
+                          nextPageIcon: ChevronRightRoundedIcon,
+                          backPageIcon: ChevronLeftRoundedIcon,
+                        },
+                      },
+                    }}
+                  />
+                </tr>
+              </tfoot>
             </table>
           </div>
         </div>
@@ -166,7 +292,7 @@ const home = () => {
           <h2 className=" text-xl capitalize mb-4 text-[#444] font-medium">
             Resumen de usuarios
           </h2>
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto max-h-[800px] overflow-y-auto">
             <table className="w-full table-auto">
               <thead className="bg-[#F3F6F9] font-medium text-[#888] text-sm">
                 <tr>
@@ -179,27 +305,65 @@ const home = () => {
               <tbody>
                 {afiliados.length > 0 ? (
                   afiliados
-                    .slice(0, 15)
-                    .map((afiliados: any, index: number) => (
+                    .slice(
+                      afiliadosPage * afiliadosRowsPerPage,
+                      afiliadosPage * afiliadosRowsPerPage +
+                        afiliadosRowsPerPage
+                    )
+                    .map((afiliado: any, index: number) => (
                       <tr key={index} className="text  text-[#666]">
                         <td className="p-2">{index + 1}</td>
-                        <td className="p-2">
-                          {afiliados.Nombre_del_afiliador}
-                        </td>
+                        <td className="p-2">{afiliado.name}</td>
                         <td className="p-2 text-center">
-                          {afiliados.Cuantos_usuarios_tienen_el_Ref_id}
+                          {afiliado.Cuantos_usuarios_tienen_el_Ref_id !==
+                          undefined
+                            ? afiliado.Cuantos_usuarios_tienen_el_Ref_id
+                            : 0}
                         </td>
-                        {/* <td className="p-2 text-center">{afiliados.Ventas_del_afiliador}</td> */}
                       </tr>
                     ))
                 ) : (
                   <tr>
                     <td colSpan={3} className="p-2 text-[#666]">
-                      No hay usuarios
+                      Sin usuarios afiliados
                     </td>
                   </tr>
                 )}
               </tbody>
+              <tfoot>
+                <tr>
+                  <CustomTablePagination
+                    rowsPerPageOptions={[
+                      5,
+                      10,
+                      25,
+                      { label: "All", value: -1 },
+                    ]}
+                    colSpan={3}
+                    count={afiliados.length}
+                    rowsPerPage={afiliadosRowsPerPage}
+                    page={afiliadosPage}
+                    onPageChange={handleAfiliadosPageChange}
+                    onRowsPerPageChange={handleAfiliadosRowsPerPageChange}
+                    labelRowsPerPage="Filas"
+                    slotProps={{
+                      select: {
+                        "aria-label": "rows per page",
+                      },
+                      actions: {
+                        showFirstButton: true,
+                        showLastButton: true,
+                        slots: {
+                          firstPageIcon: FirstPageRoundedIcon,
+                          lastPageIcon: LastPageRoundedIcon,
+                          nextPageIcon: ChevronRightRoundedIcon,
+                          backPageIcon: ChevronLeftRoundedIcon,
+                        },
+                      },
+                    }}
+                  />
+                </tr>
+              </tfoot>
             </table>
           </div>
         </div>
