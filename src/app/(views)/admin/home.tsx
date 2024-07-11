@@ -143,6 +143,7 @@ const home = () => {
                       <td className="p-2">{index + 1}</td>
                       <td className="p-2">{product.name}</td>
                       <td className="p-2 text-center">
+                        {/* no esta marcando la cantidad de cuentas */}
                         {product._count.Account !== undefined
                           ? product._count.Account
                           : 0}

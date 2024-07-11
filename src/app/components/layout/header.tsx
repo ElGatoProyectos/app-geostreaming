@@ -76,15 +76,12 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
 
     try {
       if (session.status === "authenticated") {
-        const response = await axios.get(
-          `https://whatsapp-service-geostream.onrender.com/qrcode`,
-          {
-            responseType: "blob",
-            headers: {
-              Authorization: `${data.token}`,
-            },
-          }
-        );
+        const response = await axios.get(`${url_front_to_wsp}/qrcode`, {
+          responseType: "blob",
+          headers: {
+            Authorization: `${data.token}`,
+          },
+        });
         const imageUrl = URL.createObjectURL(response.data);
         setQrimagen(imageUrl);
       }
