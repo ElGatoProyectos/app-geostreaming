@@ -24,5 +24,5 @@ export const AccountFormSchema = z.object({
     } */
     status: z.string()
     .min(1, 'Por favor seleccione la disponibilidad de la cuenta'),
-    description: z.string().optional(),
+    description: z.string().max(1000, {message: 'El máximo de caracteres es 1000'}).optional(),
 });

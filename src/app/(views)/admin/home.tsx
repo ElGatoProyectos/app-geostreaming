@@ -11,38 +11,85 @@ const home = () => {
   const [data, setData] = useState<any>({});
   const [products, setProducts] = useState<any>({});
   const [afiliados, setAfiliados] = useState<any>({});
+  const [totalUsers, setTotalUsers] = useState<number>(0);
+  const [userRoleCount, setUserRoleCount] = useState<number>(0);
+  const [platformCount, setPlatformCount] = useState<number>(0);
+  const [notBoughtAccounts, setNotBoughtAccounts] = useState<number>(0);
+
   const fetchData = async () => {
-    const response = await axios.get("/api/dashboard");
-    setProducts(response.data.productosMasVendidos);
-    setAfiliados(response.data.topAfiliados);
-    setData(response.data);
+    try {
+      const response = await axios.get("/api/dashboard");
+      const sortedProducts = response.data.productosMasVendidos.sort(
+        (a: any, b: any) => b._count.Account - a._count.Account
+      );
+      setProducts(sortedProducts);
+      setProducts(response.data.productosMasVendidos);
+      const sortedAfiliados = response.data.topAfiliados.sort(
+        (a: any, b: any) =>
+          b.Cuantos_usuarios_tienen_el_Ref_id -
+          a.Cuantos_usuarios_tienen_el_Ref_id
+      );
+      setAfiliados(sortedAfiliados);
+      setData(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchAllData = async () => {
+    try {
+      const [userResponse, platformResponse, accountsResponse] =
+        await Promise.all([
+          axios.get("/api/user"),
+          axios.get("/api/platform"),
+          axios.get("/api/account"),
+        ]);
+
+      const usersWithRefId = userResponse.data.filter(
+        (user: any) => user.ref_id
+      ).length;
+      const usersWithUserRole = userResponse.data.filter(
+        (user: any) => user.role === "USER"
+      ).length;
+      const platformsCount = platformResponse.data.length;
+      const notBoughtAccountsCount = accountsResponse.data.filter(
+        (account: any) => account.status === "NOT_BOUGHT"
+      ).length;
+      setTotalUsers(usersWithRefId);
+      setUserRoleCount(usersWithUserRole);
+      setPlatformCount(platformsCount);
+      setNotBoughtAccounts(notBoughtAccountsCount);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   };
   useEffect(() => {
     fetchData();
+    fetchAllData();
   }, []);
 
   const infoCards = [
     {
       title: "Afiliados",
-      number: data.afiliados,
+      number: totalUsers,
       icon: <RiUserSharedLine className="text-xl mx-auto" />,
       span: "registrados",
     },
     {
       title: "Consumidores",
-      number: data.consumidores,
+      number: userRoleCount,
       icon: <FaUsers className="text-xl mx-auto" />,
       span: "registrados",
     },
     {
       title: "Productos",
-      number: data.cantidadDeProductos,
+      number: platformCount,
       icon: <IoMdCart className="text-xl mx-auto" />,
       span: "disponibles",
     },
     {
       title: "Cuentas",
-      number: data.cuentasDeVenta,
+      number: notBoughtAccounts,
       icon: <MdOutlineAccountBox className="text-xl mx-auto" />,
       span: "activas",
     },

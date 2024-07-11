@@ -14,7 +14,8 @@ export const PlatformFormSchema = z.object({
       }),
       description: z
             .string()
-            .min(1, { message: "El campo descripción es requerido" }),
+            .min(1, { message: "El campo descripción es requerido" })
+            .max(500, {message: 'El máximo de caracteres es 1000'}),
 
       status: z.union([
             z.enum(["IMMEDIATE_DELIVERY", "UPON_REQUEST"]),
