@@ -23,14 +23,14 @@ export async function POST(req: NextRequest) {
   try {
     orderInfo = await req.json();
   } catch (error) {
-    console.log("Error 1")
+    console.log("Error 1");
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
   try {
     orderValidated = validateOrder(orderInfo);
   } catch (error) {
-    console.log("Error 2")
+    console.log("Error 2");
 
     return NextResponse.json({ error: "Validation error" }, { status: 400 });
   }
@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
       );
     }
   } catch (e) {
-    console.log("Error 3")
+    console.log("Error 3");
 
     return NextResponse.json(
       { error: "Error fetching platform" },
@@ -87,7 +87,7 @@ export async function POST(req: NextRequest) {
       );
     }
   } catch (e) {
-    console.log("Error 4")
+    console.log("Error 4");
 
     return NextResponse.json({ error: "Error fetching user" }, { status: 500 });
   }
@@ -102,7 +102,7 @@ export async function POST(req: NextRequest) {
 
     if (user.role === "DISTRIBUTOR") {
       if (price_distributor_in_cents * quantity > user.balance_in_cents) {
-    console.log("Error 5")
+        console.log("Error 5");
 
         return NextResponse.json(
           { error: "Insufficient balance" },
@@ -113,7 +113,7 @@ export async function POST(req: NextRequest) {
         user.balance_in_cents - price_distributor_in_cents * quantity;
     } else if (user.role === "USER") {
       if (price_in_cents * quantity > user.balance_in_cents) {
-    console.log("Error 6")
+        console.log("Error 6");
 
         return NextResponse.json(
           { error: "Insufficient balance" },
@@ -156,7 +156,7 @@ export async function POST(req: NextRequest) {
             data: { balance_in_cents: newBalanceInCents },
           });
         } catch (e) {
-          console.log("Error updating user balance")
+          console.log("Error updating user balance");
           return NextResponse.json(
             { error: "Error updating user balance" },
             { status: 500 }
@@ -170,7 +170,7 @@ export async function POST(req: NextRequest) {
               data: { balance_in_cents: { increment: 10 } },
             });
           } catch (e) {
-            console.log("Error to inscrement user ref balance")
+            console.log("Error to inscrement user ref balance");
             return NextResponse.json(
               { error: "Error to inscrement user ref balance" },
               { status: 500 }
@@ -197,7 +197,7 @@ export async function POST(req: NextRequest) {
 
         const res = await fetch(url_wsp, options);
 
-        // console.log(res)
+        console.log(res);
 
         const admi = await prisma.admin.findMany();
         const wspmessageadmi = `👋 Hola ${admi[0].full_name} tienes un pedido pendiente de la plataforma ${platform.name} por favor revisarlo en pedidos`;
@@ -221,10 +221,10 @@ export async function POST(req: NextRequest) {
           data: { phone_client: orderValidated.phone, message: wspMessage },
         });
 
-        return NextResponse.json({ message:"order created" });
+        return NextResponse.json({ message: "order created" });
       } catch (e) {
-        console.log(e)
-        console.log("Error creating order pending")
+        console.log(e);
+        console.log("Error creating order pending");
         return NextResponse.json(
           { error: "Error creating order pending" },
           { status: 500 }
@@ -257,7 +257,7 @@ export async function POST(req: NextRequest) {
         },
       });
     } catch (e) {
-      console.log("Error updating account")
+      console.log("Error updating account");
       return NextResponse.json(
         { error: "Error updating account" },
         { status: 500 }
@@ -334,7 +334,7 @@ export async function POST(req: NextRequest) {
           data: { balance_in_cents: newBalanceInCents },
         });
       } catch (e) {
-        console.log("Error updating user balance")
+        console.log("Error updating user balance");
         return NextResponse.json(
           { error: "Error updating user balance" },
           { status: 500 }
@@ -353,14 +353,14 @@ export async function POST(req: NextRequest) {
         json,
       });
     } catch (e) {
-      console.log("Error creating order")
+      console.log("Error creating order");
       return NextResponse.json(
         { error: "Error creating order" },
         { status: 500 }
       );
     }
   } catch (e) {
-    console.log("Error ultimo")
+    console.log("Error ultimo");
 
     return NextResponse.json(
       { error: "Error to create order" },

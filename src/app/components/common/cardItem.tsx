@@ -25,9 +25,9 @@ interface CardInfo {
 }
 
 const CardItem: React.FC<Props> = (props) => {
-  const [balance, setBalance]  = useState<number | null>(null)
+  const [balance, setBalance] = useState<number | null>(null);
   const session = useSession();
-  
+
   const openModal = () => {
     const info: CardInfo = {
       id: props.id,
@@ -40,21 +40,22 @@ const CardItem: React.FC<Props> = (props) => {
 
   const fetchBalance = async () => {
     const response = await axios.get(`/api/user/${session.data?.user.id}`);
-    const balanceDollars = parseFloat((response.data.balance_in_cents / 100).toFixed(2));
+    const balanceDollars = parseFloat(
+      (response.data.balance_in_cents / 100).toFixed(2)
+    );
     setBalance(balanceDollars);
   };
 
   useEffect(() => {
-    if(session.status === 'authenticated'){
+    if (session.status === "authenticated") {
       fetchBalance();
     }
   }, [session]);
 
   const productPrice =
-  session.data?.user.role === "DISTRIBUTOR"
-    ? (props.price_distributor_in_cents! / 100).toFixed(2)
-    : (props.price_in_cents! / 100).toFixed(2);
-
+    session.data?.user.role === "DISTRIBUTOR"
+      ? (props.price_distributor_in_cents! / 100).toFixed(2)
+      : (props.price_in_cents! / 100).toFixed(2);
 
   return (
     <div className="flex flex-col justify-center items-center   w-full rounded-2xl px-4 py-8 relative overflow-y-auto h-full">
@@ -80,12 +81,15 @@ const CardItem: React.FC<Props> = (props) => {
         >
           {props.description
             ? props.description.toLocaleLowerCase()
-            : `Nº. ${props.account_number}`}
+            : props.account_number
+            ? `Nº. ${props.account_number}`
+            : ""}
         </p>
         <span
           className={`text-[#277FF2] ${props.price_in_cents ? "text-xl" : ""} `}
         >
-          {props.account_holder ? `${props.account_holder?.toUpperCase()}`
+          {props.account_holder
+            ? `${props.account_holder?.toUpperCase()}`
             : `$ ${productPrice}`}
         </span>
         {props.type && (
@@ -99,7 +103,6 @@ const CardItem: React.FC<Props> = (props) => {
       >
         {props.btn}
       </button>
-
     </div>
   );
 };

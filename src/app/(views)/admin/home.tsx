@@ -68,6 +68,8 @@ const home = () => {
     fetchAllData();
   }, []);
 
+  console.log(afiliados);
+
   const infoCards = [
     {
       title: "Afiliados",
@@ -123,7 +125,7 @@ const home = () => {
         {/* productos */}
         <div className="w-full rounded-lg bg-white p-6  shadow-box  transition-all duration-500">
           <h2 className=" text-xl capitalize mb-4 text-[#444] font-medium">
-            Productos
+            Resumen de productos
           </h2>
           <div className="overflow-x-auto">
             <table className="w-full table-auto">
@@ -161,7 +163,7 @@ const home = () => {
         {/* afiliados */}
         <div className="w-full rounded-lg bg-white p-6  shadow-box  transition-all duration-500">
           <h2 className=" text-xl capitalize mb-4 text-[#444] font-medium">
-            Usuarios
+            Resumen de usuarios
           </h2>
           <div className="overflow-x-auto">
             <table className="w-full table-auto">
@@ -192,7 +194,7 @@ const home = () => {
                 ) : (
                   <tr>
                     <td colSpan={3} className="p-2 text-[#666]">
-                      Sin afiliados
+                      No hay usuarios
                     </td>
                   </tr>
                 )}

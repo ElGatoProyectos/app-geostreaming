@@ -44,7 +44,9 @@ const Account = () => {
   const fetchAccounts = async () => {
     try {
       const response = await axios.get("/api/account");
-      const descendingAccounts = response.data.sort((a:any, b:any) => b.id - a.id);
+      const descendingAccounts = response.data.sort(
+        (a: any, b: any) => b.id - a.id
+      );
       setAccounts(descendingAccounts);
     } catch (error) {
       console.error("Error fetching accounts:", error);
@@ -64,9 +66,9 @@ const Account = () => {
   };
 
   useEffect(() => {
-    if(session.status === 'authenticated'){
-    fetchAccounts();
-    fetchData();
+    if (session.status === "authenticated") {
+      fetchAccounts();
+      fetchData();
     }
   }, []);
 
@@ -98,19 +100,28 @@ const Account = () => {
     { Header: "Pin", accessor: "pin" },
     {
       Header: "Estado de cuenta",
-      accessor: (row: Inputs) => row.is_active ? (
-          <span className=" whitespace-nowrap px-3 py-0.5 rounded-full bg-gray-100 font-medium text-green-400">Activo</span>
+      accessor: (row: Inputs) =>
+        row.is_active ? (
+          <span className=" whitespace-nowrap px-3 py-0.5 rounded-full bg-gray-100 font-medium text-green-400">
+            Activo
+          </span>
         ) : (
-          <span className=" whitespace-nowrap px-3 py-0.5 rounded-full bg-gray-100 font-medium text-gray-400">Inactivo</span>
+          <span className=" whitespace-nowrap px-3 py-0.5 rounded-full bg-gray-100 font-medium text-gray-400">
+            Inactivo
+          </span>
         ),
     },
     {
       Header: "Estado de compra",
       accessor: (row: Inputs) =>
         row.status === "BOUGHT" ? (
-          <span className=" whitespace-nowrap px-3 py-0.5 rounded-full bg-gray-100 font-medium text-blue-400">Comprado</span>
+          <span className=" whitespace-nowrap px-3 py-0.5 rounded-full bg-gray-100 font-medium text-blue-400">
+            Comprado
+          </span>
         ) : (
-          <span className=" whitespace-nowrap px-3 py-0.5 rounded-full bg-gray-100 font-medium text-yellow-800">No Comprado</span>
+          <span className=" whitespace-nowrap px-3 py-0.5 rounded-full bg-gray-100 font-medium text-yellow-800">
+            No Comprado
+          </span>
         ),
     },
     {
@@ -146,7 +157,6 @@ const Account = () => {
       setModalTitle("Editar cuenta");
       setIsModalOpen(true);
     } catch (error) {
-
       toast.error("Error al obtener los datos");
     }
   };
@@ -189,18 +199,15 @@ const Account = () => {
         });
         toast.success("Se actualizo correctamente");
       } else {
-        await axios.post(
-          "/api/account",
-          {
-            is_active: data.is_active === "1" ? true : false,
-            email: data.email,
-            password: data.password,
-            pin: data.pin,
-            description: data.description,
-            platform_id: data.platform_id,
-            status: "NOT_BOUGHT",
-          }
-        );
+        await axios.post("/api/account", {
+          is_active: data.is_active === "1" ? true : false,
+          email: data.email,
+          password: data.password,
+          pin: data.pin,
+          description: data.description,
+          platform_id: data.platform_id,
+          status: data.status,
+        });
         toast.success("Se guardo correctamente");
       }
       fetchAccounts();
