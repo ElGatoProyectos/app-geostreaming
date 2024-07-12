@@ -89,20 +89,20 @@ export async function PATCH(
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
-  let validatedAccount;
+  // let validatedAccount;
 
-  try {
-    validatedAccount = validateAccount(account_info);
-  } catch (error) {
-    return NextResponse.json({ error: "Validation error" }, { status: 400 });
-  }
+  // try {
+  //   validatedAccount = validateAccount(account_info);
+  // } catch (error) {
+  //   return NextResponse.json({ error: "Validation error" }, { status: 400 });
+  // }
 
   let updatedAccount;
 
   try {
     updatedAccount = await prisma.account.update({
       where: { id: account_id },
-      data: validatedAccount,
+      data: account_info,
     });
   } catch (error) {
     return NextResponse.json(

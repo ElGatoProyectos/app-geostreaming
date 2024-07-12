@@ -9,6 +9,7 @@ const accountSchema = z.object({
   pin: z.string(),
   number_profiles: z.number().optional(),
   // new
+  profile_description: z.string().optional(),
   platform_id: z.number(),
   purchase_date: z.date().optional(),
   renewal_date: z.date().optional(),

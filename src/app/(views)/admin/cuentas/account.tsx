@@ -97,7 +97,7 @@ const Account = () => {
       },
     },
     { Header: "Correo", accessor: "email" },
-    { Header: "Perfil", accessor: "profile" },
+    { Header: "Perfil", accessor: "profile_description" },
     { Header: "Contraseña", accessor: "password" },
     { Header: "Pin", accessor: "pin" },
     {
@@ -198,7 +198,7 @@ const Account = () => {
           description: data.description,
           platform_id: data.platform_id,
           status: data.status,
-          profile: data.profile,
+          profile_description: data.profile,
         });
         toast.success("Se actualizo correctamente");
       } else {
@@ -210,7 +210,7 @@ const Account = () => {
           description: data.description,
           platform_id: data.platform_id,
           status: data.status,
-          profile: data.profile,
+          profile_description: data.profile,
         });
         toast.success("Se guardo correctamente");
       }

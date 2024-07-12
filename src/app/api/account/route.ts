@@ -41,23 +41,25 @@ export async function POST(req: NextRequest) {
 
   try {
     accountInfo = await req.json();
+    console.log(accountInfo)
   } catch (error) {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
-  let validatedAccount;
+  // let validatedAccount;
 
-  try {
-    validatedAccount = validateAccount(accountInfo);
-  } catch (error) {
-    return NextResponse.json({ error: "Validation error" }, { status: 400 });
-  }
+  // try {
+  //   validatedAccount = validateAccount(accountInfo);
+  // } catch (error) {
+  //   console.log(error)
+  //   return NextResponse.json({ error: "Validation error" }, { status: 400 });
+  // }
 
   let newAccount;
 
   try {
     newAccount = await prisma.account.create({
-      data: validatedAccount,
+      data: accountInfo,
     });
   } catch (error) {
     return NextResponse.json(

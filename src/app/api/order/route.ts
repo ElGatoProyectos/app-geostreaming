@@ -178,7 +178,7 @@ export async function POST(req: NextRequest) {
           }
         }
 
-        const wspMessage = `👋 Hola \n _Pedido #${newOrder.id} PENDIENTE_\n🖥️ Plataforma: ${platform.name}\n📧 La espera aproximada es de 1 hora, y enviaremos la información a este número de WhatsApp.`;
+        const wspMessage = `👋 Hola \n _Pedido #${newOrder.id} PENDIENTE_\n🖥️ Plataforma: ${platform.name} \n📧 La espera aproximada es de 1 hora, y enviaremos la información a este número de WhatsApp.`;
 
         const url_wsp = `${url_backend}/notifications`;
         const options = {
@@ -307,7 +307,7 @@ export async function POST(req: NextRequest) {
         newOrder.id
       } Completado_\n🖥️ Plataforma: ${
         platform.name
-      }\n📧 Email: ${email}\n🔑 Password: ${password}\n🔢 Pin: ${pin}\n${
+      }\n📧 Email/usuario: ${email}\n🔑 Password: ${password}\n🔢 Pin: ${pin} \n👤 Perfil: ${accountselected.profile_description} \n${
         description ? `📝 Descripción: ${description}\n` : ""
       }🕒 Duración de la cuenta: ${platform.days_duration} días`;
 

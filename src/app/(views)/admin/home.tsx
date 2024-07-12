@@ -33,11 +33,12 @@ const home = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get("/api/dashboard");
+      console.log(response.data)
       const sortedProducts = response.data.productosMasVendidos.sort(
         (a: any, b: any) => b._count.Account - a._count.Account
       );
-      setProducts(sortedProducts);
-      setProducts(response.data.productosMasVendidos);
+      /* setProducts(sortedProducts); */
+      /* setProducts(response.data.productosMasVendidos); */
       const sortedAfiliados = response.data.topAfiliados.sort(
         (a: any, b: any) =>
           b.Cuantos_usuarios_tienen_el_Ref_id -
@@ -69,6 +70,8 @@ const home = () => {
       const notBoughtAccountsCount = accountsResponse.data.filter(
         (account: any) => account.status === "NOT_BOUGHT"
       ).length;
+      setProducts(platformResponse.data);
+      console.log(platformResponse.data)
       setTotalUsers(usersWithRefId);
       setUserRoleCount(usersWithUserRole);
       setPlatformCount(platformsCount);
@@ -213,14 +216,14 @@ const home = () => {
         {/* productos */}
         <div className="w-full rounded-lg bg-white p-6  shadow-box  transition-all duration-500">
           <h2 className=" text-xl capitalize mb-4 text-[#444] font-medium">
-            Resumen de productos
+            Resumen de plataformas
           </h2>
           <div className="overflow-x-auto max-h-[800px] overflow-y-auto">
             <table className="w-full table-auto">
               <thead className="bg-[#F3F6F9] font-medium text-[#888] text-sm">
                 <tr>
                   <th className="p-2 text-left">N</th>
-                  <th className="p-2 text-left">Producto</th>
+                  <th className="p-2 text-left">Plataforma</th>
                   <th className="p-2 text-center">Cantidad</th>
                 </tr>
               </thead>
@@ -229,23 +232,24 @@ const home = () => {
                   products
                     .slice(
                       productsPage * productsRowsPerPage,
-                      productsPage * productsRowsPerPage + productsRowsPerPage
+                      productsRowsPerPage === -1
+                        ? products.length
+                        : productsPage * productsRowsPerPage +
+                            productsRowsPerPage
                     )
                     .map((product: any, index: number) => (
                       <tr key={index} className="text  text-[#666]">
                         <td className="p-2">{index + 1}</td>
                         <td className="p-2">{product.name}</td>
                         <td className="p-2 text-center">
-                          {product._count.Account !== undefined
-                            ? product._count.Account
-                            : 0}
+                          {product.Account?product.Account.length:0}
                         </td>
                       </tr>
                     ))
                 ) : (
                   <tr>
                     <td colSpan={3} className="p-2 text-[#666]">
-                      Sin productos
+                      Sin plataformas
                     </td>
                   </tr>
                 )}
@@ -307,13 +311,15 @@ const home = () => {
                   afiliados
                     .slice(
                       afiliadosPage * afiliadosRowsPerPage,
-                      afiliadosPage * afiliadosRowsPerPage +
-                        afiliadosRowsPerPage
+                      afiliadosRowsPerPage === -1
+                        ? afiliados.length
+                        : afiliadosPage * afiliadosRowsPerPage +
+                            afiliadosRowsPerPage
                     )
                     .map((afiliado: any, index: number) => (
                       <tr key={index} className="text  text-[#666]">
                         <td className="p-2">{index + 1}</td>
-                        <td className="p-2">{afiliado.name}</td>
+                        <td className="p-2">{afiliado.Nombre_del_afiliador}</td>
                         <td className="p-2 text-center">
                           {afiliado.Cuantos_usuarios_tienen_el_Ref_id !==
                           undefined
@@ -337,7 +343,7 @@ const home = () => {
                       5,
                       10,
                       25,
-                      { label: "All", value: -1 },
+                      { label: "Todos", value: -1 },
                     ]}
                     colSpan={3}
                     count={afiliados.length}
