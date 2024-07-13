@@ -359,18 +359,22 @@ export async function POST(req: NextRequest) {
       }
 
       const res = await fetch(url_wsp, options);
-      const json = await res.json();
+      // const json = await res.json();
 
-      await prisma.notification.create({
-        data: { phone_client: userPhone, message: wspMessage },
-      });
+      // await prisma.notification.create({
+      //   data: { phone_client: userPhone, message: wspMessage },
+      // });
 
-      return NextResponse.json({
-        ...responseOrder,
-        json,
-      });
+      // return NextResponse.json({
+      //   ...responseOrder,
+      //   json,
+      // });
+      return  NextResponse.json({
+        message:"ok"
+        });
     } catch (e) {
       console.log("Error creating order");
+      console.log(e)
       return NextResponse.json(
         { error: "Error creating order" },
         { status: 500 }
