@@ -72,6 +72,7 @@ CREATE TABLE `Account` (
     `pin` VARCHAR(191) NOT NULL,
     `status` ENUM('BOUGHT', 'NOT_BOUGHT') NOT NULL DEFAULT 'NOT_BOUGHT',
     `number_profiles` INTEGER NULL,
+    `profile_description` VARCHAR(191) NULL,
     `purchase_date` DATETIME(3) NULL,
     `renewal_date` DATETIME(3) NULL,
     `platform_id` INTEGER NOT NULL,
@@ -119,6 +120,15 @@ CREATE TABLE `Notification` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `phone_client` VARCHAR(191) NOT NULL,
     `message` VARCHAR(191) NOT NULL,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Alert` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `description` VARCHAR(191) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     PRIMARY KEY (`id`)

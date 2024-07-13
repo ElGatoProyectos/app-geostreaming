@@ -307,7 +307,9 @@ export async function POST(req: NextRequest) {
         newOrder.id
       } Completado_\n🖥️ Plataforma: ${
         platform.name
-      }\n📧 Email/usuario: ${email}\n🔑 Password: ${password}\n🔢 Pin: ${pin} \n👤 Perfil: ${accountselected.profile_description} \n${
+      }\n📧 Email/usuario: ${email}\n🔑 Password: ${password}\n🔢 Pin: ${pin} \n👤 Perfil: ${
+        accountselected.profile_description
+      } \n${
         description ? `📝 Descripción: ${description}\n` : ""
       }🕒 Duración de la cuenta: ${platform.days_duration} días`;
 
@@ -327,6 +329,21 @@ export async function POST(req: NextRequest) {
           country_code: orderValidated.country_code,
         }),
       };
+
+      const admi = await prisma.admin.findMany();
+      const wspmessageadmi = `👋 Hola ${admi[0].full_name} se a comprado una cuenta de la plataforma ${platform.name}`;
+      const resadmi = await fetch(url_wsp, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${token}`,
+        },
+        body: JSON.stringify({
+          phone: admi[0].phone,
+          message: wspmessageadmi,
+          country_code: admi[0].country_code,
+        }),
+      });
 
       try {
         await prisma.user.update({

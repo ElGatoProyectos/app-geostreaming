@@ -20,24 +20,21 @@ export async function GET() {
   }
 }
 
-
 //todo ok - solo imagen
 export async function POST(req: NextRequest) {
   try {
     let data;
     data = await req.formData();
 
-    const { number, value, date, user_id, status, voucher_url } = Object.fromEntries(
-      data.entries()
-    ) as {
-      
-      number: string;
-      value: string;
-      date: string;
-      user_id: string;
-      status: "READ" | "UNREAD";
-      voucher_url:string;
-    };
+    const { number, value, date, user_id, status, voucher_url } =
+      Object.fromEntries(data.entries()) as {
+        number: string;
+        value: string;
+        date: string;
+        user_id: string;
+        status: "READ" | "UNREAD";
+        voucher_url: string;
+      };
 
     const createVoucher: any = {
       number,
@@ -45,7 +42,7 @@ export async function POST(req: NextRequest) {
       date: new Date(date),
       user_id: Number(user_id),
       status,
-      voucher_url
+      voucher_url,
     };
 
     // const validatedVoucher = validateVoucher(createVoucher);
@@ -56,32 +53,31 @@ export async function POST(req: NextRequest) {
 
     //todo envio de mensajes
 
-    // let cookiesesion = dev
-    //   ? "next-auth.session-token"
-    //   : "__Secure-next-auth.session-token";
-    // const token = req.cookies.get(cookiesesion)?.value as any;
-    // const url_wsp = `${url_backend}/notifications`;
+    let cookiesesion = dev
+      ? "next-auth.session-token"
+      : "__Secure-next-auth.session-token";
+    const token = req.cookies.get(cookiesesion)?.value as any;
+    const url_wsp = `${url_backend}/notifications`;
 
-    // const admi = await prisma.admin.findMany();
+    const admi = await prisma.admin.findMany();
 
-    // const wspmessageadmi = `👋 Hola ${admi[0].full_name} tienes un voucher pendiente del usuario ${userwe?.full_name} con el id de ${userwe?.id} por favor revisarlo en depositos`;
-    // const resadmi = await fetch(url_wsp, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     Authorization: `${token}`,
-    //   },
-    //   body: JSON.stringify({
-    //     phone: admi[0].phone,
-    //     message: wspmessageadmi,
-    //     country_code: admi[0].country_code,
-    //   }),
-    // });
+    const wspmessageadmi = `👋 Hola ${admi[0].full_name} tienes un voucher pendiente del usuario ${userwe?.full_name} con el id de ${userwe?.id} por favor revisarlo en depositos`;
+    const resadmi = await fetch(url_wsp, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${token}`,
+      },
+      body: JSON.stringify({
+        phone: admi[0].phone,
+        message: wspmessageadmi,
+        country_code: admi[0].country_code,
+      }),
+    });
 
-    // await resadmi.json();
+    await resadmi.json();
 
-     //todo end envio de mensajes
-
+    //todo end envio de mensajes
 
     let newVoucher;
     // if (file) {
@@ -103,7 +99,6 @@ export async function POST(req: NextRequest) {
 
     //   const json = await res.json();
 
-     
     //   return NextResponse.json(newVoucher);
     // }
 

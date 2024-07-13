@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { authOptions } from "../../auth-options";
 import { validateBalance } from "@/lib/validations/balance";
+import { convertToCents } from "@/utils/convertToCents";
 
 export async function PATCH(
   req: NextRequest,
@@ -61,11 +62,13 @@ export async function PATCH(
     data: { status: "READ" },
   });
 
+  const formatCents = convertToCents(validatedBalanceUser.balance_in_cents);
+
   try {
     user = await prisma.user.update({
       where: { id: accountId },
       data: {
-        balance_in_cents: { increment: validatedBalanceUser.balance_in_cents },
+        balance_in_cents: { increment: formatCents },
       },
     });
     await prisma.$disconnect();
