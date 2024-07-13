@@ -236,9 +236,9 @@ const users = [
 
 const admin = [
   {
-    email: "admin@test.com",
+    email: "soycachimuel@gmail.com",
     password: "123456789",
-    full_name: "admin joel",
+    full_name: "Cachimuel",
     phone: "555666111",
     country_code: "+51",
   },
