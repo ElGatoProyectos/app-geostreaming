@@ -303,11 +303,11 @@ export async function POST(req: NextRequest) {
 
       const { email, password, pin, description } = accountselected;
 
-      const wspMessage = `👋 Hola ${user.full_name}\n _Pedido #${
+      const wspMessage = `👋 Hola \n _Pedido #${
         newOrder.id
       } Completado_\n🖥️ Plataforma: ${
         platform.name
-      }\n📧 Email/usuario: ${email}\n🔑 Password: ${password}\n🔢 Pin: ${pin} \n👤 Perfil: ${
+      }\n📧 Email/usuario: ${email}\n🔑 Contraseña: ${password}\n🔢 Pin: ${pin} \n👤 Perfil: ${
         accountselected.profile_description
       } \n${
         description ? `📝 Descripción: ${description}\n` : ""
@@ -369,12 +369,12 @@ export async function POST(req: NextRequest) {
       //   ...responseOrder,
       //   json,
       // });
-      return  NextResponse.json({
-        message:"ok"
-        });
+      return NextResponse.json({
+        message: "ok",
+      });
     } catch (e) {
       console.log("Error creating order");
-      console.log(e)
+      console.log(e);
       return NextResponse.json(
         { error: "Error creating order" },
         { status: 500 }

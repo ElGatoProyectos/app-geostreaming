@@ -64,7 +64,9 @@ const BankForm: React.FC<BankFormProps> = ({ defaultValues, onSubmit }) => {
           }`}
           {...register}
         >
-          <option value='' disabled >Seleccione un banco</option>
+          <option value="" disabled>
+            Seleccione un banco
+          </option>
           <option value="">banco 1</option>
           <option value="">banco2</option>
         </select>
@@ -91,15 +93,19 @@ const BankForm: React.FC<BankFormProps> = ({ defaultValues, onSubmit }) => {
               ? "border-red-500 focus:ring focus:ring-red-200 focus:border-red-500"
               : "border-gray-200 "
           }`}
-          {...register('type')}
+          {...register("type")}
         >
-          <option value='' disabled >Seleccione tipo de cuenta</option>
+          <option value="" disabled>
+            Seleccione tipo de cuenta
+          </option>
           <option value="">Corriente</option>
           <option value="">Ahorros</option>
         </select>
         {errors.type && (
-        <p className="text-red-500 text-sm font-medium mt-1">{errors.type?.message}</p>
-      )}
+          <p className="text-red-500 text-sm font-medium mt-1">
+            {errors.type?.message}
+          </p>
+        )}
       </label>
       <div className=" w-full flex flex-col gap-4">
         <button
