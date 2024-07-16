@@ -55,6 +55,8 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
 
   const session = useSession();
 
+  const [patheader, setPatheader] = useState("");
+
   const roleTranslate = (role: string) => {
     switch (role) {
       case "ADMIN":
@@ -101,6 +103,11 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
     if (session.status === "authenticated") {
       fetchBalance();
       showAvatarApi();
+      if (session.data.user.role === "ADMIN") {
+        setPatheader("/admin");
+      } else {
+        setPatheader("/home");
+      }
     }
   }, []);
   const router = useRouter();
@@ -186,7 +193,7 @@ const Header: React.FC<{ userRole: any }> = ({ userRole }) => {
   return (
     <div className=" user-select-none fixed z-20 top-0 left-0 h-[70px] shadow w-full bg-white text-[#444}">
       <div className="relative flex w-full h-full justify-between px-4 lg:px-8  gap-2">
-        <Link href={"/"} className="h-full py-2 content-center ">
+        <Link href={patheader} className="h-full py-2 content-center ">
           <img
             className="h-full w-auto object-contain "
             src="/logo.png"
