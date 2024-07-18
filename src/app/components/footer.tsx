@@ -6,7 +6,7 @@ const Footer = () => {
     <div className="bg-[#111111] ">
       <div className="max-w-[1440px] mx-auto text-sm text-white p-8 md:px-10 flex flex-col md:flex-row  gap-4 justify-center items-center text-center md:justify-between ">
         <span>
-           <strong>© 2024, Desarrollado por agencia gato.</strong> Todos los derechos
+           <strong>© 2024, Desarrollado por <a href="https://www.gato.pe/">Agencia Gato.</a></strong> Todos los derechos
           reservados
         </span>
         <div className="w-fit flex gap-2 ">
