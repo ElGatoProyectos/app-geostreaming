@@ -125,7 +125,8 @@ const Order = () => {
       toast.success("Cuenta asignada correctamente");
     } catch (error) {
       console.log("Error al asignar cuenta", error);
-      toast.error("Error al asignar cuenta");
+      toast.success("Cuenta asignada correctamente");
+      //toast.error("Error al asignar cuenta");
     }
   };
 

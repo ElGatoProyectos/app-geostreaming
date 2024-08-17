@@ -99,7 +99,7 @@ const CardItem: React.FC<Props> = (props) => {
       <button
         className="text-white bg-[#F2308B] rounded-full  px-4 py-1  hover:bg-[#F06FAC] transition-all duration-300 mt-4 capitalize disabled:bg-[#E3ABC6]"
         onClick={openModal}
-        disabled={balance !== null && balance < parseFloat(productPrice)}
+        disabled={balance !== null && balance < parseFloat(productPrice) || props.btn === 'Agotado'}
       >
         {props.btn}
       </button>

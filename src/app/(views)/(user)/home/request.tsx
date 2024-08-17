@@ -10,6 +10,7 @@ import { useSession } from "next-auth/react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { platform } from "os";
 
 interface ProductInfo {
   id: number;
@@ -26,6 +27,7 @@ type Product = {
   name: string;
   img_url: string;
   description: string;
+  Account:{status: string}[];
 };
 
 const request = () => {
@@ -105,7 +107,13 @@ const request = () => {
             description={platform.description}
             price_in_cents={platform.price_in_cents}
             price_distributor_in_cents={platform.price_distributor_in_cents}
-            btn={"Comprar"}
+            btn={
+              platform.Account.some(
+                (account) => account.status === "NOT_BOUGHT"
+              )
+                ? "Comprar"
+                : "Agotado"
+            }
             onOpenModal={handleOpenModal}
           />
         ))}

@@ -64,7 +64,8 @@ const Deposits = () => {
 
   const handleModal = (record: any) => {
     setSelectedRecord(record);
-    setIsOpenModal(true);
+    const value = record.status==="UNREAD"
+    setIsOpenModal(value);
   };
   // const [showVoucher, setShowVoucher] = useState("");
   const handleImageClick =(voucher_url: string) => {
@@ -93,11 +94,13 @@ const Deposits = () => {
         voucher_id: Number(selectedRecord.id),
       });
       toast.success("Depósito aprobado correctamente");
+      setIsOpenModal(false);
     } catch (error) {
       toast.error("Error al confirmar el depósito");
       console.log("Error al confirmar deposito", error);
     }
     fetchDeposits();
+    
   };
 
   const columns = [

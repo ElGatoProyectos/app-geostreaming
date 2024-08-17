@@ -10,6 +10,7 @@ import { useSession } from "next-auth/react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { platform } from "os";
 
 interface ProductInfo {
   id: number;
@@ -26,6 +27,7 @@ type Product = {
   name: string;
   img_url: string;
   description: string;
+  Account:{status: string}[];
 };
 
 const request = () => {
@@ -76,7 +78,8 @@ const request = () => {
 
   const handleFormSubmit:SubmitHandler<any>  = async (data) => {
     try {
-      await axios.post("/api/order/", {
+      await axios.post("/api/order", {
+        //aqui compra de producto
         user_id: Number(session.data?.user.id),
         platform_id: modalInfo?.id,
         phone: data.phone,
@@ -86,7 +89,7 @@ const request = () => {
       closeModal();
       toast.success("Plataforma comprada");
     } catch (error) {
-      
+      console.log(error)
       toast.error("Error de compra");
       closeModal();
       // mensaje de error
@@ -104,23 +107,32 @@ const request = () => {
             description={platform.description}
             price_in_cents={platform.price_in_cents}
             price_distributor_in_cents={platform.price_distributor_in_cents}
-            btn={"Comprar"}
+            btn={
+              platform.Account.some(
+                (account) => account.status === "NOT_BOUGHT"
+              )
+                ? "Comprar"
+                : "Agotado"
+            }
             onOpenModal={handleOpenModal}
           />
         ))}
       </ContainerCard>
+      <Modal isOpen={isModalOpen} onClose={closeModal} title={modalTitle}>
+        {modalInfo && (
+          <PlatformForm info={modalInfo} onSubmit={handleFormSubmit}></PlatformForm>
+        )}
+      </Modal>
       {/* <Modal isOpen={isModalOpen} onClose={closeModal} title={modalTitle}>
         {modalInfo && (
           <div className="flex flex-col items-center justify-center gap-4">
             <img
-              className="h-16 w-16 rounded-full object-contain"
+              className="h-16 w-16 object-contain"
               src={modalInfo.url}
               alt={modalInfo.title}
             />
             <h2 className="font-semibold">{modalInfo.title}</h2>
             <div className=" w-full flex flex-col gap-4">
-              <label htmlFor="phone" className="text-[#444] capitalize">Ingrese número de WhatsApp</label>
-              <input type="text" id="phone" className="bg-gray-100 w-full text-[#666] bg-gray-10 border rounded outline-none px-6 py-1 focus:bg-white focus:border-blue-400 disabled:bg-gray-200 "/>
               <button
                 onClick={() => handleFormSubmit(modalInfo.id)}
                 className="bg-[#F2308B] text-white mt-4 px-4 py-1 rounded hover:bg-[#F06FAC] transition-all duration-300 mx-auto "
@@ -139,11 +151,6 @@ const request = () => {
           </div>
         )}
       </Modal> */}
-      <Modal isOpen={isModalOpen} onClose={closeModal} title={modalTitle}>
-        {modalInfo && (
-          <PlatformForm info={modalInfo} onSubmit={handleFormSubmit}></PlatformForm>
-        )}
-      </Modal>
       {/* modal de confirmacion */}
       <Modal
         isOpen={isModalInfoOpen}

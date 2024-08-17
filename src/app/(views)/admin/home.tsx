@@ -224,7 +224,8 @@ const home = () => {
                 <tr>
                   <th className="p-2 text-left">N</th>
                   <th className="p-2 text-left">Plataforma</th>
-                  <th className="p-2 text-center">Cantidad</th>
+                  <th className="p-2 text-center">Total</th>
+                  <th className="p-2 text-center">Disponibles</th>
                 </tr>
               </thead>
               <tbody>
@@ -244,11 +245,14 @@ const home = () => {
                         <td className="p-2 text-center">
                           {product.Account?product.Account.length:0}
                         </td>
+                        <td className="p-2 text-center">
+                          {product.Account?product.Account.filter((i:any)=>i.status==="NOT_BOUGHT").length:0}
+                        </td>
                       </tr>
                     ))
                 ) : (
                   <tr>
-                    <td colSpan={3} className="p-2 text-[#666]">
+                    <td colSpan={4} className="p-2 text-[#666]">
                       Sin plataformas
                     </td>
                   </tr>
@@ -263,7 +267,7 @@ const home = () => {
                       25,
                       { label: "Todos", value: -1 },
                     ]}
-                    colSpan={3}
+                    colSpan={4}
                     count={products.length}
                     rowsPerPage={productsRowsPerPage}
                     page={productsPage}

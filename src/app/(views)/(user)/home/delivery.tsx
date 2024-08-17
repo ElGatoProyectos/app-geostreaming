@@ -27,6 +27,7 @@ type Product = {
   name: string;
   img_url: string;
   description: string;
+  Account: { status: string }[];
 };
 
 const Delivery = () => {
@@ -75,7 +76,7 @@ const Delivery = () => {
     fetchPlatform();
   }, []);
 
-  const handleFormSubmit:SubmitHandler<any>  = async (data) => {
+  const handleFormSubmit: SubmitHandler<any> = async (data) => {
     try {
       await axios.post("/api/order/", {
         user_id: Number(session.data?.user.id),
@@ -87,7 +88,7 @@ const Delivery = () => {
       closeModal();
       toast.success("Plataforma comprada");
     } catch (error) {
-      console.log(error)
+      console.log(error);
       toast.error("Error de compra");
       closeModal();
     }
@@ -111,7 +112,10 @@ const Delivery = () => {
       </ContainerCard>
       <Modal isOpen={isModalOpen} onClose={closeModal} title={modalTitle}>
         {modalInfo && (
-          <PlatformForm info={modalInfo} onSubmit={handleFormSubmit}></PlatformForm>
+          <PlatformForm
+            info={modalInfo}
+            onSubmit={handleFormSubmit}
+          ></PlatformForm>
         )}
       </Modal>
       {/* modal de confirmacion */}
