@@ -1,4 +1,4 @@
-export const dev = false;
+export const dev = true;
 
 export const url_backend = dev
   ? "http://localhost:4000/"
