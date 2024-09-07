@@ -108,11 +108,11 @@ const Reports = () => {
         user_id: Number(session.data?.user.id),
       });
       setIsOpenModal(false);
-      toast.success("Registro eliminado correctamente");
+      toast.success("Renovación exitosa");
     } catch (error) {
       console.error("Error", error);
       setIsOpenModal(false);
-      toast.error("Hubo un error al eliminar el registro");
+      toast.error("Error al renovar");
     }
   };
 
