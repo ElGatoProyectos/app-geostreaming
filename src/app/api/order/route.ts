@@ -331,7 +331,7 @@ export async function POST(req: NextRequest) {
       };
 
       const admi = await prisma.admin.findMany();
-      const wspmessageadmi = `👋 Hola ${admi[0].full_name} se a comprado una cuenta de la plataforma ${platform.name}`;
+      const wspmessageadmi = `👋 Hola ${admi[0].full_name} se a comprado una cuenta de la plataforma ${platform.name} con el id de orden ${newOrder.id}`;
       const resadmi = await fetch(url_wsp, {
         method: "POST",
         headers: {
